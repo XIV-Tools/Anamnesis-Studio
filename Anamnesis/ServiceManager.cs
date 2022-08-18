@@ -17,6 +17,7 @@ using System.Diagnostics;
 using Anamnesis.Navigation;
 using System.Collections.Generic;
 using Anamnesis.Panels;
+using Anamnesis.Libraries;
 
 public class ServiceManager
 {
@@ -48,6 +49,7 @@ public class ServiceManager
 	public HistoryService History { get; } = new();
 	public SceneService Scene { get; } = new();
 	public PanelService Panels { get; } = new();
+	public LibraryService Libraries { get; } = new();
 
 #if DEBUG
 	public bool IsDebug => true;
@@ -87,6 +89,7 @@ public class ServiceManager
 		await this.InitializeService(this.Animation);
 		await this.InitializeService(this.Hotkeys);
 		await this.InitializeService(this.History);
+		await this.InitializeService(this.Libraries);
 
 		await this.StartServices();
 	}
