@@ -4,27 +4,9 @@
 namespace Anamnesis.Panels;
 
 using FontAwesome.Sharp;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
-
-public interface IPanelHost
-{
-	string Id { get; }
-	bool IsVisible { get; }
-
-	IEnumerable<IPanel> Panels { get; }
-	Rect Rect { get; set; }
-	Rect RelativeRect { get; set; }
-
-	void Show();
-	void Show(IPanelHost copy);
-	void AddPanel(IPanel panel);
-	void RemovePanel(IPanel panel);
-
-	void DragMove();
-}
 
 public interface IPanel : INotifyPropertyChanged
 {
@@ -38,6 +20,7 @@ public interface IPanel : INotifyPropertyChanged
 
 	bool ShowBackground { get; set; }
 	bool CanResize { get; set; }
+	bool CanScroll { get; set; }
 	bool IsOpen { get; }
 
 	IPanelHost Host { get; }

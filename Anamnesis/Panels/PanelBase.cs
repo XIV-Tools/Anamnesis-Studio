@@ -37,6 +37,7 @@ public abstract class PanelBase : UserControl, IPanel, INotifyPropertyChanged
 	public Rect Rect => this.Host.Rect;
 	public bool ShowBackground { get; set; } = true;
 	public bool CanResize { get; set; }
+	public bool CanScroll { get; set; } = false;
 	public Color? TitleColor { get; set; } = Colors.Gray;
 
 	public string FinalTitle

@@ -10,6 +10,8 @@ public class PoseLibrary : LibraryBase
 {
 	public override void Initialize()
 	{
+		this.NameKey = "Naviagation_PoseLibrary";
+
 		this.AddSource(new FileSource<PoseFile>("Anamnesis Poses", FileService.DefaultPoseDirectory.Directory, true));
 		this.AddSource(new FileSource<CmToolPoseFile>("CmTool Poses", FileService.CMToolPoseSaveDir.Directory, true));
 	}

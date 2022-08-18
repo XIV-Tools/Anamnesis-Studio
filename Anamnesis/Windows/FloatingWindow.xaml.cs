@@ -9,6 +9,7 @@ using Anamnesis.Panels;
 using Anamnesis.Services;
 using FontAwesome.Sharp;
 using MaterialDesignThemes.Wpf;
+using Newtonsoft.Json.Linq;
 using PropertyChanged;
 using Serilog;
 using System;
@@ -74,6 +75,18 @@ public partial class FloatingWindow : Window, IPanelHost
 			this.canResize = value;
 			this.ResizeMode = this.canResize ? ResizeMode.CanResize : ResizeMode.NoResize;
 			this.SizeToContent = value ? SizeToContent.Manual : SizeToContent.WidthAndHeight;
+		}
+	}
+
+	public bool CanScroll
+	{
+		get
+		{
+			return this.ScrollArea.VerticalScrollBarVisibility == ScrollBarVisibility.Auto;
+		}
+		set
+		{
+			this.ScrollArea.VerticalScrollBarVisibility = value ? ScrollBarVisibility.Auto : ScrollBarVisibility.Disabled;
 		}
 	}
 
@@ -348,6 +361,7 @@ public partial class FloatingWindow : Window, IPanelHost
 		{
 			this.ShowBackground = this.panels[0].ShowBackground;
 			this.CanResize = this.panels[0].CanResize;
+			this.CanScroll = this.panels[0].CanScroll;
 			this.TitleIcon.Icon = this.panels[0].Icon;
 			this.TitleColor = this.panels[0].TitleColor;
 			this.Title = this.panels[0].FinalTitle;
@@ -357,6 +371,7 @@ public partial class FloatingWindow : Window, IPanelHost
 		{
 			this.ShowBackground = true;
 			this.CanResize = true;
+			this.CanScroll = true;
 			this.TitleIcon.Icon = IconChar.None;
 			this.TitleColor = Colors.White;
 			this.Title = string.Empty;

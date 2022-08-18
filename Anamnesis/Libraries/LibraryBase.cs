@@ -3,12 +3,15 @@
 
 namespace Anamnesis.Libraries;
 
+using Anamnesis.Libraries.Items;
 using Anamnesis.Libraries.Sources;
 using PropertyChanged;
 using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using XivToolsWpf;
 
@@ -17,9 +20,11 @@ public abstract class LibraryBase
 {
 	private readonly List<LibrarySourceBase> sources = new();
 
-	public string Name { get; set; } = string.Empty;
-	public ObservableCollection<LibraryPack> Packs { get; init; } = new();
+	public string NameKey { get; set; } = string.Empty;
+	public ObservableCollection<GroupItem> AllPacks { get; init; } = new();
+	public ObservableCollection<GroupItem> FilteredPacks { get; init; } = new();
 	public bool IsLoading { get; private set; }
+	public LibraryFilter Filter { get; init; } = new();
 
 	protected ILogger Log => Serilog.Log.ForContext(this.GetType());
 
@@ -40,13 +45,30 @@ public abstract class LibraryBase
 			}
 
 			await Task.WhenAll(sourceTasks);
+
+			await Dispatch.MainThread();
+
+			this.DoFilter();
 		}
 		catch (Exception ex)
 		{
-			this.Log.Error(ex, $"Error loading library: {this.Name}");
+			this.Log.Error(ex, $"Error loading library: {this.NameKey}");
 		}
 
 		this.IsLoading = false;
+	}
+
+	public void DoFilter()
+	{
+		IOrderedEnumerable<GroupItem> sortedPacks = this.AllPacks.OrderBy(item => item, this.Filter);
+
+		this.FilteredPacks.Clear();
+
+		foreach (GroupItem obj in sortedPacks)
+		{
+			obj.Filter(this.Filter);
+			this.FilteredPacks.Add(obj);
+		}
 	}
 
 	protected void AddSource(LibrarySourceBase source)
@@ -57,12 +79,12 @@ public abstract class LibraryBase
 	private async Task LoadSource(LibrarySourceBase source)
 	{
 		await Dispatch.NonUiThread();
-		List<LibraryPack> packs = await source.Load();
+		List<PackItem> packs = await source.LoadPacks();
 
 		await Dispatch.MainThread();
-		foreach (LibraryPack pack in packs)
+		foreach (PackItem pack in packs)
 		{
-			this.Packs.Add(pack);
+			this.AllPacks.Add(pack);
 		}
 	}
 }

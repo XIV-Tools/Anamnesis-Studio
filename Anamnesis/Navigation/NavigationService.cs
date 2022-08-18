@@ -4,11 +4,11 @@
 namespace Anamnesis.Navigation;
 
 using Anamnesis.Actor.Panels;
+using Anamnesis.Libraries.Panels;
 using Anamnesis.Panels;
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using static Anamnesis.Navigation.NavigationService;
 
 public class NavigationService : ServiceBase<NavigationService>
 {
@@ -26,6 +26,7 @@ public class NavigationService : ServiceBase<NavigationService>
 		{ "Transform", typeof(TransformPanel) },
 		{ "ImportCharacter", typeof(ImportCharacterPanel) },
 		{ "ImportPose", typeof(ImportPosePanel) },
+		{ "Library", typeof(LibraryPanel) },
 	};
 
 	/// <summary>
@@ -39,29 +40,7 @@ public class NavigationService : ServiceBase<NavigationService>
 			if (!Panels.TryGetValue(request.Destination, out panelType))
 				throw new Exception($"No panel type found for navigation: {request.Destination}");
 
-			PanelBase panel = PanelService.Show(panelType, request.Context);
-
-			// Move the panel to the target position next to the origin panel
-			/*PanelBase? originPanel = request.GetOriginPanel();
-			if (originPanel != null)
-			{
-				if (panel.CloseMode == CloseModes.AutoClose ||
-					panel.CloseMode == CloseModes.Both)
-				{
-					Rect panelRect = panel.Rect;
-					Rect navRect = originPanel.Rect;
-					Point pos = originPanel.GetSubPanelDockOffset();
-
-					panelRect.X = navRect.X + pos.X;
-					panelRect.Y = navRect.Y + pos.Y;
-
-					panel.Rect = panelRect;
-				}
-
-				panel.SetParent(originPanel);
-			}*/
-
-			return panel;
+			return PanelService.Show(panelType, request.Context);
 		}
 		catch (Exception ex)
 		{

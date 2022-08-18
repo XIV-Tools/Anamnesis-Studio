@@ -185,6 +185,7 @@
 			</Grid>
 
 			<ScrollViewer
+				x:Name="ScrollArea"
 				Grid.Row="1"
 				Margin="1"
 				HorizontalScrollBarVisibility="Disabled"

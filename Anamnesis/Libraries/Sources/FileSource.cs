@@ -29,17 +29,16 @@ public class FileSource<T> : LibrarySourceBase
 	public FileBase FileFormat { get; init; }
 	public string Filter => "*" + this.FileFormat.FileExtension;
 
-	public override async Task<List<LibraryPack>> Load()
+	public override async Task<List<PackItem>> LoadPacks()
 	{
 		await Dispatch.NonUiThread();
 
-		List<LibraryPack> packs = new();
+		List<PackItem> packs = new();
 
 		if (!this.Directory.Exists)
 			return packs;
 
-		LibraryPack pack = new();
-		pack.Name = this.Name;
+		PackItem pack = new(this.Name);
 		packs.Add(pack);
 
 		await this.GetFiles(pack, this.Directory);
@@ -47,7 +46,7 @@ public class FileSource<T> : LibrarySourceBase
 		return packs;
 	}
 
-	private async Task GetFiles(ILibraryItemCollection collection, DirectoryInfo directoryInfo)
+	private async Task GetFiles(GroupItem collection, DirectoryInfo directoryInfo)
 	{
 		FileInfo[] fileInfos = directoryInfo.GetFiles(this.Filter);
 		foreach (FileInfo fileInfo in fileInfos)
