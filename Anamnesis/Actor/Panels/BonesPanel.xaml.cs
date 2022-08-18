@@ -23,7 +23,7 @@ using XivToolsWpf;
 
 using CmQuaternion = Anamnesis.Memory.Quaternion;
 
-public partial class PosePanel : ActorPanelBase
+public partial class BonesPanel : ActorPanelBase
 {
 	public const double DragThreshold = 20;
 
@@ -33,7 +33,7 @@ public partial class PosePanel : ActorPanelBase
 	private bool isDragging;
 	private Point origMouseDownPoint;
 
-	public PosePanel(IPanelHost host)
+	public BonesPanel(IPanelHost host)
 		: base(host)
 	{
 		this.InitializeComponent();

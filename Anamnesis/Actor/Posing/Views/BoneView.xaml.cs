@@ -146,7 +146,7 @@ public partial class BoneView : UserControl, IBone
 
 		this.linesToChildren.Clear();
 
-		PosePanel? page = this.FindParent<PosePanel>();
+		BonesPanel? page = this.FindParent<BonesPanel>();
 		if (page == null)
 			return;
 
@@ -205,7 +205,7 @@ public partial class BoneView : UserControl, IBone
 
 	private void SetBone(BoneVisual3d? bone)
 	{
-		PosePanel? page = this.FindParent<PosePanel>();
+		BonesPanel? page = this.FindParent<BonesPanel>();
 		if (page != null)
 			page.BoneViews.Add(this);
 
@@ -309,7 +309,7 @@ public partial class BoneView : UserControl, IBone
 
 	private void OnLoaded(object sender, RoutedEventArgs e)
 	{
-		PosePanel? page = this.FindParent<PosePanel>();
+		BonesPanel? page = this.FindParent<BonesPanel>();
 		if (page == null)
 			return;
 
@@ -318,7 +318,7 @@ public partial class BoneView : UserControl, IBone
 
 	private void OnUnloaded(object sender, RoutedEventArgs e)
 	{
-		PosePanel? page = this.FindParent<PosePanel>();
+		BonesPanel? page = this.FindParent<BonesPanel>();
 		if (page == null)
 			return;
 

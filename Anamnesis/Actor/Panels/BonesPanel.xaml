@@ -1,5 +1,5 @@
 ﻿<local:ActorPanelBase
-	x:Class="Anamnesis.Actor.Panels.PosePanel"
+	x:Class="Anamnesis.Actor.Panels.BonesPanel"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
@@ -13,8 +13,8 @@
 	Width="650"
 	Height="512"
 	CanResize="False"
-	Icon="Running"
-	TitleKey="Naviagation_Actor_Pose"
+	Icon="Bone"
+	TitleKey="Naviagation_Actor_Bones"
 	mc:Ignorable="d">
 
 	<Grid x:Name="ContentArea">

@@ -163,10 +163,10 @@
 	"Naviagation_Actor_Equipment_Tip": "Change Gear",
 	"Naviagation_Actor_Action": "Action",
 	"Naviagation_Actor_Action_Tip": "Play animations",
-	"Naviagation_Actor_Pose": "Pose",
-	"Naviagation_Actor_Pose_Tip": "Pose your actor",
 	"Naviagation_Actor_Transform": "Transform",
 	"Naviagation_Actor_Transform_Tip": "Edit selected bones",
+	"Naviagation_Actor_Bones": "Bones",
+	"Naviagation_Actor_Bones_Tip": "Select bones from a GUI",
 
 	"OverlayWindow_AutoClose": "Auto close",
 	"OverlayWindow_PopOut": "Pop-out",

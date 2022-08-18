@@ -205,11 +205,11 @@
 
 				<StackPanel Visibility="{Binding Services.Pose.IsEnabled, Converter={StaticResource B2V}}">
 					<local:Shortcut
-						Destination="Pose"
-						Icon="Running"
-						LabelKey="Naviagation_Actor_Pose"
+						Destination="Bones"
+						Icon="Bone"
+						LabelKey="Naviagation_Actor_Bones"
 						ShowText="{Binding Expanded}"
-						ToolTipKey="Naviagation_Actor_Pose_Tip" />
+						ToolTipKey="Naviagation_Actor_Bones_Tip" />
 
 					<local:Shortcut
 						Destination="Transform"
