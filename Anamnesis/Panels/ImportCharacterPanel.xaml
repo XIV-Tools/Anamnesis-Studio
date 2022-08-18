@@ -1,0 +1,211 @@
+﻿<local:PanelBase
+	x:Class="Anamnesis.Panels.ImportCharacterPanel"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
+	xmlns:controls="clr-namespace:Anamnesis.Controls"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:Anamnesis.Panels"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	Height="328"
+	MinWidth="500"
+	CanResize="False"
+	Icon="FileImport"
+	TitleKey="Common_ImportFile"
+	mc:Ignorable="d">
+
+	<Grid x:Name="ContentArea">
+
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+
+		<Grid
+			Grid.RowSpan="4"
+			Grid.Column="0"
+			Width="200"
+			Height="320"
+			Margin="3,3,6,3">
+			<!--  16:10  -->
+
+			<Border
+				BorderBrush="Transparent"
+				Style="{StaticResource InsetPanel}">
+
+				<Image
+					Source="{Binding CharacterFile.ImageSource}"
+					Stretch="Fill">
+					<Image.Effect>
+						<BlurEffect Radius="20" />
+					</Image.Effect>
+				</Image>
+
+			</Border>
+
+			<Border Style="{StaticResource InsetPanel}">
+				<Border.Background>
+					<ImageBrush
+						ImageSource="{Binding CharacterFile.ImageSource}"
+						Stretch="Uniform" />
+				</Border.Background>
+			</Border>
+		</Grid>
+
+		<Border
+			Grid.Row="0"
+			Grid.Column="1"
+			Margin="3,0"
+			Style="{StaticResource InsetPanel}">
+
+			<StackPanel
+				Margin="6"
+				VerticalAlignment="Top"
+				Orientation="Vertical">
+
+				<XivToolsWpf:TextBlock
+					Margin="0,0,0,6"
+					Text="{Binding CharacterFile.Description}"
+					TextWrapping="Wrap"
+					Visibility="{Binding CharacterFile.Description, Converter={StaticResource NotNullToVisibilityConverter}}" />
+
+				<StackPanel
+					Orientation="Horizontal"
+					Visibility="{Binding CharacterFile.Author, Converter={StaticResource NotNullToVisibilityConverter}}">
+					<XivToolsWpf:TextBlock
+						Key="FileMeta_Author"
+						Margin="0,0,6,0"
+						Style="{StaticResource Label}" />
+					<XivToolsWpf:TextBlock
+						FontWeight="SemiBold"
+						Text="{Binding CharacterFile.Author}" />
+				</StackPanel>
+
+				<StackPanel
+					Orientation="Horizontal"
+					Visibility="{Binding CharacterFile.Version, Converter={StaticResource NotNullToVisibilityConverter}}">
+					<XivToolsWpf:TextBlock
+						Key="FileMeta_Version"
+						Margin="0,0,6,0"
+						Style="{StaticResource Label}" />
+					<XivToolsWpf:TextBlock
+						FontWeight="SemiBold"
+						Text="{Binding CharacterFile.Version}" />
+				</StackPanel>
+
+			</StackPanel>
+		</Border>
+
+		<controls:ActorSelector
+			Grid.Row="1"
+			Grid.Column="1"
+			Margin="6"
+			Selection="{Binding Actor}" />
+
+		<Grid
+			Grid.Row="2"
+			Grid.Column="1"
+			Margin="12"
+			VerticalAlignment="Bottom">
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+
+			<XivToolsWpf:FlagCheckbox
+				Grid.Row="0"
+				Grid.Column="0"
+				Margin="0,0,12,0"
+				Flag="Equipment"
+				Label="Equipment"
+				Value="{Binding Mode}" />
+
+			<XivToolsWpf:FlagCheckbox
+				Grid.Row="1"
+				Grid.Column="0"
+				Margin="20,0,12,0"
+				Flag="EquipmentGear"
+				Label="Gear"
+				Value="{Binding Mode}" />
+			<XivToolsWpf:FlagCheckbox
+				Grid.Row="2"
+				Grid.Column="0"
+				Margin="20,0,12,0"
+				Flag="EquipmentAccessories"
+				Label="Accessories"
+				Value="{Binding Mode}" />
+			<XivToolsWpf:FlagCheckbox
+				Grid.Row="3"
+				Grid.Column="0"
+				Margin="20,0,12,0"
+				Flag="EquipmentWeapons"
+				Label="Weapons"
+				Value="{Binding Mode}" />
+
+			<XivToolsWpf:FlagCheckbox
+				Grid.Row="0"
+				Grid.Column="1"
+				Margin="0,0,12,0"
+				Flag="Appearance"
+				Label="Appearance"
+				Value="{Binding Mode}" />
+			<XivToolsWpf:FlagCheckbox
+				Grid.Row="1"
+				Grid.Column="1"
+				Margin="20,0,12,0"
+				Flag="AppearanceHair"
+				Label="Hair"
+				Value="{Binding Mode}" />
+			<XivToolsWpf:FlagCheckbox
+				Grid.Row="2"
+				Grid.Column="1"
+				Margin="20,0,12,0"
+				Flag="AppearanceFace"
+				Label="Face"
+				Value="{Binding Mode}" />
+			<XivToolsWpf:FlagCheckbox
+				Grid.Row="3"
+				Grid.Column="1"
+				Margin="20,0,12,0"
+				Flag="AppearanceBody"
+				Label="Body"
+				Value="{Binding Mode}" />
+			<XivToolsWpf:FlagCheckbox
+				Grid.Row="4"
+				Grid.Column="1"
+				Margin="20,0,12,0"
+				Flag="AppearanceExtended"
+				Label="Extended"
+				Value="{Binding Mode}" />
+		</Grid>
+
+		<Button
+			Grid.Row="3"
+			Grid.Column="1"
+			Margin="6"
+			HorizontalAlignment="Right"
+			Click="OnImportClicked"
+			IsEnabled="{Binding Actor, Converter={StaticResource NotNullToBoolConverter}}">
+
+			<XivToolsWpf:TextBlock Key="Common_ImportFile" />
+
+		</Button>
+	</Grid>
+
+</local:PanelBase>

@@ -1,0 +1,151 @@
+﻿<local:ActorPanelBase
+	x:Class="Anamnesis.Actor.Panels.PosePanel"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
+	xmlns:anaUtils="clr-namespace:Anamnesis"
+	xmlns:controls="clr-namespace:Anamnesis.Actor.Controls"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:Anamnesis.Actor.Panels"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:panels="clr-namespace:Anamnesis.Panels"
+	xmlns:views="clr-namespace:Anamnesis.Actor.Views"
+	Width="650"
+	Height="512"
+	CanResize="False"
+	Icon="Running"
+	TitleKey="Naviagation_Actor_Pose"
+	mc:Ignorable="d">
+
+	<Grid x:Name="ContentArea">
+
+		<Grid IsEnabled="{Binding Skeleton, Converter={StaticResource NotNullToBoolConverter}}">
+
+			<!--  Content  -->
+			<Grid
+				Grid.Row="1"
+				Margin="3"
+				IsEnabled="{Binding Services.Pose.IsEnabled}">
+
+				<Grid
+					x:Name="MouseCanvas"
+					Grid.Row="1"
+					Background="Transparent"
+					MouseDown="OnCanvasMouseDown"
+					MouseMove="OnCanvasMouseMove"
+					MouseUp="OnCanvasMouseUp">
+					<Grid DataContext="{Binding Skeleton}">
+						<views:Pose3DView
+							x:Name="ThreeDView"
+							Visibility="Collapsed" />
+						<views:PoseGuiView
+							x:Name="GuiView"
+							Visibility="Visible" />
+						<views:PoseMatrixView
+							x:Name="MatrixView"
+							Margin="3,28,0,3"
+							Visibility="Collapsed" />
+					</Grid>
+				</Grid>
+
+				<Canvas
+					x:Name="SelectionCanvas"
+					Grid.Row="1"
+					IsHitTestVisible="False">
+					<Border
+						x:Name="DragSelectionBorder"
+						BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+						BorderThickness="1"
+						CornerRadius="3"
+						Visibility="Collapsed">
+						<Border
+							Background="{DynamicResource MaterialDesignBackground}"
+							Opacity="0.1" />
+					</Border>
+				</Canvas>
+			</Grid>
+
+			<Grid
+				Grid.Row="1"
+				Margin="7,4,6,3"
+				VerticalAlignment="Top">
+				<ListBox
+					x:Name="ViewSelector"
+					SelectedIndex="0"
+					SelectionChanged="OnViewChanged"
+					Style="{StaticResource MaterialDesignToolToggleListBox}">
+					<ListBoxItem
+						Margin="1"
+						Padding="8,5"
+						Cursor="Hand"
+						ToolTip="GUI View"
+						Visibility="{Binding Skeleton.File.AllowPoseGui, Converter={StaticResource B2V}}">
+						<XivToolsWpf:IconBlock
+							FontSize="10"
+							Icon="ProjectDiagram" />
+					</ListBoxItem>
+					<ListBoxItem
+						Margin="1"
+						Padding="8,5"
+						Cursor="Hand"
+						ToolTip="Matrix View"
+						Visibility="{Binding Skeleton.File.AllowPoseMatrix, Converter={StaticResource B2V}}">
+						<XivToolsWpf:IconBlock
+							FontSize="10"
+							Icon="BorderAll" />
+					</ListBoxItem>
+					<ListBoxItem
+						x:Name="View3dButton"
+						Margin="1"
+						Padding="8,5"
+						Cursor="Hand"
+						ToolTip="3D View">
+						<XivToolsWpf:IconBlock
+							FontSize="10"
+							Icon="Cube" />
+					</ListBoxItem>
+				</ListBox>
+			</Grid>
+
+			<XivToolsWpf:InfoControl
+				Key="Pose_WarningNotGPose"
+				Grid.Row="0"
+				Grid.RowSpan="2"
+				Margin="6,7"
+				Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource !B2V}}" />
+
+			<Grid
+				Grid.Row="0"
+				Grid.RowSpan="2"
+				Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource B2V}}">
+				<XivToolsWpf:InfoControl
+					Key="Pose_NotEnabled"
+					Margin="6,7"
+					VerticalAlignment="Bottom"
+					IsError="False"
+					Visibility="{Binding Services.Pose.IsEnabled, Converter={StaticResource !B2V}}" />
+			</Grid>
+		</Grid>
+
+		<Grid Visibility="{Binding Actor, Converter={StaticResource NotNullToVisibilityConverter}}">
+			<Grid Visibility="{Binding Actor.ModelObject, Converter={StaticResource NotNullToVisibilityConverter}}">
+				<Grid Visibility="{Binding Skeleton, Converter={StaticResource NullToVisibilityConverter}}">
+					<XivToolsWpf:InfoControl
+						Key="Pose_NoSkeleton"
+						Margin="12"
+						VerticalAlignment="Bottom"
+						IsError="True" />
+				</Grid>
+			</Grid>
+
+			<Grid Visibility="{Binding Actor.ModelObject, Converter={StaticResource NullToVisibilityConverter}}">
+				<XivToolsWpf:InfoControl
+					Key="Pose_NoModel"
+					Margin="12"
+					VerticalAlignment="Bottom"
+					IsError="True" />
+			</Grid>
+		</Grid>
+
+	</Grid>
+</local:ActorPanelBase>

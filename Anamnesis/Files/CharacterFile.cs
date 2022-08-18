@@ -26,7 +26,7 @@ public class CharacterFile : JsonFileBase
 		AppearanceBody = 32,
 		AppearanceExtended = 64,
 
-		Equipment = EquipmentGear | EquipmentAccessories,
+		Equipment = EquipmentGear | EquipmentAccessories | EquipmentWeapons,
 		Appearance = AppearanceHair | AppearanceFace | AppearanceBody | AppearanceExtended,
 
 		All = EquipmentGear | EquipmentAccessories | EquipmentWeapons | AppearanceHair | AppearanceFace | AppearanceBody | AppearanceExtended,
@@ -103,7 +103,7 @@ public class CharacterFile : JsonFileBase
 
 	public void WriteToFile(ActorMemory actor, SaveModes mode)
 	{
-		this.Nickname = actor.Nickname;
+		this.Nickname = actor.Names.Nickname;
 		this.ModelType = (uint)actor.ModelType;
 		this.ObjectKind = actor.ObjectKind;
 
@@ -244,7 +244,7 @@ public class CharacterFile : JsonFileBase
 			actor.EnableReading = false;
 
 			if (!string.IsNullOrEmpty(this.Nickname))
-				actor.Nickname = this.Nickname;
+				actor.Names.Nickname = this.Nickname;
 
 			actor.ModelType = (int)this.ModelType;
 			////actor.ObjectKind = this.ObjectKind;

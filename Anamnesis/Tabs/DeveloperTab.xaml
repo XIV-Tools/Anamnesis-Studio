@@ -1,60 +1,74 @@
-﻿<UserControl x:Class="Anamnesis.Tabs.DeveloperTab"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Anamnesis.Tabs"
-			 xmlns:controls="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
-			 xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
-			 xmlns:anaMem="clr-namespace:Anamnesis.Memory"
-			 xmlns:inspector="clr-namespace:XivToolsWpf.Inspector;assembly=XivToolsWpf"
-			 mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+﻿<UserControl
+	x:Class="Anamnesis.Tabs.DeveloperTab"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
+	xmlns:anaMem="clr-namespace:Anamnesis.Memory"
+	xmlns:controls="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:inspector="clr-namespace:XivToolsWpf.Inspector;assembly=XivToolsWpf"
+	xmlns:local="clr-namespace:Anamnesis.Tabs"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	d:DesignHeight="450"
+	d:DesignWidth="800"
+	mc:Ignorable="d">
 
 	<Grid x:Name="ContentArea">
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition/>
-			<ColumnDefinition/>
-			<ColumnDefinition/>
+			<ColumnDefinition />
+			<ColumnDefinition />
+			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
 
-		<GroupBox Style="{StaticResource PanelGroupBox}" Grid.Column="0">
+		<GroupBox
+			Grid.Column="0"
+			Style="{StaticResource PanelGroupBox}">
 			<GroupBox.Header>
-				<controls:Header Icon="Database" Text="Game Data"/>
+				<controls:Header
+					Icon="Database"
+					Text="Game Data" />
 			</GroupBox.Header>
-			
-			<StackPanel>
-				<Button Content="Search Battle Npc Names"
-						Style="{StaticResource TransparentButton}"
-						Height="32"
-						Click="OnNpcNameSearchClicked"/>
 
-				<Button Content="Search for NPC Data"
-						Click="OnFindNpcClicked"
-						Height="32"
-						Style="{StaticResource TransparentButton}"
-						Padding="6,3"/>
+			<StackPanel>
+				<Button
+					Height="32"
+					Click="OnNpcNameSearchClicked"
+					Content="Search Battle Npc Names"
+					Style="{StaticResource TransparentButton}" />
+
+				<Button
+					Height="32"
+					Padding="6,3"
+					Click="OnFindNpcClicked"
+					Content="Search for NPC Data"
+					Style="{StaticResource TransparentButton}" />
 
 			</StackPanel>
-			
+
 		</GroupBox>
 
-        <GroupBox Style="{StaticResource PanelGroupBox}" Grid.Column="1">
-            <GroupBox.Header>
+		<GroupBox
+			Grid.Column="1"
+			Style="{StaticResource PanelGroupBox}">
+			<GroupBox.Header>
 				<StackPanel Orientation="Horizontal">
-					<controls:Header Icon="Running" Text="Actor - "/>
-					<XivToolsWpf:TextBlock Text="{Binding TargetService.PlayerTarget.DisplayName}"/>
+					<controls:Header
+						Icon="Running"
+						Text="Actor - " />
+					<XivToolsWpf:TextBlock Text="{Binding TargetService.PlayerTarget.DisplayName}" />
 				</StackPanel>
 			</GroupBox.Header>
 
-            <StackPanel>
+			<StackPanel>
 
-				<XivToolsWpf:TextBlock Text="{Binding TargetService.PlayerTarget.Index, StringFormat=Index: {0:D}}"/>
+				<XivToolsWpf:TextBlock Text="{Binding TargetService.PlayerTarget.Index, StringFormat=Index: {0:D}}" />
 
-				<ComboBox ItemsSource="{Binding Source={x:Static anaMem:ActorType.AllActorTypes}}" SelectedIndex="{Binding TargetService.PlayerTarget.ObjectKindInt}">
+				<ComboBox
+					ItemsSource="{Binding Source={x:Static anaMem:ActorType.AllActorTypes}}"
+					SelectedIndex="{Binding TargetService.PlayerTarget.ObjectKindInt}">
 					<ComboBox.ItemContainerStyle>
 						<Style TargetType="{x:Type ComboBoxItem}">
-							<Setter Property="IsEnabled" Value="{Binding IsSupportedType}"/>
+							<Setter Property="IsEnabled" Value="{Binding IsSupportedType}" />
 						</Style>
 					</ComboBox.ItemContainerStyle>
 
@@ -65,26 +79,30 @@
 					</ComboBox.ItemTemplate>
 				</ComboBox>
 
-				
-				<Button Content="Copy Actor Address"
-                        IsEnabled="{Binding TargetService.PlayerTarget.IsValid}"
-						Style="{StaticResource TransparentButton}"
-						Height="32"
-						Click="OnCopyActorAddressClicked"/>
-                
-                <Button Content="Copy Associated Addresses"
-                        IsEnabled="{Binding TargetService.PlayerTarget.IsValid}"
-						Style="{StaticResource TransparentButton}"
-						Height="32"
-						Click="OnCopyAssociatedAddressesClick"/>
 
-				<inspector:InspectorView Target="{Binding TargetService.PlayerTarget}" Height="350"/>
+				<Button
+					Height="32"
+					Click="OnCopyActorAddressClicked"
+					Content="Copy Actor Address"
+					IsEnabled="{Binding TargetService.PlayerTarget.IsValid}"
+					Style="{StaticResource TransparentButton}" />
+
+				<Button
+					Height="32"
+					Click="OnCopyAssociatedAddressesClick"
+					Content="Copy Associated Addresses"
+					IsEnabled="{Binding TargetService.PlayerTarget.IsValid}"
+					Style="{StaticResource TransparentButton}" />
+
+				<inspector:InspectorView
+					Height="350"
+					Target="{Binding TargetService.PlayerTarget}" />
 
 			</StackPanel>
 
-        </GroupBox>
+		</GroupBox>
 
-        <GroupBox Style="{StaticResource PanelGroupBox}" Grid.Column="2">
+		<!--<GroupBox Style="{StaticResource PanelGroupBox}" Grid.Column="2">
             <GroupBox.Header>
                 <controls:Header Icon="Question" Text="Experimental"/>
             </GroupBox.Header>
@@ -106,11 +124,6 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
-                        <Button Grid.Row="0" Click="OnSaveSceneClicked" Style="{StaticResource TransparentButton}" Content="Save Scene" />
-
-                        <Separator Grid.Row="1" />
-
-                        <Button Grid.Row="2" Click="OnLoadSceneClicked" Style="{StaticResource TransparentButton}" Content="Load Scene" />
 
                         <StackPanel Grid.Row="3">
                             <CheckBox IsChecked="{Binding SceneOptions.RelativePositions}" Content="Relative Positions" />
@@ -123,7 +136,7 @@
                     </Grid>
                 </GroupBox>
             </StackPanel>
-        </GroupBox>
+        </GroupBox>-->
 
-    </Grid>
+	</Grid>
 </UserControl>

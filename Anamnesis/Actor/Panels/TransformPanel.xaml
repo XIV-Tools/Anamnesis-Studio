@@ -1,0 +1,195 @@
+﻿<local:ActorPanelBase
+	x:Class="Anamnesis.Actor.Panels.TransformPanel"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
+	xmlns:anaUtils="clr-namespace:Anamnesis"
+	xmlns:controls="clr-namespace:Anamnesis.Actor.Controls"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:Anamnesis.Actor.Panels"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:panels="clr-namespace:Anamnesis.Panels"
+	Width="250"
+	Height="512"
+	CanResize="False"
+	Icon="Circle"
+	TitleKey="Naviagation_Actor_Transform"
+	mc:Ignorable="d">
+
+	<Grid x:Name="ContentArea">
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="0.5*" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+
+			<Grid
+				Grid.Row="0"
+				Grid.ColumnSpan="2"
+				Margin="8,4,6,3">
+
+				<XivToolsWpf:TextBlock
+					FontWeight="Bold"
+					Style="{StaticResource Header}"
+					Text="{Binding Skeleton.CurrentBone.Tooltip}" />
+
+				<XivToolsWpf:TextBlock
+					HorizontalAlignment="Right"
+					VerticalAlignment="Top"
+					FontSize="10"
+					Style="{StaticResource Header}"
+					Text="{Binding Skeleton.CurrentBone.BoneName}" />
+
+				<XivToolsWpf:TextBlock
+					Key="Pose_NothingSelected"
+					HorizontalAlignment="Left"
+					Style="{StaticResource Header}"
+					Visibility="{Binding Skeleton.CurrentBone, Converter={StaticResource NullToVisibilityConverter}}" />
+			</Grid>
+
+
+			<WrapPanel
+				Grid.Row="1"
+				Grid.ColumnSpan="2"
+				IsEnabled="{Binding Services.Pose.IsEnabled}"
+				Orientation="Horizontal">
+
+				<ToggleButton
+					Height="22"
+					MinWidth="32"
+					Margin="2,0"
+					IsChecked="{Binding Skeleton.CurrentBone.EnableLinkedBones}"
+					IsEnabled="{Binding Skeleton.CurrentBone.LinkedBonesCount, Converter={StaticResource NotZeroToBool}, FallbackValue=False}"
+					Style="{StaticResource TransparentIconToggleButton}">
+					<StackPanel Orientation="Horizontal">
+						<XivToolsWpf:IconBlock
+							FontSize="11"
+							Icon="Link" />
+						<XivToolsWpf:TextBlock
+							Margin="4,0,0,0"
+							Text="{Binding Skeleton.CurrentBone.LinkedBonesCount, FallbackValue=0}" />
+					</StackPanel>
+
+					<ToggleButton.ToolTip>
+						<StackPanel
+							Width="256"
+							Orientation="Vertical">
+							<XivToolsWpf:TextBlock
+								Key="Pose_Linked"
+								FontWeight="Bold" />
+
+							<ItemsControl
+								Margin="10,0,0,0"
+								ItemsSource="{Binding Skeleton.CurrentBone.LinkedBones}">
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<StackPanel Orientation="Horizontal">
+											<XivToolsWpf:TextBlock Key="{Binding TooltipKey}" />
+											<XivToolsWpf:TextBlock
+												Margin="6,0,0,0"
+												Text="{Binding BoneName, StringFormat=( {0:D} )}" />
+										</StackPanel>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+
+							<XivToolsWpf:TextBlock
+								Key="Pose_Linked_Tooltip"
+								Margin="0,20,0,0"
+								TextWrapping="Wrap" />
+						</StackPanel>
+					</ToggleButton.ToolTip>
+
+				</ToggleButton>
+
+				<Grid IsEnabled="{Binding Skeleton.HasSelection}">
+
+					<Button
+						anaUtils:Behaviours.Tooltip="Pose_SelectParent"
+						Click="OnParentClicked"
+						IsEnabled="{Binding Skeleton.CurrentBone.Parent, Converter={StaticResource NotNullToBoolConverter}}"
+						Style="{StaticResource TransparentIconButton}">
+						<XivToolsWpf:IconBlock Icon="ArrowCircleUp" />
+					</Button>
+				</Grid>
+
+				<Button
+					anaUtils:Behaviours.Tooltip="Pose_Clear"
+					Click="OnClearClicked"
+					IsEnabled="{Binding Skeleton.HasSelection}"
+					Style="{StaticResource TransparentIconButton}">
+					<XivToolsWpf:IconBlock Icon="TimesCircle" />
+				</Button>
+
+				<Button
+					anaUtils:Behaviours.Tooltip="Pose_SelectChildren"
+					Click="OnSelectChildrenClicked"
+					IsEnabled="{Binding Skeleton.HasSelection}"
+					Style="{StaticResource TransparentIconButton}">
+					<XivToolsWpf:IconBlock Icon="ArrowCircleDown" />
+				</Button>
+
+				<Button
+					MinWidth="48"
+					Margin="2"
+					Padding="6,3"
+					Click="OnFlipClicked"
+					Style="{StaticResource TransparentButton}">
+					<XivToolsWpf:TextBlock Key="Pose_Flip" />
+				</Button>
+
+			</WrapPanel>
+
+
+			<!--  bone transform  -->
+			<controls:TransformEditor
+				Grid.Row="2"
+				Grid.ColumnSpan="2"
+				IsEnabled="{Binding Skeleton.CanEditBone}"
+				Visibility="{Binding Skeleton.CurrentBone, Converter={StaticResource NotNullToVisibilityConverter}}"
+				Value="{Binding Skeleton.CurrentBone}" />
+
+
+			<Grid
+				Grid.Row="2"
+				Grid.ColumnSpan="2"
+				Visibility="{Binding Skeleton.CurrentBone, Converter={StaticResource NullToVisibilityConverter}}">
+
+				<Grid Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource B2V}}">
+					<controls:TransformEditor Value="{Binding Services.Target.SelectedActor.ModelObject.Transform}">
+						<controls:TransformEditor.CanTranslate>
+							<MultiBinding Converter="{StaticResource AnyBoolIsFalseToBool}">
+								<Binding Path="Actor.IsMotionEnabled" />
+								<Binding Path="Services.Pose.WorldPositionNotFrozen" />
+							</MultiBinding>
+						</controls:TransformEditor.CanTranslate>
+					</controls:TransformEditor>
+
+					<XivToolsWpf:InfoControl
+						Key="Pose_WarningNotFrozen"
+						Margin="0,0,0,45">
+
+						<XivToolsWpf:InfoControl.Visibility>
+							<MultiBinding Converter="{StaticResource MultiBoolAndToVisibility}">
+								<Binding Path="Actor.IsMotionEnabled" />
+								<Binding Path="Services.Pose.WorldPositionNotFrozen" />
+							</MultiBinding>
+						</XivToolsWpf:InfoControl.Visibility>
+					</XivToolsWpf:InfoControl>
+				</Grid>
+
+				<!--  Actor transform  -->
+				<Grid Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource !B2V}}">
+					<controls:TransformEditor Value="{Binding Actor.ModelObject.Transform}" />
+				</Grid>
+
+			</Grid>
+		</Grid>
+	</Grid>
+</local:ActorPanelBase>

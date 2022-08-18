@@ -1,0 +1,610 @@
+﻿<panels:PanelBase
+	x:Class="Anamnesis.Navigation.NavigationPanel"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
+	xmlns:ana="clr-namespace:Anamnesis"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:Anamnesis.Navigation"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:panels="clr-namespace:Anamnesis.Panels"
+	CanResize="False"
+	ShowBackground="False"
+	mc:Ignorable="d">
+
+	<panels:PanelBase.Resources>
+		<ResourceDictionary>
+
+
+			<Style
+				x:Key="IconTab"
+				BasedOn="{StaticResource TransparentIconToggleButton}"
+				TargetType="ToggleButton">
+
+				<Setter Property="Margin" Value="0,3,0,0" />
+				<Setter Property="BorderThickness" Value="0" />
+				<Setter Property="Height" Value="32" />
+				<Setter Property="Width" Value="32" />
+
+			</Style>
+
+		</ResourceDictionary>
+	</panels:PanelBase.Resources>
+
+	<Grid
+		x:Name="ContentArea"
+		Margin="0,0,6,6">
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="Auto" />
+		</Grid.ColumnDefinitions>
+
+		<!--  Actor List  -->
+		<Border
+			Grid.Row="1"
+			Grid.Column="0"
+			Margin="6"
+			Background="{DynamicResource MaterialDesignBackground}"
+			CornerRadius="6">
+
+			<Border.BitmapEffect>
+				<DropShadowBitmapEffect ShadowDepth="0" />
+			</Border.BitmapEffect>
+
+			<Grid>
+
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+
+				<ToggleButton
+					Grid.Row="0"
+					Width="28"
+					Height="28"
+					HorizontalAlignment="Left"
+					ana:Behaviours.Tooltip="Target_Sync"
+					IsChecked="{Binding Services.Target.SyncTarget}"
+					Style="{StaticResource TransparentIconToggleButton}">
+					<XivToolsWpf:IconBlock Icon="SyncAlt" />
+				</ToggleButton>
+
+				<local:ActorList Grid.Row="1" />
+			</Grid>
+
+
+		</Border>
+
+		<!--  Navigation Bar  -->
+		<Grid
+			Grid.Row="2"
+			Grid.Column="0"
+			Margin="6,6,0,0"
+			HorizontalAlignment="Left">
+
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+
+			<Border
+				x:Name="BackgroundBorder"
+				Grid.Row="0"
+				Grid.RowSpan="2"
+				Background="{DynamicResource MaterialDesignBackground}"
+				CornerRadius="6">
+
+				<Border.Style>
+					<Style TargetType="Border">
+						<Style.Triggers>
+							<DataTrigger
+								Binding="{Binding Expanded}"
+								Value="False">
+								<Setter Property="HorizontalAlignment" Value="Left" />
+								<Setter Property="VerticalAlignment" Value="Stretch" />
+								<Setter Property="Width" Value="40" />
+
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</Border.Style>
+
+				<Border.BitmapEffect>
+					<DropShadowBitmapEffect ShadowDepth="0" />
+				</Border.BitmapEffect>
+			</Border>
+
+			<ToggleButton
+				Grid.Row="0"
+				Width="28"
+				Margin="3"
+				HorizontalAlignment="Right"
+				IsChecked="{Binding Expanded}"
+				Style="{StaticResource TransparentToggleButton}"
+				Visibility="{Binding Expanded, Converter={StaticResource B2V}}">
+				<XivToolsWpf:IconBlock
+					Foreground="{DynamicResource MaterialDesignToolForeground}"
+					Icon="AngleLeft" />
+			</ToggleButton>
+
+			<ToggleButton
+				Grid.Row="0"
+				Width="33"
+				Margin="3"
+				HorizontalAlignment="Left"
+				IsChecked="{Binding Expanded}"
+				Style="{StaticResource TransparentToggleButton}"
+				Visibility="{Binding Expanded, Converter={StaticResource !B2V}}">
+				<XivToolsWpf:IconBlock
+					Foreground="{DynamicResource MaterialDesignToolForeground}"
+					Icon="AngleRight" />
+			</ToggleButton>
+
+			<StackPanel
+				Grid.Row="1"
+				Margin="3,0,0,0">
+
+				<local:Shortcut
+					Destination="Settings"
+					Icon="Cogs"
+					LabelKey="Naviagation_Settings"
+					ShowText="{Binding Expanded}"
+					ToolTipKey="Naviagation_Settings_Tip" />
+
+				<local:Shortcut
+					Destination="Weather"
+					Icon="CloudMoonRain"
+					LabelKey="Naviagation_Weather"
+					ShowText="{Binding Expanded}"
+					ToolTipKey="Naviagation_Weather_Tip" />
+
+				<local:Shortcut
+					Destination="Camera"
+					Icon="Camera"
+					LabelKey="Naviagation_Camera"
+					ShowText="{Binding Expanded}"
+					ToolTipKey="Naviagation_Camera_Tip" />
+
+				<local:Shortcut
+					Destination="ActorInfo"
+					Icon="Pen"
+					LabelKey="Naviagation_Actor_Info"
+					ShowText="{Binding Expanded}"
+					ToolTipKey="Naviagation_Actor_Info_Tip" />
+
+				<StackPanel Visibility="{Binding Services.Pose.IsEnabled, Converter={StaticResource !B2V}}">
+					<local:Shortcut
+						Destination="ActorCustomize"
+						Icon="IdCardAlt"
+						LabelKey="Naviagation_Actor_Customize"
+						ShowText="{Binding Expanded}"
+						ToolTipKey="Naviagation_Actor_Customize_Tip" />
+
+					<local:Shortcut
+						Destination="ActorEquipment"
+						Icon="HatCowboy"
+						LabelKey="Naviagation_Actor_Equipment"
+						ShowText="{Binding Expanded}"
+						ToolTipKey="Naviagation_Actor_Equipment_Tip" />
+				</StackPanel>
+
+				<!--<local:Shortcut
+					Destination="Action"
+					Icon="Biking"
+					LabelKey="Naviagation_Actor_Action"
+					ShowText="{Binding ShowText}"
+					ToolTipKey="Naviagation_Actor_Action_Tip" />-->
+
+				<StackPanel Visibility="{Binding Services.Pose.IsEnabled, Converter={StaticResource B2V}}">
+					<local:Shortcut
+						Destination="Pose"
+						Icon="Running"
+						LabelKey="Naviagation_Actor_Pose"
+						ShowText="{Binding Expanded}"
+						ToolTipKey="Naviagation_Actor_Pose_Tip" />
+
+					<local:Shortcut
+						Destination="Transform"
+						Icon="Circle"
+						LabelKey="Naviagation_Actor_Transform"
+						ShowText="{Binding Expanded}"
+						ToolTipKey="Naviagation_Actor_Transform_Tip" />
+				</StackPanel>
+
+			</StackPanel>
+		</Grid>
+
+		<!--  Top bar  -->
+		<Grid
+			x:Name="TopBar"
+			Grid.Row="0"
+			Grid.ColumnSpan="2"
+			Margin="48,8,0,0">
+
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+
+			<Border
+				Grid.RowSpan="2"
+				Margin="-42,0,0,0"
+				Background="{DynamicResource MaterialDesignBackground}"
+				CornerRadius="6"
+				IsHitTestVisible="False">
+				<Border.BitmapEffect>
+					<DropShadowBitmapEffect ShadowDepth="0" />
+				</Border.BitmapEffect>
+			</Border>
+
+			<StackPanel
+				Grid.Row="0"
+				Margin="0,0,6,0"
+				Orientation="Horizontal">
+
+				<TextBlock Text="{Binding Services.Scene.CurrentSceneName}" />
+				<XivToolsWpf:IconBlock
+					Margin="6,3,0,0"
+					VerticalAlignment="Center"
+					ana:Behaviours.Tooltip="Scene_Unsaved"
+					FontSize="6"
+					Icon="ExclamationTriangle"
+					Visibility="{Binding Services.Scene.UnsavedChanges, Converter={StaticResource B2V}}" />
+
+			</StackPanel>
+
+			<!--  Scene Options  -->
+			<ToolBar
+				Grid.Row="1"
+				Margin="-6,0,-12,0"
+				Background="Transparent"
+				ToolBarTray.IsLocked="True">
+				<Button
+					Width="28"
+					Height="28"
+					ana:Behaviours.Tooltip="Scene_Save"
+					Click="OnSaveSceneClicked"
+					Style="{StaticResource TransparentIconButton}">
+					<XivToolsWpf:IconBlock
+						FontSize="14"
+						Icon="Save" />
+				</Button>
+
+				<Button
+					Width="28"
+					Height="28"
+					ana:Behaviours.Tooltip="Scene_Open"
+					Click="OnOpenSceneClicked"
+					Style="{StaticResource TransparentIconButton}">
+					<XivToolsWpf:IconBlock
+						FontSize="14"
+						Icon="FolderOpen" />
+				</Button>
+
+				<Separator />
+
+				<Button
+					Width="28"
+					Height="28"
+					ana:Behaviours.Tooltip="Scene_Import"
+					Click="OnImportClicked"
+					Style="{StaticResource TransparentIconButton}">
+					<XivToolsWpf:IconBlock
+						FontSize="14"
+						Icon="FileImport" />
+				</Button>
+
+				<Button
+					Width="28"
+					Height="28"
+					ana:Behaviours.Tooltip="Scene_Export"
+					Click="OnExportClicked"
+					Style="{StaticResource TransparentIconButton}">
+					<XivToolsWpf:IconBlock
+						FontSize="14"
+						Icon="FileExport" />
+				</Button>
+
+				<!--<ToggleButton
+					x:Name="ExportButton"
+					Height="28"
+					ana:Behaviours.Tooltip="Scene_Export"
+					Style="{StaticResource TransparentIconDropdownButton}">
+					<XivToolsWpf:IconBlock
+						FontSize="14"
+						Icon="FileExport" />
+				</ToggleButton>
+
+				<Popup
+					MinWidth="128"
+					AllowsTransparency="True"
+					IsOpen="{Binding IsChecked, ElementName=ExportButton}"
+					PlacementTarget="{Binding ElementName=ExportButton}"
+					StaysOpen="False">
+					<Grid Margin="4">
+						<controls:PopupBackground Grid.RowSpan="2" />
+
+						<StackPanel
+							Margin="9"
+							Orientation="Vertical">
+							<Button
+								Height="22"
+								HorizontalContentAlignment="Left"
+								Click="OnExportCharacterClicked"
+								Style="{StaticResource TransparentIconButton}">
+								<XivToolsWpf:TextBlock Key="File_Character" />
+							</Button>
+
+							<Button
+								Height="22"
+								HorizontalContentAlignment="Left"
+								Click="OnExportPoseClicked"
+								Style="{StaticResource TransparentIconButton}">
+								<XivToolsWpf:TextBlock Key="File_Pose" />
+							</Button>
+
+							<Button
+								Height="22"
+								HorizontalContentAlignment="Left"
+								Click="OnExportCameraClicked"
+								Style="{StaticResource TransparentIconButton}">
+								<XivToolsWpf:TextBlock Key="File_CameraShot" />
+							</Button>
+						</StackPanel>
+					</Grid>
+				</Popup>-->
+
+				<!--  Verbose Logging  -->
+				<ToggleButton
+					Width="28"
+					Height="28"
+					IsChecked="{Binding Services.Logs.VerboseLogging}"
+					Style="{DynamicResource TransparentIconToggleButton}"
+					ToolTip="Enable verbose logging"
+					Visibility="{Binding Services.IsDebug, Converter={StaticResource B2V}}">
+					<XivToolsWpf:IconBlock
+						FontSize="12"
+						Icon="FileAlt" />
+				</ToggleButton>
+
+			</ToolBar>
+		</Grid>
+
+
+
+		<Grid
+			Grid.Row="0"
+			Grid.Column="2"
+			Margin="20,8,0,0"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Top">
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+
+			<Grid.ToolTip>
+				<StackPanel Orientation="Vertical">
+					<XivToolsWpf:TextBlock
+						Key="Pose_Toggle"
+						Margin="0"
+						Padding="0" />
+					<XivToolsWpf:TextBlock
+						Key="Pose_WarningNotGPose"
+						Margin="0"
+						Padding="0"
+						Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource !B2V}}" />
+				</StackPanel>
+			</Grid.ToolTip>
+
+			<Border
+				Grid.ColumnSpan="2"
+				Background="{DynamicResource MaterialDesignBackground}"
+				CornerRadius="6"
+				IsHitTestVisible="False">
+				<Border.BitmapEffect>
+					<DropShadowBitmapEffect ShadowDepth="0" />
+				</Border.BitmapEffect>
+			</Border>
+
+			<ToggleButton
+				Grid.Column="0"
+				Margin="3"
+				IsChecked="{Binding Services.Pose.IsEnabled}"
+				IsEnabled="{Binding Services.Gpose.IsGpose}"
+				Style="{DynamicResource OutlineToggleButton}">
+
+				<Grid
+					Margin="6"
+					VerticalAlignment="Center">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+
+					<XivToolsWpf:IconBlock
+						Margin="6,0"
+						FontSize="18"
+						Icon="Running" />
+
+					<XivToolsWpf:TextBlock
+						Grid.Column="1"
+						Margin="6,2,6,0"
+						Text="Pose" />
+				</Grid>
+
+
+			</ToggleButton>
+
+			<StackPanel
+				Grid.Column="1"
+				VerticalAlignment="Center"
+				Orientation="Horizontal">
+
+				<StackPanel.Style>
+					<Style TargetType="{x:Type StackPanel}">
+
+						<Setter Property="LayoutTransform">
+							<Setter.Value>
+								<ScaleTransform ScaleX="0" />
+							</Setter.Value>
+						</Setter>
+
+						<Style.Triggers>
+							<DataTrigger
+								Binding="{Binding Services.Pose.IsEnabled}"
+								Value="True">
+								<DataTrigger.EnterActions>
+									<StopStoryboard BeginStoryboardName="CloseStoryboard" />
+									<BeginStoryboard x:Name="OpenStoryboard">
+										<Storyboard>
+											<DoubleAnimation
+												EasingFunction="{StaticResource SinEaseOut}"
+												Storyboard.TargetProperty="Opacity"
+												To="1"
+												Duration="0:0:0.200" />
+											<DoubleAnimation
+												EasingFunction="{StaticResource SinEaseOut}"
+												Storyboard.TargetProperty="LayoutTransform.(ScaleTransform.ScaleX)"
+												To="1"
+												Duration="0:0:0.200" />
+										</Storyboard>
+									</BeginStoryboard>
+								</DataTrigger.EnterActions>
+								<DataTrigger.ExitActions>
+									<StopStoryboard BeginStoryboardName="OpenStoryboard" />
+									<BeginStoryboard x:Name="CloseStoryboard">
+										<Storyboard>
+											<DoubleAnimation
+												EasingFunction="{StaticResource SinEaseIn}"
+												Storyboard.TargetProperty="Opacity"
+												To="0"
+												Duration="0:0:0.200" />
+											<DoubleAnimation
+												EasingFunction="{StaticResource SinEaseIn}"
+												Storyboard.TargetProperty="LayoutTransform.(ScaleTransform.ScaleX)"
+												To="0"
+												Duration="0:0:0.200" />
+										</Storyboard>
+									</BeginStoryboard>
+								</DataTrigger.ExitActions>
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</StackPanel.Style>
+
+				<CheckBox
+					Margin="3,0,6,0"
+					VerticalContentAlignment="Center"
+					IsChecked="{Binding Services.Pose.FreezePhysics}"
+					IsEnabled="{Binding Services.Pose.IsEnabled}">
+					<XivToolsWpf:TextBlock Key="Pose_FreezePhysics" />
+				</CheckBox>
+
+				<CheckBox
+					Margin="3,0,6,0"
+					VerticalContentAlignment="Center"
+					IsChecked="{Binding Services.Pose.EnableParenting}"
+					IsEnabled="{Binding Services.Pose.IsEnabled}">
+					<XivToolsWpf:TextBlock Key="Pose_Parenting" />
+				</CheckBox>
+
+				<Border
+					Margin="2,2,5,2"
+					Padding="3"
+					HorizontalAlignment="Right"
+					Background="{DynamicResource AttentionToActionBrush}"
+					CornerRadius="6">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition />
+							<ColumnDefinition />
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
+
+						<Grid.RowDefinitions>
+							<RowDefinition />
+							<RowDefinition Height="Auto" />
+						</Grid.RowDefinitions>
+
+						<XivToolsWpf:TextBlock
+							Grid.ColumnSpan="3"
+							Margin="2,0,0,0"
+							FontSize="10"
+							Text="Edit Mode:" />
+
+						<CheckBox
+							Grid.Row="1"
+							Grid.Column="0"
+							Margin="3,0"
+							VerticalContentAlignment="Center"
+							IsChecked="{Binding Services.Pose.FreezeRotation}"
+							IsEnabled="{Binding Services.Pose.IsEnabled}">
+							<XivToolsWpf:TextBlock
+								Key="Pose_EnableRotation"
+								Margin="0,-2,0,2" />
+
+							<CheckBox.ToolTip>
+								<XivToolsWpf:TextBlock Key="Pose_EnableRotationTooltip" />
+							</CheckBox.ToolTip>
+						</CheckBox>
+
+						<CheckBox
+							Grid.Row="1"
+							Grid.Column="1"
+							Margin="3,0"
+							VerticalContentAlignment="Center"
+							IsChecked="{Binding Services.Pose.FreezePositions}"
+							IsEnabled="{Binding Services.Pose.IsEnabled}">
+							<XivToolsWpf:TextBlock
+								Key="Pose_EnablePosition"
+								Margin="0,-2,0,2" />
+
+							<CheckBox.ToolTip>
+								<XivToolsWpf:TextBlock Key="Pose_EnablePositionTooltip" />
+							</CheckBox.ToolTip>
+						</CheckBox>
+
+						<CheckBox
+							Grid.Row="1"
+							Grid.Column="2"
+							Margin="3,0"
+							VerticalContentAlignment="Center"
+							IsChecked="{Binding Services.Pose.FreezeScale}"
+							IsEnabled="{Binding Services.Pose.IsEnabled}">
+							<XivToolsWpf:TextBlock
+								Key="Pose_EnableScale"
+								Margin="0,-2,0,2" />
+
+							<CheckBox.ToolTip>
+								<XivToolsWpf:TextBlock Key="Pose_EnableScaleTooltip" />
+							</CheckBox.ToolTip>
+						</CheckBox>
+					</Grid>
+				</Border>
+			</StackPanel>
+
+		</Grid>
+
+
+		<Image
+			Grid.RowSpan="2"
+			Width="42"
+			Height="42"
+			Margin="0,0,0,0"
+			HorizontalAlignment="Left"
+			VerticalAlignment="Top"
+			MouseDown="OnIconMouseDown"
+			Source="/Assets/Anamnesis.png" />
+
+	</Grid>
+</panels:PanelBase>

@@ -48,6 +48,14 @@ public class AnimationMemory : MemoryBase
 		}
 	}
 
+	public void SetSpeed(AnimationMemory.AnimationSlots slot, float speed)
+	{
+		if (this.Speeds == null)
+			return;
+
+		this.Speeds[(int)slot].Value = speed;
+	}
+
 	protected override void HandlePropertyChanged(PropertyChange change)
 	{
 		// Update all speeds if linked

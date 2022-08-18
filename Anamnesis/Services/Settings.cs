@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Anamnesis.Keyboard;
+using Anamnesis.Panels;
 using PropertyChanged;
 
 [Serializable]
@@ -30,8 +31,6 @@ public class Settings : INotifyPropertyChanged
 	public bool OverlayWindow { get; set; } = false;
 	public double Opacity { get; set; } = 1.0;
 	public double Scale { get; set; } = 1.0;
-	public bool ShowFileExtensions { get; set; } = false;
-	public bool UseWindowsExplorer { get; set; } = false;
 	public Point WindowPosition { get; set; }
 	public Point OverlayWindowPosition { get; set; }
 	public string DefaultPoseDirectory { get; set; } = "%MyDocuments%/Anamnesis/Poses/";
@@ -61,6 +60,10 @@ public class Settings : INotifyPropertyChanged
 	public Binds KeyboardBindings { get; set; } = new();
 	public Dictionary<string, int> ActorTabOrder { get; set; } = new();
 	public Dictionary<string, bool> PosingBoneLinks { get; set; } = new();
+	public Dictionary<string, PanelService.PanelsData> Panels { get; set; } = new()
+	{
+		{ "Anamnesis.Navigation.NavigationPanel", new(new(0, 0, 0, 0)) },
+	};
 
 	public double WindowOpcaticy
 	{

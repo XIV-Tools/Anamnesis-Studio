@@ -1,0 +1,213 @@
+﻿<local:PanelBase
+	x:Class="Anamnesis.Panels.ImportPosePanel"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
+	xmlns:controls="clr-namespace:Anamnesis.Controls"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:Anamnesis.Panels"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	Height="328"
+	MinWidth="500"
+	CanResize="False"
+	Icon="FileImport"
+	TitleKey="Common_ImportFile"
+	mc:Ignorable="d">
+
+	<Grid x:Name="ContentArea">
+
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+
+		<Grid
+			Grid.RowSpan="4"
+			Grid.Column="0"
+			Width="200"
+			Height="320"
+			Margin="3,3,6,3">
+			<!--  16:10  -->
+
+			<Border
+				BorderBrush="Transparent"
+				Style="{StaticResource InsetPanel}">
+
+				<Image
+					Source="{Binding File.ImageSource}"
+					Stretch="Fill">
+					<Image.Effect>
+						<BlurEffect Radius="20" />
+					</Image.Effect>
+				</Image>
+
+			</Border>
+
+			<Border Style="{StaticResource InsetPanel}">
+				<Border.Background>
+					<ImageBrush
+						ImageSource="{Binding File.ImageSource}"
+						Stretch="Uniform" />
+				</Border.Background>
+			</Border>
+		</Grid>
+
+		<Border
+			Grid.Row="0"
+			Grid.Column="1"
+			Margin="3,0"
+			Style="{StaticResource InsetPanel}">
+
+			<StackPanel
+				Margin="6"
+				VerticalAlignment="Top"
+				Orientation="Vertical">
+
+				<XivToolsWpf:TextBlock
+					Margin="0,0,0,6"
+					Text="{Binding File.Description}"
+					TextWrapping="Wrap"
+					Visibility="{Binding File.Description, Converter={StaticResource NotNullToVisibilityConverter}}" />
+
+				<StackPanel
+					Orientation="Horizontal"
+					Visibility="{Binding File.Author, Converter={StaticResource NotNullToVisibilityConverter}}">
+					<XivToolsWpf:TextBlock
+						Key="FileMeta_Author"
+						Margin="0,0,6,0"
+						Style="{StaticResource Label}" />
+					<XivToolsWpf:TextBlock
+						FontWeight="SemiBold"
+						Text="{Binding File.Author}" />
+				</StackPanel>
+
+				<StackPanel
+					Orientation="Horizontal"
+					Visibility="{Binding File.Version, Converter={StaticResource NotNullToVisibilityConverter}}">
+					<XivToolsWpf:TextBlock
+						Key="FileMeta_Version"
+						Margin="0,0,6,0"
+						Style="{StaticResource Label}" />
+					<XivToolsWpf:TextBlock
+						FontWeight="SemiBold"
+						Text="{Binding File.Version}" />
+				</StackPanel>
+
+			</StackPanel>
+		</Border>
+
+		<controls:ActorSelector
+			Grid.Row="1"
+			Grid.Column="1"
+			Margin="6"
+			Selection="{Binding Actor}"
+			SelectionChanged="OnActorSelectionChanged" />
+
+		<Grid
+			Grid.Row="2"
+			Grid.Column="1"
+			Margin="12"
+			VerticalAlignment="Bottom">
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+
+			<XivToolsWpf:FlagCheckbox
+				Grid.Row="0"
+				Grid.Column="0"
+				Flag="Rotation"
+				Label="Rotation"
+				Value="{Binding Mode}" />
+			<XivToolsWpf:FlagCheckbox
+				Grid.Row="1"
+				Grid.Column="0"
+				Flag="Scale"
+				Label="Scale"
+				Value="{Binding Mode}" />
+			<XivToolsWpf:FlagCheckbox
+				Grid.Row="2"
+				Grid.Column="0"
+				Flag="Position"
+				Label="Position"
+				Value="{Binding Mode}" />
+			<XivToolsWpf:FlagCheckbox
+				Grid.Row="3"
+				Grid.Column="0"
+				Flag="WorldRotation"
+				Label="World Rotation"
+				Value="{Binding Mode}" />
+			<XivToolsWpf:FlagCheckbox
+				Grid.Row="4"
+				Grid.Column="0"
+				Flag="WorldScale"
+				Label="World Scale"
+				Value="{Binding Mode}" />
+
+			<RadioButton
+				Grid.Row="0"
+				Grid.Column="1"
+				IsChecked="{Binding Destination, Converter={StaticResource EnumToBool}, ConverterParameter=Expression}">
+				<XivToolsWpf:TextBlock Key="Pose_Expression" />
+			</RadioButton>
+
+			<RadioButton
+				Grid.Row="1"
+				Grid.Column="1"
+				IsChecked="{Binding Destination, Converter={StaticResource EnumToBool}, ConverterParameter=Body}">
+				<XivToolsWpf:TextBlock Key="Pose_Body" />
+			</RadioButton>
+
+			<RadioButton
+				Grid.Row="2"
+				Grid.Column="1"
+				IsChecked="{Binding Destination, Converter={StaticResource EnumToBool}, ConverterParameter=ScalePack}">
+				<XivToolsWpf:TextBlock Key="Pose_ScalePack" />
+			</RadioButton>
+
+			<RadioButton
+				Grid.Row="3"
+				Grid.Column="1"
+				IsChecked="{Binding Destination, Converter={StaticResource EnumToBool}, ConverterParameter=Selection}">
+				<XivToolsWpf:TextBlock Key="Pose_Selected" />
+			</RadioButton>
+
+			<RadioButton
+				Grid.Row="4"
+				Grid.Column="1"
+				IsChecked="{Binding Destination, Converter={StaticResource EnumToBool}, ConverterParameter=All}">
+				<XivToolsWpf:TextBlock Key="Pose_All" />
+			</RadioButton>
+
+		</Grid>
+
+		<Button
+			Grid.Row="3"
+			Grid.Column="1"
+			Margin="6"
+			HorizontalAlignment="Right"
+			Click="OnImportClicked"
+			IsEnabled="{Binding Actor, Converter={StaticResource NotNullToBoolConverter}}">
+
+			<XivToolsWpf:TextBlock Key="Common_ImportFile" />
+
+		</Button>
+	</Grid>
+
+</local:PanelBase>

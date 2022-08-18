@@ -4,18 +4,24 @@
 namespace Anamnesis.Actor;
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows;
 using Anamnesis.Core.Memory;
 using Anamnesis.Files;
 using Anamnesis.Memory;
+using Anamnesis.Navigation;
 using Anamnesis.Services;
 using PropertyChanged;
+using XivToolsWpf;
 
 [AddINotifyPropertyChangedInterface]
 public class PoseService : ServiceBase<PoseService>
 {
+	public readonly Dictionary<ActorMemory, SkeletonVisual3d> ActorSkeletons = new();
+
 	private NopHookViewModel? freezeRot1;
 	private NopHookViewModel? freezeRot2;
 	private NopHookViewModel? freezeRot3;
@@ -32,6 +38,7 @@ public class PoseService : ServiceBase<PoseService>
 	private NopHookViewModel? freezeGposeTargetPosition2;
 
 	private bool isEnabled;
+	private Task? writeSkeletonTask;
 
 	public delegate void PoseEvent(bool value);
 
@@ -134,6 +141,31 @@ public class PoseService : ServiceBase<PoseService>
 
 	public bool CanEdit { get; set; }
 
+	public async Task<SkeletonVisual3d?> GetSkeleton(ActorMemory actor)
+	{
+		try
+		{
+			if (!this.ActorSkeletons.ContainsKey(actor))
+			{
+				this.ActorSkeletons.Add(actor, new());
+				await this.ActorSkeletons[actor].SetActor(actor);
+
+				if (this.writeSkeletonTask == null || this.writeSkeletonTask.IsCompleted)
+				{
+					this.writeSkeletonTask = Task.Run(this.WriteSkeletonThread);
+				}
+			}
+
+			return this.ActorSkeletons[actor];
+		}
+		catch (Exception ex)
+		{
+			Log.Error(ex, "Failed to bind skeleton to view");
+		}
+
+		return null;
+	}
+
 	public override async Task Initialize()
 	{
 		await base.Initialize();
@@ -187,15 +219,28 @@ public class PoseService : ServiceBase<PoseService>
 		this.FreezeScale = false;
 		this.EnableParenting = true;
 
-		/*if (enabled)
-		{
-			this.FreezeWorldPosition = true;
-			AnimationService.Instance.PausePinnedActors();
-		}*/
+		this.FreezeWorldPosition = enabled;
+		AnimationService.Instance.SpeedControlEnabled = enabled;
+		AnimationService.Instance.PausePinnedActors(enabled);
 
 		EnabledChanged?.Invoke(enabled);
 
 		this.RaisePropertyChanged(nameof(this.IsEnabled));
+
+		if (enabled)
+		{
+			NavigationService.Navigate(new("Pose"));
+			NavigationService.Navigate(new("Transform"));
+		}
+		else
+		{
+			foreach ((ActorMemory actor, SkeletonVisual3d skeleton) in this.ActorSkeletons)
+			{
+				skeleton.Clear();
+			}
+
+			this.ActorSkeletons.Clear();
+		}
 	}
 
 	private static async Task ExtractStandardPoses()
@@ -273,6 +318,28 @@ public class PoseService : ServiceBase<PoseService>
 		{
 			this.SetEnabled(false);
 			this.FreezeWorldPosition = false;
+		}
+	}
+
+	private async Task WriteSkeletonThread()
+	{
+		while (this.IsAlive)
+		{
+			await Dispatch.MainThread();
+
+			if (Application.Current == null)
+				return;
+
+			foreach ((ActorMemory actor, SkeletonVisual3d skeleton) in this.ActorSkeletons)
+			{
+				if (!actor.IsValid)
+					continue;
+
+				skeleton.WriteSkeleton();
+			}
+
+			// up to 60 times a second
+			await Task.Delay(16);
 		}
 	}
 }

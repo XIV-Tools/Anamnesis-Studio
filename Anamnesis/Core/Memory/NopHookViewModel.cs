@@ -50,12 +50,12 @@ public class NopHookViewModel
 		if (enabled)
 		{
 			// Write Nop
-			MemoryService.Write(this.address, this.nopValue, true);
+			MemoryService.Write(this.address, this.nopValue);
 		}
 		else
 		{
 			// Write the original value
-			MemoryService.Write(this.address, this.originalValue, true);
+			MemoryService.Write(this.address, this.originalValue);
 		}
 	}
 }

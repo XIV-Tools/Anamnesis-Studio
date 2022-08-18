@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Anamnesis.Core.Memory;
 using Anamnesis.Memory;
+using Newtonsoft.Json.Linq;
 using PropertyChanged;
 
 [AddINotifyPropertyChangedInterface]
@@ -19,6 +20,7 @@ public class AnimationService : ServiceBase<AnimationService>
 	private const ushort IdleAnimationId = 3;
 
 	private readonly HashSet<ActorMemory> overriddenActors = new();
+	private readonly HashSet<ActorMemory> pausedActors = new();
 
 	private NopHookViewModel? animationSpeedHook;
 	private bool speedControlEnabled = false;
@@ -53,6 +55,7 @@ public class AnimationService : ServiceBase<AnimationService>
 		this.SpeedControlEnabled = false;
 
 		this.ResetOverriddenActors();
+		this.PausePinnedActors(false);
 
 		await base.Shutdown();
 	}
@@ -114,21 +117,44 @@ public class AnimationService : ServiceBase<AnimationService>
 
 	public void DrawWeapon(ActorMemory memory) => this.ApplyAnimationOverride(memory, DrawWeaponAnimationId, true);
 
-	public void PausePinnedActors()
+	public void PausePinnedActors(bool pause)
 	{
 		this.SpeedControlEnabled = true;
 
-		if(this.SpeedControlEnabled)
+		if (!this.SpeedControlEnabled)
+			return;
+
+		foreach (PinnedActor pinned in TargetService.Instance.PinnedActors)
 		{
-			var actors = TargetService.Instance.PinnedActors;
-			foreach (var actor in actors)
-			{
-				if (actor.IsValid && actor.Memory != null && actor.Memory.Address != IntPtr.Zero && actor.Memory.IsValid)
-				{
-					actor.Memory.Animation!.LinkSpeeds = true;
-					actor.Memory.Animation!.Speeds![(int)AnimationMemory.AnimationSlots.FullBody]!.Value = 0.0f;
-				}
-			}
+			if (!pinned.IsValid)
+				continue;
+
+			ActorMemory? actor = pinned.GetMemory();
+			if (actor == null || !actor.IsValid)
+				continue;
+
+			this.PauseActor(actor, pause);
+		}
+	}
+
+	public void PauseActor(ActorMemory actor, bool pause)
+	{
+		if (!actor.IsValid)
+			return;
+
+		if (actor.Animation == null)
+			return;
+
+		actor.Animation.LinkSpeeds = true;
+		actor.Animation.SetSpeed(AnimationMemory.AnimationSlots.FullBody, pause ? 0.0f : 1.0f);
+
+		if (pause)
+		{
+			this.pausedActors.Add(actor);
+		}
+		else
+		{
+			this.pausedActors.Remove(actor);
 		}
 	}
 

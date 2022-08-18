@@ -1,0 +1,87 @@
+﻿<UserControl
+	x:Class="Anamnesis.Controls.ActorLabel"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:Anamnesis.Controls"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d">
+
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="10" />
+		</Grid.ColumnDefinitions>
+
+		<Grid.ToolTip>
+			<StackPanel>
+				<TextBlock>
+					<TextBlock.Text>
+						<MultiBinding StringFormat="{}{0} ({1})">
+							<Binding Path="Actor.Names.Text" />
+							<Binding Path="Actor.Kind" />
+						</MultiBinding>
+					</TextBlock.Text>
+				</TextBlock>
+
+				<TextBlock
+					Text="This actor could not be found"
+					Visibility="{Binding IsValid, Converter={StaticResource !B2V}}" />
+
+			</StackPanel>
+		</Grid.ToolTip>
+
+		<Grid
+			Grid.Column="0"
+			Height="18"
+			Margin="3,0,3,3">
+
+			<XivToolsWpf:IconBlock
+				Foreground="{Binding Color, Converter={StaticResource ColorToBrush}}"
+				Icon="{Binding Icon}"
+				Visibility="{Binding IsValid, Converter={StaticResource B2V}}" />
+
+			<XivToolsWpf:IconBlock
+				Foreground="Red"
+				Icon="TimesCircle"
+				Visibility="{Binding IsValid, Converter={StaticResource !B2V}}" />
+		</Grid>
+
+		<XivToolsWpf:IconBlock
+			Grid.Column="1"
+			Margin="3,0,6,0"
+			FontSize="10"
+			Icon="Camera"
+			Visibility="{Binding IsGPoseActor, Converter={StaticResource B2V}}" />
+
+		<TextBlock
+			x:Name="LabelText"
+			Grid.Column="2"
+			Margin="3,0,6,2"
+			FontSize="14"
+			FontWeight="SemiBold"
+			Foreground="{DynamicResource MaterialDesignToolForeground}"
+			Text="{Binding Names.Text}" />
+
+		<!--<TextBlock
+			Grid.Column="3"
+			Margin="3,0,6,2"
+			FontSize="14"
+			FontWeight="SemiBold"
+			Foreground="{DynamicResource MaterialDesignToolForeground}"
+			Text="{Binding Actor.Initials}"
+			Visibility="{Binding ShowText, Converter={StaticResource !B2V}}" />-->
+
+		<XivToolsWpf:IconBlock
+			Grid.Column="3"
+			Margin="3,0,0,0"
+			FontSize="8"
+			Foreground="{StaticResource PrimaryHueMidBrush}"
+			Icon="MousePointer"
+			Visibility="{Binding IsTargeted, Converter={StaticResource B2V}}" />
+
+	</Grid>
+</UserControl>

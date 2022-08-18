@@ -11,7 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Anamnesis.Actor.Pages;
+using Anamnesis.Actor.Panels;
 using MaterialDesignThemes.Wpf;
 using Serilog;
 using XivToolsWpf.DependencyProperties;
@@ -146,7 +146,7 @@ public partial class BoneView : UserControl, IBone
 
 		this.linesToChildren.Clear();
 
-		PosePage? page = this.FindParent<PosePage>();
+		PosePanel? page = this.FindParent<PosePanel>();
 		if (page == null)
 			return;
 
@@ -205,7 +205,7 @@ public partial class BoneView : UserControl, IBone
 
 	private void SetBone(BoneVisual3d? bone)
 	{
-		PosePage? page = this.FindParent<PosePage>();
+		PosePanel? page = this.FindParent<PosePanel>();
 		if (page != null)
 			page.BoneViews.Add(this);
 
@@ -309,7 +309,7 @@ public partial class BoneView : UserControl, IBone
 
 	private void OnLoaded(object sender, RoutedEventArgs e)
 	{
-		PosePage? page = this.FindParent<PosePage>();
+		PosePanel? page = this.FindParent<PosePanel>();
 		if (page == null)
 			return;
 
@@ -318,7 +318,7 @@ public partial class BoneView : UserControl, IBone
 
 	private void OnUnloaded(object sender, RoutedEventArgs e)
 	{
-		PosePage? page = this.FindParent<PosePage>();
+		PosePanel? page = this.FindParent<PosePanel>();
 		if (page == null)
 			return;
 
