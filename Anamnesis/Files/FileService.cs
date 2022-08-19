@@ -236,7 +236,7 @@ public class FileService : ServiceBase<FileService>
 		return result;
 	}
 
-	public static FileBase? Load(FileInfo info, Type fileType)
+	public static FileBase Load(FileInfo info, Type fileType)
 	{
 		string extension = Path.GetExtension(info.FullName);
 
@@ -257,7 +257,7 @@ public class FileService : ServiceBase<FileService>
 		}
 	}
 
-	public static FileBase? Load(FileInfo info, Type[] fileTypes)
+	public static FileBase Load(FileInfo info, Type[] fileTypes)
 	{
 		string extension = Path.GetExtension(info.FullName);
 

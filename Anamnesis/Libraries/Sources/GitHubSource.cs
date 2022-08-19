@@ -16,21 +16,14 @@ using System.IO.Compression;
 using System.Net.Http;
 using System.Threading.Tasks;
 using XivToolsWpf.Extensions;
+using static Anamnesis.Libraries.Sources.GitHubSource.GitHubCache;
 using static Anamnesis.Panels.ImportPosePanel;
 
-internal class GitHubSource : LibrarySourceBase
+internal class GitHubSource : FileSource
 {
 	// TODO allow github username here from settings:
 	private static readonly GitHubClient GitHubClient = new(new ProductHeaderValue("XIV-Tools"));
 	private static readonly HttpClient HttpClient = new();
-
-	private static readonly HashSet<string> AllowedFileExtensions = new()
-	{
-		new PoseFile().FileExtension,
-		new CharacterFile().FileExtension,
-		new CameraShotFile().FileExtension,
-		new SceneFile().FileExtension,
-	};
 
 	public GitHubSource(string repositoryName)
 	{
@@ -81,7 +74,11 @@ internal class GitHubSource : LibrarySourceBase
 						this.Log.Information($"GitHub Pack: {pack.Name} from repo: {this.RepositoryName} did not download correctly, retrying.");
 					}
 
-					this.DownloadContents(packCache).Run();
+					this.DownloadContents(pack, packCache).Run();
+				}
+				else
+				{
+					await this.GetFiles(pack, packCache.Definition, new(this.LocalDir));
 				}
 			}
 		}
@@ -116,7 +113,8 @@ internal class GitHubSource : LibrarySourceBase
 		{
 			string jsonContent = await HttpClient.GetStringAsync(defFileContent.DownloadUrl);
 			PackDefinitionFile definition = SerializerService.Deserialize<PackDefinitionFile>(jsonContent);
-			this.AddPack(new Pack(definition, this));
+			Pack pack = new Pack(definition, this);
+			this.AddPack(pack);
 
 			if (this.Cache == null)
 				return;
@@ -165,7 +163,7 @@ internal class GitHubSource : LibrarySourceBase
 					packCache.DownloadUrl = contentDirectory.DownloadUrl;
 					packCache.DownloadState = GitHubCache.PackCache.DownloadStates.NotDownloaded;
 
-					this.DownloadContents(packCache).Run();
+					this.DownloadContents(pack, packCache).Run();
 				}
 			}
 		}
@@ -175,7 +173,7 @@ internal class GitHubSource : LibrarySourceBase
 		}
 	}
 
-	private async Task DownloadContents(GitHubCache.PackCache cache)
+	private async Task DownloadContents(Pack pack, GitHubCache.PackCache cache)
 	{
 		try
 		{
@@ -193,7 +191,7 @@ internal class GitHubSource : LibrarySourceBase
 			this.Log.Information($"Downloading pack: {cache.DownloadUrl}");
 			cache.DownloadState = GitHubCache.PackCache.DownloadStates.Downloading;
 
-			// Sicne theres no way to actualy download a directory, we'll download the entire archive
+			// Since theres no way to actualy download a directory, we'll download the entire archive
 			// and just extract the parts we need.
 			// This isn't great, but the alternative is to get all the file contents then download them individually which
 			// will just get us rate-limited real fast.
@@ -213,7 +211,7 @@ internal class GitHubSource : LibrarySourceBase
 				{
 					// Only extract files we can actually use.
 					string extension = Path.GetExtension(entryPath);
-					if (!AllowedFileExtensions.Contains(extension))
+					if (!SupportedFileExtensions.Contains(extension))
 						continue;
 
 					string destination = entryPath;
@@ -233,6 +231,11 @@ internal class GitHubSource : LibrarySourceBase
 
 			cache.DownloadState = GitHubCache.PackCache.DownloadStates.Downloaded;
 			this.SaveCache();
+
+			if (cache.Definition == null)
+				throw new Exception("Pack cache has no definition");
+
+			await this.GetFiles(pack, cache.Definition, new(this.LocalDir));
 		}
 		catch (Exception ex)
 		{

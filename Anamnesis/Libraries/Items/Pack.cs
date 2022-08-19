@@ -26,6 +26,7 @@ public class Pack
 	public string? Description { get; set; }
 
 	public ObservableCollection<ItemBase> Items { get; init; } = new();
+	public ObservableCollection<string> AvailableTags { get; init; } = new();
 	public LibrarySourceBase? Source { get; set; }
 
 	public void Filter(LibraryFilter filter)
@@ -39,5 +40,10 @@ public class Pack
 
 			this.Items.Add(obj);
 		}
+	}
+
+	public void AddItem(ItemBase item)
+	{
+		this.allItems.Add(item);
 	}
 }
