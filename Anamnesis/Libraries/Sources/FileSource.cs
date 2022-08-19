@@ -29,16 +29,16 @@ public class FileSource<T> : LibrarySourceBase
 	public FileBase FileFormat { get; init; }
 	public string Filter => "*" + this.FileFormat.FileExtension;
 
-	public override async Task<List<PackItem>> LoadPacks()
+	public override async Task<List<Pack>> LoadPacks()
 	{
 		await Dispatch.NonUiThread();
 
-		List<PackItem> packs = new();
+		List<Pack> packs = new();
 
 		if (!this.Directory.Exists)
 			return packs;
 
-		PackItem pack = new(this.Name);
+		Pack pack = new(this.Name);
 		packs.Add(pack);
 
 		await this.GetFiles(pack, this.Directory);
@@ -46,12 +46,12 @@ public class FileSource<T> : LibrarySourceBase
 		return packs;
 	}
 
-	private async Task GetFiles(GroupItem collection, DirectoryInfo directoryInfo)
+	private async Task GetFiles(Group group, DirectoryInfo directoryInfo)
 	{
 		FileInfo[] fileInfos = directoryInfo.GetFiles(this.Filter);
 		foreach (FileInfo fileInfo in fileInfos)
 		{
-			collection.Items.Add(this.GetItem(fileInfo));
+			group.AddItem(this.GetItem(fileInfo));
 		}
 
 		if (this.Recursive)
@@ -59,12 +59,12 @@ public class FileSource<T> : LibrarySourceBase
 			DirectoryInfo[] directoryInfos = directoryInfo.GetDirectories();
 			foreach (DirectoryInfo childDirectoryInfo in directoryInfos)
 			{
-				GroupItem group = new(childDirectoryInfo.Name);
-				await this.GetFiles(group, childDirectoryInfo);
+				Group subGroup = new(childDirectoryInfo.Name);
+				await this.GetFiles(subGroup, childDirectoryInfo);
 
-				if (group.Items.Count > 0)
+				if (subGroup.TotalCount > 0)
 				{
-					collection.Items.Add(group);
+					group.AddGroup(subGroup);
 				}
 			}
 		}

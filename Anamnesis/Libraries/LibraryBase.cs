@@ -19,10 +19,10 @@ using XivToolsWpf;
 public abstract class LibraryBase
 {
 	private readonly List<LibrarySourceBase> sources = new();
+	private readonly List<Pack> packs = new();
 
 	public string NameKey { get; set; } = string.Empty;
-	public ObservableCollection<GroupItem> AllPacks { get; init; } = new();
-	public ObservableCollection<GroupItem> FilteredPacks { get; init; } = new();
+	public ObservableCollection<Pack> Packs { get; init; } = new();
 	public bool IsLoading { get; private set; }
 	public LibraryFilter Filter { get; init; } = new();
 
@@ -60,14 +60,14 @@ public abstract class LibraryBase
 
 	public void DoFilter()
 	{
-		IOrderedEnumerable<GroupItem> sortedPacks = this.AllPacks.OrderBy(item => item, this.Filter);
+		IOrderedEnumerable<Group> sortedPacks = this.packs.OrderBy(item => item, this.Filter);
 
-		this.FilteredPacks.Clear();
+		this.Packs.Clear();
 
-		foreach (GroupItem obj in sortedPacks)
+		foreach (Pack pack in sortedPacks)
 		{
-			obj.Filter(this.Filter);
-			this.FilteredPacks.Add(obj);
+			pack.Filter(this.Filter);
+			this.Packs.Add(pack);
 		}
 	}
 
@@ -79,12 +79,12 @@ public abstract class LibraryBase
 	private async Task LoadSource(LibrarySourceBase source)
 	{
 		await Dispatch.NonUiThread();
-		List<PackItem> packs = await source.LoadPacks();
+		List<Pack> packs = await source.LoadPacks();
 
 		await Dispatch.MainThread();
-		foreach (PackItem pack in packs)
+		foreach (Pack pack in packs)
 		{
-			this.AllPacks.Add(pack);
+			this.packs.Add(pack);
 		}
 	}
 }

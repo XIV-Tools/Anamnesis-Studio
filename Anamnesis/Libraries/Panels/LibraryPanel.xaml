@@ -22,21 +22,21 @@
 
 		<TreeView
 			Grid.Column="0"
-			ItemsSource="{Binding Library.FilteredPacks}"
+			ItemsSource="{Binding Library.Packs}"
 			SelectedItemChanged="OnGroupSelected">
 
 			<TreeView.Resources>
 				<HierarchicalDataTemplate
-					DataType="{x:Type libraryItems:PackItem}"
-					ItemsSource="{Binding FilteredItems}">
+					DataType="{x:Type libraryItems:Pack}"
+					ItemsSource="{Binding Groups}">
 					<TreeViewItem
 						Background="LightGray"
 						Header="{Binding Name}" />
 				</HierarchicalDataTemplate>
 
 				<HierarchicalDataTemplate
-					DataType="{x:Type libraryItems:GroupItem}"
-					ItemsSource="{Binding FilteredItems}">
+					DataType="{x:Type libraryItems:Group}"
+					ItemsSource="{Binding Groups}">
 					<TreeViewItem Header="{Binding Name}" />
 				</HierarchicalDataTemplate>
 

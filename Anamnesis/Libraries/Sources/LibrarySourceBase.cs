@@ -12,5 +12,5 @@ public abstract class LibrarySourceBase
 {
 	protected ILogger Log => Serilog.Log.ForContext(this.GetType());
 
-	public abstract Task<List<PackItem>> LoadPacks();
+	public abstract Task<List<Pack>> LoadPacks();
 }

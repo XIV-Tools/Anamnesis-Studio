@@ -3,9 +3,9 @@
 
 namespace Anamnesis.Libraries.Items;
 
-public class PackItem : GroupItem
+public class Pack : Group
 {
-	public PackItem(string name)
+	public Pack(string name)
 		: base(name)
 	{
 	}

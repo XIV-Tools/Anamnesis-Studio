@@ -21,11 +21,11 @@ public partial class LibraryPanel : PanelBase
 	}
 
 	public LibraryBase Library { get; set; }
-	public GroupItem? SelectedGroup { get; set; }
+	public Group? SelectedGroup { get; set; }
 
 	private void OnGroupSelected(object sender, RoutedPropertyChangedEventArgs<object> e)
 	{
-		if (e.NewValue is GroupItem gi)
+		if (e.NewValue is Group gi)
 		{
 			this.SelectedGroup = gi;
 		}
