@@ -27,6 +27,7 @@ public class LibraryService : ServiceBase<LibraryService>
 	public override Task Start()
 	{
 		this.AddSource(new FileSource(SettingsService.Current.LocalPacksDirectory));
+		this.AddSource(new GitHubSource("XIV-Tools/AnamnesisStandardPacks"));
 
 		this.LoadSources().Run();
 

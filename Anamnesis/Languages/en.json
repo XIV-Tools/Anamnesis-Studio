@@ -145,6 +145,9 @@
 	"Scene_Export": "Export a pose, character, or camera shot",
 	"Scene_Unsaved": "There are unsaved changes to this scene",
 
+	"Library_FileSource": "Local File",
+	"Library_GitHUBSource": "GitHub: {0}",
+
 	"Navigation_Options_Accordion": "Accordion Mode",
 	"Navigation_Options_Expanded": "Show Labels",
 	"Naviagation_AddActor": "Add Actor",

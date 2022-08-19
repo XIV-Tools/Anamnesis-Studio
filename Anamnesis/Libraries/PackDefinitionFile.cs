@@ -7,7 +7,7 @@ using Anamnesis.Files;
 
 public class PackDefinitionFile : JsonFileBase
 {
-	public override string FileExtension => ".json";
+	public override string FileExtension => ".packdef";
 
 	public string? Name { get; set; }
 }

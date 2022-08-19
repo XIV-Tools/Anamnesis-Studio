@@ -33,6 +33,10 @@
 						IsChecked="{Binding IsExpanded}"
 						Style="{StaticResource TransparentIconToggleButton}">
 
+						<ToggleButton.ToolTip>
+							<XivToolsWpf:TextBlock Text="{Binding Source.Name}" />
+						</ToggleButton.ToolTip>
+
 						<Grid Margin="0,3">
 							<Grid.RowDefinitions>
 								<RowDefinition />
@@ -41,7 +45,6 @@
 
 							<XivToolsWpf:TextBlock
 								Grid.Row="0"
-								Width="180"
 								Text="{Binding Name}"
 								TextTrimming="CharacterEllipsis" />
 
@@ -50,6 +53,22 @@
 								FontSize="10"
 								Opacity="0.75"
 								Text="{Binding Author}" />
+
+							<Grid
+								Grid.RowSpan="2"
+								HorizontalAlignment="Right"
+								VerticalAlignment="Top"
+								Background="Transparent">
+
+								<Grid.ToolTip>
+									<XivToolsWpf:TextBlock Text="{Binding Source.Name}" />
+								</Grid.ToolTip>
+
+								<XivToolsWpf:IconBlock
+									Margin="3"
+									Icon="{Binding Source.Icon}" />
+							</Grid>
+
 						</Grid>
 
 					</ToggleButton>

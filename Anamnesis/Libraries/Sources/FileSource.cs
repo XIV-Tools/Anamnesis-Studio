@@ -6,6 +6,8 @@ namespace Anamnesis.Libraries.Sources;
 using Anamnesis.Files;
 using Anamnesis.Libraries.Items;
 using Anamnesis.Serialization;
+using Anamnesis.Services;
+using FontAwesome.Sharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,10 +32,14 @@ public class FileSource : LibrarySourceBase
 		this.Directories = dirs.ToArray();
 	}
 
+	public override IconChar Icon => IconChar.Folder;
+	public override string Name => LocalizationService.GetString("Library_FileSource");
+
 	public DirectoryInfo[] Directories { get; init; }
 
-	protected override async Task Load()
+	protected override async Task Load(bool force)
 	{
+		// Dont hit the file system on the main thread.
 		await Dispatch.NonUiThread();
 
 		foreach (DirectoryInfo directoryInfo in this.Directories)
@@ -47,7 +53,7 @@ public class FileSource : LibrarySourceBase
 				try
 				{
 					PackDefinitionFile definition = SerializerService.DeserializeFile<PackDefinitionFile>(fileInfo.FullName);
-					this.AddPack(new Pack(definition));
+					this.AddPack(new Pack(definition, this));
 				}
 				catch(Exception ex)
 				{
