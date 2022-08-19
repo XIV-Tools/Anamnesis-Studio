@@ -10,4 +10,5 @@ public class PackDefinitionFile : JsonFileBase
 	public override string FileExtension => ".packdef";
 
 	public string? Name { get; set; }
+	public string? Directory { get; set; }
 }

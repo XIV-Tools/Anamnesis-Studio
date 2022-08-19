@@ -81,13 +81,11 @@
 				</Style>
 			</ListBox.ItemContainerStyle>
 
-
-
 		</ListBox>
 
 		<ListBox
 			Grid.Column="1"
-			ItemsSource="{Binding SelectedGroup.Items}" />
+			ItemsSource="{Binding SelectedPack.Items}" />
 
 	</Grid>
 </panels:PanelBase>

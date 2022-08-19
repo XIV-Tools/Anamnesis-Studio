@@ -146,7 +146,7 @@
 	"Scene_Unsaved": "There are unsaved changes to this scene",
 
 	"Library_FileSource": "Local File",
-	"Library_GitHUBSource": "GitHub: {0}",
+	"Library_GitHubSource": "GitHub: {0}",
 
 	"Navigation_Options_Accordion": "Accordion Mode",
 	"Navigation_Options_Expanded": "Show Labels",
