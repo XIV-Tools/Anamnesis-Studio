@@ -24,8 +24,7 @@ public class Pack
 	public string? Name { get; set; }
 	public string? Author { get; set; }
 	public string? Description { get; set; }
-	public bool IsExpanded { get; set; } = false;
-	public bool IsSelected { get; set; } = false;
+
 	public ObservableCollection<ItemBase> Items { get; init; } = new();
 	public LibrarySourceBase? Source { get; set; }
 

@@ -21,61 +21,69 @@
 		</Grid.ColumnDefinitions>
 
 		<!--  packs  -->
-		<ItemsControl
+		<ListBox
 			Grid.Column="0"
 			ItemsSource="{Binding Services.Library.Packs}">
 
-			<ItemsControl.ItemTemplate>
-				<DataTemplate>
-					<ToggleButton
-						Height="42"
-						HorizontalContentAlignment="Stretch"
-						IsChecked="{Binding IsExpanded}"
-						Style="{StaticResource TransparentIconToggleButton}">
+			<ListBox.ItemContainerStyle>
+				<Style TargetType="{x:Type ListBoxItem}">
 
-						<ToggleButton.ToolTip>
-							<XivToolsWpf:TextBlock Text="{Binding Source.Name}" />
-						</ToggleButton.ToolTip>
+					<Setter Property="Template">
+						<Setter.Value>
+							<ControlTemplate TargetType="{x:Type ListBoxItem}">
+								<ToggleButton
+									Height="42"
+									HorizontalContentAlignment="Stretch"
+									IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"
+									Style="{StaticResource TransparentIconToggleButton}">
 
-						<Grid Margin="0,3">
-							<Grid.RowDefinitions>
-								<RowDefinition />
-								<RowDefinition Height="Auto" />
-							</Grid.RowDefinitions>
+									<Grid Margin="0,3">
+										<Grid.RowDefinitions>
+											<RowDefinition />
+											<RowDefinition Height="Auto" />
+										</Grid.RowDefinitions>
 
-							<XivToolsWpf:TextBlock
-								Grid.Row="0"
-								Text="{Binding Name}"
-								TextTrimming="CharacterEllipsis" />
+										<Grid.ToolTip>
+											<XivToolsWpf:TextBlock Text="{Binding Source.Name}" />
+										</Grid.ToolTip>
 
-							<XivToolsWpf:TextBlock
-								Grid.Row="1"
-								FontSize="10"
-								Opacity="0.75"
-								Text="{Binding Author}" />
+										<XivToolsWpf:TextBlock
+											Grid.Row="0"
+											Text="{Binding Name}"
+											TextTrimming="CharacterEllipsis" />
 
-							<Grid
-								Grid.RowSpan="2"
-								HorizontalAlignment="Right"
-								VerticalAlignment="Top"
-								Background="Transparent">
+										<XivToolsWpf:TextBlock
+											Grid.Row="1"
+											FontSize="10"
+											Opacity="0.75"
+											Text="{Binding Author}" />
 
-								<Grid.ToolTip>
-									<XivToolsWpf:TextBlock Text="{Binding Source.Name}" />
-								</Grid.ToolTip>
+										<Grid
+											Grid.RowSpan="2"
+											HorizontalAlignment="Right"
+											VerticalAlignment="Top"
+											Background="Transparent">
 
-								<XivToolsWpf:IconBlock
-									Margin="3"
-									Icon="{Binding Source.Icon}" />
-							</Grid>
+											<Grid.ToolTip>
+												<XivToolsWpf:TextBlock Text="{Binding Source.Name}" />
+											</Grid.ToolTip>
 
-						</Grid>
+											<XivToolsWpf:IconBlock
+												Margin="3"
+												Icon="{Binding Source.Icon}" />
+										</Grid>
+									</Grid>
 
-					</ToggleButton>
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>
+								</ToggleButton>
+							</ControlTemplate>
+						</Setter.Value>
+					</Setter>
+				</Style>
+			</ListBox.ItemContainerStyle>
 
-		</ItemsControl>
+
+
+		</ListBox>
 
 		<ListBox
 			Grid.Column="1"
