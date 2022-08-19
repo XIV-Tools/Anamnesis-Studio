@@ -192,8 +192,6 @@ public class PoseService : ServiceBase<PoseService>
 		this.freezeGposeTargetPosition2 = new NopHookViewModel(AddressService.GPoseCameraTargetPositionFreeze + 8 + 3, 16);
 
 		GposeService.GposeStateChanged += this.OnGposeStateChanged;
-
-		_ = Task.Run(ExtractStandardPoses);
 	}
 
 	public override async Task Shutdown()
@@ -240,75 +238,6 @@ public class PoseService : ServiceBase<PoseService>
 			}
 
 			this.ActorSkeletons.Clear();
-		}
-	}
-
-	private static async Task ExtractStandardPoses()
-	{
-		try
-		{
-			DirectoryInfo standardPoseDir = FileService.StandardPoseDirectory.Directory;
-			string verFile = standardPoseDir.FullName + "\\ver.txt";
-
-			if (standardPoseDir.Exists)
-			{
-				if (File.Exists(verFile))
-				{
-					try
-					{
-						string verText = await File.ReadAllTextAsync(verFile);
-						DateTime standardPoseVersion = DateTime.Parse(verText, CultureInfo.InvariantCulture);
-
-						if (standardPoseVersion == VersionInfo.Date)
-						{
-							Log.Information($"Standard pose library up to date");
-							return;
-						}
-					}
-					catch (Exception ex)
-					{
-						Log.Warning(ex, "Failed to read standard pose library version file");
-					}
-				}
-
-				standardPoseDir.Delete(true);
-			}
-
-			standardPoseDir.Create();
-			await File.WriteAllTextAsync(verFile, VersionInfo.Date.ToString(CultureInfo.InvariantCulture));
-
-			string[] poses = EmbeddedFileUtility.GetAllFilesInDirectory("\\Data\\StandardPoses\\");
-			foreach (string posePath in poses)
-			{
-				string destPath = posePath;
-				destPath = destPath.Replace('.', '\\');
-				destPath = destPath.Replace('_', ' ');
-				destPath = destPath.Replace("Data\\StandardPoses\\", string.Empty);
-
-				// restore file extensions
-				destPath = destPath.Replace("\\pose", ".pose");
-				destPath = destPath.Replace("\\txt", ".txt");
-
-				destPath = standardPoseDir.FullName + destPath;
-
-				string? destDir = Path.GetDirectoryName(destPath);
-
-				if (destDir == null)
-					throw new Exception($"Failed to get directory name from path: {destPath}");
-
-				if (!Directory.Exists(destDir))
-					Directory.CreateDirectory(destDir);
-
-				using Stream contents = EmbeddedFileUtility.Load(posePath);
-				using FileStream fileStream = new FileStream(destPath, FileMode.Create);
-				await contents.CopyToAsync(fileStream);
-			}
-
-			Log.Information($"Extracted standard pose library");
-		}
-		catch (Exception ex)
-		{
-			Log.Error(ex, "Failed to extract standard pose library");
 		}
 	}
 

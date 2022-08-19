@@ -2,6 +2,7 @@
 	x:Class="Anamnesis.Libraries.Panels.LibraryPanel"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:libraryItems="clr-namespace:Anamnesis.Libraries.Items"
 	xmlns:local="clr-namespace:Anamnesis.Libraries.Panels"
@@ -11,42 +12,51 @@
 	Height="450"
 	CanResize="True"
 	Icon="Book"
+	TitleKey="Naviagation_Library"
 	mc:Ignorable="d">
 	<Grid x:Name="ContentArea">
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition
-				Width="Auto"
-				MinWidth="128" />
+			<ColumnDefinition Width="200" />
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
 
-		<TreeView
+		<!--  packs  -->
+		<ItemsControl
 			Grid.Column="0"
-			ItemsSource="{Binding Library.Packs}"
-			SelectedItemChanged="OnGroupSelected">
+			ItemsSource="{Binding Services.Library.Packs}">
 
-			<TreeView.Resources>
-				<HierarchicalDataTemplate
-					DataType="{x:Type libraryItems:Pack}"
-					ItemsSource="{Binding Groups}">
-					<TreeViewItem
-						Background="LightGray"
-						Header="{Binding Name}" />
-				</HierarchicalDataTemplate>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<ToggleButton
+						Height="42"
+						HorizontalContentAlignment="Stretch"
+						IsChecked="{Binding IsExpanded}"
+						Style="{StaticResource TransparentIconToggleButton}">
 
-				<HierarchicalDataTemplate
-					DataType="{x:Type libraryItems:Group}"
-					ItemsSource="{Binding Groups}">
-					<TreeViewItem Header="{Binding Name}" />
-				</HierarchicalDataTemplate>
+						<Grid Margin="0,3">
+							<Grid.RowDefinitions>
+								<RowDefinition />
+								<RowDefinition Height="Auto" />
+							</Grid.RowDefinitions>
 
-				<DataTemplate DataType="{x:Type libraryItems:ItemBase}">
-					<TreeViewItem Header="{Binding Name}" />
+							<XivToolsWpf:TextBlock
+								Grid.Row="0"
+								Width="180"
+								Text="{Binding Name}"
+								TextTrimming="CharacterEllipsis" />
+
+							<XivToolsWpf:TextBlock
+								Grid.Row="1"
+								FontSize="10"
+								Opacity="0.75"
+								Text="{Binding Author}" />
+						</Grid>
+
+					</ToggleButton>
 				</DataTemplate>
+			</ItemsControl.ItemTemplate>
 
-			</TreeView.Resources>
-
-		</TreeView>
+		</ItemsControl>
 
 		<ListBox
 			Grid.Column="1"

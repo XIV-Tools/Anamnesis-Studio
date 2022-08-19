@@ -5,112 +5,55 @@ namespace Anamnesis.Libraries.Sources;
 
 using Anamnesis.Files;
 using Anamnesis.Libraries.Items;
+using Anamnesis.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using XivToolsWpf;
 
-public class FileSource<T> : LibrarySourceBase
-	where T : FileBase
+public class FileSource : LibrarySourceBase
 {
-	public FileSource(string name, DirectoryInfo directory, bool recursive = false)
+	public FileSource(params DirectoryInfo[] directories)
 	{
-		this.Name = name;
-		this.Directory = directory;
-		this.Recursive = recursive;
-
-		this.FileFormat = Activator.CreateInstance<T>();
+		this.Directories = directories;
 	}
 
-	public string Name { get; init; }
-	public DirectoryInfo Directory { get; init; }
-	public bool Recursive { get; init; }
-	public FileBase FileFormat { get; init; }
-	public string Filter => "*" + this.FileFormat.FileExtension;
+	public FileSource(params string[] paths)
+	{
+		List<DirectoryInfo> dirs = new();
+		foreach (string path in paths)
+		{
+			dirs.Add(new(FileService.ParseToFilePath(path)));
+		}
 
-	public override async Task<List<Pack>> LoadPacks()
+		this.Directories = dirs.ToArray();
+	}
+
+	public DirectoryInfo[] Directories { get; init; }
+
+	protected override async Task Load()
 	{
 		await Dispatch.NonUiThread();
 
-		List<Pack> packs = new();
-
-		if (!this.Directory.Exists)
-			return packs;
-
-		Pack pack = new(this.Name);
-		packs.Add(pack);
-
-		await this.GetFiles(pack, this.Directory);
-
-		return packs;
-	}
-
-	private async Task GetFiles(Group group, DirectoryInfo directoryInfo)
-	{
-		FileInfo[] fileInfos = directoryInfo.GetFiles(this.Filter);
-		foreach (FileInfo fileInfo in fileInfos)
+		foreach (DirectoryInfo directoryInfo in this.Directories)
 		{
-			group.AddItem(this.GetItem(fileInfo));
-		}
+			if (!directoryInfo.Exists)
+				continue;
 
-		if (this.Recursive)
-		{
-			DirectoryInfo[] directoryInfos = directoryInfo.GetDirectories();
-			foreach (DirectoryInfo childDirectoryInfo in directoryInfos)
+			FileInfo[] fileInfos = directoryInfo.GetFiles("pack.json", SearchOption.AllDirectories);
+			foreach (FileInfo fileInfo in fileInfos)
 			{
-				Group subGroup = new(childDirectoryInfo.Name);
-				await this.GetFiles(subGroup, childDirectoryInfo);
-
-				if (subGroup.TotalCount > 0)
+				try
 				{
-					group.AddGroup(subGroup);
+					PackDefinitionFile definition = SerializerService.DeserializeFile<PackDefinitionFile>(fileInfo.FullName);
+					this.AddPack(new Pack(definition));
+				}
+				catch(Exception ex)
+				{
+					this.Log.Error(ex, "Failed to load pack definition");
 				}
 			}
 		}
-	}
-
-	private ItemBase GetItem(FileInfo fileInfo)
-	{
-		try
-		{
-			using FileStream stream = new FileStream(fileInfo.FullName, FileMode.Open);
-			FileBase file = this.FileFormat.Deserialize(stream);
-			return new FileItem(file, fileInfo.Name);
-		}
-		catch (Exception ex)
-		{
-			this.Log.Warning(ex, $"Failed to load file: \"{fileInfo.FullName}\"");
-			return new BrokenFileItem(fileInfo);
-		}
-	}
-
-	public class FileItem : ItemBase
-	{
-		public FileItem(FileBase file, string name)
-		{
-			this.File = file;
-			this.Name = name;
-
-			this.Desription = file.Description;
-			this.Author = file.Author;
-			this.Version = file.Version;
-		}
-
-		public FileBase File { get; init; }
-		public override bool CanLoad => true;
-	}
-
-	public class BrokenFileItem : ItemBase
-	{
-		public BrokenFileItem(FileInfo info)
-		{
-			this.Path = info;
-			this.Name = info.Name;
-			this.Desription = "This file could not be loaded";
-		}
-
-		public FileInfo Path { get; init; }
-		public override bool CanLoad => false;
 	}
 }

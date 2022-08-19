@@ -8,20 +8,15 @@ using PropertyChanged;
 using System.Collections.Generic;
 
 [AddINotifyPropertyChangedInterface]
-public class LibraryFilter : IComparer<ItemBase>, IComparer<Group>
+public class LibraryFilter : IComparer<ItemBase>, IComparer<Pack>
 {
-	public bool IncludeEmptyGroups { get; set; } = true;
-
-	public bool Filter(ItemBase item, Group? parent)
+	public bool Filter(ItemBase item, Pack? parent)
 	{
 		return true;
 	}
 
-	public bool Filter(Group group, Group? parent)
+	public bool Filter(Pack group, Pack? parent)
 	{
-		if (!this.IncludeEmptyGroups && group.Items.Count <= 0 && group.Groups.Count <= 0)
-			return false;
-
 		return true;
 	}
 
@@ -31,7 +26,7 @@ public class LibraryFilter : IComparer<ItemBase>, IComparer<Group>
 		return string.Compare(x?.Name, y?.Name);
 	}
 
-	public int Compare(Group? x, Group? y)
+	public int Compare(Pack? x, Pack? y)
 	{
 		// TODO: sort modes?
 		return string.Compare(x?.Name, y?.Name);

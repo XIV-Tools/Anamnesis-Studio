@@ -167,8 +167,8 @@
 	"Naviagation_Actor_Transform_Tip": "Edit selected bones",
 	"Naviagation_Actor_Bones": "Bones",
 	"Naviagation_Actor_Bones_Tip": "Select bones from a GUI",
-	"Naviagation_PoseLibrary": "Pose Library",
-	"Naviagation_PoseLibrary_Tip": "Browse installed poses, or find new poses to try",
+	"Naviagation_Library": "Library",
+	"Naviagation_Library_Tip": "Browse installed scenes, or find new scenes to try",
 
 	"OverlayWindow_AutoClose": "Auto close",
 	"OverlayWindow_PopOut": "Pop-out",

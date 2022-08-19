@@ -9,25 +9,21 @@ using System.Windows;
 
 public partial class LibraryPanel : PanelBase
 {
-	public LibraryPanel(IPanelHost host, LibraryBase library)
+	public LibraryPanel(IPanelHost host)
 		: base(host)
 	{
 		this.InitializeComponent();
+
 		this.ContentArea.DataContext = this;
-
-		this.Library = library;
-
-		this.TitleKey = this.Library.NameKey;
 	}
 
-	public LibraryBase Library { get; set; }
-	public Group? SelectedGroup { get; set; }
+	public Pack? SelectedPack { get; set; }
 
 	private void OnGroupSelected(object sender, RoutedPropertyChangedEventArgs<object> e)
 	{
-		if (e.NewValue is Group gi)
+		if (e.NewValue is Pack pack)
 		{
-			this.SelectedGroup = gi;
+			this.SelectedPack = pack;
 		}
 	}
 }

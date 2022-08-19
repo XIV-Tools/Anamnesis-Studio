@@ -160,12 +160,11 @@
 					ToolTipKey="Naviagation_Settings_Tip" />
 
 				<local:Shortcut
-					Context="{Binding Services.Libraries.Poses}"
 					Destination="Library"
 					Icon="Book"
-					LabelKey="Naviagation_PoseLibrary"
+					LabelKey="Naviagation_Library"
 					ShowText="{Binding Expanded}"
-					ToolTipKey="Naviagation_PoseLibrary_Tip" />
+					ToolTipKey="Naviagation_Library_Tip" />
 
 				<local:Shortcut
 					Destination="Weather"

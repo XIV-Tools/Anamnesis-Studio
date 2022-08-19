@@ -37,6 +37,7 @@ public class Settings : INotifyPropertyChanged
 	public string DefaultCharacterDirectory { get; set; } = "%MyDocuments%/Anamnesis/Characters/";
 	public string DefaultCameraShotDirectory { get; set; } = "%MyDocuments%/Anamnesis/CameraShots/";
 	public string DefaultSceneDirectory { get; set; } = "%MyDocuments%/Anamnesis/Scenes/";
+	public string LocalPacksDirectory { get; set; } = "%MyDocuments%/Anamnesis/Packs/";
 	public bool ShowAdvancedOptions { get; set; } = true;
 	public bool FlipPoseGuiSides { get; set; } = false;
 	public Fonts Font { get; set; } = Fonts.Default;
