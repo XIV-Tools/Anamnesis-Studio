@@ -135,6 +135,16 @@ public partial class LibraryPanel : PanelBase
 		}
 	}
 
+	private void OnPackRefreshClicked(object sender, RoutedEventArgs e)
+	{
+		this.SelectedPack?.Refresh();
+	}
+
+	private void OnPackUpdateClicked(object sender, RoutedEventArgs e)
+	{
+		this.SelectedPack?.Update();
+	}
+
 	[AddINotifyPropertyChangedInterface]
 	public new class Tag
 	{

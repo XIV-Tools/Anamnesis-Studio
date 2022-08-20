@@ -32,14 +32,14 @@ internal class GitHubSource : FileSource
 	}
 
 	public override IconChar Icon => IconChar.Github;
-	public override string Name => LocalizationService.GetStringFormatted("Library_GitHubSource", this.RepositoryName);
+	public override string Name => this.RepositoryName; //// LocalizationService.GetStringFormatted("Library_GitHubSource", this.RepositoryName);
 
 	public string RepositoryName { get; set; }
 	public GitHubCache? Cache { get; private set; }
 
 	public string LocalDir => FileService.ParseToFilePath(FileService.StoreDirectory + "/GitHub/" + this.RepositoryName.Replace("/", "_"));
 
-	protected override async Task Load(bool force)
+	protected override async Task Load()
 	{
 		string[] parts = this.RepositoryName.Split('/');
 
@@ -54,32 +54,26 @@ internal class GitHubSource : FileSource
 		TimeSpan timeSinceLastCheck = DateTimeOffset.UtcNow - this.Cache.LastChecked;
 
 		// Only check the repo once every 6 hours
-		if (!force && timeSinceLastCheck < TimeSpan.FromHours(6))
+		if (timeSinceLastCheck < TimeSpan.FromHours(6))
 		{
 			// Load from the cache
-			foreach ((string path, GitHubCache.PackCache packCache) in this.Cache.PacksCache)
+			foreach ((string defUrl, GitHubCache.PackCache packCache) in this.Cache.PacksCache)
 			{
 				if (packCache.Definition == null)
 					throw new Exception("No pack definition in cache");
 
-				Pack pack = new (packCache.Definition, this);
+				Pack pack = new(defUrl, packCache.Definition, this);
+				pack.IsUpdateAvailable = packCache.HasUpdate;
 				await this.AddPack(pack);
 
-				// If this pack isn't downloaded for any reason, try to download it again.
-				if (packCache.DownloadState != GitHubCache.PackCache.DownloadStates.Downloaded)
+				DirectoryInfo? packDir = this.GetPackDirectory(packCache.Definition, new(this.LocalDir));
+				if (packDir == null || !packDir.Exists)
 				{
-					// This pack didn't finish downloading for some reason.
-					if (packCache.DownloadState == GitHubCache.PackCache.DownloadStates.Downloading)
-					{
-						packCache.DownloadState = GitHubCache.PackCache.DownloadStates.ErrorDuringDownload;
-						this.Log.Information($"GitHub Pack: {pack.Name} from repo: {this.RepositoryName} did not download correctly, retrying.");
-					}
-
-					this.DownloadContents(pack, packCache).Run();
+					pack.IsUpdateAvailable = true;
 				}
 				else
 				{
-					await this.GetFiles(pack, packCache.Definition, new(this.LocalDir));
+					await this.GetFiles(pack, packDir);
 				}
 			}
 		}
@@ -94,7 +88,12 @@ internal class GitHubSource : FileSource
 			{
 				if (contentItem.Name.EndsWith(".packdef"))
 				{
-					await this.AddPack(contentItem, content);
+					string jsonContent = await HttpClient.GetStringAsync(contentItem.DownloadUrl);
+					PackDefinitionFile definition = SerializerService.Deserialize<PackDefinitionFile>(jsonContent);
+					Pack pack = new Pack(contentItem.Url, definition, this);
+					await this.AddPack(pack);
+
+					await this.PopulatePack(pack, definition, contentItem, content);
 					packCount++;
 				}
 			}
@@ -108,25 +107,67 @@ internal class GitHubSource : FileSource
 		}
 	}
 
-	private async Task AddPack(RepositoryContent defFileContent, IReadOnlyList<RepositoryContent> allContent)
+	protected override async Task Load(Pack? pack)
+	{
+		if (pack == null)
+			return;
+
+		string[] parts = this.RepositoryName.Split('/');
+
+		if (parts.Length != 2)
+			throw new Exception("gitHUB pack repository name must be in the format \"Owner/Name\", such as \"XIV-Tools/AnamnesisStandardPacks\"");
+
+		this.LoadCache();
+
+		if (this.Cache == null)
+			throw new InvalidOperationException();
+
+		this.Cache.LastChecked = DateTimeOffset.UtcNow;
+
+		IReadOnlyList<RepositoryContent> content = await GitHubClient.Repository.Content.GetAllContents(parts[0], parts[1]);
+		foreach (RepositoryContent contentItem in content)
+		{
+			if (contentItem.Name.EndsWith(".packdef"))
+			{
+				string jsonContent = await HttpClient.GetStringAsync(contentItem.DownloadUrl);
+				PackDefinitionFile definition = SerializerService.Deserialize<PackDefinitionFile>(jsonContent);
+
+				await this.PopulatePack(pack, definition, contentItem, content);
+			}
+		}
+
+		this.SaveCache();
+	}
+
+	protected override async Task Update(Pack pack)
+	{
+		if (this.Cache == null)
+			this.LoadCache();
+
+		if (this.Cache == null)
+			throw new InvalidOperationException();
+
+		if (!this.Cache.PacksCache.ContainsKey(pack.Id))
+			throw new Exception("Pack is not part of this github source");
+
+		GitHubCache.PackCache cache = this.Cache.PacksCache[pack.Id];
+		await this.DownloadContents(pack, cache);
+	}
+
+	private async Task PopulatePack(Pack pack, PackDefinitionFile definition, RepositoryContent defFileContent, IReadOnlyList<RepositoryContent> allContent)
 	{
 		try
 		{
-			string jsonContent = await HttpClient.GetStringAsync(defFileContent.DownloadUrl);
-			PackDefinitionFile definition = SerializerService.Deserialize<PackDefinitionFile>(jsonContent);
-			Pack pack = new Pack(definition, this);
-			await this.AddPack(pack);
-
 			if (this.Cache == null)
 				return;
 
 			await Dispatch.NonUiThread();
 
 			GitHubCache.PackCache? packCache;
-			if (!this.Cache.PacksCache.TryGetValue(defFileContent.Path, out packCache))
+			if (!this.Cache.PacksCache.TryGetValue(defFileContent.Url, out packCache))
 			{
 				packCache = new(definition);
-				this.Cache.PacksCache.Add(defFileContent.Path, packCache);
+				this.Cache.PacksCache.Add(defFileContent.Url, packCache);
 			}
 
 			if (packCache.LastDefinitionSha != defFileContent.Sha)
@@ -134,6 +175,8 @@ internal class GitHubSource : FileSource
 				// This pack def has updated!
 				packCache.Definition = definition;
 				packCache.LastDefinitionSha = defFileContent.Sha;
+				packCache.HasUpdate = true;
+				pack.IsUpdateAvailable = true;
 			}
 
 			string directory = defFileContent.Path;
@@ -165,8 +208,8 @@ internal class GitHubSource : FileSource
 					packCache.LastDirectorySha = contentDirectory.Sha;
 					packCache.DownloadUrl = contentDirectory.DownloadUrl;
 					packCache.DownloadState = GitHubCache.PackCache.DownloadStates.NotDownloaded;
-
-					this.DownloadContents(pack, packCache).Run();
+					packCache.HasUpdate = true;
+					pack.IsUpdateAvailable = true;
 				}
 			}
 		}
@@ -180,6 +223,8 @@ internal class GitHubSource : FileSource
 	{
 		try
 		{
+			pack.IsUpdating = true;
+
 			if (cache.DownloadState == GitHubCache.PackCache.DownloadStates.Downloading)
 				throw new Exception("GitHub pack is already downloading");
 
@@ -238,7 +283,17 @@ internal class GitHubSource : FileSource
 			if (cache.Definition == null)
 				throw new Exception("Pack cache has no definition");
 
-			await this.GetFiles(pack, cache.Definition, new(this.LocalDir));
+			DirectoryInfo packDir = this.GetPackDirectory(cache.Definition, new(this.LocalDir));
+			if (!packDir.Exists)
+				throw new Exception($"Failed to get pack directory: {packDir.FullName}");
+
+			await this.GetFiles(pack, packDir);
+
+			pack.IsUpdating = false;
+			pack.IsUpdateAvailable = false;
+			cache.HasUpdate = false;
+
+			this.SaveCache();
 		}
 		catch (Exception ex)
 		{
@@ -306,6 +361,7 @@ internal class GitHubSource : FileSource
 			public string? LastDirectorySha { get; set; }
 			public string? DownloadUrl { get; set; }
 			public DownloadStates DownloadState { get; set; } = DownloadStates.NotDownloaded;
+			public bool HasUpdate { get; set; } = false;
 		}
 	}
 }

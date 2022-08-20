@@ -19,11 +19,29 @@ public abstract class LibrarySourceBase
 	public async Task LoadPacks()
 	{
 		this.IsLoading = true;
-		await this.Load(false);
+		await this.Load();
 		this.IsLoading = false;
 	}
 
-	protected abstract Task Load(bool force);
+	public async Task LoadPack(Pack pack)
+	{
+		this.IsLoading = true;
+		await this.Load(pack);
+		this.IsLoading = false;
+	}
+
+	public async Task UpdatePack(Pack pack)
+	{
+		pack.IsUpdating = true;
+		this.IsLoading = true;
+		await this.Update(pack);
+		this.IsLoading = false;
+		pack.IsUpdating = false;
+	}
+
+	protected abstract Task Load();
+	protected abstract Task Load(Pack pack);
+	protected abstract Task Update(Pack pack);
 
 	protected async Task AddPack(Pack pack)
 	{

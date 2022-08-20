@@ -145,6 +145,7 @@
 	"Scene_Export": "Export a pose, character, or camera shot",
 	"Scene_Unsaved": "There are unsaved changes to this scene",
 
+	"Library_Source": "Source:",
 	"Library_FileSource": "Local File",
 	"Library_GitHubSource": "GitHub: {0}",
 

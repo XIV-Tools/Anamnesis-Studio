@@ -59,8 +59,14 @@ public class FileSource : LibrarySourceBase
 	public override string Name => LocalizationService.GetString("Library_FileSource");
 
 	public DirectoryInfo[] Directories { get; init; }
+	public bool IsUpdateAvailable { get; set; } = false;
 
-	protected override async Task Load(bool force)
+	protected override Task Load()
+	{
+		return this.Load(null);
+	}
+
+	protected override async Task Load(Pack? pack)
 	{
 		// Dont hit the file system on the main thread.
 		await Dispatch.NonUiThread();
@@ -79,9 +85,18 @@ public class FileSource : LibrarySourceBase
 				try
 				{
 					PackDefinitionFile definition = SerializerService.DeserializeFile<PackDefinitionFile>(fileInfo.FullName);
-					Pack pack = new Pack(definition, this);
-					await this.AddPack(pack);
-					await this.GetFiles(pack, definition, fileInfo.Directory);
+
+					if (pack == null)
+					{
+						Pack newPack = new Pack(fileInfo.FullName, definition, this);
+						await this.AddPack(newPack);
+						await this.GetFiles(newPack, definition, fileInfo.Directory);
+					}
+					else if (pack.Id == fileInfo.FullName)
+					{
+						await this.GetFiles(pack, definition, fileInfo.Directory);
+						return;
+					}
 				}
 				catch (Exception ex)
 				{
@@ -91,20 +106,30 @@ public class FileSource : LibrarySourceBase
 		}
 	}
 
+	protected override Task Update(Pack pack)
+	{
+		// File soruces are always live
+		return Task.CompletedTask;
+	}
+
+	protected DirectoryInfo GetPackDirectory(PackDefinitionFile definition, DirectoryInfo rootDirectory)
+	{
+		DirectoryInfo packContentsDirectory = rootDirectory;
+		if (definition.Directory != null)
+		{
+			return new(packContentsDirectory.FullName + '/' + definition.Directory.Replace('\\', '/').Trim('/'));
+		}
+
+		return rootDirectory;
+	}
+
 	protected virtual async Task GetFiles(Pack pack, PackDefinitionFile definition, DirectoryInfo rootDirectory)
 	{
 		await Dispatch.NonUiThread();
 
-		DirectoryInfo packContentsDirectory = rootDirectory;
-		if (definition.Directory != null)
-		{
-			packContentsDirectory = new(packContentsDirectory.FullName + '/' + definition.Directory.Replace('\\', '/').Trim('/'));
-
-			if (!packContentsDirectory.Exists)
-			{
-				throw new Exception($"Failed to get pack directory: {packContentsDirectory}");
-			}
-		}
+		DirectoryInfo packContentsDirectory = this.GetPackDirectory(definition, rootDirectory);
+		if (!packContentsDirectory.Exists)
+			throw new Exception($"Failed to get pack directory: {packContentsDirectory}");
 
 		await this.GetFiles(pack, packContentsDirectory);
 	}
