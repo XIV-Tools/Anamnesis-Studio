@@ -10,8 +10,18 @@ using System.Collections.Generic;
 [AddINotifyPropertyChangedInterface]
 public class LibraryFilter : IComparer<ItemBase>, IComparer<Pack>
 {
+	public HashSet<string> Tags { get; init; } = new();
+
 	public bool Filter(ItemBase item, Pack? parent)
 	{
+		if (this.Tags.Count > 0)
+		{
+			if (!item.HasAllTags(this.Tags))
+			{
+				return false;
+			}
+		}
+
 		return true;
 	}
 

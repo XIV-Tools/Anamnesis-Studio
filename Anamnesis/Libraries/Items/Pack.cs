@@ -25,21 +25,22 @@ public class Pack
 	public string? Author { get; set; }
 	public string? Description { get; set; }
 
-	public ObservableCollection<ItemBase> Items { get; init; } = new();
-	public ObservableCollection<string> AvailableTags { get; init; } = new();
+	public HashSet<string> AvailableTags { get; init; } = new();
 	public LibrarySourceBase? Source { get; set; }
 
-	public void Filter(LibraryFilter filter)
+	public List<ItemBase> GetItems(LibraryFilter filter)
 	{
+		List<ItemBase> items = new();
 		IOrderedEnumerable<ItemBase> sortedItems = this.allItems.OrderBy(item => item, filter);
-		this.Items.Clear();
 		foreach (ItemBase obj in sortedItems)
 		{
 			if (!filter.Filter(obj, this))
 				continue;
 
-			this.Items.Add(obj);
+			items.Add(obj);
 		}
+
+		return items;
 	}
 
 	public void AddItem(ItemBase item)

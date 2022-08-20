@@ -80,7 +80,7 @@ public class FileSource : LibrarySourceBase
 				{
 					PackDefinitionFile definition = SerializerService.DeserializeFile<PackDefinitionFile>(fileInfo.FullName);
 					Pack pack = new Pack(definition, this);
-					this.AddPack(pack);
+					await this.AddPack(pack);
 					await this.GetFiles(pack, definition, fileInfo.Directory);
 				}
 				catch (Exception ex)
@@ -91,8 +91,10 @@ public class FileSource : LibrarySourceBase
 		}
 	}
 
-	protected virtual Task GetFiles(Pack pack, PackDefinitionFile definition, DirectoryInfo rootDirectory)
+	protected virtual async Task GetFiles(Pack pack, PackDefinitionFile definition, DirectoryInfo rootDirectory)
 	{
+		await Dispatch.NonUiThread();
+
 		DirectoryInfo packContentsDirectory = rootDirectory;
 		if (definition.Directory != null)
 		{
@@ -104,11 +106,13 @@ public class FileSource : LibrarySourceBase
 			}
 		}
 
-		return this.GetFiles(pack, packContentsDirectory);
+		await this.GetFiles(pack, packContentsDirectory);
 	}
 
-	protected virtual Task GetFiles(Pack pack, DirectoryInfo directory)
+	protected virtual async Task GetFiles(Pack pack, DirectoryInfo directory)
 	{
+		await Dispatch.NonUiThread();
+
 		FileInfo[] files = directory.GetFiles("*.*", SearchOption.AllDirectories);
 
 		HashSet<string> allTags = new();
@@ -118,20 +122,20 @@ public class FileSource : LibrarySourceBase
 			if (fileInfo.DirectoryName == null)
 				continue;
 
-			string[] folders = fileInfo.DirectoryName.Replace(directory.FullName, string.Empty).Split('\\', StringSplitOptions.RemoveEmptyEntries);
-			foreach (string folder in folders)
+			string[] folderTags = fileInfo.DirectoryName.Replace(directory.FullName, string.Empty).Split('\\', StringSplitOptions.RemoveEmptyEntries);
+			foreach (string folderTag in folderTags)
 			{
-				allTags.Add(folder);
+				allTags.Add(folderTag);
 			}
 
 			try
 			{
-				pack.AddItem(new FileItem(fileInfo, folders));
+				pack.AddItem(new FileItem(fileInfo, folderTags));
 			}
 			catch (Exception ex)
 			{
 				this.Log.Warning(ex, $"Failed to load pack file: {fileInfo.FullName}");
-				pack.AddItem(new BrokenFileItem(fileInfo));
+				pack.AddItem(new BrokenFileItem(fileInfo, folderTags));
 			}
 		}
 
@@ -139,8 +143,6 @@ public class FileSource : LibrarySourceBase
 		{
 			pack.AvailableTags.Add(tag);
 		}
-
-		return Task.CompletedTask;
 	}
 
 	public class FileItem : ItemBase
@@ -159,6 +161,11 @@ public class FileSource : LibrarySourceBase
 			this.Desription = fileBase.Description;
 			this.Version = fileBase.Version;
 			this.Type = fileBase.GetType();
+
+			foreach(string tag in tags)
+			{
+				this.Tags.Add(tag);
+			}
 		}
 
 		public override bool CanLoad => true;
@@ -168,10 +175,15 @@ public class FileSource : LibrarySourceBase
 
 	public class BrokenFileItem : ItemBase
 	{
-		public BrokenFileItem(FileInfo info)
+		public BrokenFileItem(FileInfo info, string[] tags)
 		{
 			this.Desription = $"Failed to load file: {info.FullName}";
 			this.Name = info.Name;
+
+			foreach (string tag in tags)
+			{
+				this.Tags.Add(tag);
+			}
 		}
 
 		public override bool CanLoad => false;

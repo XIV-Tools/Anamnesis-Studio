@@ -98,7 +98,8 @@
 				<DataTemplate>
 					<ToggleButton
 						Margin="3"
-						IsChecked="{Binding IsEnabled}">
+						IsChecked="{Binding IsEnabled}"
+						IsEnabled="{Binding IsAvailable}">
 						<ToggleButton.Style>
 							<Style TargetType="{x:Type ToggleButton}">
 								<Setter Property="Foreground" Value="{StaticResource MaterialDesignBody}" />
@@ -106,12 +107,15 @@
 								<Setter Property="Template">
 									<Setter.Value>
 										<ControlTemplate TargetType="{x:Type ToggleButton}">
-											<Border
-												x:Name="Border"
-												Background="{StaticResource MaterialDesignPaper}"
-												CornerRadius="10">
+											<Grid>
+												<Border
+													x:Name="Border"
+													Background="{StaticResource MaterialDesignPaper}"
+													CornerRadius="10" />
 
-												<Grid Margin="3,-2">
+												<Grid
+													x:Name="ContentGrid"
+													Margin="3,-2">
 													<Grid.ColumnDefinitions>
 														<ColumnDefinition Width="Auto" />
 														<ColumnDefinition />
@@ -130,14 +134,19 @@
 														Content="{TemplateBinding Content}" />
 
 												</Grid>
-
-											</Border>
+											</Grid>
 
 											<ControlTemplate.Triggers>
 												<Trigger Property="IsChecked" Value="False">
 													<Setter TargetName="TagIcon" Property="Foreground" Value="{StaticResource MaterialDesignBody}" />
+													<Setter TargetName="ContentGrid" Property="Opacity" Value="0.5" />
 													<Setter TargetName="Border" Property="Background" Value="Black" />
 													<Setter TargetName="Border" Property="Opacity" Value="0.25" />
+												</Trigger>
+												<Trigger Property="IsEnabled" Value="False">
+													<Setter TargetName="TagIcon" Property="Foreground" Value="{StaticResource MaterialDesignTextFieldBoxDisabledBackground}" />
+													<Setter Property="Foreground" Value="{StaticResource MaterialDesignTextFieldBoxDisabledBackground}" />
+													<Setter TargetName="Border" Property="Opacity" Value="0" />
 												</Trigger>
 											</ControlTemplate.Triggers>
 										</ControlTemplate>
@@ -156,9 +165,9 @@
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
 
-		<ItemsControl
+		<ListBox
 			Grid.Column="2"
-			ItemsSource="{Binding SelectedPack.Items}" />
+			ItemsSource="{Binding Items}" />
 
 	</Grid>
 </panels:PanelBase>

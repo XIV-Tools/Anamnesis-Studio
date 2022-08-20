@@ -15,6 +15,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
 using System.Threading.Tasks;
+using XivToolsWpf;
 using XivToolsWpf.Extensions;
 using static Anamnesis.Libraries.Sources.GitHubSource.GitHubCache;
 using static Anamnesis.Panels.ImportPosePanel;
@@ -62,7 +63,7 @@ internal class GitHubSource : FileSource
 					throw new Exception("No pack definition in cache");
 
 				Pack pack = new (packCache.Definition, this);
-				this.AddPack(pack);
+				await this.AddPack(pack);
 
 				// If this pack isn't downloaded for any reason, try to download it again.
 				if (packCache.DownloadState != GitHubCache.PackCache.DownloadStates.Downloaded)
@@ -114,10 +115,12 @@ internal class GitHubSource : FileSource
 			string jsonContent = await HttpClient.GetStringAsync(defFileContent.DownloadUrl);
 			PackDefinitionFile definition = SerializerService.Deserialize<PackDefinitionFile>(jsonContent);
 			Pack pack = new Pack(definition, this);
-			this.AddPack(pack);
+			await this.AddPack(pack);
 
 			if (this.Cache == null)
 				return;
+
+			await Dispatch.NonUiThread();
 
 			GitHubCache.PackCache? packCache;
 			if (!this.Cache.PacksCache.TryGetValue(defFileContent.Path, out packCache))

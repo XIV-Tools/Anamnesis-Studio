@@ -25,8 +25,8 @@ public abstract class LibrarySourceBase
 
 	protected abstract Task Load(bool force);
 
-	protected void AddPack(Pack pack)
+	protected async Task AddPack(Pack pack)
 	{
-		LibraryService.Instance.AddPack(pack);
+		await LibraryService.Instance.AddPack(pack);
 	}
 }
