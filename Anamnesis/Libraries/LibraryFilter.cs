@@ -12,7 +12,7 @@ public class LibraryFilter : IComparer<ItemBase>, IComparer<Pack>
 {
 	public HashSet<string> Tags { get; init; } = new();
 
-	public bool Filter(ItemBase item, Pack? parent)
+	public bool Filter(ItemBase item, Pack? parent, string[]? searchQuerry)
 	{
 		if (this.Tags.Count > 0)
 		{

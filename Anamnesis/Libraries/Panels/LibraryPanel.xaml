@@ -61,6 +61,14 @@
 											Opacity="0.75"
 											Text="{Binding Author}" />
 
+										<XivToolsWpf:TextBlock
+											Key="Library_ItemCount"
+											Grid.Row="1"
+											HorizontalAlignment="Right"
+											FontSize="10"
+											Opacity="0.75"
+											Value="{Binding ItemCount}" />
+
 										<Grid
 											Grid.RowSpan="2"
 											HorizontalAlignment="Right"
@@ -102,6 +110,7 @@
 					VerticalAlignment="Top">
 
 					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
 						<RowDefinition Height="Auto" />
 						<RowDefinition Height="Auto" />
 						<RowDefinition Height="Auto" />
@@ -180,8 +189,21 @@
 							TextTrimming="CharacterEllipsis" />
 					</Grid>
 
-					<Grid
+					<XivToolsWpf:TextBlock
+						Key="Library_Items"
 						Grid.Row="5"
+						Grid.Column="0"
+						Margin="0,0,6,0"
+						Style="{StaticResource Label}" />
+
+					<XivToolsWpf:TextBlock
+						Grid.Row="5"
+						Grid.Column="1"
+						Margin="0,0,6,0"
+						Text="{Binding SelectedPack.ItemCount, StringFormat='{}{0:n0}'}" />
+
+					<Grid
+						Grid.Row="6"
 						Grid.ColumnSpan="2"
 						Margin="0,6,0,0">
 
@@ -248,90 +270,118 @@
 				</Grid>
 			</Border>
 
-			<ItemsControl
-				Grid.Row="1"
-				Margin="6"
-				ItemsSource="{Binding FilterByTags}">
-				<ItemsControl.ItemsPanel>
-					<ItemsPanelTemplate>
-						<WrapPanel />
-					</ItemsPanelTemplate>
-				</ItemsControl.ItemsPanel>
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						<ToggleButton
-							Margin="3"
-							IsChecked="{Binding IsEnabled}"
-							IsEnabled="{Binding IsAvailable}">
-							<ToggleButton.Style>
-								<Style TargetType="{x:Type ToggleButton}">
-									<Setter Property="Foreground" Value="{StaticResource MaterialDesignBody}" />
+			<Grid Grid.Row="1">
 
-									<Setter Property="Template">
-										<Setter.Value>
-											<ControlTemplate TargetType="{x:Type ToggleButton}">
-												<Grid>
-													<Border
-														x:Name="Border"
-														Background="{StaticResource MaterialDesignPaper}"
-														CornerRadius="10" />
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition />
+				</Grid.RowDefinitions>
 
-													<Grid
-														x:Name="ContentGrid"
-														Margin="3,-2">
-														<Grid.ColumnDefinitions>
-															<ColumnDefinition Width="Auto" />
-															<ColumnDefinition />
-														</Grid.ColumnDefinitions>
+				<TextBox
+					Grid.Row="0"
+					Margin="6,0"
+					Style="{StaticResource MaterialDesignTextBox}" />
 
-														<XivToolsWpf:IconBlock
-															x:Name="TagIcon"
-															Grid.Column="0"
-															Margin="2,2,2,0"
-															Foreground="{StaticResource MaterialDesignBodyLight}"
-															Icon="Tag"
-															Opacity="0.5" />
+				<ItemsControl
+					Grid.Row="1"
+					Margin="6"
+					ItemsSource="{Binding FilterByTags}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<ToggleButton
+								Margin="3"
+								IsChecked="{Binding IsEnabled}"
+								IsEnabled="{Binding IsAvailable}">
+								<ToggleButton.Style>
+									<Style TargetType="{x:Type ToggleButton}">
+										<Setter Property="Foreground" Value="{StaticResource MaterialDesignBody}" />
 
-														<ContentPresenter
-															Grid.Column="1"
-															Content="{TemplateBinding Content}" />
+										<Setter Property="Template">
+											<Setter.Value>
+												<ControlTemplate TargetType="{x:Type ToggleButton}">
+													<Grid>
+														<Border
+															x:Name="Border"
+															Background="{StaticResource MaterialDesignPaper}"
+															CornerRadius="10" />
 
+														<Grid
+															x:Name="ContentGrid"
+															Margin="3,-2">
+															<Grid.ColumnDefinitions>
+																<ColumnDefinition Width="Auto" />
+																<ColumnDefinition />
+															</Grid.ColumnDefinitions>
+
+															<XivToolsWpf:IconBlock
+																x:Name="TagIcon"
+																Grid.Column="0"
+																Margin="2,2,2,0"
+																Foreground="{StaticResource MaterialDesignBodyLight}"
+																Icon="Tag"
+																Opacity="0.5" />
+
+															<ContentPresenter
+																Grid.Column="1"
+																Content="{TemplateBinding Content}" />
+
+														</Grid>
 													</Grid>
-												</Grid>
 
-												<ControlTemplate.Triggers>
-													<Trigger Property="IsChecked" Value="False">
-														<Setter TargetName="TagIcon" Property="Foreground" Value="{StaticResource MaterialDesignBody}" />
-														<Setter TargetName="ContentGrid" Property="Opacity" Value="0.5" />
-														<Setter TargetName="Border" Property="Background" Value="Black" />
-														<Setter TargetName="Border" Property="Opacity" Value="0.25" />
-													</Trigger>
-													<Trigger Property="IsEnabled" Value="False">
-														<Setter TargetName="TagIcon" Property="Foreground" Value="{StaticResource MaterialDesignTextFieldBoxDisabledBackground}" />
-														<Setter Property="Foreground" Value="{StaticResource MaterialDesignTextFieldBoxDisabledBackground}" />
-														<Setter TargetName="Border" Property="Opacity" Value="0" />
-													</Trigger>
-												</ControlTemplate.Triggers>
-											</ControlTemplate>
-										</Setter.Value>
-									</Setter>
-								</Style>
-							</ToggleButton.Style>
+													<ControlTemplate.Triggers>
+														<Trigger Property="IsChecked" Value="False">
+															<Setter TargetName="TagIcon" Property="Foreground" Value="{StaticResource MaterialDesignBody}" />
+															<Setter TargetName="ContentGrid" Property="Opacity" Value="0.5" />
+															<Setter TargetName="Border" Property="Background" Value="Black" />
+															<Setter TargetName="Border" Property="Opacity" Value="0.25" />
+														</Trigger>
+														<Trigger Property="IsEnabled" Value="False">
+															<Setter TargetName="TagIcon" Property="Foreground" Value="{StaticResource MaterialDesignTextFieldBoxDisabledBackground}" />
+															<Setter Property="Foreground" Value="{StaticResource MaterialDesignTextFieldBoxDisabledBackground}" />
+															<Setter TargetName="Border" Property="Opacity" Value="0" />
+														</Trigger>
+													</ControlTemplate.Triggers>
+												</ControlTemplate>
+											</Setter.Value>
+										</Setter>
+									</Style>
+								</ToggleButton.Style>
 
-							<XivToolsWpf:TextBlock
-								MaxWidth="100"
-								Margin="4"
-								Text="{Binding Name}"
-								TextTrimming="CharacterEllipsis" />
-						</ToggleButton>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
+								<XivToolsWpf:TextBlock
+									MaxWidth="100"
+									Margin="4"
+									Text="{Binding Name}"
+									TextTrimming="CharacterEllipsis" />
+							</ToggleButton>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+
+				<XivToolsWpf:TextBlock
+					Key="Library_FilteredItemCount"
+					Grid.Row="2"
+					VerticalAlignment="Top"
+					Style="{StaticResource Label}"
+					Value="{Binding Items.Count}" />
+
+			</Grid>
 		</Grid>
 
 		<ListBox
 			Grid.Column="2"
-			ItemsSource="{Binding Items}" />
+			ItemsSource="{Binding Items, IsAsync=True}">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<XivToolsWpf:TextBlock Text="{Binding Name}" />
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
 
 	</Grid>
 </panels:PanelBase>

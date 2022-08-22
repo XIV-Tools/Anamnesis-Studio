@@ -8,6 +8,8 @@ using Anamnesis.Panels;
 using PropertyChanged;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,7 +18,9 @@ using XivToolsWpf.Extensions;
 
 public partial class LibraryPanel : PanelBase
 {
+	private readonly CancellationToken filterCancellationToken = new CancellationTokenSource().Token;
 	private bool supressTagEvents = false;
+	private string[]? searchQuery;
 
 	public LibraryPanel(IPanelHost host)
 		: base(host)
@@ -29,7 +33,22 @@ public partial class LibraryPanel : PanelBase
 	public LibraryFilter Filter { get; init; } = new();
 	public Pack? SelectedPack { get; set; }
 	public ObservableCollection<Tag> FilterByTags { get; init; } = new();
-	public ObservableCollection<ItemBase> Items { get; init; } = new();
+	public FastObservableCollection<ItemBase> Items { get; init; } = new();
+
+	public string Search
+	{
+		set
+		{
+			if (string.IsNullOrEmpty(value))
+			{
+				this.searchQuery = null;
+			}
+			else
+			{
+				this.searchQuery = value.ToLower().Split(' ');
+			}
+		}
+	}
 
 	private void OnPackSelectionChanged(object sender, SelectionChangedEventArgs e)
 	{
@@ -115,14 +134,14 @@ public partial class LibraryPanel : PanelBase
 		if (this.Filter.Tags.Count == this.FilterByTags.Count)
 			this.Filter.Tags.Clear();
 
-		List<ItemBase> filteredItems = this.SelectedPack.GetItems(this.Filter);
+		IEnumerable<ItemBase> filteredItems = await this.SelectedPack.GetItems(this.Filter, this.searchQuery, this.filterCancellationToken);
 
 		await Dispatch.MainThread();
-		this.Items.Clear();
+
+		this.Items.Replace(filteredItems);
+
 		foreach (ItemBase item in filteredItems)
 		{
-			this.Items.Add(item);
-
 			foreach (string tag in item.Tags)
 			{
 				availableTags.Add(tag);

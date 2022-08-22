@@ -54,7 +54,7 @@ public class LocalizationService : ServiceBase<LocalizationService>, ILocaleProv
 		return true;
 	}
 
-	public static string GetStringFormatted(string key, params string[] param)
+	public static string GetStringFormatted(string key, params object[] param)
 	{
 		string str = GetString(key);
 		return string.Format(str, param);
@@ -177,7 +177,7 @@ public class LocalizationService : ServiceBase<LocalizationService>, ILocaleProv
 	}
 
 	bool ILocaleProvider.HasString(string key) => HasString(key);
-	string ILocaleProvider.GetStringFormatted(string key, params string[] param) => GetStringFormatted(key, param);
+	string ILocaleProvider.GetStringFormatted(string key, params object[] param) => GetStringFormatted(key, param);
 	string ILocaleProvider.GetStringAllLanguages(string key) => GetStringAllLanguages(key);
 	string ILocaleProvider.GetString(string key, bool silent) => GetString(key, silent);
 
