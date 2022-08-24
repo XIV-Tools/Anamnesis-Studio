@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using XivToolsWpf;
 using static System.Net.WebRequestMethods;
 
@@ -180,8 +181,7 @@ public class FileSource : LibrarySourceBase
 			// loaded.
 			FileBase fileBase = FileService.Load(info, SupportedFiles);
 
-			// TODO: Image!
-			this.Name = info.Name;
+			this.Name = this.Info.Name;
 			this.Author = fileBase.Author;
 			this.Description = fileBase.Description;
 			this.Version = fileBase.Version;
@@ -196,6 +196,16 @@ public class FileSource : LibrarySourceBase
 		public override bool CanLoad => true;
 		public FileInfo Info { get; init; }
 		public Type Type { get; init; }
+
+		public override ImageSource? Icon
+		{
+			get
+			{
+				// TODO: thumbnail cache?
+				FileBase fileBase = FileService.Load(this.Info, SupportedFiles);
+				return fileBase.ImageSource;
+			}
+		}
 	}
 
 	public class BrokenFileItem : ItemBase

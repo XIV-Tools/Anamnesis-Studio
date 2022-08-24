@@ -325,7 +325,7 @@
 					<Border
 						Grid.Row="0"
 						Grid.ColumnSpan="2"
-						Height="240"
+						Height="250"
 						Margin="-7,-7,-7,0"
 						BorderBrush="Transparent"
 						BorderThickness="1"
@@ -335,8 +335,16 @@
 						<Border.Background>
 							<ImageBrush
 								ImageSource="{Binding SelectedItem.Icon}"
-								Stretch="Uniform" />
+								Stretch="Fill" />
 						</Border.Background>
+
+						<Border CornerRadius="6,6,0,0">
+							<Border.Background>
+								<ImageBrush
+									ImageSource="{Binding SelectedItem.Icon}"
+									Stretch="Uniform" />
+							</Border.Background>
+						</Border>
 					</Border>
 
 					<XivToolsWpf:TextBlock
@@ -391,11 +399,6 @@
 						<RowDefinition Height="Auto" />
 						<RowDefinition />
 					</Grid.RowDefinitions>
-
-					<TextBox
-						Grid.Row="0"
-						Margin="6,0"
-						Style="{StaticResource MaterialDesignTextBox}" />
 
 					<ItemsControl
 						Grid.Row="1"
