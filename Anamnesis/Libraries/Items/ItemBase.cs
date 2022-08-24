@@ -6,6 +6,7 @@ namespace Anamnesis.Libraries.Items;
 using PropertyChanged;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Media;
 
 [AddINotifyPropertyChangedInterface]
 public abstract class ItemBase
@@ -15,6 +16,7 @@ public abstract class ItemBase
 	public string? Author { get; set; } = null;
 	public string? Version { get; set; } = null;
 	public ObservableCollection<string> Tags { get; init; } = new();
+	public virtual ImageSource? Icon => null;
 
 	public abstract bool CanLoad { get; }
 

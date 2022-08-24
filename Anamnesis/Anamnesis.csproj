@@ -47,6 +47,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="System.IO.Compression.ZipFile" Version="4.3.0" />
+		<PackageReference Include="VirtualizingWrapPanel" Version="1.5.7" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -9,6 +9,7 @@
 	xmlns:local="clr-namespace:Anamnesis.Libraries.Panels"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:panels="clr-namespace:Anamnesis.Panels"
+	xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
 	Width="800"
 	Height="450"
 	CanResize="True"
@@ -392,10 +393,42 @@
 
 		<ListBox
 			Grid.Column="2"
+			Background="Transparent"
 			ItemsSource="{Binding Items, IsAsync=True}">
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<vwp:VirtualizingWrapPanel IsItemsHost="True" />
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+
 			<ListBox.ItemTemplate>
 				<DataTemplate>
-					<XivToolsWpf:TextBlock Text="{Binding Name}" />
+					<Grid
+						Width="92"
+						Height="128">
+
+						<Grid.RowDefinitions>
+							<RowDefinition Height="96" />
+							<RowDefinition Height="32" />
+						</Grid.RowDefinitions>
+
+						<XivToolsWpf:IconBlock
+							FontSize="90"
+							Icon="File"
+							Visibility="{Binding Icon, Converter={StaticResource NullToVisibilityConverter}}" />
+
+						<Image
+							Margin="6"
+							Source="{Binding Icon}"
+							Visibility="{Binding Icon, Converter={StaticResource NotNullToVisibilityConverter}}" />
+
+						<XivToolsWpf:TextBlock
+							Grid.Row="1"
+							VerticalAlignment="Top"
+							Text="{Binding Name}"
+							TextAlignment="Center"
+							TextWrapping="Wrap" />
+					</Grid>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>
