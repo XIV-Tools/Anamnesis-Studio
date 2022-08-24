@@ -12,7 +12,7 @@ using System.Windows.Media;
 public abstract class ItemBase
 {
 	public string? Name { get; set; }
-	public string? Desription { get; set; } = null;
+	public string? Description { get; set; } = null;
 	public string? Author { get; set; } = null;
 	public string? Version { get; set; } = null;
 	public ObservableCollection<string> Tags { get; init; } = new();

@@ -32,8 +32,11 @@ public partial class LibraryPanel : PanelBase
 
 	public LibraryFilter Filter { get; init; } = new();
 	public Pack? SelectedPack { get; set; }
+	public ItemBase? SelectedItem { get; set; }
 	public ObservableCollection<Tag> FilterByTags { get; init; } = new();
 	public FastObservableCollection<ItemBase> Items { get; init; } = new();
+
+	public bool ViewList { get; set; } = false;
 
 	public string Search
 	{
@@ -162,6 +165,11 @@ public partial class LibraryPanel : PanelBase
 	private void OnPackUpdateClicked(object sender, RoutedEventArgs e)
 	{
 		this.SelectedPack?.Update();
+	}
+
+	private void OnBackClicked(object sender, RoutedEventArgs e)
+	{
+		this.SelectedItem = null;
 	}
 
 	[AddINotifyPropertyChangedInterface]

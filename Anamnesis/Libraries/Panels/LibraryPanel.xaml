@@ -95,6 +95,7 @@
 			</ListBox.ItemContainerStyle>
 		</ListBox>
 
+		<!--  Sidebar  -->
 		<Grid
 			Grid.Column="1"
 			Visibility="{Binding SelectedPack, Converter={StaticResource NotNullToVisibilityConverter}}">
@@ -104,30 +105,20 @@
 				<RowDefinition />
 			</Grid.RowDefinitions>
 
-			<Border
-				Grid.Row="0"
-				Height="138"
-				Margin="3"
-				Style="{StaticResource InsetPanel}">
-
-				<Border.Background>
-					<ImageBrush
-						ImageSource="{Binding SelectedPack.HeaderImage}"
-						Stretch="Uniform" />
-				</Border.Background>
-			</Border>
-
+			<!--  Pack Info  -->
 			<Border
 				Grid.Row="1"
 				Grid.Column="1"
-				Margin="3"
-				Style="{StaticResource InsetPanel}">
+				Margin="1"
+				Style="{StaticResource InsetPanel}"
+				Visibility="{Binding SelectedItem, Converter={StaticResource NullToVisibilityConverter}}">
 
 				<Grid
 					Margin="6"
 					VerticalAlignment="Top">
 
 					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
 						<RowDefinition Height="Auto" />
 						<RowDefinition Height="Auto" />
 						<RowDefinition Height="Auto" />
@@ -142,14 +133,32 @@
 						<ColumnDefinition />
 					</Grid.ColumnDefinitions>
 
-					<XivToolsWpf:TextBlock
+					<Border
 						Grid.Row="0"
+						Grid.ColumnSpan="2"
+						Height="140"
+						Margin="-7,-7,-7,0"
+						BorderBrush="Transparent"
+						BorderThickness="1"
+						CornerRadius="6,6,0,0"
+						Visibility="{Binding SelectedPack.HeaderImage, Converter={StaticResource NotNullToVisibilityConverter}}">
+
+						<Border.Background>
+							<ImageBrush
+								ImageSource="{Binding SelectedPack.HeaderImage}"
+								Stretch="Uniform" />
+						</Border.Background>
+					</Border>
+
+					<XivToolsWpf:TextBlock
+						Grid.Row="1"
 						Grid.ColumnSpan="3"
+						Margin="0,6,0,0"
 						Style="{StaticResource Header}"
 						Text="{Binding SelectedPack.Name}" />
 
 					<XivToolsWpf:TextBlock
-						Grid.Row="1"
+						Grid.Row="2"
 						Grid.ColumnSpan="2"
 						Margin="10,0,0,12"
 						Text="{Binding SelectedPack.Description}"
@@ -159,37 +168,37 @@
 
 					<XivToolsWpf:TextBlock
 						Key="FileMeta_Author"
-						Grid.Row="2"
+						Grid.Row="3"
 						Grid.Column="0"
 						Margin="0,0,6,0"
 						Style="{StaticResource Label}" />
 					<XivToolsWpf:TextBlock
-						Grid.Row="2"
+						Grid.Row="3"
 						Grid.Column="1"
 						Text="{Binding SelectedPack.Author}" />
 
 					<XivToolsWpf:TextBlock
 						Key="FileMeta_Version"
-						Grid.Row="3"
+						Grid.Row="4"
 						Grid.Column="0"
 						Margin="0,0,6,0"
 						Style="{StaticResource Label}"
 						Visibility="{Binding SelectedPack.Version, Converter={StaticResource NotNullToVisibilityConverter}}" />
 					<XivToolsWpf:TextBlock
-						Grid.Row="3"
+						Grid.Row="4"
 						Grid.Column="1"
 						Text="{Binding SelectedPack.Version}"
 						Visibility="{Binding SelectedPack.Version, Converter={StaticResource NotNullToVisibilityConverter}}" />
 
 					<XivToolsWpf:TextBlock
 						Key="Library_Source"
-						Grid.Row="4"
+						Grid.Row="5"
 						Grid.Column="0"
 						Margin="0,0,6,0"
 						Style="{StaticResource Label}" />
 
 					<Grid
-						Grid.Row="4"
+						Grid.Row="5"
 						Grid.Column="1">
 
 						<Grid.ColumnDefinitions>
@@ -209,19 +218,19 @@
 
 					<XivToolsWpf:TextBlock
 						Key="Library_Items"
-						Grid.Row="5"
+						Grid.Row="6"
 						Grid.Column="0"
 						Margin="0,0,6,0"
 						Style="{StaticResource Label}" />
 
 					<XivToolsWpf:TextBlock
-						Grid.Row="5"
+						Grid.Row="6"
 						Grid.Column="1"
 						Margin="0,0,6,0"
 						Text="{Binding SelectedPack.ItemCount, StringFormat='{}{0:n0}'}" />
 
 					<Grid
-						Grid.Row="6"
+						Grid.Row="7"
 						Grid.ColumnSpan="2"
 						Margin="0,6,0,0">
 
@@ -288,150 +297,345 @@
 				</Grid>
 			</Border>
 
-			<Grid Grid.Row="2">
+			<!--  Item Info  -->
+			<Border
+				Grid.Row="1"
+				Grid.Column="1"
+				Margin="1"
+				Style="{StaticResource InsetPanel}"
+				Visibility="{Binding SelectedItem, Converter={StaticResource NotNullToVisibilityConverter}}">
 
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition />
-				</Grid.RowDefinitions>
-
-				<TextBox
-					Grid.Row="0"
-					Margin="6,0"
-					Style="{StaticResource MaterialDesignTextBox}" />
-
-				<ItemsControl
-					Grid.Row="1"
+				<Grid
 					Margin="6"
-					ItemsSource="{Binding FilterByTags}">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<WrapPanel />
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<ToggleButton
-								Margin="3"
-								IsChecked="{Binding IsEnabled}"
-								IsEnabled="{Binding IsAvailable}">
-								<ToggleButton.Style>
-									<Style TargetType="{x:Type ToggleButton}">
-										<Setter Property="Foreground" Value="{StaticResource MaterialDesignBody}" />
+					VerticalAlignment="Top">
 
-										<Setter Property="Template">
-											<Setter.Value>
-												<ControlTemplate TargetType="{x:Type ToggleButton}">
-													<Grid>
-														<Border
-															x:Name="Border"
-															Background="{StaticResource MaterialDesignPaper}"
-															CornerRadius="10" />
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
 
-														<Grid
-															x:Name="ContentGrid"
-															Margin="3,-2">
-															<Grid.ColumnDefinitions>
-																<ColumnDefinition Width="Auto" />
-																<ColumnDefinition />
-															</Grid.ColumnDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
 
-															<XivToolsWpf:IconBlock
-																x:Name="TagIcon"
-																Grid.Column="0"
-																Margin="2,2,2,0"
-																Foreground="{StaticResource MaterialDesignBodyLight}"
-																Icon="Tag"
-																Opacity="0.5" />
+					<Border
+						Grid.Row="0"
+						Grid.ColumnSpan="2"
+						Height="240"
+						Margin="-7,-7,-7,0"
+						BorderBrush="Transparent"
+						BorderThickness="1"
+						CornerRadius="6,6,0,0"
+						Visibility="{Binding SelectedItem.Icon, Converter={StaticResource NotNullToVisibilityConverter}}">
 
-															<ContentPresenter
-																Grid.Column="1"
-																Content="{TemplateBinding Content}" />
+						<Border.Background>
+							<ImageBrush
+								ImageSource="{Binding SelectedItem.Icon}"
+								Stretch="Uniform" />
+						</Border.Background>
+					</Border>
 
+					<XivToolsWpf:TextBlock
+						Grid.Row="1"
+						Grid.ColumnSpan="3"
+						Margin="0,6,0,0"
+						Style="{StaticResource Header}"
+						Text="{Binding SelectedItem.Name}" />
+
+					<XivToolsWpf:TextBlock
+						Grid.Row="2"
+						Grid.ColumnSpan="2"
+						Margin="10,0,0,12"
+						Text="{Binding SelectedItem.Description}"
+						TextWrapping="Wrap"
+						Visibility="{Binding SelectedItem.Description, Converter={StaticResource NotEmptyToVisibilityConverter}}" />
+
+
+					<XivToolsWpf:TextBlock
+						Key="FileMeta_Author"
+						Grid.Row="3"
+						Grid.Column="0"
+						Margin="0,0,6,0"
+						Style="{StaticResource Label}"
+						Visibility="{Binding SelectedItem.Author, Converter={StaticResource NotNullToVisibilityConverter}}" />
+					<XivToolsWpf:TextBlock
+						Grid.Row="3"
+						Grid.Column="1"
+						Text="{Binding SelectedItem.Author}"
+						Visibility="{Binding SelectedItem.Author, Converter={StaticResource NotNullToVisibilityConverter}}" />
+
+					<XivToolsWpf:TextBlock
+						Key="FileMeta_Version"
+						Grid.Row="4"
+						Grid.Column="0"
+						Margin="0,0,6,0"
+						Style="{StaticResource Label}"
+						Visibility="{Binding SelectedItem.Version, Converter={StaticResource NotNullToVisibilityConverter}}" />
+					<XivToolsWpf:TextBlock
+						Grid.Row="4"
+						Grid.Column="1"
+						Text="{Binding SelectedItem.Version}"
+						Visibility="{Binding SelectedItem.Version, Converter={StaticResource NotNullToVisibilityConverter}}" />
+				</Grid>
+			</Border>
+
+			<ScrollViewer Grid.Row="2">
+				<Grid>
+
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition />
+					</Grid.RowDefinitions>
+
+					<TextBox
+						Grid.Row="0"
+						Margin="6,0"
+						Style="{StaticResource MaterialDesignTextBox}" />
+
+					<ItemsControl
+						Grid.Row="1"
+						Margin="6"
+						ItemsSource="{Binding FilterByTags}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<WrapPanel />
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<ToggleButton
+									Margin="3"
+									IsChecked="{Binding IsEnabled}"
+									IsEnabled="{Binding IsAvailable}">
+									<ToggleButton.Style>
+										<Style TargetType="{x:Type ToggleButton}">
+											<Setter Property="Foreground" Value="{StaticResource MaterialDesignBody}" />
+
+											<Setter Property="Template">
+												<Setter.Value>
+													<ControlTemplate TargetType="{x:Type ToggleButton}">
+														<Grid>
+															<Border
+																x:Name="Border"
+																Background="{StaticResource MaterialDesignPaper}"
+																CornerRadius="10" />
+
+															<Grid
+																x:Name="ContentGrid"
+																Margin="3,-2">
+																<Grid.ColumnDefinitions>
+																	<ColumnDefinition Width="Auto" />
+																	<ColumnDefinition />
+																</Grid.ColumnDefinitions>
+
+																<XivToolsWpf:IconBlock
+																	x:Name="TagIcon"
+																	Grid.Column="0"
+																	Margin="2,2,2,0"
+																	Foreground="{StaticResource MaterialDesignBodyLight}"
+																	Icon="Tag"
+																	Opacity="0.5" />
+
+																<ContentPresenter
+																	Grid.Column="1"
+																	Content="{TemplateBinding Content}" />
+
+															</Grid>
 														</Grid>
-													</Grid>
 
-													<ControlTemplate.Triggers>
-														<Trigger Property="IsChecked" Value="False">
-															<Setter TargetName="TagIcon" Property="Foreground" Value="{StaticResource MaterialDesignBody}" />
-															<Setter TargetName="ContentGrid" Property="Opacity" Value="0.5" />
-															<Setter TargetName="Border" Property="Background" Value="Black" />
-															<Setter TargetName="Border" Property="Opacity" Value="0.25" />
-														</Trigger>
-														<Trigger Property="IsEnabled" Value="False">
-															<Setter TargetName="TagIcon" Property="Foreground" Value="{StaticResource MaterialDesignTextFieldBoxDisabledBackground}" />
-															<Setter Property="Foreground" Value="{StaticResource MaterialDesignTextFieldBoxDisabledBackground}" />
-															<Setter TargetName="Border" Property="Opacity" Value="0" />
-														</Trigger>
-													</ControlTemplate.Triggers>
-												</ControlTemplate>
-											</Setter.Value>
-										</Setter>
-									</Style>
-								</ToggleButton.Style>
+														<ControlTemplate.Triggers>
+															<Trigger Property="IsChecked" Value="False">
+																<Setter TargetName="TagIcon" Property="Foreground" Value="{StaticResource MaterialDesignBody}" />
+																<Setter TargetName="ContentGrid" Property="Opacity" Value="0.5" />
+																<Setter TargetName="Border" Property="Background" Value="Black" />
+																<Setter TargetName="Border" Property="Opacity" Value="0.25" />
+															</Trigger>
+															<Trigger Property="IsEnabled" Value="False">
+																<Setter TargetName="TagIcon" Property="Foreground" Value="{StaticResource MaterialDesignTextFieldBoxDisabledBackground}" />
+																<Setter Property="Foreground" Value="{StaticResource MaterialDesignTextFieldBoxDisabledBackground}" />
+																<Setter TargetName="Border" Property="Opacity" Value="0" />
+															</Trigger>
+														</ControlTemplate.Triggers>
+													</ControlTemplate>
+												</Setter.Value>
+											</Setter>
+										</Style>
+									</ToggleButton.Style>
 
-								<XivToolsWpf:TextBlock
-									MaxWidth="100"
-									Margin="4"
-									Text="{Binding Name}"
-									TextTrimming="CharacterEllipsis" />
-							</ToggleButton>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-
-				<XivToolsWpf:TextBlock
-					Key="Library_FilteredItemCount"
-					Grid.Row="2"
-					VerticalAlignment="Top"
-					Style="{StaticResource Label}"
-					Value="{Binding Items.Count}" />
-
-			</Grid>
+									<XivToolsWpf:TextBlock
+										MaxWidth="100"
+										Margin="4"
+										Text="{Binding Name}"
+										TextTrimming="CharacterEllipsis" />
+								</ToggleButton>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</Grid>
+			</ScrollViewer>
 		</Grid>
 
-		<ListBox
+		<Grid
 			Grid.Column="2"
-			Background="Transparent"
-			ItemsSource="{Binding Items, IsAsync=True}">
-			<ListBox.ItemsPanel>
-				<ItemsPanelTemplate>
-					<vwp:VirtualizingWrapPanel IsItemsHost="True" />
-				</ItemsPanelTemplate>
-			</ListBox.ItemsPanel>
+			Visibility="{Binding SelectedPack, Converter={StaticResource NotNullToVisibilityConverter}}">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
 
-			<ListBox.ItemTemplate>
-				<DataTemplate>
-					<Grid
-						Width="92"
-						Height="128">
+			<!--  Toolbar  -->
+			<Grid Grid.Row="0">
 
-						<Grid.RowDefinitions>
-							<RowDefinition Height="96" />
-							<RowDefinition Height="32" />
-						</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
 
-						<XivToolsWpf:IconBlock
-							FontSize="90"
-							Icon="File"
-							Visibility="{Binding Icon, Converter={StaticResource NullToVisibilityConverter}}" />
-
-						<Image
-							Margin="6"
-							Source="{Binding Icon}"
-							Visibility="{Binding Icon, Converter={StaticResource NotNullToVisibilityConverter}}" />
-
+				<Button
+					Margin="6,3,0,3"
+					Click="OnBackClicked"
+					IsEnabled="{Binding SelectedItem, Converter={StaticResource NotNullToBoolConverter}}"
+					Style="{StaticResource TransparentIconButton}">
+					<StackPanel Orientation="Horizontal">
+						<XivToolsWpf:IconBlock Icon="ChevronLeft" />
 						<XivToolsWpf:TextBlock
-							Grid.Row="1"
-							VerticalAlignment="Top"
-							Text="{Binding Name}"
-							TextAlignment="Center"
-							TextWrapping="Wrap" />
-					</Grid>
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-		</ListBox>
+							Margin="6,0,6,0"
+							Text="Back" />
+					</StackPanel>
+				</Button>
 
+				<Border
+					Grid.Column="2"
+					Width="64"
+					Height="28"
+					Margin="3,3,6,3"
+					HorizontalAlignment="Right"
+					Background="#33000000"
+					CornerRadius="6">
+
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition />
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
+
+						<RadioButton
+							Grid.Column="0"
+							IsChecked="{Binding ViewList, Converter={StaticResource !B}}"
+							Style="{StaticResource TransparentIconToggleButton}">
+							<XivToolsWpf:IconBlock Icon="BorderAll" />
+						</RadioButton>
+
+						<RadioButton
+							Grid.Column="1"
+							IsChecked="{Binding ViewList}"
+							Style="{StaticResource TransparentIconToggleButton}">
+							<XivToolsWpf:IconBlock Icon="List" />
+						</RadioButton>
+					</Grid>
+				</Border>
+			</Grid>
+
+			<!--  Icon Grid  -->
+			<ListBox
+				Grid.Row="1"
+				Background="Transparent"
+				ItemsSource="{Binding Items, IsAsync=True}"
+				SelectedItem="{Binding SelectedItem}"
+				Visibility="{Binding ViewList, Converter={StaticResource !B2V}}">
+
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate>
+						<vwp:VirtualizingWrapPanel IsItemsHost="True" />
+					</ItemsPanelTemplate>
+				</ListBox.ItemsPanel>
+
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<Grid
+							Width="92"
+							Height="128">
+
+							<Grid.RowDefinitions>
+								<RowDefinition Height="96" />
+								<RowDefinition Height="32" />
+							</Grid.RowDefinitions>
+
+							<XivToolsWpf:IconBlock
+								FontSize="90"
+								Icon="File"
+								Visibility="{Binding Icon, Converter={StaticResource NullToVisibilityConverter}}" />
+
+							<Image
+								Margin="6"
+								Source="{Binding Icon}"
+								Visibility="{Binding Icon, Converter={StaticResource NotNullToVisibilityConverter}}" />
+
+							<XivToolsWpf:TextBlock
+								Grid.Row="1"
+								VerticalAlignment="Top"
+								Text="{Binding Name}"
+								TextAlignment="Center"
+								TextWrapping="Wrap" />
+						</Grid>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+
+			<!--  List  -->
+			<ListBox
+				Grid.Row="1"
+				Background="Transparent"
+				ItemsSource="{Binding Items, IsAsync=True}"
+				SelectedItem="{Binding SelectedItem}"
+				Visibility="{Binding ViewList, Converter={StaticResource B2V}}">
+
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<Grid>
+
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="32" />
+								<ColumnDefinition />
+							</Grid.ColumnDefinitions>
+
+							<XivToolsWpf:IconBlock
+								Grid.Column="0"
+								FontSize="32"
+								Icon="File"
+								Visibility="{Binding Icon, Converter={StaticResource NullToVisibilityConverter}}" />
+
+							<Image
+								Grid.Column="0"
+								Margin="-3"
+								Source="{Binding Icon}"
+								Visibility="{Binding Icon, Converter={StaticResource NotNullToVisibilityConverter}}" />
+
+							<XivToolsWpf:TextBlock
+								Grid.Column="1"
+								Margin="12,0,0,0"
+								VerticalAlignment="Center"
+								Text="{Binding Name}"
+								TextTrimming="CharacterEllipsis" />
+						</Grid>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+
+			<XivToolsWpf:TextBlock
+				Key="Library_ItemCount"
+				Grid.Row="2"
+				Margin="3,3,20,3"
+				HorizontalAlignment="Right"
+				Style="{StaticResource Label}"
+				Value="{Binding Items.Count}" />
+		</Grid>
 	</Grid>
 </panels:PanelBase>

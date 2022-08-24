@@ -183,7 +183,7 @@ public class FileSource : LibrarySourceBase
 			// TODO: Image!
 			this.Name = info.Name;
 			this.Author = fileBase.Author;
-			this.Desription = fileBase.Description;
+			this.Description = fileBase.Description;
 			this.Version = fileBase.Version;
 			this.Type = fileBase.GetType();
 
@@ -202,7 +202,7 @@ public class FileSource : LibrarySourceBase
 	{
 		public BrokenFileItem(FileInfo info, string[] tags)
 		{
-			this.Desription = $"Failed to load file: {info.FullName}";
+			this.Description = $"Failed to load file: {info.FullName}";
 			this.Name = info.Name;
 
 			foreach (string tag in tags)

@@ -103,7 +103,10 @@ public class GameDataSource : LibrarySourceBase
 		{
 			this.npc = npc;
 			this.Name = npc.Name;
-			this.Desription = npc.Description;
+			this.Description = npc.Description;
+
+			if (!string.IsNullOrEmpty(this.Description))
+				this.Tags.Add("Description");
 
 			this.Tags.Add(LocalizationService.GetString(npc.HasName ? "Library_GameData_Named" : "Library_GameData_Unnamed"));
 
