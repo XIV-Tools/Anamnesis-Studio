@@ -155,6 +155,7 @@
 
 	"Library_GameData_Author": "Square Enix - FFXIV",
 	"Library_GameData_Named": "Named",
+	"Library_GameData_Unnamed": "Unnamed",
 	"Library_GameData_NPCs": "NPCs",
 	"Library_GameData_NPC": "NPC",
 	"Library_GameData_NPCs_Description": "All the NPCs in the FFXIV game database. Every single one.\n\nNote: Not all NPC's have names or names that make sense.",

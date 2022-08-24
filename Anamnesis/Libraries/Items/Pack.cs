@@ -4,15 +4,14 @@
 namespace Anamnesis.Libraries.Items;
 
 using Anamnesis.Libraries.Sources;
-using FontAwesome.Sharp;
 using PropertyChanged;
 using Serilog;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using XivToolsWpf;
 using XivToolsWpf.Extensions;
 
@@ -37,6 +36,7 @@ public class Pack
 		this.Source = source;
 	}
 
+	public ImageSource? HeaderImage { get; set; }
 	public string? Name { get; set; }
 	public string? Author { get; set; }
 	public string? Description { get; set; }

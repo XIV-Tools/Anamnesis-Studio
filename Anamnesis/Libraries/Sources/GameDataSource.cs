@@ -10,6 +10,8 @@ using FontAwesome.Sharp;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using XivToolsWpf;
 
 public class GameDataSource : LibrarySourceBase
@@ -71,6 +73,14 @@ public class GameDataSource : LibrarySourceBase
 	private async Task CreatePack(Packs packType)
 	{
 		Pack pack = new Pack(packType.ToString(), this);
+
+		BitmapImage bi = new BitmapImage();
+		bi.BeginInit();
+		bi.UriSource = new Uri("https://cdn.discordapp.com/attachments/811569064895184956/1010781496564527135/Affleck.png");
+		bi.EndInit();
+
+		pack.HeaderImage = bi;
+
 		await this.Load(pack);
 		await this.AddPack(pack);
 	}
@@ -95,8 +105,7 @@ public class GameDataSource : LibrarySourceBase
 			this.Name = npc.Name;
 			this.Desription = npc.Description;
 
-			if (npc.HasName)
-				this.Tags.Add(LocalizationService.GetString("Library_GameData_Named"));
+			this.Tags.Add(LocalizationService.GetString(npc.HasName ? "Library_GameData_Named" : "Library_GameData_Unnamed"));
 
 			foreach (string tag in tags)
 			{

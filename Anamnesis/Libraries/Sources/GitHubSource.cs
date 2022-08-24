@@ -94,6 +94,9 @@ internal class GitHubSource : FileSource
 					await this.AddPack(pack);
 
 					await this.PopulatePack(pack, definition, contentItem, content);
+
+					DirectoryInfo? packDir = this.GetPackDirectory(definition, new(this.LocalDir));
+					await this.GetFiles(pack, packDir);
 					packCount++;
 				}
 			}
