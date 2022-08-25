@@ -91,11 +91,11 @@ public class GameDataSource : LibrarySourceBase
 
 		foreach (INpcBase npc in npcs)
 		{
-			pack.AddItem(new NpcItem(npc, tags));
+			pack.AddEntry(new NpcItem(npc, tags));
 		}
 	}
 
-	public class NpcItem : ItemBase
+	public class NpcItem : ItemEntry
 	{
 		private readonly INpcBase npc;
 

@@ -9,21 +9,16 @@ using System.Collections.ObjectModel;
 using System.Windows.Media;
 
 [AddINotifyPropertyChangedInterface]
-public abstract class ItemBase
+public abstract class ItemEntry : EntryBase
 {
-	public string? Name { get; set; }
 	public string? Description { get; set; } = null;
 	public string? Author { get; set; } = null;
 	public string? Version { get; set; } = null;
 	public ObservableCollection<string> Tags { get; init; } = new();
 	public virtual ImageSource? Icon => null;
+	public override bool IsDirectory => false;
 
 	public abstract bool CanLoad { get; }
-
-	public override string ToString()
-	{
-		return $"[{this.GetType()}] {this.Name}";
-	}
 
 	public bool HasAllTags(IEnumerable<string> required)
 	{

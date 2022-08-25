@@ -11,11 +11,9 @@ using FontAwesome.Sharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using XivToolsWpf;
-using static System.Net.WebRequestMethods;
 
 public class FileSource : LibrarySourceBase
 {
@@ -61,6 +59,11 @@ public class FileSource : LibrarySourceBase
 
 	public DirectoryInfo[] Directories { get; init; }
 	public bool IsUpdateAvailable { get; set; } = false;
+
+	public static bool IsSupportedFileType(FileInfo file)
+	{
+		return SupportedFileExtensions.Contains(file.Extension);
+	}
 
 	protected override Task Load()
 	{
@@ -148,6 +151,9 @@ public class FileSource : LibrarySourceBase
 			if (fileInfo.DirectoryName == null)
 				continue;
 
+			if (!IsSupportedFileType(fileInfo))
+				continue;
+
 			string[] folderTags = fileInfo.DirectoryName.Replace(directory.FullName, string.Empty).Split('\\', StringSplitOptions.RemoveEmptyEntries);
 			foreach (string folderTag in folderTags)
 			{
@@ -156,12 +162,12 @@ public class FileSource : LibrarySourceBase
 
 			try
 			{
-				pack.AddItem(new FileItem(fileInfo, folderTags));
+				pack.AddEntry(new FileItem(fileInfo, folderTags));
 			}
 			catch (Exception ex)
 			{
 				this.Log.Warning(ex, $"Failed to load pack file: {fileInfo.FullName}");
-				pack.AddItem(new BrokenFileItem(fileInfo, folderTags));
+				pack.AddEntry(new BrokenFileItem(fileInfo, folderTags));
 			}
 		}
 
@@ -171,9 +177,9 @@ public class FileSource : LibrarySourceBase
 		}
 	}
 
-	public class FileItem : ItemBase
+	public class FileItem : ItemEntry
 	{
-		public FileItem(FileInfo info, string[] tags)
+		public FileItem(FileInfo info, params string[] tags)
 		{
 			this.Info = info;
 
@@ -208,9 +214,9 @@ public class FileSource : LibrarySourceBase
 		}
 	}
 
-	public class BrokenFileItem : ItemBase
+	public class BrokenFileItem : ItemEntry
 	{
-		public BrokenFileItem(FileInfo info, string[] tags)
+		public BrokenFileItem(FileInfo info, params string[] tags)
 		{
 			this.Description = $"Failed to load file: {info.FullName}";
 			this.Name = info.Name;

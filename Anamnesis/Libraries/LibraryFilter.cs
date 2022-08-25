@@ -8,17 +8,20 @@ using PropertyChanged;
 using System.Collections.Generic;
 
 [AddINotifyPropertyChangedInterface]
-public class LibraryFilter : IComparer<ItemBase>, IComparer<Pack>
+public class LibraryFilter : IComparer<EntryBase>, IComparer<Pack>
 {
 	public HashSet<string> Tags { get; init; } = new();
 
-	public bool Filter(ItemBase item, Pack? parent, string[]? searchQuerry)
+	public bool Filter(EntryBase entry, DirectoryEntry? parent, string[]? searchQuerry)
 	{
-		if (this.Tags.Count > 0)
+		if (entry is ItemEntry item)
 		{
-			if (!item.HasAllTags(this.Tags))
+			if (this.Tags.Count > 0)
 			{
-				return false;
+				if (!item.HasAllTags(this.Tags))
+				{
+					return false;
+				}
 			}
 		}
 
@@ -30,9 +33,38 @@ public class LibraryFilter : IComparer<ItemBase>, IComparer<Pack>
 		return true;
 	}
 
-	public int Compare(ItemBase? x, ItemBase? y)
+	public int Compare(EntryBase? x, EntryBase? y)
 	{
-		// TODO: sort modes?
+		// Directoreis alweays go to the top.
+		if (x is DirectoryEntry && y is ItemEntry)
+			return -1;
+
+		if (x is ItemEntry && y is DirectoryEntry)
+			return 1;
+
+		// TODO: sort modes
+		/*
+		if (sortMode == Sort.None)
+		{
+			return 0;
+		}
+		else if (sortMode == Sort.AlphaNumeric)
+		{
+			if (itemA.Name == null || itemB.Name == null)
+				return 0;
+
+			return itemA.Name.CompareTo(itemB.Name);
+		}
+		else if (sortMode == Sort.Date)
+		{
+			if (itemA.DateModified == null || itemB.DateModified == null)
+				return 0;
+
+			DateTime dateA = (DateTime)itemA.DateModified;
+			DateTime dateB = (DateTime)itemB.DateModified;
+			return dateA.CompareTo(dateB);
+		}*/
+
 		return string.Compare(x?.Name, y?.Name);
 	}
 

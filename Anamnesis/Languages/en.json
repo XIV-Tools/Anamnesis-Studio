@@ -151,6 +151,7 @@
 	"Library_GameDataSource": "Game Data",
 	"Library_ItemCount": "{0:n0} Items",
 	"Library_Items": "Items:",
+	"Library_LooseFiles": "Loose Files",
 
 	"Library_GameData_Author": "Square Enix - FFXIV",
 	"Library_GameData_Named": "Named",

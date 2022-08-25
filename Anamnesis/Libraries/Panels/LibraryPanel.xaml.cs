@@ -8,11 +8,11 @@ using Anamnesis.Panels;
 using PropertyChanged;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using XivToolsWpf;
 using XivToolsWpf.Extensions;
 
@@ -30,13 +30,17 @@ public partial class LibraryPanel : PanelBase
 		this.ContentArea.DataContext = this;
 	}
 
+	public EntryBase? SelectedEntry { get; set; }
 	public LibraryFilter Filter { get; init; } = new();
 	public Pack? SelectedPack { get; set; }
-	public ItemBase? SelectedItem { get; set; }
 	public ObservableCollection<Tag> FilterByTags { get; init; } = new();
-	public FastObservableCollection<ItemBase> Items { get; init; } = new();
+	public FastObservableCollection<EntryBase> Entries { get; init; } = new();
+	public DirectoryEntry? CurrentDirectory { get; set; }
 
 	public bool ViewList { get; set; } = false;
+
+	[AlsoNotifyFor(nameof(SelectedEntry))]
+	public ItemEntry? SelectedItem => this.SelectedEntry as ItemEntry;
 
 	public string Search
 	{
@@ -55,7 +59,8 @@ public partial class LibraryPanel : PanelBase
 
 	private void OnPackSelectionChanged(object sender, SelectionChangedEventArgs e)
 	{
-		this.Items.Clear();
+		this.Entries.Clear();
+		this.CurrentDirectory = null;
 
 		if (this.SelectedPack != null)
 		{
@@ -117,7 +122,12 @@ public partial class LibraryPanel : PanelBase
 
 	private async Task FilterItems()
 	{
-		if (this.SelectedPack == null)
+		DirectoryEntry? current = this.SelectedPack;
+
+		if (this.CurrentDirectory != null)
+			current = this.CurrentDirectory;
+
+		if (current == null)
 			return;
 
 		HashSet<string> availableTags = new();
@@ -137,17 +147,20 @@ public partial class LibraryPanel : PanelBase
 		if (this.Filter.Tags.Count == this.FilterByTags.Count)
 			this.Filter.Tags.Clear();
 
-		IEnumerable<ItemBase> filteredItems = await this.SelectedPack.GetItems(this.Filter, this.searchQuery, this.filterCancellationToken);
+		IEnumerable<EntryBase> filteredItems = await current.GetItems(this.Filter, this.searchQuery, this.filterCancellationToken);
 
 		await Dispatch.MainThread();
 
-		this.Items.Replace(filteredItems);
+		this.Entries.Replace(filteredItems);
 
-		foreach (ItemBase item in filteredItems)
+		foreach (EntryBase entry in filteredItems)
 		{
-			foreach (string tag in item.Tags)
+			if (entry is ItemEntry item)
 			{
-				availableTags.Add(tag);
+				foreach (string tag in item.Tags)
+				{
+					availableTags.Add(tag);
+				}
 			}
 		}
 
@@ -169,7 +182,25 @@ public partial class LibraryPanel : PanelBase
 
 	private void OnBackClicked(object sender, RoutedEventArgs e)
 	{
-		this.SelectedItem = null;
+		////this.SelectedEntry = null;
+		this.CurrentDirectory = this.CurrentDirectory?.Parent;
+
+		if (this.CurrentDirectory is Pack)
+			this.CurrentDirectory = null;
+
+		this.FilterItems().Run();
+	}
+
+	private void OnItemDoubleClicked(object sender, MouseButtonEventArgs e)
+	{
+		if (this.SelectedEntry is DirectoryEntry directory)
+		{
+			this.CurrentDirectory = directory;
+			this.FilterItems().Run();
+		}
+		else if (this.SelectedEntry is ItemEntry item)
+		{
+		}
 	}
 
 	[AddINotifyPropertyChangedInterface]

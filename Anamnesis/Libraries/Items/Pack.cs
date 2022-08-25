@@ -16,10 +16,8 @@ using XivToolsWpf;
 using XivToolsWpf.Extensions;
 
 [AddINotifyPropertyChangedInterface]
-public class Pack
+public class Pack : DirectoryEntry
 {
-	private readonly List<ItemBase> allItems = new();
-
 	public Pack(string id, PackDefinitionFile packDefinition, LibrarySourceBase source)
 	{
 		this.Id = id;
@@ -37,7 +35,6 @@ public class Pack
 	}
 
 	public ImageSource? HeaderImage { get; set; }
-	public string? Name { get; set; }
 	public string? Author { get; set; }
 	public string? Description { get; set; }
 	public string? Version { get; set; }
@@ -48,77 +45,23 @@ public class Pack
 	public HashSet<string> AvailableTags { get; init; } = new();
 	public LibrarySourceBase? Source { get; set; }
 
-	public int ItemCount => this.allItems.Count;
-
-	public async Task<IEnumerable<ItemBase>> GetItems(LibraryFilter filter, string[]? searchQuery, CancellationToken cancellationToken = default)
+	public override void AddEntry(EntryBase entry)
 	{
-		ConcurrentQueue<ItemBase> entries;
-		lock (this.allItems)
+		if (entry is ItemEntry item)
 		{
-			entries = new ConcurrentQueue<ItemBase>(this.allItems);
-		}
-
-		await Dispatch.NonUiThread();
-
-		ConcurrentBag<ItemBase> filteredEntries = new ConcurrentBag<ItemBase>();
-
-		int threads = 4;
-		List<Task> tasks = new List<Task>();
-		for (int i = 0; i < threads; i++)
-		{
-			Task t = Task.Run(() =>
+			foreach (string tag in item.Tags)
 			{
-				while (!entries.IsEmpty)
-				{
-					ItemBase? entry;
-					if (!entries.TryDequeue(out entry))
-						continue;
-
-					try
-					{
-						if (filter != null && !filter.Filter(entry, this, searchQuery))
-						{
-							continue;
-						}
-					}
-					catch (Exception ex)
-					{
-						Log.Error(ex, $"Failed to filter pack Item: {entry}");
-					}
-
-					filteredEntries.Add(entry);
-
-					if (cancellationToken.IsCancellationRequested)
-					{
-						entries.Clear();
-					}
-				}
-			});
-
-			tasks.Add(t);
+				this.AvailableTags.Add(tag);
+			}
 		}
 
-		await Task.WhenAll(tasks.ToArray());
-
-		List<ItemBase> items = new(filteredEntries);
-		items.Sort(filter);
-		return items;
+		base.AddEntry(entry);
 	}
 
-	public void AddItem(ItemBase item)
-	{
-		foreach (string tag in item.Tags)
-		{
-			this.AvailableTags.Add(tag);
-		}
-
-		this.allItems.Add(item);
-	}
-
-	public void ClearItems()
+	public override void ClearItems()
 	{
 		this.AvailableTags.Clear();
-		this.allItems.Clear();
+		base.ClearItems();
 	}
 
 	public void Refresh()

@@ -369,12 +369,12 @@
 						Grid.Column="0"
 						Margin="0,0,6,0"
 						Style="{StaticResource Label}"
-						Visibility="{Binding SelectedItem.Author, Converter={StaticResource NotNullToVisibilityConverter}}" />
+						Visibility="{Binding SelectedItem.Author, Converter={StaticResource NotEmptyToVisibilityConverter}}" />
 					<XivToolsWpf:TextBlock
 						Grid.Row="3"
 						Grid.Column="1"
 						Text="{Binding SelectedItem.Author}"
-						Visibility="{Binding SelectedItem.Author, Converter={StaticResource NotNullToVisibilityConverter}}" />
+						Visibility="{Binding SelectedItem.Author, Converter={StaticResource NotEmptyToVisibilityConverter}}" />
 
 					<XivToolsWpf:TextBlock
 						Key="FileMeta_Version"
@@ -382,12 +382,12 @@
 						Grid.Column="0"
 						Margin="0,0,6,0"
 						Style="{StaticResource Label}"
-						Visibility="{Binding SelectedItem.Version, Converter={StaticResource NotNullToVisibilityConverter}}" />
+						Visibility="{Binding SelectedItem.Version, Converter={StaticResource NotEmptyToVisibilityConverter}}" />
 					<XivToolsWpf:TextBlock
 						Grid.Row="4"
 						Grid.Column="1"
 						Text="{Binding SelectedItem.Version}"
-						Visibility="{Binding SelectedItem.Version, Converter={StaticResource NotNullToVisibilityConverter}}" />
+						Visibility="{Binding SelectedItem.Version, Converter={StaticResource NotEmptyToVisibilityConverter}}" />
 				</Grid>
 			</Border>
 
@@ -504,7 +504,7 @@
 				<Button
 					Margin="6,3,0,3"
 					Click="OnBackClicked"
-					IsEnabled="{Binding SelectedItem, Converter={StaticResource NotNullToBoolConverter}}"
+					IsEnabled="{Binding CurrentDirectory, Converter={StaticResource NotNullToBoolConverter}}"
 					Style="{StaticResource TransparentIconButton}">
 					<StackPanel Orientation="Horizontal">
 						<XivToolsWpf:IconBlock Icon="ChevronLeft" />
@@ -550,8 +550,9 @@
 			<ListBox
 				Grid.Row="1"
 				Background="Transparent"
-				ItemsSource="{Binding Items, IsAsync=True}"
-				SelectedItem="{Binding SelectedItem}"
+				ItemsSource="{Binding Entries, IsAsync=True}"
+				MouseDoubleClick="OnItemDoubleClicked"
+				SelectedItem="{Binding SelectedEntry}"
 				Visibility="{Binding ViewList, Converter={StaticResource !B2V}}">
 
 				<ListBox.ItemsPanel>
@@ -571,15 +572,22 @@
 								<RowDefinition Height="32" />
 							</Grid.RowDefinitions>
 
+							<Grid Visibility="{Binding IsDirectory, Converter={StaticResource !B2V}}">
+								<XivToolsWpf:IconBlock
+									FontSize="90"
+									Icon="File"
+									Visibility="{Binding Icon, Converter={StaticResource NullToVisibilityConverter}}" />
+
+								<Image
+									Margin="6"
+									Source="{Binding Icon}"
+									Visibility="{Binding Icon, Converter={StaticResource NotNullToVisibilityConverter}}" />
+							</Grid>
+
 							<XivToolsWpf:IconBlock
 								FontSize="90"
-								Icon="File"
-								Visibility="{Binding Icon, Converter={StaticResource NullToVisibilityConverter}}" />
-
-							<Image
-								Margin="6"
-								Source="{Binding Icon}"
-								Visibility="{Binding Icon, Converter={StaticResource NotNullToVisibilityConverter}}" />
+								Icon="Folder"
+								Visibility="{Binding IsDirectory, Converter={StaticResource B2V}}" />
 
 							<XivToolsWpf:TextBlock
 								Grid.Row="1"
@@ -596,8 +604,9 @@
 			<ListBox
 				Grid.Row="1"
 				Background="Transparent"
-				ItemsSource="{Binding Items, IsAsync=True}"
-				SelectedItem="{Binding SelectedItem}"
+				ItemsSource="{Binding Entries, IsAsync=True}"
+				MouseDoubleClick="OnItemDoubleClicked"
+				SelectedItem="{Binding SelectedEntry}"
 				Visibility="{Binding ViewList, Converter={StaticResource B2V}}">
 
 				<ListBox.ItemTemplate>
@@ -638,7 +647,7 @@
 				Margin="3,3,20,3"
 				HorizontalAlignment="Right"
 				Style="{StaticResource Label}"
-				Value="{Binding Items.Count}" />
+				Value="{Binding Entries.Count}" />
 		</Grid>
 	</Grid>
 </panels:PanelBase>
