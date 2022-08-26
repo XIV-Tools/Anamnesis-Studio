@@ -1,0 +1,67 @@
+﻿<UserControl
+	x:Class="Anamnesis.Libraries.Controls.EntryIcon"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:Anamnesis.Libraries.Controls"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	DataContextChanged="OnDataContextChanged"
+	SizeChanged="OnSizeChanged"
+	mc:Ignorable="d">
+
+	<Grid>
+
+		<Border
+			x:Name="ThumbnailArea"
+			Margin="3"
+			HorizontalAlignment="Stretch"
+			VerticalAlignment="Stretch"
+			CornerRadius="6"
+			Visibility="Collapsed">
+
+			<Border.Background>
+				<ImageBrush
+					ImageSource="{Binding Thumbnail}"
+					Stretch="UniformToFill" />
+			</Border.Background>
+
+		</Border>
+
+		<Viewbox x:Name="IconArea">
+			<Grid>
+				<XivToolsWpf:IconBlock
+					x:Name="IconShadow"
+					FontSize="80"
+					Foreground="Black"
+					Icon="File"
+					Visibility="Collapsed">
+					<XivToolsWpf:IconBlock.Effect>
+						<DropShadowEffect
+							BlurRadius="10"
+							Direction="45"
+							Opacity="0.5"
+							ShadowDepth="5" />
+					</XivToolsWpf:IconBlock.Effect>
+				</XivToolsWpf:IconBlock>
+
+				<XivToolsWpf:IconBlock
+					FontSize="80"
+					Icon="File"
+					Visibility="{Binding IsDirectory, Converter={StaticResource !B2V}}" />
+
+				<XivToolsWpf:IconBlock
+					FontSize="90"
+					Icon="Folder"
+					Visibility="{Binding IsDirectory, Converter={StaticResource B2V}}" />
+
+				<XivToolsWpf:IconBlock
+					Margin="0,20,0,0"
+					FontSize="45"
+					Foreground="{StaticResource MaterialDesignPaper}"
+					Icon="{Binding Icon}" />
+			</Grid>
+		</Viewbox>
+	</Grid>
+
+</UserControl>

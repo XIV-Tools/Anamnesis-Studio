@@ -31,16 +31,14 @@ public partial class FileMetaEditor : UserControl
 		{
 			file.Author = SettingsService.Current.DefaultAuthor;
 		}
+
+		this.ImageSource = this.File.GetImage();
 	}
 
 	public FileSystemInfo Info { get; private set; }
 	public FileBase File { get; private set; }
 
-	public BitmapImage? ImageSource
-	{
-		get => this.File.ImageSource;
-		set { }
-	}
+	public BitmapImage? ImageSource { get; set; }
 
 	public static void Show(FileSystemInfo info, FileBase file)
 	{

@@ -19,6 +19,7 @@ public class DirectoryEntry : EntryBase
 
 	public DirectoryEntry? Parent { get; set; }
 	public override bool IsDirectory => true;
+	public override bool HasThumbnail => false;
 
 	public int ItemCount => this.allEntries.Count;
 
@@ -55,7 +56,7 @@ public class DirectoryEntry : EntryBase
 					}
 					catch (Exception ex)
 					{
-						Log.Error(ex, $"Failed to filter pack Item: {entry}");
+						this.Log.Error(ex, $"Failed to filter pack Item: {entry}");
 					}
 
 					filteredEntries.Add(entry);

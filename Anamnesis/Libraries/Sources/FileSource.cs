@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using XivToolsWpf;
 
 public class FileSource : LibrarySourceBase
@@ -179,6 +180,8 @@ public class FileSource : LibrarySourceBase
 
 	public class FileItem : ItemEntry
 	{
+		private readonly bool hasThumbnail;
+
 		public FileItem(FileInfo info, params string[] tags)
 		{
 			this.Info = info;
@@ -192,8 +195,9 @@ public class FileSource : LibrarySourceBase
 			this.Description = fileBase.Description;
 			this.Version = fileBase.Version;
 			this.Type = fileBase.GetType();
+			this.hasThumbnail = !string.IsNullOrEmpty(fileBase.Base64Image);
 
-			foreach(string tag in tags)
+			foreach (string tag in tags)
 			{
 				this.Tags.Add(tag);
 			}
@@ -202,14 +206,77 @@ public class FileSource : LibrarySourceBase
 		public override bool CanLoad => true;
 		public FileInfo Info { get; init; }
 		public Type Type { get; init; }
-
-		public override ImageSource? Icon
+		public override IconChar Icon
 		{
 			get
 			{
-				// TODO: thumbnail cache?
+				if (this.Type == typeof(CharacterFile))
+					return IconChar.User;
+
+				if (this.Type == typeof(PoseFile))
+					return IconChar.Running;
+
+				if (this.Type == typeof(CameraShotFile))
+					return IconChar.Camera;
+
+				if (this.Type == typeof(SceneFile))
+					return IconChar.Users;
+
+				return IconChar.Question;
+			}
+		}
+
+		public override bool HasThumbnail => this.hasThumbnail;
+		public override ImageSource? Thumbnail
+		{
+			get
+			{
+				if (!this.hasThumbnail)
+					return null;
+
 				FileBase fileBase = FileService.Load(this.Info, SupportedFiles);
 				return fileBase.ImageSource;
+
+				/*if (this.thumbnail == null && !this.isThumbnailLoading)
+				{
+					this.isThumbnailLoading = true;
+
+					Task.Run(async () =>
+					{
+						try
+						{
+							await Dispatch.NonUiThread();
+
+							FileBase fileBase = FileService.Load(this.Info, SupportedFiles);
+
+							if (fileBase.Base64Image == null)
+								return;
+
+							byte[] binaryData = Convert.FromBase64String(fileBase.Base64Image);
+
+							await Dispatch.MainThread();
+							BitmapImage bi = new BitmapImage();
+							bi.BeginInit();
+							bi.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+							bi.StreamSource = new MemoryStream(binaryData);
+							bi.EndInit();
+
+							this.thumbnail = bi;
+							this.isThumbnailLoading = false;
+
+							this.RaisePropertyChanged(nameof(this.Thumbnail));
+						}
+						catch (Exception ex)
+						{
+							this.Log.Warning(ex, "Failed to load file thumbnail");
+							this.thumbnail = null;
+						}
+
+						this.isThumbnailLoading = false;
+					});
+				}
+
+				return this.thumbnail;*/
 			}
 		}
 	}
@@ -228,5 +295,7 @@ public class FileSource : LibrarySourceBase
 		}
 
 		public override bool CanLoad => false;
+		public override IconChar Icon => IconChar.Warning;
+		public override bool HasThumbnail => false;
 	}
 }

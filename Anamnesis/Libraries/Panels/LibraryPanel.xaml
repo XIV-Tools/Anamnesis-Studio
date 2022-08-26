@@ -4,6 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
 	xmlns:controls="clr-namespace:Anamnesis.Controls"
+	xmlns:controls1="clr-namespace:Anamnesis.Libraries.Controls"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:libraryItems="clr-namespace:Anamnesis.Libraries.Items"
 	xmlns:local="clr-namespace:Anamnesis.Libraries.Panels"
@@ -16,6 +17,7 @@
 	Icon="Book"
 	TitleKey="Naviagation_Library"
 	mc:Ignorable="d">
+
 	<Grid x:Name="ContentArea">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="200" />
@@ -334,14 +336,14 @@
 
 						<Border.Background>
 							<ImageBrush
-								ImageSource="{Binding SelectedItem.Icon}"
+								ImageSource="{Binding SelectedItem.Thumbnail}"
 								Stretch="Fill" />
 						</Border.Background>
 
 						<Border CornerRadius="6,6,0,0">
 							<Border.Background>
 								<ImageBrush
-									ImageSource="{Binding SelectedItem.Icon}"
+									ImageSource="{Binding SelectedItem.Thumbnail}"
 									Stretch="Uniform" />
 							</Border.Background>
 						</Border>
@@ -563,6 +565,7 @@
 
 				<ListBox.ItemTemplate>
 					<DataTemplate>
+
 						<Grid
 							Width="92"
 							Height="128">
@@ -572,22 +575,7 @@
 								<RowDefinition Height="32" />
 							</Grid.RowDefinitions>
 
-							<Grid Visibility="{Binding IsDirectory, Converter={StaticResource !B2V}}">
-								<XivToolsWpf:IconBlock
-									FontSize="90"
-									Icon="File"
-									Visibility="{Binding Icon, Converter={StaticResource NullToVisibilityConverter}}" />
-
-								<Image
-									Margin="6"
-									Source="{Binding Icon}"
-									Visibility="{Binding Icon, Converter={StaticResource NotNullToVisibilityConverter}}" />
-							</Grid>
-
-							<XivToolsWpf:IconBlock
-								FontSize="90"
-								Icon="Folder"
-								Visibility="{Binding IsDirectory, Converter={StaticResource B2V}}" />
+							<controls1:EntryIcon />
 
 							<XivToolsWpf:TextBlock
 								Grid.Row="1"
@@ -596,6 +584,8 @@
 								TextAlignment="Center"
 								TextWrapping="Wrap" />
 						</Grid>
+
+
 					</DataTemplate>
 				</ListBox.ItemTemplate>
 			</ListBox>
@@ -614,21 +604,14 @@
 						<Grid>
 
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="32" />
+								<ColumnDefinition Width="Auto" />
 								<ColumnDefinition />
 							</Grid.ColumnDefinitions>
 
-							<XivToolsWpf:IconBlock
-								Grid.Column="0"
-								FontSize="32"
-								Icon="File"
-								Visibility="{Binding Icon, Converter={StaticResource NullToVisibilityConverter}}" />
-
-							<Image
-								Grid.Column="0"
-								Margin="-3"
-								Source="{Binding Icon}"
-								Visibility="{Binding Icon, Converter={StaticResource NotNullToVisibilityConverter}}" />
+							<controls1:EntryIcon
+								Width="48"
+								Height="48"
+								Margin="0,-6,0,-4" />
 
 							<XivToolsWpf:TextBlock
 								Grid.Column="1"

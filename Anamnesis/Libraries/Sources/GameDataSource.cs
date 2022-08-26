@@ -118,6 +118,8 @@ public class GameDataSource : LibrarySourceBase
 
 		public override bool CanLoad => true;
 
-		public override ImageSource? Icon => this.npc.Icon?.GetImageSource();
+		public override ImageSource? Thumbnail => this.npc.Icon?.GetImageSource();
+		public override IconChar Icon => IconChar.User;
+		public override bool HasThumbnail => false;
 	}
 }
