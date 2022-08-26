@@ -6,6 +6,7 @@ namespace Anamnesis.Libraries;
 using Anamnesis.Libraries.Items;
 using PropertyChanged;
 using System.Collections.Generic;
+using XivToolsWpf;
 
 [AddINotifyPropertyChangedInterface]
 public class LibraryFilter : IComparer<EntryBase>, IComparer<Pack>
@@ -16,6 +17,25 @@ public class LibraryFilter : IComparer<EntryBase>, IComparer<Pack>
 	{
 		if (entry is ItemEntry item)
 		{
+			// Check if any tags match the search
+			if (searchQuerry != null)
+			{
+				bool anyTagMatch = false;
+				foreach (string tag in item.Tags)
+				{
+					if (!SearchUtility.Matches(tag, searchQuerry))
+					{
+						anyTagMatch = true;
+						break;
+					}
+				}
+
+				if (!anyTagMatch)
+				{
+					return false;
+				}
+			}
+
 			if (this.Tags.Count > 0)
 			{
 				if (!item.HasAllTags(this.Tags))
@@ -24,6 +44,9 @@ public class LibraryFilter : IComparer<EntryBase>, IComparer<Pack>
 				}
 			}
 		}
+
+		if (!SearchUtility.Matches(entry.Name, searchQuerry))
+			return false;
 
 		return true;
 	}

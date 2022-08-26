@@ -501,6 +501,7 @@
 					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition />
 					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
 
 				<Button
@@ -518,6 +519,30 @@
 
 				<Border
 					Grid.Column="2"
+					Margin="3,3,6,3"
+					Background="#33000000"
+					CornerRadius="6">
+					<Grid>
+						<XivToolsWpf:IconBlock
+							Margin="6,0,6,1"
+							HorizontalAlignment="Left"
+							VerticalAlignment="Center"
+							FontSize="12"
+							Icon="Search" />
+
+						<TextBox
+							Width="128"
+							Margin="4,0,4,2"
+							Padding="12,0,0,0"
+							VerticalContentAlignment="Center"
+							BorderThickness="0"
+							Style="{StaticResource MaterialDesignTextBox}"
+							Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" />
+					</Grid>
+				</Border>
+
+				<Border
+					Grid.Column="3"
 					Width="64"
 					Height="28"
 					Margin="3,3,6,3"
