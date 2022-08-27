@@ -6,8 +6,10 @@ namespace Anamnesis.Libraries.Panels;
 using Anamnesis.Libraries.Items;
 using Anamnesis.Panels;
 using PropertyChanged;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,11 +19,13 @@ using XivToolsWpf.Extensions;
 
 public partial class LibraryPanel : PanelBase
 {
-	private bool filterQueued = false;
+	private const int FilterSearchInputDelay = 250;
+
 	private Task? filterTask = null;
 	private bool supressTagEvents = false;
 	private string[]? searchQuery;
 	private string searchText = string.Empty;
+	private int filterDelay = 500;
 
 	public LibraryPanel(IPanelHost host)
 		: base(host)
@@ -59,7 +63,7 @@ public partial class LibraryPanel : PanelBase
 				this.searchQuery = value.ToLower().Split(' ');
 			}
 
-			this.FilterItems();
+			this.FilterItems(true);
 		}
 	}
 
@@ -126,19 +130,54 @@ public partial class LibraryPanel : PanelBase
 		this.FilterItems();
 	}
 
-	private void FilterItems()
+	private void FilterItems(bool delay = false)
 	{
+		this.filterDelay = delay ? FilterSearchInputDelay : 0;
+
 		if (this.filterTask != null && !this.filterTask.IsCompleted)
 		{
-			this.filterQueued = true;
+			this.Filter.Restart();
 			return;
 		}
 
-		this.filterTask = Task.Run(async () => await this.FilterItemsAsync());
+		this.filterTask = Task.Run(async () =>
+		{
+			while (this.filterDelay > 0)
+			{
+				await Task.Delay(10);
+				this.filterDelay -= 10;
+			}
+
+			this.Filter.ResetCancelation();
+			await this.FilterItemsAsync();
+		});
 	}
 
 	private async Task FilterItemsAsync()
 	{
+		try
+		{
+			await this.FilterItemsInternalAsync();
+		}
+		catch (Exception ex)
+		{
+			this.Log.Error(ex, "Error filtering library");
+		}
+
+		if (this.Filter.RestartRequeted)
+		{
+			this.Filter.ResetCancelation();
+			this.FilterItems();
+		}
+
+		this.Filter.ResetCancelation();
+	}
+
+	private async Task FilterItemsInternalAsync()
+	{
+		if (this.Filter.CancelRequested)
+			return;
+
 		DirectoryEntry? current = this.SelectedPack;
 
 		if (this.CurrentDirectory != null)
@@ -151,6 +190,9 @@ public partial class LibraryPanel : PanelBase
 
 		await Dispatch.NonUiThread();
 
+		if (this.Filter.CancelRequested)
+			return;
+
 		this.Filter.Tags.Clear();
 		foreach (Tag tag in this.FilterByTags)
 		{
@@ -160,11 +202,17 @@ public partial class LibraryPanel : PanelBase
 			}
 		}
 
+		if (this.Filter.CancelRequested)
+			return;
+
 		// IF all tags are enabled just don't filter by them.
 		if (this.Filter.Tags.Count == this.FilterByTags.Count)
 			this.Filter.Tags.Clear();
 
 		IEnumerable<EntryBase> filteredItems = await current.GetItems(this.Filter, this.searchQuery);
+
+		if (this.Filter.CancelRequested)
+			return;
 
 		await Dispatch.MainThread();
 
@@ -181,14 +229,12 @@ public partial class LibraryPanel : PanelBase
 			}
 		}
 
+		if (this.Filter.CancelRequested)
+			return;
+
 		foreach (Tag tag in this.FilterByTags)
 		{
 			tag.IsAvailable = availableTags.Contains(tag.Name);
-		}
-
-		if (this.filterQueued)
-		{
-			this.FilterItems();
 		}
 	}
 
@@ -210,7 +256,7 @@ public partial class LibraryPanel : PanelBase
 		if (this.CurrentDirectory is Pack)
 			this.CurrentDirectory = null;
 
-		this.FilterItems();
+		this.FilterItems(true);
 	}
 
 	private void OnItemDoubleClicked(object sender, MouseButtonEventArgs e)
@@ -218,11 +264,17 @@ public partial class LibraryPanel : PanelBase
 		if (this.SelectedEntry is DirectoryEntry directory)
 		{
 			this.CurrentDirectory = directory;
-			this.FilterItems();
+			this.FilterItems(true);
 		}
 		else if (this.SelectedEntry is ItemEntry item)
 		{
 		}
+	}
+
+	private void OnClearSearchClicked(object sender, RoutedEventArgs e)
+	{
+		this.Search = string.Empty;
+		this.SearchBox.Focus();
 	}
 
 	[AddINotifyPropertyChangedInterface]

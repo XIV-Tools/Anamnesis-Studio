@@ -500,7 +500,7 @@
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition />
-					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="200" />
 					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
 
@@ -528,17 +528,35 @@
 							HorizontalAlignment="Left"
 							VerticalAlignment="Center"
 							FontSize="12"
-							Icon="Search" />
+							Icon="Search"
+							Visibility="{Binding Search, Converter={StaticResource IsEmptyToVisibilityConverter}}" />
 
 						<TextBox
-							Width="128"
+							x:Name="SearchBox"
 							Margin="4,0,4,2"
 							Padding="12,0,0,0"
 							VerticalContentAlignment="Center"
 							BorderThickness="0"
 							Style="{StaticResource MaterialDesignTextBox}"
 							Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" />
+
+						<Button
+							Width="24"
+							Padding="0"
+							HorizontalAlignment="Left"
+							Click="OnClearSearchClicked"
+							Style="{StaticResource TransparentIconButton}"
+							Visibility="{Binding Search, Converter={StaticResource NotEmptyToVisibilityConverter}}">
+							<XivToolsWpf:IconBlock
+								Margin="6,0,6,1"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								FontSize="12"
+								Icon="Times" />
+						</Button>
+
 					</Grid>
+
 				</Border>
 
 				<Border

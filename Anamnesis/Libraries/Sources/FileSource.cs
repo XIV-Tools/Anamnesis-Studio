@@ -181,6 +181,7 @@ public class FileSource : LibrarySourceBase
 	public class FileItem : ItemEntry
 	{
 		private readonly bool hasThumbnail;
+		private readonly IconChar icon;
 
 		public FileItem(FileInfo info, params string[] tags)
 		{
@@ -201,31 +202,33 @@ public class FileSource : LibrarySourceBase
 			{
 				this.Tags.Add(tag);
 			}
+
+			if (this.Type == typeof(CharacterFile))
+			{
+				this.icon = IconChar.User;
+			}
+			else if (this.Type == typeof(PoseFile))
+			{
+				this.icon = IconChar.Running;
+			}
+			else if (this.Type == typeof(CameraShotFile))
+			{
+				this.icon = IconChar.Camera;
+			}
+			else if (this.Type == typeof(SceneFile))
+			{
+				this.icon = IconChar.Users;
+			}
+			else
+			{
+				this.icon = IconChar.Question;
+			}
 		}
 
 		public override bool CanLoad => true;
 		public FileInfo Info { get; init; }
 		public Type Type { get; init; }
-		public override IconChar Icon
-		{
-			get
-			{
-				if (this.Type == typeof(CharacterFile))
-					return IconChar.User;
-
-				if (this.Type == typeof(PoseFile))
-					return IconChar.Running;
-
-				if (this.Type == typeof(CameraShotFile))
-					return IconChar.Camera;
-
-				if (this.Type == typeof(SceneFile))
-					return IconChar.Users;
-
-				return IconChar.Question;
-			}
-		}
-
+		public override IconChar Icon => this.icon;
 		public override bool HasThumbnail => this.hasThumbnail;
 		public override ImageSource? Thumbnail
 		{
@@ -236,47 +239,6 @@ public class FileSource : LibrarySourceBase
 
 				FileBase fileBase = FileService.Load(this.Info, SupportedFiles);
 				return fileBase.ImageSource;
-
-				/*if (this.thumbnail == null && !this.isThumbnailLoading)
-				{
-					this.isThumbnailLoading = true;
-
-					Task.Run(async () =>
-					{
-						try
-						{
-							await Dispatch.NonUiThread();
-
-							FileBase fileBase = FileService.Load(this.Info, SupportedFiles);
-
-							if (fileBase.Base64Image == null)
-								return;
-
-							byte[] binaryData = Convert.FromBase64String(fileBase.Base64Image);
-
-							await Dispatch.MainThread();
-							BitmapImage bi = new BitmapImage();
-							bi.BeginInit();
-							bi.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
-							bi.StreamSource = new MemoryStream(binaryData);
-							bi.EndInit();
-
-							this.thumbnail = bi;
-							this.isThumbnailLoading = false;
-
-							this.RaisePropertyChanged(nameof(this.Thumbnail));
-						}
-						catch (Exception ex)
-						{
-							this.Log.Warning(ex, "Failed to load file thumbnail");
-							this.thumbnail = null;
-						}
-
-						this.isThumbnailLoading = false;
-					});
-				}
-
-				return this.thumbnail;*/
 			}
 		}
 	}

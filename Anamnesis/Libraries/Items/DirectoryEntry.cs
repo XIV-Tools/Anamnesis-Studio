@@ -23,7 +23,7 @@ public class DirectoryEntry : EntryBase
 
 	public int ItemCount => this.allEntries.Count;
 
-	public async Task<IEnumerable<EntryBase>> GetItems(LibraryFilter filter, string[]? searchQuery, CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<EntryBase>> GetItems(LibraryFilter filter, string[]? searchQuery)
 	{
 		ConcurrentQueue<EntryBase> entries;
 		lock (this.allEntries)
@@ -32,6 +32,9 @@ public class DirectoryEntry : EntryBase
 		}
 
 		await Dispatch.NonUiThread();
+
+		if (filter.CancelRequested)
+			return entries;
 
 		ConcurrentBag<EntryBase> filteredEntries = new();
 
@@ -49,7 +52,7 @@ public class DirectoryEntry : EntryBase
 
 					try
 					{
-						if (filter != null && !filter.Filter(entry, this, searchQuery))
+						if (!filter.Filter(entry, this, searchQuery))
 						{
 							continue;
 						}
@@ -61,7 +64,7 @@ public class DirectoryEntry : EntryBase
 
 					filteredEntries.Add(entry);
 
-					if (cancellationToken.IsCancellationRequested)
+					if (filter.CancelRequested)
 					{
 						entries.Clear();
 					}
@@ -72,6 +75,9 @@ public class DirectoryEntry : EntryBase
 		}
 
 		await Task.WhenAll(tasks.ToArray());
+
+		if (filter.CancelRequested)
+			return entries;
 
 		List<EntryBase> items = new(filteredEntries);
 		items.Sort(filter);

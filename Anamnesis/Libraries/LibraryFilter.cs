@@ -12,27 +12,42 @@ using XivToolsWpf;
 public class LibraryFilter : IComparer<EntryBase>, IComparer<Pack>
 {
 	public HashSet<string> Tags { get; init; } = new();
+	public bool CancelRequested { get; private set; } = false;
+	public bool RestartRequeted { get; private set; } = false;
+
+	public void Restart()
+	{
+		this.CancelRequested = true;
+		this.RestartRequeted = true;
+	}
+
+	public void Cancel()
+	{
+		this.CancelRequested = true;
+	}
+
+	public void ResetCancelation()
+	{
+		this.CancelRequested = false;
+		this.RestartRequeted = false;
+	}
 
 	public bool Filter(EntryBase entry, DirectoryEntry? parent, string[]? searchQuerry)
 	{
+		bool anyTagMatch = false;
+
 		if (entry is ItemEntry item)
 		{
 			// Check if any tags match the search
 			if (searchQuerry != null)
 			{
-				bool anyTagMatch = false;
 				foreach (string tag in item.Tags)
 				{
-					if (!SearchUtility.Matches(tag, searchQuerry))
+					if (SearchUtility.Matches(tag, searchQuerry))
 					{
 						anyTagMatch = true;
 						break;
 					}
-				}
-
-				if (!anyTagMatch)
-				{
-					return false;
 				}
 			}
 
@@ -45,10 +60,11 @@ public class LibraryFilter : IComparer<EntryBase>, IComparer<Pack>
 			}
 		}
 
-		if (!SearchUtility.Matches(entry.Name, searchQuerry))
-			return false;
+		if (SearchUtility.Matches(entry.Name, searchQuerry) ||
+			anyTagMatch)
+			return true;
 
-		return true;
+		return false;
 	}
 
 	public bool Filter(Pack group, Pack? parent)
