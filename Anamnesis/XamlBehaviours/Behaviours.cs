@@ -22,6 +22,11 @@ public static class Behaviours
 		host.AttachHandler<LocalizedTooltipBehaiour>(true, key);
 	}
 
+	public static void SetSmoothScroll(DependencyObject host, bool enable)
+	{
+		host.AttachHandler<SmoothScrollBehaviour>(enable);
+	}
+
 	public static void SetNavigation(Button host, string destination)
 	{
 		host.Click += (s, e) =>

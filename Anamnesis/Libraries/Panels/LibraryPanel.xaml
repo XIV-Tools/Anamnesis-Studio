@@ -3,6 +3,7 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
+	xmlns:ana="clr-namespace:Anamnesis"
 	xmlns:controls="clr-namespace:Anamnesis.Controls"
 	xmlns:controls1="clr-namespace:Anamnesis.Libraries.Controls"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -594,10 +595,13 @@
 			<!--  Icon Grid  -->
 			<ListBox
 				Grid.Row="1"
+				ana:Behaviours.SmoothScroll="True"
 				Background="Transparent"
 				ItemsSource="{Binding Entries, IsAsync=True}"
 				MouseDoubleClick="OnItemDoubleClicked"
 				SelectedItem="{Binding SelectedEntry}"
+				VirtualizingPanel.ScrollUnit="Pixel"
+				VirtualizingPanel.VirtualizationMode="Recycling"
 				Visibility="{Binding ViewList, Converter={StaticResource !B2V}}">
 
 				<ListBox.ItemsPanel>
