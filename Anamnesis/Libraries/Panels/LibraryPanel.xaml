@@ -448,6 +448,16 @@
 																<Setter Property="Foreground" Value="{StaticResource MaterialDesignTextFieldBoxDisabledBackground}" />
 																<Setter TargetName="Border" Property="Opacity" Value="0" />
 															</Trigger>
+															<DataTrigger
+																Binding="{Binding IsCurrent}"
+																Value="False">
+																<Setter TargetName="TagIcon" Property="Opacity" Value="0" />
+															</DataTrigger>
+															<DataTrigger
+																Binding="{Binding IsCurrent}"
+																Value="True">
+																<Setter TargetName="TagIcon" Property="Opacity" Value="1" />
+															</DataTrigger>
 														</ControlTemplate.Triggers>
 													</ControlTemplate>
 												</Setter.Value>

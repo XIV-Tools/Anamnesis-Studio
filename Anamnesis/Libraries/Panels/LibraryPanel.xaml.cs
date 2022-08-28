@@ -26,6 +26,7 @@ public partial class LibraryPanel : PanelBase
 	private string[]? searchQuery;
 	private string searchText = string.Empty;
 	private int filterDelay = 500;
+	private EntryBase? selectedEntry;
 
 	public LibraryPanel(IPanelHost host)
 		: base(host)
@@ -36,7 +37,6 @@ public partial class LibraryPanel : PanelBase
 	}
 
 	public bool NarrowMode { get; set; }
-	public EntryBase? SelectedEntry { get; set; }
 	public LibraryFilter Filter { get; init; } = new();
 	public Pack? SelectedPack { get; set; }
 	public ObservableCollection<Tag> FilterByTags { get; init; } = new();
@@ -47,6 +47,16 @@ public partial class LibraryPanel : PanelBase
 
 	[AlsoNotifyFor(nameof(SelectedEntry))]
 	public ItemEntry? SelectedItem => this.SelectedEntry as ItemEntry;
+
+	public EntryBase? SelectedEntry
+	{
+		get => this.selectedEntry;
+		set
+		{
+			this.selectedEntry = value;
+			this.OnSelectionChanged(value);
+		}
+	}
 
 	public string Search
 	{
@@ -284,6 +294,14 @@ public partial class LibraryPanel : PanelBase
 		this.SearchBox.Focus();
 	}
 
+	private void OnSelectionChanged(EntryBase? entry)
+	{
+		foreach(Tag tag in this.FilterByTags)
+		{
+			tag.IsCurrent = entry?.HasTag(tag.Name) ?? false;
+		}
+	}
+
 	[AddINotifyPropertyChangedInterface]
 	public new class Tag
 	{
@@ -298,6 +316,7 @@ public partial class LibraryPanel : PanelBase
 
 		public string Name { get; set; }
 		public bool IsAvailable { get; set; } = true;
+		public bool IsCurrent { get; set; } = false;
 
 		public bool IsEnabled
 		{
