@@ -98,6 +98,32 @@
 				x:Key="SinEaseOut"
 				EasingMode="EaseOut" />
 
+			<Storyboard x:Key="Collapse_ScaleX">
+				<DoubleAnimation
+					EasingFunction="{StaticResource SinEaseOut}"
+					Storyboard.TargetProperty="Opacity"
+					To="1"
+					Duration="0:0:0.200" />
+				<DoubleAnimation
+					EasingFunction="{StaticResource SinEaseOut}"
+					Storyboard.TargetProperty="LayoutTransform.(ScaleTransform.ScaleX)"
+					To="1"
+					Duration="0:0:0.200" />
+			</Storyboard>
+
+			<Storyboard x:Key="Expand_ScaleX">
+				<DoubleAnimation
+					EasingFunction="{StaticResource SinEaseIn}"
+					Storyboard.TargetProperty="Opacity"
+					To="0"
+					Duration="0:0:0.200" />
+				<DoubleAnimation
+					EasingFunction="{StaticResource SinEaseIn}"
+					Storyboard.TargetProperty="LayoutTransform.(ScaleTransform.ScaleX)"
+					To="0"
+					Duration="0:0:0.200" />
+			</Storyboard>
+
 		</ResourceDictionary>
 	</Application.Resources>
 </Application>

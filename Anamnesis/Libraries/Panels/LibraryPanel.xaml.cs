@@ -35,6 +35,7 @@ public partial class LibraryPanel : PanelBase
 		this.ContentArea.DataContext = this;
 	}
 
+	public bool NarrowMode { get; set; }
 	public EntryBase? SelectedEntry { get; set; }
 	public LibraryFilter Filter { get; init; } = new();
 	public Pack? SelectedPack { get; set; }
@@ -65,6 +66,12 @@ public partial class LibraryPanel : PanelBase
 
 			this.FilterItems(true);
 		}
+	}
+
+	protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+	{
+		base.OnRenderSizeChanged(sizeInfo);
+		this.NarrowMode = this.ActualWidth < 800;
 	}
 
 	private void OnPackSelectionChanged(object sender, SelectionChangedEventArgs e)
