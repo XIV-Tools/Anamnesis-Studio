@@ -29,6 +29,11 @@ public class OverlayWindow : FloatingWindow
 		get => new Rect(this.Left, this.Top, this.Width + 1, this.Height + 1);
 		set
 		{
+			if (value.Height != this.Height || value.Width != this.Width)
+			{
+				this.SizeToContent = SizeToContent.Manual;
+			}
+
 			this.Width = value.Width;
 			this.Height = value.Height;
 

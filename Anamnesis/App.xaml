@@ -9,9 +9,6 @@
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 
-				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles.xaml" />
-
-
 				<!--  Material Design  -->
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Indigo.xaml" />
@@ -32,6 +29,7 @@
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.Label.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.Listbox.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListView.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Menu.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PasswordBox.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
@@ -50,7 +48,22 @@
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Thumb.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ValidationErrorTemplate.xaml" />
 
-				<!--<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Menu.xaml" />-->
+				<!--  XivToolsWPF  -->
+				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/BorderStyles.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/GroupBoxStyles.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/ButtonStyles.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/TextBlockStyles.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/ToggleButtonStyles.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/ExpanderStyles.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/TabControlStyles.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/TextBoxStyles.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/ComboBoxStyles.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/MenuStyles.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/MarkdownStyles.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/WindowStyles.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/ScrollBarStyles.xaml" />
+
+				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles.xaml" />
 
 			</ResourceDictionary.MergedDictionaries>
 
