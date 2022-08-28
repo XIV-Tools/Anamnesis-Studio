@@ -96,6 +96,8 @@
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
 				<RowDefinition />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 
 			<ComboBox
@@ -139,22 +141,15 @@
 						<ColumnDefinition />
 					</Grid.ColumnDefinitions>
 
-					<Border
+					<controls:Image
 						Grid.Row="0"
 						Grid.ColumnSpan="2"
 						Height="138"
-						Margin="-7,-7,-7,0"
+						Margin="-8,-8,-8,0"
 						BorderBrush="Transparent"
 						BorderThickness="1"
 						CornerRadius="6,6,0,0"
-						Visibility="{Binding SelectedPack.HeaderImage, Converter={StaticResource NotNullToVisibilityConverter}}">
-
-						<Border.Background>
-							<ImageBrush
-								ImageSource="{Binding SelectedPack.HeaderImage}"
-								Stretch="Uniform" />
-						</Border.Background>
-					</Border>
+						Source="{Binding SelectedPack.HeaderImage}" />
 
 					<XivToolsWpf:TextBlock
 						Grid.Row="1"
@@ -328,30 +323,15 @@
 						<ColumnDefinition />
 					</Grid.ColumnDefinitions>
 
-					<Border
+					<controls:Image
 						Grid.Row="0"
 						Grid.ColumnSpan="2"
 						Height="250"
-						Margin="-7,-7,-7,0"
+						Margin="-8,-8,-8,0"
 						BorderBrush="Transparent"
 						BorderThickness="1"
 						CornerRadius="6,6,0,0"
-						Visibility="{Binding SelectedItem.Icon, Converter={StaticResource NotNullToVisibilityConverter}}">
-
-						<Border.Background>
-							<ImageBrush
-								ImageSource="{Binding SelectedItem.Thumbnail}"
-								Stretch="Fill" />
-						</Border.Background>
-
-						<Border CornerRadius="6,6,0,0">
-							<Border.Background>
-								<ImageBrush
-									ImageSource="{Binding SelectedItem.Thumbnail}"
-									Stretch="Uniform" />
-							</Border.Background>
-						</Border>
-					</Border>
+						Source="{Binding SelectedItem.Thumbnail}" />
 
 					<XivToolsWpf:TextBlock
 						Grid.Row="1"
@@ -408,7 +388,6 @@
 
 					<ItemsControl
 						Grid.Row="1"
-						Margin="6"
 						ItemsSource="{Binding FilterByTags}">
 						<ItemsControl.ItemsPanel>
 							<ItemsPanelTemplate>
@@ -487,7 +466,15 @@
 					</ItemsControl>
 				</Grid>
 			</ScrollViewer>
+
+			<CheckBox
+				Grid.Row="3"
+				Margin="6,3,6,6">
+				<TextBlock Text="Live Preview" />
+			</CheckBox>
 		</Grid>
+
+
 
 		<Grid
 			Grid.Column="2"
