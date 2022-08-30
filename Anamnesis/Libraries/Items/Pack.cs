@@ -5,14 +5,7 @@ namespace Anamnesis.Libraries.Items;
 
 using Anamnesis.Libraries.Sources;
 using PropertyChanged;
-using Serilog;
-using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Media;
-using XivToolsWpf;
 using XivToolsWpf.Extensions;
 
 [AddINotifyPropertyChangedInterface]
@@ -34,9 +27,7 @@ public class Pack : DirectoryEntry
 		this.Source = source;
 	}
 
-	public ImageSource? HeaderImage { get; set; }
 	public string? Author { get; set; }
-	public string? Description { get; set; }
 	public string? Version { get; set; }
 	public bool IsUpdateAvailable { get; set; }
 	public bool IsUpdating { get; set; }

@@ -3,11 +3,13 @@
 
 namespace Anamnesis.Libraries.Items;
 
+using FontAwesome.Sharp;
 using PropertyChanged;
 using Serilog;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Media;
 
 [AddINotifyPropertyChangedInterface]
 public abstract class EntryBase : INotifyPropertyChanged
@@ -15,8 +17,11 @@ public abstract class EntryBase : INotifyPropertyChanged
 	public event PropertyChangedEventHandler? PropertyChanged;
 
 	public string? Name { get; set; }
+	public string? Description { get; set; } = null;
 	public abstract bool IsDirectory { get; }
-	public abstract bool HasThumbnail { get; }
+	public bool HasThumbnail => this.Thumbnail != null;
+	public virtual ImageSource? Thumbnail { get; set; }
+	public abstract IconChar Icon { get; }
 	public ObservableCollection<string> Tags { get; init; } = new();
 
 	public ILogger Log => Serilog.Log.ForContext(this.GetType());
@@ -25,6 +30,8 @@ public abstract class EntryBase : INotifyPropertyChanged
 	{
 		return $"[{this.GetType()}] {this.Name}";
 	}
+
+	public abstract bool IsType(LibraryFilter.Types type);
 
 	public bool HasTag(string tag)
 	{

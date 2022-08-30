@@ -79,7 +79,7 @@ public class GameDataSource : LibrarySourceBase
 		bi.UriSource = new Uri("https://cdn.discordapp.com/attachments/811569064895184956/1010781496564527135/Affleck.png");
 		bi.EndInit();
 
-		pack.HeaderImage = bi;
+		pack.Thumbnail = bi;
 
 		await this.Load(pack);
 		await this.AddPack(pack);
@@ -120,6 +120,6 @@ public class GameDataSource : LibrarySourceBase
 
 		public override ImageSource? Thumbnail => this.npc.Icon?.GetImageSource();
 		public override IconChar Icon => IconChar.User;
-		public override bool HasThumbnail => false;
+		public override bool IsType(LibraryFilter.Types type) => type == LibraryFilter.Types.Characters;
 	}
 }

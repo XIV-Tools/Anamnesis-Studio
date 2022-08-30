@@ -80,6 +80,7 @@ internal class LooseFileSource : LibrarySourceBase
 		DirectoryEntry entry = new();
 		entry.Parent = directory;
 		entry.Name = info.Name;
+		entry.Description = info.FullName;
 		directory.AddEntry(entry);
 
 		foreach (DirectoryInfo directoryInfo in info.GetDirectories())

@@ -9,6 +9,7 @@ using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -34,19 +35,14 @@ public partial class LibraryPanel : PanelBase
 		this.InitializeComponent();
 
 		this.ContentArea.DataContext = this;
+		this.Filter.PropertyChanged += this.OnFilterChanged;
 	}
 
-	public bool NarrowMode { get; set; }
 	public LibraryFilter Filter { get; init; } = new();
-	public Pack? SelectedPack { get; set; }
 	public ObservableCollection<Tag> FilterByTags { get; init; } = new();
 	public FastObservableCollection<EntryBase> Entries { get; init; } = new();
 	public DirectoryEntry? CurrentDirectory { get; set; }
-
 	public bool ViewList { get; set; } = false;
-
-	[AlsoNotifyFor(nameof(SelectedEntry))]
-	public ItemEntry? SelectedItem => this.SelectedEntry as ItemEntry;
 
 	public EntryBase? SelectedEntry
 	{
@@ -76,30 +72,6 @@ public partial class LibraryPanel : PanelBase
 
 			this.FilterItems(true);
 		}
-	}
-
-	protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
-	{
-		base.OnRenderSizeChanged(sizeInfo);
-		this.NarrowMode = this.ActualWidth < 800;
-	}
-
-	private void OnPackSelectionChanged(object sender, SelectionChangedEventArgs e)
-	{
-		this.Entries.Clear();
-		this.CurrentDirectory = null;
-
-		if (this.SelectedPack != null)
-		{
-			this.FilterByTags.Clear();
-
-			foreach (string tag in this.SelectedPack.AvailableTags)
-			{
-				this.FilterByTags.Add(new Tag(this, tag));
-			}
-		}
-
-		this.FilterItems();
 	}
 
 	private void SetTagEnabled(Tag tag, bool enable)
@@ -144,6 +116,11 @@ public partial class LibraryPanel : PanelBase
 			this.supressTagEvents = false;
 		}
 
+		this.FilterItems();
+	}
+
+	private void OnFilterChanged(object? sender, PropertyChangedEventArgs e)
+	{
 		this.FilterItems();
 	}
 
@@ -195,14 +172,6 @@ public partial class LibraryPanel : PanelBase
 		if (this.Filter.CancelRequested)
 			return;
 
-		DirectoryEntry? current = this.SelectedPack;
-
-		if (this.CurrentDirectory != null)
-			current = this.CurrentDirectory;
-
-		if (current == null)
-			return;
-
 		HashSet<string> availableTags = new();
 
 		await Dispatch.NonUiThread();
@@ -226,7 +195,7 @@ public partial class LibraryPanel : PanelBase
 		if (this.Filter.Tags.Count == this.FilterByTags.Count)
 			this.Filter.Tags.Clear();
 
-		IEnumerable<EntryBase> filteredItems = await current.GetItems(this.Filter, this.searchQuery);
+		IEnumerable<EntryBase> filteredItems = await this.Filter.GetItems(LibraryService.Instance.Packs, this.searchQuery);
 
 		if (this.Filter.CancelRequested)
 			return;
@@ -253,16 +222,6 @@ public partial class LibraryPanel : PanelBase
 		{
 			tag.IsAvailable = availableTags.Contains(tag.Name);
 		}
-	}
-
-	private void OnPackRefreshClicked(object sender, RoutedEventArgs e)
-	{
-		this.SelectedPack?.Refresh();
-	}
-
-	private void OnPackUpdateClicked(object sender, RoutedEventArgs e)
-	{
-		this.SelectedPack?.Update();
 	}
 
 	private void OnBackClicked(object sender, RoutedEventArgs e)
@@ -296,7 +255,7 @@ public partial class LibraryPanel : PanelBase
 
 	private void OnSelectionChanged(EntryBase? entry)
 	{
-		foreach(Tag tag in this.FilterByTags)
+		foreach (Tag tag in this.FilterByTags)
 		{
 			tag.IsCurrent = entry?.HasTag(tag.Name) ?? false;
 		}

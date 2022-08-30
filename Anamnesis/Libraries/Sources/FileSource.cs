@@ -229,7 +229,7 @@ public class FileSource : LibrarySourceBase
 		public FileInfo Info { get; init; }
 		public Type Type { get; init; }
 		public override IconChar Icon => this.icon;
-		public override bool HasThumbnail => this.hasThumbnail;
+
 		public override ImageSource? Thumbnail
 		{
 			get
@@ -240,6 +240,24 @@ public class FileSource : LibrarySourceBase
 				FileBase fileBase = FileService.Load(this.Info, SupportedFiles);
 				return fileBase.ImageSource;
 			}
+		}
+
+		public override bool IsType(LibraryFilter.Types type)
+		{
+			if (type == LibraryFilter.Types.Characters && this.Type == typeof(CharacterFile))
+			{
+				return true;
+			}
+			else if (type == LibraryFilter.Types.Poses && this.Type == typeof(PoseFile))
+			{
+				return true;
+			}
+			else if (type == LibraryFilter.Types.Scenes && this.Type == typeof(SceneFile))
+			{
+				return true;
+			}
+
+			return false;
 		}
 	}
 
@@ -258,6 +276,10 @@ public class FileSource : LibrarySourceBase
 
 		public override bool CanLoad => false;
 		public override IconChar Icon => IconChar.Warning;
-		public override bool HasThumbnail => false;
+
+		public override bool IsType(LibraryFilter.Types type)
+		{
+			return false;
+		}
 	}
 }
