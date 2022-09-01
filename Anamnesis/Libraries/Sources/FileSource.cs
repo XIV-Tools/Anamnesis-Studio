@@ -67,10 +67,6 @@ internal class FileSource : LibrarySourceBase
 
 	public override async Task Load()
 	{
-		////Pack pack = new Pack("looseFiles", this);
-		////pack.Name = LocalizationService.GetString("Library_LooseFiles");
-		////await this.AddPack(pack);
-
 		// Dont hit the file system on the main thread.
 		await Dispatch.NonUiThread();
 
@@ -84,8 +80,6 @@ internal class FileSource : LibrarySourceBase
 			pack.Description = info.FullName;
 			await this.AddPack(pack);
 			this.Populate(pack, info);
-
-			////this.AddDirectory(pack, directoryInfo);
 		}
 	}
 
@@ -178,6 +172,7 @@ internal class FileSource : LibrarySourceBase
 		public Type Type { get; init; }
 		public override IconChar Icon => this.icon;
 		public override IconChar IconBack => IconChar.File;
+		public override bool CanOpen => true;
 
 		public override ImageSource? Thumbnail
 		{
@@ -226,10 +221,11 @@ internal class FileSource : LibrarySourceBase
 		public override bool CanLoad => false;
 		public override IconChar Icon => IconChar.Warning;
 		public override IconChar IconBack => IconChar.File;
+		public override bool CanOpen => false;
 
 		public override bool IsType(LibraryFilter.Types type)
 		{
-			return false;
+			return true;
 		}
 	}
 }

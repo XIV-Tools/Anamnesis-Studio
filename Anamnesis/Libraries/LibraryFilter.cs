@@ -193,12 +193,22 @@ public class LibraryFilter : IComparer<EntryBase>, INotifyPropertyChanged
 						}
 						else
 						{
-							// If we are not flattening, check if the directory has any children that
-							// pass the filter.
-							List<EntryBase> children = await this.DoFilter(dir, true, searchQuery);
-							if (children.Count <= 0)
+							if (dir is Pack pack && pack.IsUpdateAvailable)
 							{
+								// Add empty packs that have an update regardless of filter, since we don't
+								// know whats in them till they update.
+								filteredEntries.Add(pack);
 								continue;
+							}
+							else
+							{
+								// If we are not flattening, check if the directory has any children that
+								// pass the filter.
+								List<EntryBase> children = await this.DoFilter(dir, true, searchQuery);
+								if (children.Count <= 0)
+								{
+									continue;
+								}
 							}
 						}
 					}

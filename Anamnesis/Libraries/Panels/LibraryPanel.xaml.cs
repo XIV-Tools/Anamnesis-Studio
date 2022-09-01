@@ -239,6 +239,9 @@ public partial class LibraryPanel : PanelBase
 
 	private void OnItemDoubleClicked(object sender, MouseButtonEventArgs e)
 	{
+		if (this.SelectedEntry?.CanOpen != true)
+			return;
+
 		if (this.SelectedEntry is DirectoryEntry directory)
 		{
 			this.CurrentDirectory = directory;
@@ -246,6 +249,7 @@ public partial class LibraryPanel : PanelBase
 		}
 		else if (this.SelectedEntry is ItemEntry item)
 		{
+			// TODO...
 		}
 	}
 

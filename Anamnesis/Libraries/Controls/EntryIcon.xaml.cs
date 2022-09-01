@@ -6,6 +6,7 @@ namespace Anamnesis.Libraries.Controls;
 using System.Windows.Controls;
 using System.Windows;
 using Anamnesis.Libraries.Items;
+using FontAwesome.Sharp;
 
 public partial class EntryIcon : UserControl
 {
@@ -33,6 +34,17 @@ public partial class EntryIcon : UserControl
 			this.IconArea.VerticalAlignment = VerticalAlignment.Stretch;
 			this.IconArea.Height = double.NaN;
 			this.IconShadow.Visibility = Visibility.Collapsed;
+		}
+
+		if (entry?.IconBack == IconChar.BoxOpen)
+		{
+			this.IconFront.Margin = new Thickness(0, 45, 0, 12);
+			this.IconFront.FontSize = 30;
+		}
+		else if (entry?.IconBack == IconChar.Folder)
+		{
+			this.IconFront.Margin = new Thickness(0, 25, 0, 12);
+			this.IconFront.FontSize = 45;
 		}
 	}
 

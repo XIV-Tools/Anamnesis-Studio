@@ -18,12 +18,15 @@ public abstract class EntryBase : INotifyPropertyChanged
 
 	public string? Name { get; set; }
 	public string? Description { get; set; } = null;
-	public abstract bool IsDirectory { get; }
-	public bool HasThumbnail => this.Thumbnail != null;
+	public ObservableCollection<string> Tags { get; init; } = new();
 	public virtual ImageSource? Thumbnail { get; set; }
+
+	public abstract bool IsDirectory { get; }
 	public abstract IconChar Icon { get; }
 	public abstract IconChar IconBack { get; }
-	public ObservableCollection<string> Tags { get; init; } = new();
+	public abstract bool CanOpen { get; }
+
+	public bool HasThumbnail => this.Thumbnail != null;
 
 	public ILogger Log => Serilog.Log.ForContext(this.GetType());
 

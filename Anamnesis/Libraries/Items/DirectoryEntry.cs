@@ -16,7 +16,7 @@ public class DirectoryEntry : EntryBase
 	public override IconChar Icon => IconChar.None;
 	public override IconChar IconBack => IconChar.Folder;
 
-	public int ItemCount => this.Entries.Count;
+	public override bool CanOpen => true;
 
 	public virtual void AddEntry(EntryBase entry)
 	{
