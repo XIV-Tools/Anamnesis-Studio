@@ -299,8 +299,7 @@
 
 		<Grid
 			Grid.Row="2"
-			Grid.Column="1"
-			Visibility="{Binding SelectedPack, Converter={StaticResource NotNullToVisibilityConverter}}">
+			Grid.Column="1">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
 				<RowDefinition />

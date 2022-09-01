@@ -20,11 +20,13 @@ public abstract class EntryBase : INotifyPropertyChanged
 	public string? Description { get; set; } = null;
 	public ObservableCollection<string> Tags { get; init; } = new();
 	public virtual ImageSource? Thumbnail { get; set; }
+	public bool IsUpdateAvailable { get; set; } = false;
+	public bool IsUpdating { get; set; } = false;
 
 	public abstract bool IsDirectory { get; }
 	public abstract IconChar Icon { get; }
 	public abstract IconChar IconBack { get; }
-	public abstract bool CanOpen { get; }
+	public virtual bool CanOpen => !this.IsUpdating;
 
 	public bool HasThumbnail => this.Thumbnail != null;
 

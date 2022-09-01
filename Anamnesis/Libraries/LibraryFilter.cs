@@ -195,10 +195,6 @@ public class LibraryFilter : IComparer<EntryBase>, INotifyPropertyChanged
 						{
 							if (dir is Pack pack && pack.IsUpdateAvailable)
 							{
-								// Add empty packs that have an update regardless of filter, since we don't
-								// know whats in them till they update.
-								filteredEntries.Add(pack);
-								continue;
 							}
 							else
 							{

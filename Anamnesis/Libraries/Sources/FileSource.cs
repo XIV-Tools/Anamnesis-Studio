@@ -75,15 +75,17 @@ internal class FileSource : LibrarySourceBase
 			if (!info.Exists)
 				continue;
 
+			List<string> tags = new();
+
 			Pack pack = new(info.FullName, this);
 			pack.Name = info.Name;
 			pack.Description = info.FullName;
 			await this.AddPack(pack);
-			this.Populate(pack, info);
+			this.Populate(pack, info, tags);
 		}
 	}
 
-	private DirectoryEntry AddDirectory(DirectoryEntry directory, DirectoryInfo info)
+	private DirectoryEntry AddDirectory(DirectoryEntry directory, DirectoryInfo info, List<string> tags)
 	{
 		DirectoryEntry entry = new();
 		entry.Parent = directory;
@@ -91,16 +93,32 @@ internal class FileSource : LibrarySourceBase
 		entry.Description = info.FullName;
 		directory.AddEntry(entry);
 
-		this.Populate(entry, info);
+		tags.Add(info.Name);
+
+		this.Populate(entry, info, tags);
+
+		HashSet<string> childrenTags = new();
+		foreach (EntryBase entryBase in entry.Entries)
+		{
+			foreach (string tag in entryBase.Tags)
+			{
+				childrenTags.Add(tag);
+			}
+		}
+
+		foreach (string tag in childrenTags)
+		{
+			entry.Tags.Add(tag);
+		}
 
 		return entry;
 	}
 
-	private void Populate(DirectoryEntry entry, DirectoryInfo info)
+	private void Populate(DirectoryEntry entry, DirectoryInfo info, List<string> tags)
 	{
 		foreach (DirectoryInfo directoryInfo in info.GetDirectories())
 		{
-			this.AddDirectory(entry, directoryInfo);
+			this.AddDirectory(entry, directoryInfo, new List<string>(tags));
 		}
 
 		foreach (FileInfo file in info.GetFiles("*.*", SearchOption.TopDirectoryOnly))
@@ -110,7 +128,7 @@ internal class FileSource : LibrarySourceBase
 
 			try
 			{
-				entry.AddEntry(new FileItem(file));
+				entry.AddEntry(new FileItem(file, tags.ToArray()));
 			}
 			catch (Exception ex)
 			{

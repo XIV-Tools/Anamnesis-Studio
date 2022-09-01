@@ -38,7 +38,7 @@ public partial class LibraryPanel : PanelBase
 	}
 
 	public LibraryFilter Filter { get; init; } = new();
-	public ObservableCollection<Tag> FilterByTags { get; init; } = new();
+	public FastObservableCollection<Tag> FilterByTags { get; init; } = new();
 	public FastObservableCollection<EntryBase> Entries { get; init; } = new();
 	public DirectoryEntry? CurrentDirectory { get; set; }
 	public bool ViewList { get; set; } = false;
@@ -210,7 +210,8 @@ public partial class LibraryPanel : PanelBase
 
 		this.Entries.Replace(filteredItems);
 
-		foreach (EntryBase entry in filteredItems)
+		// Also needs to be done with flattening in mind...
+		/*foreach (EntryBase entry in filteredItems)
 		{
 			if (entry is ItemEntry item)
 			{
@@ -227,7 +228,34 @@ public partial class LibraryPanel : PanelBase
 		foreach (Tag tag in this.FilterByTags)
 		{
 			tag.IsAvailable = availableTags.Contains(tag.Name);
+		}*/
+	}
+
+	private async Task GetAllTags()
+	{
+		await Dispatch.NonUiThread();
+
+		LibraryFilter filter = new();
+		filter.Favorites = false;
+		filter.Flatten = true;
+		filter.Type = this.Filter.Type;
+		IEnumerable<EntryBase> entries = await filter.GetItems(LibraryService.Instance.Packs, null);
+
+		Dictionary<string, Tag> tags = new();
+
+		foreach (EntryBase entry in entries)
+		{
+			foreach (string tag in entry.Tags)
+			{
+				if (tags.ContainsKey(tag))
+					continue;
+
+				tags.Add(tag, new(this, tag));
+			}
 		}
+
+		await Dispatch.MainThread();
+		this.FilterByTags.Replace(tags.Values);
 	}
 
 	private void OnBackClicked(object sender, RoutedEventArgs e)
@@ -273,6 +301,7 @@ public partial class LibraryPanel : PanelBase
 		this.Filter.Favorites = false;
 		this.Filter.Flatten = false;
 
+		this.GetAllTags().Run();
 		this.FilterItems();
 	}
 
@@ -282,6 +311,7 @@ public partial class LibraryPanel : PanelBase
 		this.Filter.Type = LibraryFilter.Types.All;
 		this.Filter.Flatten = true;
 
+		this.GetAllTags().Run();
 		this.FilterItems();
 	}
 
