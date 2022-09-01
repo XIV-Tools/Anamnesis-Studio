@@ -176,6 +176,7 @@ internal class GitHubSource : FileSource
 			if (this.PacksCache.Count <= 0 || timeSinceLastCheck > GitHubSource.CheckFrequency)
 			{
 				await this.CheckForUpdates();
+				this.LastChecked = DateTimeOffset.UtcNow;
 			}
 
 			foreach ((string url, PackCache cache) in this.PacksCache)
