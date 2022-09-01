@@ -13,10 +13,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Anamnesis.Core.Memory;
+using Anamnesis.Files;
 using Anamnesis.GUI.Windows;
 using Anamnesis.Keyboard;
 using Anamnesis.Services;
 using Anamnesis.Windows;
+using Microsoft.Win32;
 using PropertyChanged;
 using XivToolsWpf;
 
@@ -32,23 +34,6 @@ public class MemoryService : ServiceBase<MemoryService>
 	public static Process? Process { get; private set; }
 	public static bool IsProcessAlive { get; private set; }
 	public static bool DoesProcessHaveFocus { get; private set; }
-
-	public static string GamePath
-	{
-		get
-		{
-			if (SettingsService.Current.GamePath != null)
-				return SettingsService.Current.GamePath;
-
-			if (Process == null)
-				throw new Exception("No game process");
-
-			if (Process.MainModule == null)
-				throw new Exception("Process has no main module");
-
-			return Path.GetDirectoryName(Process.MainModule.FileName) + "\\..\\";
-		}
-	}
 
 	public int LastTickCount { get; set; }
 
@@ -276,7 +261,7 @@ public class MemoryService : ServiceBase<MemoryService>
 	public override async Task Initialize()
 	{
 		await base.Initialize();
-		await this.GetProcess();
+		////await this.GetProcess();
 
 		_ = Task.Run(this.ProcessWatcherTask);
 	}
@@ -301,8 +286,8 @@ public class MemoryService : ServiceBase<MemoryService>
 		if (process.MainModule == null)
 			throw new Exception("Process has no main module");
 
-		// checke the game version as soon as we can
-		string file = MemoryService.GamePath + "game/ffxivgame.ver";
+		// check the game version as soon as we can
+		string file = GameDataService.GamePath + "game/ffxivgame.ver";
 		string gameVer = File.ReadAllText(file);
 
 		Log.Information($"Found game version: {gameVer}");

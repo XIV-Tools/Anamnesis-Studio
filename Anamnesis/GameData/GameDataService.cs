@@ -5,6 +5,7 @@ namespace Anamnesis.Services;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Anamnesis.Actor;
@@ -14,7 +15,7 @@ using Anamnesis.GameData.Excel;
 using Anamnesis.GameData.Sheets;
 using Anamnesis.Memory;
 using Lumina.Data;
-
+using Microsoft.Win32;
 using LuminaData = global::Lumina.GameData;
 
 public class GameDataService : ServiceBase<GameDataService>
@@ -60,6 +61,54 @@ public class GameDataService : ServiceBase<GameDataService>
 	public static ExcelSheet<BuddyEquip> BuddyEquips { get; private set; } = null!;
 
 	public static EquipmentSheet Equipment { get; private set; } = null!;
+
+	public static string GamePath
+	{
+		get
+		{
+			if (MemoryService.Process?.MainModule != null)
+				return Path.GetDirectoryName(MemoryService.Process.MainModule.FileName) + "\\..\\";
+
+			if (SettingsService.Current.GamePath == null)
+			{
+				bool valid = false;
+
+				do
+				{
+					OpenFileDialog dlg = new OpenFileDialog();
+					dlg.Filter = "FFXIV | ffxiv_dx11.exe";
+					dlg.Title = "Select FFXIV Installation";
+					bool? result = dlg.ShowDialog();
+
+					if (result == true)
+					{
+						string path = Path.GetDirectoryName(dlg.FileName) + "\\..\\";
+
+						if (!Directory.Exists(path + "/boot") || !Directory.Exists(path + "/game"))
+						{
+							Log.Error("Invalid game path.");
+							valid = false;
+						}
+						else
+						{
+							SettingsService.Current.GamePath = path;
+							valid = true;
+						}
+					}
+					else
+					{
+						throw new Exception("Must select a game path");
+					}
+				}
+				while (!valid);
+			}
+
+			if (SettingsService.Current.GamePath == null)
+				throw new Exception("No game path");
+
+			return SettingsService.Current.GamePath;
+		}
+	}
 
 	public static ExcelSheet<T> GetSheet<T>()
 		where T : Lumina.Excel.ExcelRow
@@ -142,12 +191,12 @@ public class GameDataService : ServiceBase<GameDataService>
 		Language defaultLuminaLaunguage = Language.English;
 		Region = ClientRegion.Global;
 
-		if (File.Exists(Path.Combine(MemoryService.GamePath, "FFXIVBoot.exe")) || File.Exists(Path.Combine(MemoryService.GamePath, "rail_files", "rail_game_identify.json")))
+		if (File.Exists(Path.Combine(GameDataService.GamePath, "FFXIVBoot.exe")) || File.Exists(Path.Combine(GameDataService.GamePath, "rail_files", "rail_game_identify.json")))
 		{
 			Region = ClientRegion.Chinese;
 			defaultLuminaLaunguage = Language.ChineseSimplified;
 		}
-		else if (File.Exists(Path.Combine(MemoryService.GamePath, "boot", "FFXIV_Boot.exe")))
+		else if (File.Exists(Path.Combine(GameDataService.GamePath, "boot", "FFXIV_Boot.exe")))
 		{
 			Region = ClientRegion.Korean;
 			defaultLuminaLaunguage = Language.Korean;
@@ -172,7 +221,7 @@ public class GameDataService : ServiceBase<GameDataService>
 			Lumina.LuminaOptions options = new Lumina.LuminaOptions();
 			options.DefaultExcelLanguage = defaultLuminaLaunguage;
 
-			LuminaData = new LuminaData(MemoryService.GamePath + "\\game\\sqpack\\", options);
+			LuminaData = new LuminaData(GameDataService.GamePath + "\\game\\sqpack\\", options);
 
 			Races = GetSheet<Race>();
 			Tribes = GetSheet<Tribe>();

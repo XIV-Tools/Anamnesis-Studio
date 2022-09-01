@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Anamnesis.GameData;
 using Anamnesis.Memory;
 using Anamnesis.Serialization;
+using Anamnesis.Services;
 
 public class TexToolsService : ServiceBase<TexToolsService>
 {
@@ -44,7 +45,7 @@ public class TexToolsService : ServiceBase<TexToolsService>
 
 		try
 		{
-			string filePath = MemoryService.GamePath + "\\game\\XivMods.json";
+			string filePath = GameDataService.GamePath + "\\game\\XivMods.json";
 			if (!File.Exists(filePath))
 				return;
 
