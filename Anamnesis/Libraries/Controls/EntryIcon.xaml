@@ -30,8 +30,14 @@
 
 		<Viewbox x:Name="IconArea">
 			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+
 				<XivToolsWpf:IconBlock
 					x:Name="IconShadow"
+					Grid.ColumnSpan="2"
 					FontSize="95"
 					Foreground="Black"
 					Icon="{Binding IconBack}"
@@ -46,15 +52,25 @@
 				</XivToolsWpf:IconBlock>
 
 				<XivToolsWpf:IconBlock
+					Grid.ColumnSpan="2"
 					FontSize="90"
 					Icon="{Binding IconBack}" />
 
 				<XivToolsWpf:IconBlock
 					x:Name="IconFront"
+					Grid.Column="1"
 					Margin="0,32,0,6"
 					FontSize="52"
 					Foreground="{StaticResource MaterialDesignPaper}"
 					Icon="{Binding Icon}" />
+
+				<XivToolsWpf:IconBlock
+					Grid.Column="0"
+					Margin="6,40,-4,6"
+					FontSize="25"
+					Foreground="{StaticResource MaterialDesignPaper}"
+					Icon="Download"
+					Visibility="{Binding IsUpdateAvailable, Converter={StaticResource B2V}}" />
 			</Grid>
 		</Viewbox>
 	</Grid>
