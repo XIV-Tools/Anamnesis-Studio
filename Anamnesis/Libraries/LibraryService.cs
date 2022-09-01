@@ -22,7 +22,7 @@ public class LibraryService : ServiceBase<LibraryService>
 
 	public override Task Start()
 	{
-		this.AddSource(new LooseFileSource(
+		this.AddSource(new FileSource(
 			SettingsService.Current.DefaultCameraShotDirectory,
 			SettingsService.Current.DefaultCharacterDirectory,
 			SettingsService.Current.DefaultPoseDirectory,
@@ -45,7 +45,7 @@ public class LibraryService : ServiceBase<LibraryService>
 			List<Task> sourceTasks = new();
 			foreach (LibrarySourceBase source in this.sources)
 			{
-				sourceTasks.Add(source.LoadPacks());
+				sourceTasks.Add(source.Load());
 			}
 
 			await Task.WhenAll(sourceTasks);

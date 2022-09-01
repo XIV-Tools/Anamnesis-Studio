@@ -22,6 +22,7 @@ public abstract class EntryBase : INotifyPropertyChanged
 	public bool HasThumbnail => this.Thumbnail != null;
 	public virtual ImageSource? Thumbnail { get; set; }
 	public abstract IconChar Icon { get; }
+	public abstract IconChar IconBack { get; }
 	public ObservableCollection<string> Tags { get; init; } = new();
 
 	public ILogger Log => Serilog.Log.ForContext(this.GetType());

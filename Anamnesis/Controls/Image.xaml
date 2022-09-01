@@ -51,6 +51,7 @@
 
 			<Image
 				Margin="-10"
+				HorizontalAlignment="Center"
 				VerticalAlignment="Center"
 				Source="{Binding Source}"
 				Stretch="UniformToFill">
@@ -59,7 +60,9 @@
 				</Image.Effect>
 			</Image>
 
-			<Image Source="{Binding Source}" />
+			<Image
+				Margin="-1"
+				Source="{Binding Source}" />
 		</Grid>
 	</Grid>
 </UserControl>

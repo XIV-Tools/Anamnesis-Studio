@@ -27,7 +27,30 @@ public class GameDataSource : LibrarySourceBase
 	public override IconChar Icon => IconChar.Database;
 	public override string Name => LocalizationService.GetString("Library_GameDataSource");
 
-	protected override async Task Load(Pack pack)
+	public override async Task Load()
+	{
+		foreach (Packs pack in Enum.GetValues<Packs>())
+		{
+			await this.CreatePack(pack);
+		}
+	}
+
+	private async Task CreatePack(Packs packType)
+	{
+		Pack pack = new Pack(packType.ToString(), this);
+
+		BitmapImage bi = new BitmapImage();
+		bi.BeginInit();
+		bi.UriSource = new Uri("pack://application:,,,/Assets/ffxiv.png");
+		bi.EndInit();
+
+		pack.Thumbnail = bi;
+
+		await this.Populate(pack);
+		await this.AddPack(pack);
+	}
+
+	private async Task Populate(Pack pack)
 	{
 		Packs packType = Enum.Parse<Packs>(pack.Id);
 
@@ -55,34 +78,6 @@ public class GameDataSource : LibrarySourceBase
 		{
 			await this.Populate(pack, GameDataService.Ornaments, "Library_GameData_Ornament");
 		}
-	}
-
-	protected override Task Update(Pack pack)
-	{
-		throw new NotSupportedException();
-	}
-
-	protected override async Task Load()
-	{
-		foreach (Packs pack in Enum.GetValues<Packs>())
-		{
-			await this.CreatePack(pack);
-		}
-	}
-
-	private async Task CreatePack(Packs packType)
-	{
-		Pack pack = new Pack(packType.ToString(), this);
-
-		BitmapImage bi = new BitmapImage();
-		bi.BeginInit();
-		bi.UriSource = new Uri("https://cdn.discordapp.com/attachments/811569064895184956/1010781496564527135/Affleck.png");
-		bi.EndInit();
-
-		pack.Thumbnail = bi;
-
-		await this.Load(pack);
-		await this.AddPack(pack);
 	}
 
 	private async Task Populate(Pack pack, IEnumerable<INpcBase> npcs, params string[] tags)
@@ -120,6 +115,7 @@ public class GameDataSource : LibrarySourceBase
 
 		public override ImageSource? Thumbnail => this.npc.Icon?.GetImageSource();
 		public override IconChar Icon => IconChar.User;
+		public override IconChar IconBack => IconChar.File;
 		public override bool IsType(LibraryFilter.Types type) => type == LibraryFilter.Types.Characters;
 	}
 }

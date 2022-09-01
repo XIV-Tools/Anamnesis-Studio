@@ -48,18 +48,20 @@
 
 					<ToggleButton
 						Grid.Column="0"
-						IsChecked="{Binding Filter.Type, Converter={StaticResource EnumToBool}, ConverterParameter=Packs}"
+						Checked="OnFavoritesChecked"
+						IsChecked="{Binding Filter.Favorites}"
 						Style="{StaticResource TransparentIconToggleButton}">
 						<StackPanel Orientation="Horizontal">
 							<XivToolsWpf:IconBlock
 								Margin="0,0,6,0"
-								Icon="BoxOpen" />
-							<TextBlock Text="Packs" />
+								Icon="Heart" />
+							<TextBlock Text="Favorites" />
 						</StackPanel>
 					</ToggleButton>
 
 					<ToggleButton
 						Grid.Column="1"
+						Checked="OnTabChanged"
 						IsChecked="{Binding Filter.Type, Converter={StaticResource EnumToBool}, ConverterParameter=Poses}"
 						Style="{StaticResource TransparentIconToggleButton}">
 						<StackPanel Orientation="Horizontal">
@@ -72,6 +74,7 @@
 
 					<ToggleButton
 						Grid.Column="2"
+						Checked="OnTabChanged"
 						IsChecked="{Binding Filter.Type, Converter={StaticResource EnumToBool}, ConverterParameter=Characters}"
 						Style="{StaticResource TransparentIconToggleButton}">
 						<StackPanel Orientation="Horizontal">
@@ -84,6 +87,7 @@
 
 					<ToggleButton
 						Grid.Column="3"
+						Checked="OnTabChanged"
 						IsChecked="{Binding Filter.Type, Converter={StaticResource EnumToBool}, ConverterParameter=Scenes}"
 						Style="{StaticResource TransparentIconToggleButton}">
 						<StackPanel Orientation="Horizontal">
@@ -111,74 +115,6 @@
 				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 
-
-			<!--
-					<Grid
-						Grid.Row="7"
-						Grid.ColumnSpan="2"
-						Margin="0,6,0,0">
-
-						<Button
-							Width="28"
-							Height="28"
-							HorizontalAlignment="Left"
-							Click="OnPackRefreshClicked"
-							Style="{StaticResource TransparentIconButton}">
-							<XivToolsWpf:IconBlock Icon="Refresh" />
-						</Button>
-
-						<Button
-							Height="26"
-							Margin="3,0,0,0"
-							HorizontalAlignment="Right"
-							Click="OnPackUpdateClicked"
-							IsEnabled="{Binding SelectedPack.IsUpdating, Converter={StaticResource !B}}"
-							Style="{StaticResource TransparentButton}"
-							Visibility="{Binding SelectedPack.IsUpdateAvailable, Converter={StaticResource B2V}}">
-
-							<Grid>
-								<Grid
-									Margin="6,0"
-									Visibility="{Binding SelectedPack.IsUpdating, Converter={StaticResource !B2V}}">
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="Auto" />
-										<ColumnDefinition />
-									</Grid.ColumnDefinitions>
-
-									<XivToolsWpf:IconBlock
-										Grid.Column="0"
-										Margin="3"
-										Icon="Download" />
-									<XivToolsWpf:TextBlock
-										Grid.Column="1"
-										Margin="3"
-										Text="Update Available" />
-								</Grid>
-
-								<Grid
-									Margin="6,0"
-									Visibility="{Binding SelectedPack.IsUpdating, Converter={StaticResource B2V}}">
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="Auto" />
-										<ColumnDefinition />
-									</Grid.ColumnDefinitions>
-
-									<ProgressBar
-										Grid.Column="0"
-										IsIndeterminate="True"
-										Style="{StaticResource MaterialDesignCircularProgressBar}" />
-
-									<XivToolsWpf:TextBlock
-										Grid.Column="1"
-										Margin="3"
-										Text="Updating" />
-								</Grid>
-							</Grid>
-
-						</Button>
-					</Grid>-->
-
-			<!--  Item Info  -->
 			<Border
 				Grid.Row="1"
 				Style="{StaticResource InsetPanel}">
@@ -485,6 +421,7 @@
 
 						<RadioButton
 							Grid.Column="0"
+							Checked="OnFlattenChanged"
 							IsChecked="{Binding Filter.Flatten, Converter={StaticResource !B}}"
 							Style="{StaticResource TransparentIconToggleButton}">
 							<XivToolsWpf:IconBlock Icon="Folder" />
@@ -492,6 +429,7 @@
 
 						<RadioButton
 							Grid.Column="1"
+							Checked="OnFlattenChanged"
 							IsChecked="{Binding Filter.Flatten}"
 							Style="{StaticResource TransparentIconToggleButton}">
 							<XivToolsWpf:IconBlock Icon="FileLines" />
@@ -578,6 +516,14 @@
 					</DataTemplate>
 				</ListBox.ItemTemplate>
 			</ListBox>
+
+			<ProgressBar
+				Grid.Row="1"
+				Height="2"
+				Margin="6,3,6,0"
+				VerticalAlignment="Top"
+				IsIndeterminate="True"
+				Visibility="{Binding Filter.IsFiltering, Converter={StaticResource B2V}}" />
 
 			<XivToolsWpf:TextBlock
 				Key="Library_ItemCount"

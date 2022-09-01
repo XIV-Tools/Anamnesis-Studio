@@ -14,6 +14,7 @@ public class DirectoryEntry : EntryBase
 	public List<EntryBase> Entries { get; init; } = new();
 	public override bool IsDirectory => true;
 	public override IconChar Icon => IconChar.None;
+	public override IconChar IconBack => IconChar.Folder;
 
 	public int ItemCount => this.Entries.Count;
 

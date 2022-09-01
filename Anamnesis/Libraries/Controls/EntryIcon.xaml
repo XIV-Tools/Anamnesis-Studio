@@ -34,7 +34,7 @@
 					x:Name="IconShadow"
 					FontSize="80"
 					Foreground="Black"
-					Icon="File"
+					Icon="{Binding IconBack}"
 					Visibility="Collapsed">
 					<XivToolsWpf:IconBlock.Effect>
 						<DropShadowEffect
@@ -46,17 +46,11 @@
 				</XivToolsWpf:IconBlock>
 
 				<XivToolsWpf:IconBlock
-					FontSize="80"
-					Icon="File"
-					Visibility="{Binding IsDirectory, Converter={StaticResource !B2V}}" />
-
-				<XivToolsWpf:IconBlock
 					FontSize="90"
-					Icon="Folder"
-					Visibility="{Binding IsDirectory, Converter={StaticResource B2V}}" />
+					Icon="{Binding IconBack}" />
 
 				<XivToolsWpf:IconBlock
-					Margin="0,20,0,0"
+					Margin="0,25,0,12"
 					FontSize="45"
 					Foreground="{StaticResource MaterialDesignPaper}"
 					Icon="{Binding Icon}" />

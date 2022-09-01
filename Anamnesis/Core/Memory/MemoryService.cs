@@ -261,7 +261,7 @@ public class MemoryService : ServiceBase<MemoryService>
 	public override async Task Initialize()
 	{
 		await base.Initialize();
-		////await this.GetProcess();
+		await this.GetProcess();
 
 		_ = Task.Run(this.ProcessWatcherTask);
 	}

@@ -17,8 +17,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using XivToolsWpf;
 using XivToolsWpf.Extensions;
-using static Anamnesis.Libraries.Sources.GitHubSource.GitHubCache;
-using static Anamnesis.Panels.ImportPosePanel;
 
 internal class GitHubSource : FileSource
 {
@@ -39,7 +37,13 @@ internal class GitHubSource : FileSource
 
 	public string LocalDir => FileService.ParseToFilePath(FileService.StoreDirectory + "/GitHub/" + this.RepositoryName.Replace("/", "_"));
 
-	protected override async Task Load()
+	public override Task Load()
+	{
+		// TODO!
+		return Task.CompletedTask;
+	}
+
+	/*protected override async Task Load()
 	{
 		string[] parts = this.RepositoryName.Split('/');
 
@@ -155,7 +159,7 @@ internal class GitHubSource : FileSource
 
 		GitHubCache.PackCache cache = this.Cache.PacksCache[pack.Id];
 		await this.DownloadContents(pack, cache);
-	}
+	}*/
 
 	private async Task PopulatePack(Pack pack, PackDefinitionFile definition, RepositoryContent defFileContent, IReadOnlyList<RepositoryContent> allContent)
 	{
@@ -285,12 +289,6 @@ internal class GitHubSource : FileSource
 
 			if (cache.Definition == null)
 				throw new Exception("Pack cache has no definition");
-
-			DirectoryInfo packDir = this.GetPackDirectory(cache.Definition, new(this.LocalDir));
-			if (!packDir.Exists)
-				throw new Exception($"Failed to get pack directory: {packDir.FullName}");
-
-			await this.GetFiles(pack, packDir);
 
 			pack.IsUpdating = false;
 			pack.IsUpdateAvailable = false;

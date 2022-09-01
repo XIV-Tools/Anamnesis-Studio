@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 namespace Anamnesis.Libraries.Sources;
-
 using Anamnesis.Files;
 using Anamnesis.Libraries.Items;
 using Anamnesis.Serialization;
@@ -11,12 +10,12 @@ using FontAwesome.Sharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using XivToolsWpf;
 
-public class FileSource : LibrarySourceBase
+internal class FileSource : LibrarySourceBase
 {
 	protected static readonly Type[] SupportedFiles = new Type[]
 	{
@@ -55,7 +54,7 @@ public class FileSource : LibrarySourceBase
 		this.Directories = new DirectoryInfo[0];
 	}
 
-	public override IconChar Icon => IconChar.Folder;
+	public override IconChar Icon => IconChar.FolderTree;
 	public override string Name => LocalizationService.GetString("Library_FileSource");
 
 	public DirectoryInfo[] Directories { get; init; }
@@ -66,115 +65,64 @@ public class FileSource : LibrarySourceBase
 		return SupportedFileExtensions.Contains(file.Extension);
 	}
 
-	protected override Task Load()
+	public override async Task Load()
 	{
-		return this.Load(null);
-	}
+		////Pack pack = new Pack("looseFiles", this);
+		////pack.Name = LocalizationService.GetString("Library_LooseFiles");
+		////await this.AddPack(pack);
 
-	protected override async Task Load(Pack? pack)
-	{
 		// Dont hit the file system on the main thread.
 		await Dispatch.NonUiThread();
 
-		foreach (DirectoryInfo directoryInfo in this.Directories)
+		foreach (DirectoryInfo info in this.Directories)
 		{
-			if (!directoryInfo.Exists)
+			if (!info.Exists)
 				continue;
 
-			FileInfo[] fileInfos = directoryInfo.GetFiles("pack.json", SearchOption.AllDirectories);
-			foreach (FileInfo fileInfo in fileInfos)
-			{
-				if (fileInfo.Directory == null)
-					continue;
+			Pack pack = new(info.FullName, this);
+			pack.Name = info.Name;
+			pack.Description = info.FullName;
+			await this.AddPack(pack);
+			this.Populate(pack, info);
 
-				try
-				{
-					PackDefinitionFile definition = SerializerService.DeserializeFile<PackDefinitionFile>(fileInfo.FullName);
-
-					if (pack == null)
-					{
-						Pack newPack = new Pack(fileInfo.FullName, definition, this);
-						await this.AddPack(newPack);
-						await this.GetFiles(newPack, definition, fileInfo.Directory);
-					}
-					else if (pack.Id == fileInfo.FullName)
-					{
-						await this.GetFiles(pack, definition, fileInfo.Directory);
-						return;
-					}
-				}
-				catch (Exception ex)
-				{
-					this.Log.Error(ex, "Failed to load pack definition");
-				}
-			}
+			////this.AddDirectory(pack, directoryInfo);
 		}
 	}
 
-	protected override Task Update(Pack pack)
+	private DirectoryEntry AddDirectory(DirectoryEntry directory, DirectoryInfo info)
 	{
-		// File soruces are always live
-		return Task.CompletedTask;
+		DirectoryEntry entry = new();
+		entry.Parent = directory;
+		entry.Name = info.Name;
+		entry.Description = info.FullName;
+		directory.AddEntry(entry);
+
+		this.Populate(entry, info);
+
+		return entry;
 	}
 
-	protected DirectoryInfo GetPackDirectory(PackDefinitionFile definition, DirectoryInfo rootDirectory)
+	private void Populate(DirectoryEntry entry, DirectoryInfo info)
 	{
-		DirectoryInfo packContentsDirectory = rootDirectory;
-		if (definition.Directory != null)
+		foreach (DirectoryInfo directoryInfo in info.GetDirectories())
 		{
-			return new(packContentsDirectory.FullName + '/' + definition.Directory.Replace('\\', '/').Trim('/'));
+			this.AddDirectory(entry, directoryInfo);
 		}
 
-		return rootDirectory;
-	}
-
-	protected virtual async Task GetFiles(Pack pack, PackDefinitionFile definition, DirectoryInfo rootDirectory)
-	{
-		await Dispatch.NonUiThread();
-
-		DirectoryInfo packContentsDirectory = this.GetPackDirectory(definition, rootDirectory);
-		if (!packContentsDirectory.Exists)
-			throw new Exception($"Failed to get pack directory: {packContentsDirectory}");
-
-		await this.GetFiles(pack, packContentsDirectory);
-	}
-
-	protected virtual async Task GetFiles(Pack pack, DirectoryInfo directory)
-	{
-		await Dispatch.NonUiThread();
-
-		FileInfo[] files = directory.GetFiles("*.*", SearchOption.AllDirectories);
-
-		HashSet<string> allTags = new();
-
-		foreach (FileInfo fileInfo in files)
+		foreach (FileInfo file in info.GetFiles("*.*", SearchOption.TopDirectoryOnly))
 		{
-			if (fileInfo.DirectoryName == null)
+			if (!FileSource.IsSupportedFileType(file))
 				continue;
-
-			if (!IsSupportedFileType(fileInfo))
-				continue;
-
-			string[] folderTags = fileInfo.DirectoryName.Replace(directory.FullName, string.Empty).Split('\\', StringSplitOptions.RemoveEmptyEntries);
-			foreach (string folderTag in folderTags)
-			{
-				allTags.Add(folderTag);
-			}
 
 			try
 			{
-				pack.AddEntry(new FileItem(fileInfo, folderTags));
+				entry.AddEntry(new FileItem(file));
 			}
 			catch (Exception ex)
 			{
-				this.Log.Warning(ex, $"Failed to load pack file: {fileInfo.FullName}");
-				pack.AddEntry(new BrokenFileItem(fileInfo, folderTags));
+				this.Log.Warning(ex, $"Failed to load pack file: {file.FullName}");
+				entry.AddEntry(new BrokenFileItem(file));
 			}
-		}
-
-		foreach (string tag in allTags)
-		{
-			pack.AvailableTags.Add(tag);
 		}
 	}
 
@@ -229,6 +177,7 @@ public class FileSource : LibrarySourceBase
 		public FileInfo Info { get; init; }
 		public Type Type { get; init; }
 		public override IconChar Icon => this.icon;
+		public override IconChar IconBack => IconChar.File;
 
 		public override ImageSource? Thumbnail
 		{
@@ -276,6 +225,7 @@ public class FileSource : LibrarySourceBase
 
 		public override bool CanLoad => false;
 		public override IconChar Icon => IconChar.Warning;
+		public override IconChar IconBack => IconChar.File;
 
 		public override bool IsType(LibraryFilter.Types type)
 		{

@@ -13,25 +13,30 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using XivToolsWpf;
 using Serilog;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 [AddINotifyPropertyChangedInterface]
-public class LibraryFilter : IComparer<EntryBase>, IComparer<Pack>, INotifyPropertyChanged
+public class LibraryFilter : IComparer<EntryBase>, INotifyPropertyChanged
 {
 	public event PropertyChangedEventHandler? PropertyChanged;
 
 	public enum Types
 	{
-		Packs,
+		All,
 		Poses,
 		Characters,
 		Scenes,
 	}
 
-	public HashSet<string> Tags { get; init; } = new();
+	public bool IsFiltering { get; set; }
 	public bool CancelRequested { get; private set; } = false;
 	public bool RestartRequeted { get; private set; } = false;
-	public Types Type { get; set; } = Types.Packs;
+
+	// Actual filter params
+	public HashSet<string> Tags { get; init; } = new();
+	public Types Type { get; set; } = Types.All;
 	public bool Flatten { get; set; } = true;
+	public bool Favorites { get; set; } = true;
 
 	protected ILogger Log => Serilog.Log.ForContext<LibraryFilter>();
 
@@ -52,17 +57,60 @@ public class LibraryFilter : IComparer<EntryBase>, IComparer<Pack>, INotifyPrope
 		this.RestartRequeted = false;
 	}
 
+	public int Compare(EntryBase? x, EntryBase? y)
+	{
+		// Directoreis alweays go to the top.
+		if (x is DirectoryEntry && y is ItemEntry)
+			return -1;
+
+		if (x is ItemEntry && y is DirectoryEntry)
+			return 1;
+
+		// TODO: sort modes
+		/*
+		if (sortMode == Sort.None)
+		{
+			return 0;
+		}
+		else if (sortMode == Sort.AlphaNumeric)
+		{
+			if (itemA.Name == null || itemB.Name == null)
+				return 0;
+
+			return itemA.Name.CompareTo(itemB.Name);
+		}
+		else if (sortMode == Sort.Date)
+		{
+			if (itemA.DateModified == null || itemB.DateModified == null)
+				return 0;
+
+			DateTime dateA = (DateTime)itemA.DateModified;
+			DateTime dateB = (DateTime)itemB.DateModified;
+			return dateA.CompareTo(dateB);
+		}*/
+
+		return string.Compare(x?.Name, y?.Name);
+	}
+
 	public async Task<IEnumerable<EntryBase>> GetItems(IEnumerable<DirectoryEntry> directories, string[]? searchQuery)
 	{
+		List<EntryBase> results = new();
 		List<Task<List<EntryBase>>> tasks = new();
-		foreach (Pack pack in directories)
+
+		if (this.Flatten)
 		{
-			tasks.Add(this.GetItems(pack, this.Flatten, searchQuery));
+			foreach (Pack pack in directories)
+			{
+				tasks.Add(this.DoFilter(pack, this.Flatten, searchQuery));
+			}
+		}
+		else
+		{
+			tasks.Add(this.GetItems(directories, this.Flatten, searchQuery));
 		}
 
 		await Task.WhenAll(tasks);
 
-		List<EntryBase> results = new();
 		foreach (Task<List<EntryBase>> task in tasks)
 		{
 			results.AddRange(task.Result);
@@ -71,17 +119,39 @@ public class LibraryFilter : IComparer<EntryBase>, IComparer<Pack>, INotifyPrope
 		return results;
 	}
 
-	public async Task<List<EntryBase>> GetItems(DirectoryEntry directory, bool flatten, string[]? searchQuery)
+	public async Task<List<EntryBase>> GetItems(DirectoryEntry directory, string[]? searchQuery)
 	{
-		List<EntryBase> result = new();
-
 		ConcurrentQueue<EntryBase> entries;
 		lock (directory.Entries)
 		{
 			entries = new ConcurrentQueue<EntryBase>(directory.Entries);
 		}
 
+		return await this.DoFilter(entries, this.Flatten, searchQuery);
+	}
+
+	public async Task<List<EntryBase>> GetItems(IEnumerable<DirectoryEntry> directories, bool flatten, string[]? searchQuery)
+	{
+		ConcurrentQueue<EntryBase> entries = new ConcurrentQueue<EntryBase>(directories);
+		return await this.DoFilter(entries, flatten, searchQuery);
+	}
+
+	private async Task<List<EntryBase>> DoFilter(DirectoryEntry directory, bool flatten, string[]? searchQuery)
+	{
+		ConcurrentQueue<EntryBase> entries;
+		lock (directory.Entries)
+		{
+			entries = new ConcurrentQueue<EntryBase>(directory.Entries);
+		}
+
+		return await this.DoFilter(entries, flatten, searchQuery);
+	}
+
+	private async Task<List<EntryBase>> DoFilter(ConcurrentQueue<EntryBase> entries, bool flatten, string[]? searchQuery)
+	{
 		await Dispatch.NonUiThread();
+
+		List<EntryBase> result = new();
 
 		if (this.CancelRequested)
 			return result;
@@ -125,7 +195,7 @@ public class LibraryFilter : IComparer<EntryBase>, IComparer<Pack>, INotifyPrope
 						{
 							// If we are not flattening, check if the directory has any children that
 							// pass the filter.
-							List<EntryBase> children = await this.GetItems(dir, true, searchQuery);
+							List<EntryBase> children = await this.DoFilter(dir, true, searchQuery);
 							if (children.Count <= 0)
 							{
 								continue;
@@ -135,7 +205,7 @@ public class LibraryFilter : IComparer<EntryBase>, IComparer<Pack>, INotifyPrope
 
 					try
 					{
-						if (!this.Filter(entry, directory, searchQuery))
+						if (!this.Filter(entry, searchQuery))
 						{
 							continue;
 						}
@@ -167,7 +237,7 @@ public class LibraryFilter : IComparer<EntryBase>, IComparer<Pack>, INotifyPrope
 		return result;
 	}
 
-	public bool Filter(EntryBase entry, DirectoryEntry? parent, string[]? searchQuerry)
+	private bool Filter(EntryBase entry, string[]? searchQuerry)
 	{
 		bool anyTagMatch = false;
 
@@ -203,51 +273,5 @@ public class LibraryFilter : IComparer<EntryBase>, IComparer<Pack>, INotifyPrope
 			return true;
 
 		return false;
-	}
-
-	public bool Filter(Pack group, Pack? parent)
-	{
-		return true;
-	}
-
-	public int Compare(EntryBase? x, EntryBase? y)
-	{
-		// Directoreis alweays go to the top.
-		if (x is DirectoryEntry && y is ItemEntry)
-			return -1;
-
-		if (x is ItemEntry && y is DirectoryEntry)
-			return 1;
-
-		// TODO: sort modes
-		/*
-		if (sortMode == Sort.None)
-		{
-			return 0;
-		}
-		else if (sortMode == Sort.AlphaNumeric)
-		{
-			if (itemA.Name == null || itemB.Name == null)
-				return 0;
-
-			return itemA.Name.CompareTo(itemB.Name);
-		}
-		else if (sortMode == Sort.Date)
-		{
-			if (itemA.DateModified == null || itemB.DateModified == null)
-				return 0;
-
-			DateTime dateA = (DateTime)itemA.DateModified;
-			DateTime dateB = (DateTime)itemB.DateModified;
-			return dateA.CompareTo(dateB);
-		}*/
-
-		return string.Compare(x?.Name, y?.Name);
-	}
-
-	public int Compare(Pack? x, Pack? y)
-	{
-		// TODO: sort modes?
-		return string.Compare(x?.Name, y?.Name);
 	}
 }

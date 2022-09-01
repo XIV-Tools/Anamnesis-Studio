@@ -35,7 +35,6 @@ public partial class LibraryPanel : PanelBase
 		this.InitializeComponent();
 
 		this.ContentArea.DataContext = this;
-		this.Filter.PropertyChanged += this.OnFilterChanged;
 	}
 
 	public LibraryFilter Filter { get; init; } = new();
@@ -119,16 +118,11 @@ public partial class LibraryPanel : PanelBase
 		this.FilterItems();
 	}
 
-	private void OnFilterChanged(object? sender, PropertyChangedEventArgs e)
-	{
-		this.FilterItems();
-	}
-
 	private void FilterItems(bool delay = false)
 	{
 		this.filterDelay = delay ? FilterSearchInputDelay : 0;
 
-		if (this.filterTask != null && !this.filterTask.IsCompleted)
+		if (this.filterTask != null && !this.filterTask.IsCompleted && this.Filter.IsFiltering)
 		{
 			this.Filter.Restart();
 			return;
@@ -136,6 +130,8 @@ public partial class LibraryPanel : PanelBase
 
 		this.filterTask = Task.Run(async () =>
 		{
+			this.Filter.IsFiltering = true;
+
 			while (this.filterDelay > 0)
 			{
 				await Task.Delay(10);
@@ -151,7 +147,9 @@ public partial class LibraryPanel : PanelBase
 	{
 		try
 		{
+			this.Filter.IsFiltering = true;
 			await this.FilterItemsInternalAsync();
+			this.Filter.IsFiltering = false;
 		}
 		catch (Exception ex)
 		{
@@ -195,7 +193,15 @@ public partial class LibraryPanel : PanelBase
 		if (this.Filter.Tags.Count == this.FilterByTags.Count)
 			this.Filter.Tags.Clear();
 
-		IEnumerable<EntryBase> filteredItems = await this.Filter.GetItems(LibraryService.Instance.Packs, this.searchQuery);
+		IEnumerable<EntryBase> filteredItems;
+		if (this.CurrentDirectory == null)
+		{
+			filteredItems = await this.Filter.GetItems(LibraryService.Instance.Packs, this.searchQuery);
+		}
+		else
+		{
+			filteredItems = await this.Filter.GetItems(this.CurrentDirectory, this.searchQuery);
+		}
 
 		if (this.Filter.CancelRequested)
 			return;
@@ -226,13 +232,9 @@ public partial class LibraryPanel : PanelBase
 
 	private void OnBackClicked(object sender, RoutedEventArgs e)
 	{
-		////this.SelectedEntry = null;
+		this.SelectedEntry = null;
 		this.CurrentDirectory = this.CurrentDirectory?.Parent;
-
-		if (this.CurrentDirectory is Pack)
-			this.CurrentDirectory = null;
-
-		this.FilterItems(true);
+		this.FilterItems();
 	}
 
 	private void OnItemDoubleClicked(object sender, MouseButtonEventArgs e)
@@ -240,7 +242,7 @@ public partial class LibraryPanel : PanelBase
 		if (this.SelectedEntry is DirectoryEntry directory)
 		{
 			this.CurrentDirectory = directory;
-			this.FilterItems(true);
+			this.FilterItems();
 		}
 		else if (this.SelectedEntry is ItemEntry item)
 		{
@@ -259,6 +261,29 @@ public partial class LibraryPanel : PanelBase
 		{
 			tag.IsCurrent = entry?.HasTag(tag.Name) ?? false;
 		}
+	}
+
+	private void OnTabChanged(object sender, RoutedEventArgs e)
+	{
+		this.CurrentDirectory = null;
+		this.Filter.Favorites = false;
+		this.Filter.Flatten = false;
+
+		this.FilterItems();
+	}
+
+	private void OnFavoritesChecked(object sender, RoutedEventArgs e)
+	{
+		this.CurrentDirectory = null;
+		this.Filter.Type = LibraryFilter.Types.All;
+		this.Filter.Flatten = true;
+
+		this.FilterItems();
+	}
+
+	private void OnFlattenChanged(object sender, RoutedEventArgs e)
+	{
+		this.FilterItems();
 	}
 
 	[AddINotifyPropertyChangedInterface]
