@@ -97,6 +97,8 @@ public partial class LibraryPanel : PanelBase
 
 			if (allEnabled)
 			{
+				this.Filter.Flatten = true;
+
 				foreach (Tag otherTag in this.FilterByTags)
 				{
 					otherTag.IsEnabled = otherTag == tag;
@@ -106,6 +108,8 @@ public partial class LibraryPanel : PanelBase
 			// if all tags are disabled, enable them all.
 			if (allDisabled)
 			{
+				this.Filter.Flatten = false;
+
 				foreach (Tag otherTag in this.FilterByTags)
 				{
 					otherTag.IsEnabled = true;
@@ -113,6 +117,10 @@ public partial class LibraryPanel : PanelBase
 			}
 
 			this.supressTagEvents = false;
+		}
+		else
+		{
+			this.Filter.Flatten = true;
 		}
 
 		this.FilterItems();
