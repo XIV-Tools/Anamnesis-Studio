@@ -69,6 +69,19 @@ public class LibraryService : ServiceBase<LibraryService>
 			return;
 
 		await Dispatch.MainThread();
+
+		Pack? toReplace = null;
+		foreach (Pack other in this.Packs)
+		{
+			if (other.Id == pack.Id)
+			{
+				toReplace = other;
+			}
+		}
+
+		if (toReplace != null)
+			this.Packs.Remove(toReplace);
+
 		this.Packs.Add(pack);
 	}
 }

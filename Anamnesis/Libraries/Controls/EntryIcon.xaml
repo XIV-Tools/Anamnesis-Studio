@@ -70,7 +70,7 @@
 					FontSize="25"
 					Foreground="{StaticResource MaterialDesignPaper}"
 					Icon="Download"
-					Visibility="{Binding IsUpdateAvailable, Converter={StaticResource B2V}}" />
+					Visibility="{Binding IsUpdateAvailable, Converter={StaticResource B2V}, FallbackValue=Collapsed}" />
 			</Grid>
 		</Viewbox>
 	</Grid>

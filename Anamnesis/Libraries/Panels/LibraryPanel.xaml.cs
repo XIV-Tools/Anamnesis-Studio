@@ -209,29 +209,9 @@ public partial class LibraryPanel : PanelBase
 		await Dispatch.MainThread();
 
 		this.Entries.Replace(filteredItems);
-
-		// Also needs to be done with flattening in mind...
-		/*foreach (EntryBase entry in filteredItems)
-		{
-			if (entry is ItemEntry item)
-			{
-				foreach (string tag in item.Tags)
-				{
-					availableTags.Add(tag);
-				}
-			}
-		}
-
-		if (this.Filter.CancelRequested)
-			return;
-
-		foreach (Tag tag in this.FilterByTags)
-		{
-			tag.IsAvailable = availableTags.Contains(tag.Name);
-		}*/
 	}
 
-	private async Task GetAllTags()
+	private async Task UpdateTags(bool getAllTags)
 	{
 		await Dispatch.NonUiThread();
 
@@ -239,23 +219,74 @@ public partial class LibraryPanel : PanelBase
 		filter.Favorites = false;
 		filter.Flatten = true;
 		filter.Type = this.Filter.Type;
-		IEnumerable<EntryBase> entries = await filter.GetItems(LibraryService.Instance.Packs, null);
+		IEnumerable<EntryBase>? entries = null;
 
-		Dictionary<string, Tag> tags = new();
-
-		foreach (EntryBase entry in entries)
+		if (getAllTags)
 		{
-			foreach (string tag in entry.Tags)
-			{
-				if (tags.ContainsKey(tag))
-					continue;
+			entries = await filter.GetItems(LibraryService.Instance.Packs, null);
 
-				tags.Add(tag, new(this, tag));
+			if (filter.CancelRequested)
+				return;
+
+			Dictionary<string, Tag> tags = new();
+
+			foreach (EntryBase entry in entries)
+			{
+				foreach (string tag in entry.Tags)
+				{
+					if (tags.ContainsKey(tag))
+						continue;
+
+					tags.Add(tag, new(this, tag));
+				}
 			}
+
+			if (filter.CancelRequested)
+				return;
+
+			await Dispatch.MainThread();
+			this.FilterByTags.Replace(tags.Values);
 		}
 
-		await Dispatch.MainThread();
-		this.FilterByTags.Replace(tags.Values);
+		await Dispatch.NonUiThread();
+
+		if (this.CurrentDirectory != null)
+			entries = await filter.GetItems(this.CurrentDirectory, null);
+
+		if (filter.CancelRequested)
+			return;
+
+		if (entries != null)
+		{
+			HashSet<string> availableTags = new();
+			foreach (EntryBase entry in entries)
+			{
+				if (entry is ItemEntry item)
+				{
+					foreach (string tag in item.Tags)
+					{
+						availableTags.Add(tag);
+					}
+				}
+			}
+
+			if (filter.CancelRequested)
+				return;
+
+			await Dispatch.MainThread();
+			foreach (Tag tag in this.FilterByTags)
+			{
+				tag.IsAvailable = availableTags.Contains(tag.Name);
+			}
+		}
+		else
+		{
+			await Dispatch.MainThread();
+			foreach (Tag tag in this.FilterByTags)
+			{
+				tag.IsAvailable = true;
+			}
+		}
 	}
 
 	private void OnBackClicked(object sender, RoutedEventArgs e)
@@ -263,6 +294,7 @@ public partial class LibraryPanel : PanelBase
 		this.SelectedEntry = null;
 		this.CurrentDirectory = this.CurrentDirectory?.Parent;
 		this.FilterItems();
+		this.UpdateTags(false).Run();
 	}
 
 	private void OnItemDoubleClicked(object sender, MouseButtonEventArgs e)
@@ -274,6 +306,7 @@ public partial class LibraryPanel : PanelBase
 		{
 			this.CurrentDirectory = directory;
 			this.FilterItems();
+			this.UpdateTags(false).Run();
 		}
 		else if (this.SelectedEntry is ItemEntry item)
 		{
@@ -301,7 +334,7 @@ public partial class LibraryPanel : PanelBase
 		this.Filter.Favorites = false;
 		this.Filter.Flatten = false;
 
-		this.GetAllTags().Run();
+		this.UpdateTags(true).Run();
 		this.FilterItems();
 	}
 
@@ -311,7 +344,7 @@ public partial class LibraryPanel : PanelBase
 		this.Filter.Type = LibraryFilter.Types.All;
 		this.Filter.Flatten = true;
 
-		this.GetAllTags().Run();
+		this.UpdateTags(true).Run();
 		this.FilterItems();
 	}
 

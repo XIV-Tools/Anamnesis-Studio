@@ -15,8 +15,14 @@ public abstract class ServiceBase<T> : IService, INotifyPropertyChanged
 {
 	private static T? instance;
 
+	public ServiceBase()
+	{
+		instance = (T)this;
+	}
+
 	public event PropertyChangedEventHandler? PropertyChanged;
 
+	////[Obsolete]
 	public static T Instance
 	{
 		get

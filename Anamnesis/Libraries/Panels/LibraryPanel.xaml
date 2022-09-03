@@ -129,6 +129,7 @@
 						<RowDefinition Height="Auto" />
 						<RowDefinition Height="Auto" />
 						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
 					</Grid.RowDefinitions>
 
 					<Grid.ColumnDefinitions>
@@ -145,6 +146,15 @@
 						BorderThickness="1"
 						CornerRadius="6,6,0,0"
 						Source="{Binding SelectedEntry.Thumbnail}" />
+
+					<ProgressBar
+						Grid.Row="0"
+						Grid.ColumnSpan="2"
+						Height="2"
+						Margin="-6,0"
+						VerticalAlignment="Bottom"
+						IsIndeterminate="True"
+						Visibility="{Binding SelectedEntry.Source.IsLoading, Converter={StaticResource B2V}, FallbackValue=Collapsed}" />
 
 					<XivToolsWpf:TextBlock
 						Grid.Row="1"
@@ -187,10 +197,43 @@
 						Grid.Column="1"
 						Text="{Binding SelectedEntry.Version}"
 						Visibility="{Binding SelectedEntry.Version, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
+
+					<ItemsControl
+						Grid.Row="5"
+						Grid.ColumnSpan="2"
+						Margin="-3,6,-3,-3"
+						ItemsSource="{Binding SelectedEntry.Actions}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<WrapPanel Orientation="Horizontal" />
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<Button
+									Command="{Binding Command}"
+									IsEnabled="{Binding CanExecute}"
+									Style="{StaticResource TransparentButton}">
+									<StackPanel
+										Margin="6"
+										Orientation="Horizontal">
+										<XivToolsWpf:IconBlock
+											Margin="3,0"
+											Icon="{Binding DisplayIcon}" />
+										<TextBlock
+											Margin="3,0"
+											Text="{Binding DisplayKey}" />
+									</StackPanel>
+								</Button>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
 				</Grid>
 			</Border>
 
-			<ScrollViewer Grid.Row="2">
+			<ScrollViewer
+				Grid.Row="2"
+				VerticalAlignment="Bottom">
 				<Grid>
 
 					<Grid.RowDefinitions>
@@ -279,8 +322,9 @@
 									</ToggleButton.Style>
 
 									<XivToolsWpf:TextBlock
-										MaxWidth="100"
+										MaxWidth="60"
 										Margin="4"
+										FontSize="11"
 										Text="{Binding Name}"
 										TextTrimming="CharacterEllipsis" />
 								</ToggleButton>

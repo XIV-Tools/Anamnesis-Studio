@@ -65,7 +65,7 @@ internal class FileSource : LibrarySourceBase
 		return SupportedFileExtensions.Contains(file.Extension);
 	}
 
-	public override async Task Load()
+	protected override async Task Load(bool refresh)
 	{
 		// Dont hit the file system on the main thread.
 		await Dispatch.NonUiThread();
@@ -85,7 +85,7 @@ internal class FileSource : LibrarySourceBase
 		}
 	}
 
-	private DirectoryEntry AddDirectory(DirectoryEntry directory, DirectoryInfo info, List<string> tags)
+	protected DirectoryEntry AddDirectory(DirectoryEntry directory, DirectoryInfo info, List<string> tags)
 	{
 		DirectoryEntry entry = new();
 		entry.Parent = directory;
@@ -114,7 +114,7 @@ internal class FileSource : LibrarySourceBase
 		return entry;
 	}
 
-	private void Populate(DirectoryEntry entry, DirectoryInfo info, List<string> tags)
+	protected void Populate(DirectoryEntry entry, DirectoryInfo info, List<string> tags)
 	{
 		foreach (DirectoryInfo directoryInfo in info.GetDirectories())
 		{

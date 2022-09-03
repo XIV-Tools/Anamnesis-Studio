@@ -27,7 +27,7 @@ public class GameDataSource : LibrarySourceBase
 	public override IconChar Icon => IconChar.Database;
 	public override string Name => LocalizationService.GetString("Library_GameDataSource");
 
-	public override async Task Load()
+	protected override async Task Load(bool refresh)
 	{
 		foreach (Packs pack in Enum.GetValues<Packs>())
 		{

@@ -7,19 +7,19 @@ using Anamnesis.Libraries.Sources;
 using FontAwesome.Sharp;
 using PropertyChanged;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using XivToolsWpf.Extensions;
 
 [AddINotifyPropertyChangedInterface]
 public class Pack : DirectoryEntry
 {
 	public Pack(string id, PackDefinitionFile packDefinition, LibrarySourceBase source)
+		: this(id, source)
 	{
-		this.Id = id;
 		this.Name = packDefinition.Name;
 		this.Author = packDefinition.Author;
 		this.Description = packDefinition.Description;
 		this.Version = packDefinition.Version;
-		this.Source = source;
 	}
 
 	public Pack(string id, LibrarySourceBase source)
@@ -33,6 +33,9 @@ public class Pack : DirectoryEntry
 	public string? Author { get; set; }
 	public string? Version { get; set; }
 	public string Id { get; set; }
+
+	public bool IsUpdateAvailable { get; set; } = false;
+	public bool IsUpdating { get; set; } = false;
 
 	public LibrarySourceBase? Source { get; set; }
 

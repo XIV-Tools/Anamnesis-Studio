@@ -4,12 +4,14 @@
 namespace Anamnesis.Libraries.Sources;
 
 using Anamnesis.Files;
+using Anamnesis.GameData.Excel;
 using Anamnesis.Libraries.Items;
 using Anamnesis.Serialization;
 using Anamnesis.Services;
 using FontAwesome.Sharp;
 using Lumina.Excel.GeneratedSheets;
 using Octokit;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,6 +20,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using XivToolsWpf;
 using XivToolsWpf.Extensions;
+using static Anamnesis.Libraries.Sources.GitHubSource.RepositoryCache;
 
 internal class GitHubSource : FileSource
 {
@@ -40,62 +43,64 @@ internal class GitHubSource : FileSource
 	private string LocalDir => FileService.ParseToFilePath(FileService.StoreDirectory + "/GitHub/" + this.RepositoryName.Replace("/", "_"));
 	private string PacksCachePath => this.LocalDir + "/packsCache.json";
 
-	public override async Task Load()
+	protected DirectoryInfo GetDirectory(string? definitionDirectory)
+	{
+		if (definitionDirectory == null)
+			definitionDirectory = "pack";
+
+		return new(this.LocalDir + "/" + definitionDirectory.Replace('\\', '/').Trim('/') + "/");
+	}
+
+	protected override async Task Load(bool refresh)
 	{
 		RepositoryCache? cache = this.LoadCache();
 
 		if (cache == null)
 			cache = new RepositoryCache(this.RepositoryName);
 
-		await cache.Load(this);
+		await cache.Load(this, refresh);
 		this.SaveCache(cache);
 	}
 
-	private RepositoryCache? LoadCache()
+	protected async Task Update(GitHubPack pack)
 	{
-		if (!File.Exists(this.PacksCachePath))
-			return null;
+		RepositoryCache? cache = this.LoadCache();
 
-		string json = File.ReadAllText(this.PacksCachePath);
-		return SerializerService.Deserialize<RepositoryCache>(json);
-	}
+		if (cache == null)
+			return;
 
-	private void SaveCache(RepositoryCache cache)
-	{
-		if (!Directory.Exists(this.LocalDir))
-			Directory.CreateDirectory(this.LocalDir);
+		if (!cache.PacksCache.TryGetValue(pack.Id, out var packCache))
+			return;
 
-		string json = SerializerService.Serialize(cache);
-		File.WriteAllText(this.PacksCachePath, json);
-	}
-
-	/*
-	private async Task DownloadContents(Pack pack, GitHubCache.PackCache cache)
-	{
 		try
 		{
 			pack.IsUpdating = true;
 
-			if (cache.DownloadState == GitHubCache.PackCache.DownloadStates.Downloading)
+			IReadOnlyList<RepositoryContent> definitionContents = await GitHubSource.GitHubClient.Repository.Content.GetAllContents(cache.RepositoryOwner, cache.RepositoryName, packCache.DefinitionFilePath);
+
+			if (definitionContents.Count != 1)
+				throw new Exception("Unable to get definition content from gitHub");
+
+			RepositoryContent definitionContent = definitionContents[0];
+
+			string jsonContent = await HttpClient.GetStringAsync(definitionContent.DownloadUrl);
+			packCache.Definition = SerializerService.Deserialize<PackDefinitionFile>(jsonContent);
+
+			if (packCache.DownloadState == PackCache.DownloadStates.Downloading)
 				throw new Exception("GitHub pack is already downloading");
 
-			string? directoryName = cache.Definition?.Directory?.Replace('\\', '/').Trim('/') + "/";
-			if (directoryName == null)
-				throw new Exception("pack cache has no directory definition");
+			string? directoryName = packCache.Definition?.Directory;
+			DirectoryInfo targetDirectory = this.GetDirectory(directoryName);
+			if (targetDirectory.Exists)
+				targetDirectory.Delete(true);
 
-			string targetDirectory = this.LocalDir + "/" + directoryName;
-			if (Directory.Exists(targetDirectory))
-				Directory.Delete(targetDirectory, true);
-
-			this.Log.Information($"Downloading pack: {cache.DownloadUrl}");
-			cache.DownloadState = GitHubCache.PackCache.DownloadStates.Downloading;
+			packCache.DownloadState = PackCache.DownloadStates.Downloading;
 
 			// Since theres no way to actualy download a directory, we'll download the entire archive
 			// and just extract the parts we need.
 			// This isn't great, but the alternative is to get all the file contents then download them individually which
 			// will just get us rate-limited real fast.
-			string[] parts = this.RepositoryName.Split('/');
-			byte[] archiveBytes = await GitHubClient.Repository.Content.GetArchive(parts[0], parts[1], ArchiveFormat.Zipball);
+			byte[] archiveBytes = await GitHubClient.Repository.Content.GetArchive(cache.RepositoryOwner, cache.RepositoryName, ArchiveFormat.Zipball);
 			////await File.WriteAllBytesAsync(this.LocalDir + "/archive.zip", archiveBytes);
 			MemoryStream stream = new MemoryStream(archiveBytes);
 			ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Read);
@@ -106,7 +111,7 @@ internal class GitHubSource : FileSource
 				// GitHub always has the first folder in the zip the name of the arhive plus its sha, so jsut ignore that.
 				entryPath = entryPath.Substring(entryPath.IndexOf('/') + 1);
 
-				if (entryPath.StartsWith(directoryName) && Path.HasExtension(entryPath))
+				if (entryPath.StartsWith(directoryName ?? string.Empty) && Path.HasExtension(entryPath))
 				{
 					// Only extract files we can actually use.
 					string extension = Path.GetExtension(entryPath);
@@ -128,24 +133,85 @@ internal class GitHubSource : FileSource
 				}
 			}
 
-			cache.DownloadState = GitHubCache.PackCache.DownloadStates.Downloaded;
-			this.SaveCache();
+			packCache.DownloadState = PackCache.DownloadStates.Downloaded;
 
-			if (cache.Definition == null)
+			if (packCache.Definition == null)
 				throw new Exception("Pack cache has no definition");
 
 			pack.IsUpdating = false;
 			pack.IsUpdateAvailable = false;
-			cache.HasUpdate = false;
+			packCache.HasUpdate = false;
 
-			this.SaveCache();
+			this.SaveCache(cache);
+
+			await this.Refresh();
 		}
 		catch (Exception ex)
 		{
 			this.Log.Error(ex, "Error downloading pack contents");
-			cache.DownloadState = GitHubCache.PackCache.DownloadStates.ErrorDuringDownload;
+			packCache.DownloadState = PackCache.DownloadStates.ErrorDuringDownload;
 		}
-	}*/
+
+		this.SaveCache(cache);
+	}
+
+	private RepositoryCache? LoadCache()
+	{
+		if (!File.Exists(this.PacksCachePath))
+			return null;
+
+		string json = File.ReadAllText(this.PacksCachePath);
+		return SerializerService.Deserialize<RepositoryCache>(json);
+	}
+
+	private void SaveCache(RepositoryCache cache)
+	{
+		if (!Directory.Exists(this.LocalDir))
+			Directory.CreateDirectory(this.LocalDir);
+
+		string json = SerializerService.Serialize(cache);
+		File.WriteAllText(this.PacksCachePath, json);
+	}
+
+	public class GitHubPack : Pack
+	{
+		public EntryAction RefreshAction;
+		public EntryAction UpdateAction;
+
+		public GitHubPack(string url, GitHubSource source)
+			: base(url, source)
+		{
+			this.RefreshAction = new("Refresh", IconChar.Refresh, this.OnRefresh);
+			this.UpdateAction = new("Update", IconChar.Download, this.OnUpdate);
+
+			this.Actions.Add(this.RefreshAction);
+			this.Actions.Add(this.UpdateAction);
+
+			this.UpdateAction.CanExecute = this.IsUpdateAvailable;
+		}
+
+		public new GitHubSource? Source => base.Source as GitHubSource;
+
+		private async Task OnRefresh()
+		{
+			if (this.Source == null)
+				return;
+
+			this.RefreshAction.CanExecute = false;
+			await this.Source.Refresh();
+			this.RefreshAction.CanExecute = true;
+		}
+
+		private async Task OnUpdate()
+		{
+			if (this.Source == null)
+				return;
+
+			this.UpdateAction.CanExecute = false;
+			await this.Source.Update(this);
+			this.UpdateAction.CanExecute = this.IsUpdateAvailable;
+		}
+	}
 
 	public class RepositoryCache
 	{
@@ -169,11 +235,11 @@ internal class GitHubSource : FileSource
 		public DateTimeOffset LastChecked { get; set; }
 		public Dictionary<string, PackCache> PacksCache { get; set; } = new();
 
-		public async Task Load(GitHubSource source)
+		public async Task Load(GitHubSource source, bool refresh)
 		{
 			// Get the latest pack definitions if we need them
 			TimeSpan timeSinceLastCheck = DateTimeOffset.UtcNow - this.LastChecked;
-			if (this.PacksCache.Count <= 0 || timeSinceLastCheck > GitHubSource.CheckFrequency)
+			if (refresh || this.PacksCache.Count <= 0 || timeSinceLastCheck > GitHubSource.CheckFrequency)
 			{
 				await this.CheckForUpdates();
 				this.LastChecked = DateTimeOffset.UtcNow;
@@ -181,17 +247,26 @@ internal class GitHubSource : FileSource
 
 			foreach ((string url, PackCache cache) in this.PacksCache)
 			{
-				Pack pack = new(url, source);
+				GitHubPack pack = new(url, source);
 				pack.Name = cache.Definition?.Name ?? cache.DefinitionFileName;
 				pack.Author = cache.Definition?.Author ?? this.RepositoryOwner;
 				pack.Description = cache.Definition?.Description;
 				pack.Thumbnail = cache.Definition?.GetImage();
-				pack.IsUpdateAvailable = cache.HasUpdate;
+				pack.IsUpdateAvailable = cache.HasUpdate || cache.HasDefinitionUpdate;
+
+				List<string> tags = new();
+
+				DirectoryInfo dir = source.GetDirectory(cache.Definition?.Directory);
+				if (dir.Exists)
+					source.Populate(pack, dir, tags);
 
 				await source.AddPack(pack);
-			}
 
-			// TODO: download the update? idk.
+				if (cache.HasDefinitionUpdate || cache.HasUpdate)
+				{
+					// TODO: notify!
+				}
+			}
 		}
 
 		private async Task CheckForUpdates()
@@ -208,7 +283,6 @@ internal class GitHubSource : FileSource
 					if (!this.PacksCache.ContainsKey(definitionUrl))
 					{
 						cache = new();
-						cache.DefinitionFileName = repositoryContent.Name;
 						this.PacksCache.Add(definitionUrl, cache);
 					}
 					else
@@ -216,41 +290,65 @@ internal class GitHubSource : FileSource
 						cache = this.PacksCache[definitionUrl];
 					}
 
-					cache.HasUpdate = cache.CheckForUpdates(repositoryContent, content);
+					await cache.CheckForUpdates(repositoryContent, content);
 				}
 			}
 		}
 
 		public class PackCache
 		{
+			public enum DownloadStates
+			{
+				None,
+				Downloading,
+				Downloaded,
+				ErrorDuringDownload,
+			}
+
+			public string? DefinitionFilePath { get; set; }
 			public PackDefinitionFile? Definition { get; set; }
 			public string? LastDefinitionSha { get; set; }
 			public string? LastDirectorySha { get; set; }
 			public string? DefinitionFileName { get; set; }
 
+			public bool HasDefinitionUpdate { get; set; }
 			public bool HasUpdate { get; set; }
+			public DownloadStates DownloadState { get; set; }
 
-			public bool CheckForUpdates(RepositoryContent definitionContent, IReadOnlyList<RepositoryContent> allContent)
+			protected ILogger Log => Serilog.Log.ForContext<PackCache>();
+
+			public Task CheckForUpdates(RepositoryContent definitionContent, IReadOnlyList<RepositoryContent> allContent)
 			{
-				if (this.Definition == null)
-					return true;
+				this.DefinitionFilePath = definitionContent.Path;
+				this.DefinitionFileName = definitionContent.Name;
+
+				this.HasDefinitionUpdate = false;
+				this.HasUpdate = false;
 
 				// Update the definition file if we don't have it, or if its changed
-				if (this.LastDefinitionSha != definitionContent.Sha)
-					return true;
+				if (this.Definition == null || this.LastDefinitionSha != definitionContent.Sha)
+				{
+					this.LastDefinitionSha = definitionContent.Sha;
+					this.HasDefinitionUpdate = true;
+				}
+
+				if (this.Definition == null)
+				{
+					this.HasUpdate = true;
+					return Task.CompletedTask;
+				}
 
 				RepositoryContent directoryContent = this.GetDirectoryContent(this.Definition.Directory, allContent);
 				if (this.LastDirectorySha != directoryContent.Sha)
-					return true;
+				{
+					this.LastDirectorySha = directoryContent.Sha;
+					this.HasUpdate = true;
+				}
 
-				return false;
+				return Task.CompletedTask;
 			}
 
-			/*string jsonContent = await HttpClient.GetStringAsync(definitionContent.DownloadUrl);
-			this.Definition = SerializerService.Deserialize<PackDefinitionFile>(jsonContent);
-			this.LastDefinitionSha = definitionContent.Sha;*/
-
-			private RepositoryContent GetDirectoryContent(string? directory, IReadOnlyList<RepositoryContent> allContent)
+			public RepositoryContent GetDirectoryContent(string? directory, IReadOnlyList<RepositoryContent> allContent)
 			{
 				string? dir = directory?.Replace('\\', '/').Trim('/');
 
