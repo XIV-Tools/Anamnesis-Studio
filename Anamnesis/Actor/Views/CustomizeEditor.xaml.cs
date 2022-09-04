@@ -14,7 +14,7 @@ using Anamnesis.GameData.Sheets;
 using Anamnesis.Memory;
 using Anamnesis.Services;
 using PropertyChanged;
-
+using XivToolsWpf.DependencyProperties;
 using AnAppearance = Anamnesis.Memory.ActorCustomizeMemory;
 
 /// <summary>
@@ -23,6 +23,8 @@ using AnAppearance = Anamnesis.Memory.ActorCustomizeMemory;
 [AddINotifyPropertyChangedInterface]
 public partial class CustomizeEditor : UserControl
 {
+	public static IBind<ActorMemory?> ActorDp = Binder.Register<ActorMemory?, CustomizeEditor>(nameof(Actor), OnActorChanged);
+
 	private bool appearanceLocked = false;
 
 	public CustomizeEditor()
@@ -62,47 +64,21 @@ public partial class CustomizeEditor : UserControl
 
 	public ActorMemory? Actor
 	{
-		get;
-		private set;
+		get => ActorDp.Get(this);
+		set => ActorDp.Set(this, value);
 	}
 
-	public ActorCustomizeMemory? Customize
+	private static void OnActorChanged(CustomizeEditor sender, ActorMemory? actor)
 	{
-		get;
-		private set;
-	}
+		sender.IsEnabled = false;
 
-	private void OnLoaded(object sender, RoutedEventArgs e)
-	{
-		this.OnActorChanged(this.DataContext as ActorMemory);
-	}
-
-	private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-	{
-		this.OnActorChanged(this.DataContext as ActorMemory);
-	}
-
-	private void OnActorChanged(ActorMemory? actor)
-	{
-		this.Actor = actor;
-		Application.Current.Dispatcher.Invoke(() => this.IsEnabled = false);
-
-		this.Hair = null;
-		this.FacePaint = null;
-
-		if (this.Customize != null)
-			this.Customize.PropertyChanged -= this.OnAppearancePropertyChanged;
+		sender.Hair = null;
+		sender.FacePaint = null;
 
 		if (actor == null || actor.Customize == null)
 			return;
 
-		this.Customize = actor.Customize;
-		this.Customize.PropertyChanged += this.OnAppearancePropertyChanged;
-
-		Application.Current.Dispatcher.Invoke(() =>
-		{
-			this.UpdateRaceAndTribe();
-		});
+		sender.UpdateRaceAndTribe();
 	}
 
 	private void OnAppearancePropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -133,19 +109,19 @@ public partial class CustomizeEditor : UserControl
 		if (GameDataService.CharacterMakeCustomize == null)
 			throw new Exception("CharacterMakeCustomize not loaded");
 
-		if (this.Customize == null)
+		if (this.Actor?.Customize == null)
 		{
 			this.IsEnabled = false;
 			return;
 		}
 
-		if (this.Customize.Race == 0 || this.Customize.Race > AnAppearance.Races.Viera)
+		if (this.Actor.Customize.Race == 0 || this.Actor.Customize.Race > AnAppearance.Races.Viera)
 		{
 			this.IsEnabled = false;
 			return;
 		}
 
-		this.Race = GameDataService.Races.GetRow((uint)this.Customize.Race);
+		this.Race = GameDataService.Races.GetRow((uint)this.Actor.Customize.Race);
 
 		// Something has gone terribly wrong.
 		if (this.Race == null)
@@ -159,33 +135,33 @@ public partial class CustomizeEditor : UserControl
 		this.RaceComboBox.SelectedItem = this.Race;
 		this.TribeComboBox.ItemsSource = this.Race.Tribes;
 
-		if (!Enum.IsDefined<ActorCustomizeMemory.Tribes>((ActorCustomizeMemory.Tribes)this.Customize.Tribe))
-			this.Customize.Tribe = ActorCustomizeMemory.Tribes.Midlander;
+		if (!Enum.IsDefined<ActorCustomizeMemory.Tribes>((ActorCustomizeMemory.Tribes)this.Actor.Customize.Tribe))
+			this.Actor.Customize.Tribe = ActorCustomizeMemory.Tribes.Midlander;
 
-		this.Tribe = GameDataService.Tribes.Get((uint)this.Customize.Tribe);
+		this.Tribe = GameDataService.Tribes.Get((uint)this.Actor.Customize.Tribe);
 
-		if (this.Customize.Tribe == 0 || this.Tribe == null)
-			this.Customize.Tribe = this.Race.Tribes.First().CustomizeTribe;
+		if (this.Actor.Customize.Tribe == 0 || this.Tribe == null)
+			this.Actor.Customize.Tribe = this.Race.Tribes.First().CustomizeTribe;
 
 		this.TribeComboBox.SelectedItem = this.Tribe;
 
-		this.HasFur = this.Customize.Race == AnAppearance.Races.Hrothgar;
-		this.HasTail = this.Customize.Race == AnAppearance.Races.Hrothgar || this.Customize.Race == AnAppearance.Races.Miqote || this.Customize.Race == AnAppearance.Races.AuRa;
-		this.HasEars = this.Customize.Race == AnAppearance.Races.Viera || this.Customize.Race == AnAppearance.Races.Lalafel || this.Customize.Race == AnAppearance.Races.Elezen;
+		this.HasFur = this.Actor.Customize.Race == AnAppearance.Races.Hrothgar;
+		this.HasTail = this.Actor.Customize.Race == AnAppearance.Races.Hrothgar || this.Actor.Customize.Race == AnAppearance.Races.Miqote || this.Actor.Customize.Race == AnAppearance.Races.AuRa;
+		this.HasEars = this.Actor.Customize.Race == AnAppearance.Races.Viera || this.Actor.Customize.Race == AnAppearance.Races.Lalafel || this.Actor.Customize.Race == AnAppearance.Races.Elezen;
 		this.HasEarsTail = this.HasTail | this.HasEars;
 		this.HasMuscles = !this.HasEars && !this.HasTail;
-		this.HasGender = this.Customize.Race != AnAppearance.Races.Hrothgar;
+		this.HasGender = this.Actor.Customize.Race != AnAppearance.Races.Hrothgar;
 
-		bool canAge = this.Customize.Tribe == AnAppearance.Tribes.Midlander;
-		canAge |= this.Customize.Race == AnAppearance.Races.Miqote && this.Customize.Gender == AnAppearance.Genders.Feminine;
-		canAge |= this.Customize.Race == AnAppearance.Races.Elezen;
-		canAge |= this.Customize.Race == AnAppearance.Races.AuRa;
+		bool canAge = this.Actor.Customize.Tribe == AnAppearance.Tribes.Midlander;
+		canAge |= this.Actor.Customize.Race == AnAppearance.Races.Miqote && this.Actor.Customize.Gender == AnAppearance.Genders.Feminine;
+		canAge |= this.Actor.Customize.Race == AnAppearance.Races.Elezen;
+		canAge |= this.Actor.Customize.Race == AnAppearance.Races.AuRa;
 		this.CanAge = canAge;
 
-		if (this.Customize.Tribe > 0)
+		if (this.Actor.Customize.Tribe > 0)
 		{
-			this.Hair = GameDataService.CharacterMakeCustomize.GetFeature(CustomizeSheet.Features.Hair, this.Customize.Tribe, this.Customize.Gender, this.Customize.Hair);
-			this.FacePaint = GameDataService.CharacterMakeCustomize.GetFeature(CustomizeSheet.Features.FacePaint, this.Customize.Tribe, this.Customize.Gender, this.Customize.FacePaint);
+			this.Hair = GameDataService.CharacterMakeCustomize.GetFeature(CustomizeSheet.Features.Hair, this.Actor.Customize.Tribe, this.Actor.Customize.Gender, this.Actor.Customize.Hair);
+			this.FacePaint = GameDataService.CharacterMakeCustomize.GetFeature(CustomizeSheet.Features.FacePaint, this.Actor.Customize.Tribe, this.Actor.Customize.Gender, this.Actor.Customize.FacePaint);
 		}
 
 		this.IsEnabled = true;
@@ -193,7 +169,7 @@ public partial class CustomizeEditor : UserControl
 
 	private void OnGenderChanged(object sender, SelectionChangedEventArgs e)
 	{
-		if (this.Customize == null)
+		if (this.Actor?.Customize == null)
 			return;
 
 		AnAppearance.Genders? gender = this.GenderComboBox.SelectedItem as AnAppearance.Genders?;
@@ -202,25 +178,25 @@ public partial class CustomizeEditor : UserControl
 			return;
 
 		// Do not change to masculine gender when a young miqo or aura as it will crash the game
-		if (this.Customize.Age == AnAppearance.Ages.Young && (this.Customize.Race == AnAppearance.Races.Miqote))
+		if (this.Actor.Customize.Age == AnAppearance.Ages.Young && (this.Actor.Customize.Race == AnAppearance.Races.Miqote))
 		{
-			this.Customize.Age = AnAppearance.Ages.Normal;
+			this.Actor.Customize.Age = AnAppearance.Ages.Normal;
 		}
 
-		this.Customize.Gender = (AnAppearance.Genders)gender;
+		this.Actor.Customize.Gender = (AnAppearance.Genders)gender;
 
 		this.UpdateRaceAndTribe();
 	}
 
 	private void OnHairClicked(object sender, RoutedEventArgs e)
 	{
-		if (this.Customize == null)
+		if (this.Actor?.Customize == null)
 			return;
 
-		CustomizeFeatureSelectorDrawer selector = new CustomizeFeatureSelectorDrawer(CustomizeSheet.Features.Hair, this.Customize.Gender, this.Customize.Tribe, this.Customize.Hair);
+		CustomizeFeatureSelectorDrawer selector = new CustomizeFeatureSelectorDrawer(CustomizeSheet.Features.Hair, this.Actor.Customize.Gender, this.Actor.Customize.Tribe, this.Actor.Customize.Hair);
 		selector.SelectionChanged += (v) =>
 		{
-			this.Customize.Hair = v;
+			this.Actor.Customize.Hair = v;
 		};
 
 		throw new NotImplementedException();
@@ -228,13 +204,13 @@ public partial class CustomizeEditor : UserControl
 
 	private void OnFacePaintClicked(object sender, RoutedEventArgs e)
 	{
-		if (this.Customize == null)
+		if (this.Actor?.Customize == null)
 			return;
 
-		CustomizeFeatureSelectorDrawer selector = new CustomizeFeatureSelectorDrawer(CustomizeSheet.Features.FacePaint, this.Customize.Gender, this.Customize.Tribe, this.Customize.FacePaint);
+		CustomizeFeatureSelectorDrawer selector = new CustomizeFeatureSelectorDrawer(CustomizeSheet.Features.FacePaint, this.Actor.Customize.Gender, this.Actor.Customize.Tribe, this.Actor.Customize.FacePaint);
 		selector.SelectionChanged += (v) =>
 		{
-			this.Customize.FacePaint = v;
+			this.Actor.Customize.FacePaint = v;
 		};
 
 		throw new NotImplementedException();
@@ -244,7 +220,7 @@ public partial class CustomizeEditor : UserControl
 	{
 		Race? race = this.RaceComboBox.SelectedItem as Race;
 
-		if (race == null || this.Customize == null)
+		if (race == null || this.Actor?.Customize == null)
 			return;
 
 		// did we change?
@@ -252,10 +228,10 @@ public partial class CustomizeEditor : UserControl
 			return;
 
 		if (race.CustomizeRace == AnAppearance.Races.Hrothgar)
-			this.Customize.Gender = AnAppearance.Genders.Masculine;
+			this.Actor.Customize.Gender = AnAppearance.Genders.Masculine;
 
 		// reset age when chaing race
-		this.Customize.Age = AnAppearance.Ages.Normal;
+		this.Actor.Customize.Age = AnAppearance.Ages.Normal;
 
 		if (this.Race == race)
 			return;
@@ -279,8 +255,8 @@ public partial class CustomizeEditor : UserControl
 
 		this.TribeComboBox.SelectedItem = this.Tribe;
 
-		this.Customize.Race = this.Race.CustomizeRace;
-		this.Customize.Tribe = this.Tribe.CustomizeTribe;
+		this.Actor.Customize.Race = this.Race.CustomizeRace;
+		this.Actor.Customize.Tribe = this.Tribe.CustomizeTribe;
 
 		this.UpdateRaceAndTribe();
 
@@ -289,7 +265,7 @@ public partial class CustomizeEditor : UserControl
 
 	private void OnTribeChanged(object sender, SelectionChangedEventArgs e)
 	{
-		if (this.Customize == null)
+		if (this.Actor?.Customize == null)
 			return;
 
 		Tribe? tribe = this.TribeComboBox.SelectedItem as Tribe;
@@ -298,10 +274,10 @@ public partial class CustomizeEditor : UserControl
 			return;
 
 		// reset age when chaing tribe
-		this.Customize.Age = AnAppearance.Ages.Normal;
+		this.Actor.Customize.Age = AnAppearance.Ages.Normal;
 
 		this.Tribe = tribe;
-		this.Customize.Tribe = this.Tribe.CustomizeTribe;
+		this.Actor.Customize.Tribe = this.Tribe.CustomizeTribe;
 
 		this.UpdateRaceAndTribe();
 	}

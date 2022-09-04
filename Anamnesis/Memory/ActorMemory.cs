@@ -5,6 +5,8 @@ namespace Anamnesis.Memory;
 
 using System;
 using System.Threading.Tasks;
+using Anamnesis.Files;
+using Anamnesis.Services;
 using Anamnesis.Utils;
 using PropertyChanged;
 
@@ -12,11 +14,21 @@ public class ActorMemory : ActorBasicMemory
 {
 	private readonly FuncQueue refreshQueue;
 	private readonly FuncQueue backupQueue;
+	private bool isRestoringBackup = false;
+
+	private CharacterFile? gposeCharacterBackup;
+	private CharacterFile? originalCharacterBackup;
 
 	public ActorMemory()
 	{
 		this.refreshQueue = new(this.RefreshAsync, 250);
 		this.backupQueue = new(this.BackupAsync, 250);
+	}
+
+	public enum BackupModes
+	{
+		Gpose,
+		Original,
 	}
 
 	public enum CharacterModes : byte
@@ -63,8 +75,6 @@ public class ActorMemory : ActorBasicMemory
 	[Bind(0x1AD4)] public byte CharacterModeRaw { get; set; }
 	[Bind(0x1AD5)] public byte CharacterModeInput { get; set; }
 	[Bind(0x1B04)] public byte AttachmentPoint { get; set; }
-
-	public PinnedActor? Pinned { get; set; }
 
 	public History History { get; private set; } = new();
 
@@ -194,7 +204,7 @@ public class ActorMemory : ActorBasicMemory
 		while (this.IsRefreshing)
 			await Task.Delay(10);
 
-		this.Pinned?.CreateCharacterBackup(PinnedActor.BackupModes.Gpose);
+		this.CreateCharacterBackup(BackupModes.Gpose);
 	}
 
 	public void RaiseRefreshChanged()
@@ -246,5 +256,56 @@ public class ActorMemory : ActorBasicMemory
 		}
 
 		return base.CanWrite(bind);
+	}
+
+	private void CreateCharacterBackup(BackupModes mode)
+	{
+		if (this.isRestoringBackup)
+			return;
+
+		if (mode == BackupModes.Original)
+		{
+			if (this.originalCharacterBackup == null)
+				this.originalCharacterBackup = new();
+
+			this.originalCharacterBackup.WriteToFile(this, CharacterFile.SaveModes.All);
+		}
+		else if (mode == BackupModes.Gpose)
+		{
+			if (this.gposeCharacterBackup == null)
+				this.gposeCharacterBackup = new();
+
+			this.gposeCharacterBackup.WriteToFile(this, CharacterFile.SaveModes.All);
+		}
+	}
+
+	private async Task RestoreCharacterBackup(BackupModes mode)
+	{
+		CharacterFile? backup = null;
+
+		if (mode == BackupModes.Gpose)
+		{
+			backup = this.gposeCharacterBackup;
+		}
+		else if (mode == BackupModes.Original)
+		{
+			backup = this.originalCharacterBackup;
+		}
+
+		if (backup == null)
+			return;
+
+		this.isRestoringBackup = true;
+
+		bool allowRefresh = !GposeService.GetIsGPose();
+		await backup.Apply(this, CharacterFile.SaveModes.All, allowRefresh);
+
+		// If we were a player, really make sure we are again.
+		if (allowRefresh && backup.ObjectKind == ActorTypes.Player)
+		{
+			this.ObjectKind = backup.ObjectKind;
+		}
+
+		this.isRestoringBackup = false;
 	}
 }

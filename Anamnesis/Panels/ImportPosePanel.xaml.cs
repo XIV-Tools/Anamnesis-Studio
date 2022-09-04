@@ -40,26 +40,16 @@ public partial class ImportPosePanel : PanelBase
 	public PoseFile.Mode Mode { get; set; } = PoseFile.Mode.Scale | PoseFile.Mode.Rotation | PoseFile.Mode.WorldRotation | PoseFile.Mode.WorldScale;
 	public Destinations Destination { get; set; } = Destinations.All;
 	public PoseFile File { get; set; }
-	public PinnedActor? Actor { get; set; }
 
 	public SkeletonVisual3d? Skeleton { get; private set; }
-	public ActorMemory? ActorMemory { get; private set; }
+	public ActorMemory? Actor { get; private set; }
 
 	private async Task Initialize()
 	{
 		if (this.Actor == null)
 			return;
 
-		this.ActorMemory = this.Actor.GetMemory();
-
-		if (this.ActorMemory == null)
-		{
-			this.Log.Error(new Exception($"Actor: {this.Actor.Id} has no memory"), "Actor has no memory");
-			this.Close();
-			return;
-		}
-
-		this.Skeleton = await this.Services.Pose.GetSkeleton(this.ActorMemory);
+		this.Skeleton = await this.Services.Pose.GetSkeleton(this.Actor);
 
 		if (this.Skeleton == null)
 		{
@@ -69,10 +59,10 @@ public partial class ImportPosePanel : PanelBase
 
 	private void OnImportClicked(object sender, RoutedEventArgs e)
 	{
-		if (this.ActorMemory == null || this.Skeleton == null)
+		if (this.Actor == null || this.Skeleton == null)
 			return;
 
-		this.File.Apply(this.ActorMemory, this.Skeleton, null, this.Mode).Run();
+		this.File.Apply(this.Actor, this.Skeleton, null, this.Mode).Run();
 		this.Close();
 	}
 

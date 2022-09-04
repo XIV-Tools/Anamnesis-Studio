@@ -107,8 +107,7 @@
 			Grid.Row="1"
 			Grid.Column="1"
 			Margin="6"
-			Selection="{Binding Actor}"
-			SelectionChanged="OnActorSelectionChanged" />
+			Selection="{Binding Actor}" />
 
 		<Grid
 			Grid.Row="2"

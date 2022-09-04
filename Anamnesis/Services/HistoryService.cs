@@ -3,6 +3,7 @@
 
 namespace Anamnesis.Services;
 
+using System;
 using System.Threading.Tasks;
 using Anamnesis.Keyboard;
 using Anamnesis.Memory;
@@ -35,9 +36,8 @@ public class HistoryService : ServiceBase<HistoryService>
 
 	private void Step(bool forward)
 	{
-		ActorMemory? actor = TargetService.Instance.SelectedActor;
-
-		if (actor == null)
+		throw new NotImplementedException();
+		/*if (actor == null)
 			return;
 
 		IsRestoring = true;
@@ -52,6 +52,6 @@ public class HistoryService : ServiceBase<HistoryService>
 		}
 
 		OnHistoryApplied?.Invoke();
-		IsRestoring = false;
+		IsRestoring = false;*/
 	}
 }

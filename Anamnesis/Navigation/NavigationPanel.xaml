@@ -47,42 +47,6 @@
 			<ColumnDefinition Width="Auto" />
 		</Grid.ColumnDefinitions>
 
-		<!--  Actor List  -->
-		<Border
-			Grid.Row="1"
-			Grid.Column="0"
-			Margin="6"
-			Background="{DynamicResource MaterialDesignBackground}"
-			CornerRadius="6">
-
-			<Border.BitmapEffect>
-				<DropShadowBitmapEffect ShadowDepth="0" />
-			</Border.BitmapEffect>
-
-			<Grid>
-
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto" />
-					<RowDefinition />
-				</Grid.RowDefinitions>
-
-				<ToggleButton
-					Grid.Row="0"
-					Width="28"
-					Height="28"
-					HorizontalAlignment="Left"
-					ana:Behaviours.Tooltip="Target_Sync"
-					IsChecked="{Binding Services.Target.SyncTarget}"
-					Style="{StaticResource TransparentIconToggleButton}">
-					<XivToolsWpf:IconBlock Icon="SyncAlt" />
-				</ToggleButton>
-
-				<local:ActorList Grid.Row="1" />
-			</Grid>
-
-
-		</Border>
-
 		<!--  Navigation Bar  -->
 		<Grid
 			Grid.Row="2"

@@ -11,8 +11,6 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:local="clr-namespace:Anamnesis.Actor.Pages"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	DataContextChanged="OnDataContextChanged"
-	Loaded="OnLoaded"
 	TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
 	mc:Ignorable="d">
 
@@ -106,7 +104,7 @@
 						Grid.Row="1"
 						Grid.Column="0"
 						Margin="0,3,3,0"
-						SelectedItem="{Binding Customize.Gender, Mode=OneWay}"
+						SelectedItem="{Binding Actor.Customize.Gender, Mode=OneWay}"
 						SelectionChanged="OnGenderChanged"
 						Visibility="{Binding HasGender, Converter={StaticResource B2V}}" />
 					<ComboBox
@@ -114,7 +112,7 @@
 						Grid.Row="1"
 						Grid.Column="1"
 						Margin="3,3,0,0"
-						SelectedItem="{Binding Customize.Age}"
+						SelectedItem="{Binding Actor.Customize.Age}"
 						Visibility="{Binding CanAge, Converter={StaticResource B2V}}" />
 
 				</Grid>
@@ -139,10 +137,10 @@
 					<controls:ColorControl
 						Grid.Column="0"
 						Margin="0,2,0,0"
-						Gender="{Binding Customize.Gender}"
-						Tribe="{Binding Customize.Tribe}"
+						Gender="{Binding Actor.Customize.Gender}"
+						Tribe="{Binding Actor.Customize.Tribe}"
 						Type="Skin"
-						Value="{Binding Customize.Skintone}" />
+						Value="{Binding Actor.Customize.Skintone}" />
 
 					<XivToolsWpf:TextBlock
 						Key="Character_Appearance_Iris"
@@ -150,7 +148,7 @@
 						Style="{StaticResource Label}" />
 					<CheckBox
 						Grid.Column="3"
-						IsChecked="{Binding Customize.SmallIris}" />
+						IsChecked="{Binding Actor.Customize.SmallIris}" />
 				</Grid>
 
 				<!--  Eyes  -->
@@ -177,20 +175,20 @@
 						Maximum="256"
 						Minimum="0"
 						ValueOffset="1"
-						Value="{Binding Customize.EyeShape}" />
+						Value="{Binding Actor.Customize.EyeShape}" />
 
 					<controls:ColorControl
 						Grid.Column="1"
 						Margin="0"
-						Gender="{Binding Customize.Gender}"
+						Gender="{Binding Actor.Customize.Gender}"
 						ToolTipKey="Character_Appearance_EyeLeft"
-						Tribe="{Binding Customize.Tribe}"
+						Tribe="{Binding Actor.Customize.Tribe}"
 						Type="Eyes"
-						Value="{Binding Customize.MainEyeColor}" />
+						Value="{Binding Actor.Customize.MainEyeColor}" />
 
 					<ToggleButton
 						Grid.Column="2"
-						IsChecked="{Binding Customize.LinkEyeColors}"
+						IsChecked="{Binding Actor.Customize.LinkEyeColors}"
 						Style="{StaticResource TransparentIconToggleButton}">
 						<XivToolsWpf:IconBlock
 							FontSize="10"
@@ -216,12 +214,12 @@
 					<controls:ColorControl
 						Grid.Column="3"
 						Margin="0"
-						Gender="{Binding Customize.Gender}"
-						IsEnabled="{Binding Customize.LinkEyeColors, Converter={StaticResource !B}}"
+						Gender="{Binding Actor.Customize.Gender}"
+						IsEnabled="{Binding Actor.Customize.LinkEyeColors, Converter={StaticResource !B}}"
 						ToolTipKey="Character_Appearance_EyeRight"
-						Tribe="{Binding Customize.Tribe}"
+						Tribe="{Binding Actor.Customize.Tribe}"
 						Type="Eyes"
-						Value="{Binding Customize.REyeColor}" />
+						Value="{Binding Actor.Customize.REyeColor}" />
 				</Grid>
 
 				<!--  Face Type  -->
@@ -247,16 +245,16 @@
 						Buttons="True"
 						Maximum="255"
 						Minimum="1"
-						Value="{Binding Customize.Head}" />
+						Value="{Binding Actor.Customize.Head}" />
 					<controls:ColorControl
 						Grid.Column="1"
 						Margin="6,0,0,0"
 						HorizontalAlignment="Left"
-						Gender="{Binding Customize.Gender}"
+						Gender="{Binding Actor.Customize.Gender}"
 						ToolTipKey="Character_Appearance_FacialFeatureColor"
-						Tribe="{Binding Customize.Tribe}"
+						Tribe="{Binding Actor.Customize.Tribe}"
 						Type="Eyes"
-						Value="{Binding Customize.FacialFeatureColor}" />
+						Value="{Binding Actor.Customize.FacialFeatureColor}" />
 
 				</Grid>
 
@@ -269,10 +267,10 @@
 				<controls:FacialFeaturesControl
 					Grid.Row="5"
 					Grid.Column="1"
-					Gender="{Binding Customize.Gender}"
-					Head="{Binding Customize.Head}"
-					Tribe="{Binding Customize.Tribe}"
-					Value="{Binding Customize.FacialFeatures}" />
+					Gender="{Binding Actor.Customize.Gender}"
+					Head="{Binding Actor.Customize.Head}"
+					Tribe="{Binding Actor.Customize.Tribe}"
+					Value="{Binding Actor.Customize.FacialFeatures}" />
 
 				<!--  Face Paint  -->
 				<XivToolsWpf:TextBlock
@@ -306,14 +304,14 @@
 						</Border>
 					</Button>
 
-					<!--<cm3Controls:NumberBox Grid.Column="1" Value="{Binding Customize.FacePaint}" Minimum="0" Maximum="255" Buttons="True" Margin="0, 0, 12, 0" HorizontalAlignment="Center"/>-->
+					<!--<cm3Controls:NumberBox Grid.Column="1" Value="{Binding Actor.Customize.FacePaint}" Minimum="0" Maximum="255" Buttons="True" Margin="0, 0, 12, 0" HorizontalAlignment="Center"/>-->
 
 					<controls:ColorControl
 						Grid.Column="1"
-						Gender="{Binding Customize.Gender}"
-						Tribe="{Binding Customize.Tribe}"
+						Gender="{Binding Actor.Customize.Gender}"
+						Tribe="{Binding Actor.Customize.Tribe}"
 						Type="FacePaint"
-						Value="{Binding Customize.FacePaintColor}" />
+						Value="{Binding Actor.Customize.FacePaintColor}" />
 				</Grid>
 
 
@@ -354,11 +352,11 @@
 
 					<controls:ColorControl
 						Grid.Column="1"
-						Gender="{Binding Customize.Gender}"
+						Gender="{Binding Actor.Customize.Gender}"
 						ToolTip="Hair Color"
-						Tribe="{Binding Customize.Tribe}"
+						Tribe="{Binding Actor.Customize.Tribe}"
 						Type="Hair"
-						Value="{Binding Customize.HairTone}" />
+						Value="{Binding Actor.Customize.HairTone}" />
 
 					<TextBlock
 						Grid.Column="2"
@@ -370,16 +368,16 @@
 					<CheckBox
 						Grid.Column="3"
 						HorizontalAlignment="Center"
-						IsChecked="{Binding Customize.EnableHighlights}"
+						IsChecked="{Binding Actor.Customize.EnableHighlights}"
 						ToolTip="Enable Highlights" />
 					<controls:ColorControl
 						Grid.Column="4"
-						Gender="{Binding Customize.Gender}"
-						IsEnabled="{Binding Customize.EnableHighlights}"
+						Gender="{Binding Actor.Customize.Gender}"
+						IsEnabled="{Binding Actor.Customize.EnableHighlights}"
 						ToolTip="Highlight Color"
-						Tribe="{Binding Customize.Tribe}"
+						Tribe="{Binding Actor.Customize.Tribe}"
 						Type="HairHighlights"
-						Value="{Binding Customize.Highlights}" />
+						Value="{Binding Actor.Customize.Highlights}" />
 
 				</Grid>
 
@@ -406,21 +404,21 @@
 						Maximum="4"
 						Minimum="0"
 						ValueOffset="1"
-						Value="{Binding Customize.Lips}" />
+						Value="{Binding Actor.Customize.Lips}" />
 					<TextBlock
 						Grid.Column="1"
 						Style="{StaticResource Label}"
 						Text="Color:" />
 					<CheckBox
 						Grid.Column="2"
-						IsChecked="{Binding Customize.EnableLipColor}" />
+						IsChecked="{Binding Actor.Customize.EnableLipColor}" />
 					<controls:ColorControl
 						Grid.Column="3"
-						Gender="{Binding Customize.Gender}"
-						IsEnabled="{Binding Customize.EnableLipColor}"
-						Tribe="{Binding Customize.Tribe}"
+						Gender="{Binding Actor.Customize.Gender}"
+						IsEnabled="{Binding Actor.Customize.EnableLipColor}"
+						Tribe="{Binding Actor.Customize.Tribe}"
 						Type="Lips"
-						Value="{Binding Customize.LipsToneFurPattern}" />
+						Value="{Binding Actor.Customize.LipsToneFurPattern}" />
 				</Grid>
 
 				<!--  Height  -->
@@ -434,10 +432,10 @@
 					Grid.Column="1"
 					Height="24"
 					Margin="0,0,0,2"
-					Age="{Binding Customize.Age}"
-					Gender="{Binding Customize.Gender}"
-					Tribe="{Binding Customize.Tribe}"
-					Value="{Binding Customize.Height}" />
+					Age="{Binding Actor.Customize.Age}"
+					Gender="{Binding Actor.Customize.Gender}"
+					Tribe="{Binding Actor.Customize.Tribe}"
+					Value="{Binding Actor.Customize.Height}" />
 
 				<!--  Bust Size  -->
 				<XivToolsWpf:TextBlock
@@ -452,7 +450,7 @@
 					Maximum="100"
 					Minimum="0"
 					Slider="Absolute"
-					Value="{Binding Customize.Bust}" />
+					Value="{Binding Actor.Customize.Bust}" />
 
 				<!--  Muscle / Ears / Tail Size  -->
 				<XivToolsWpf:TextBlock
@@ -468,7 +466,7 @@
 					Minimum="0"
 					Slider="Absolute"
 					Visibility="{Binding HasMuscles, Converter={StaticResource B2V}}"
-					Value="{Binding Customize.EarMuscleTailSize}" />
+					Value="{Binding Actor.Customize.EarMuscleTailSize}" />
 
 				<XivToolsWpf:TextBlock
 					Key="Character_Appearance_EarsSize"
@@ -483,7 +481,7 @@
 					Minimum="0"
 					Slider="Absolute"
 					Visibility="{Binding HasEars, Converter={StaticResource B2V}}"
-					Value="{Binding Customize.EarMuscleTailSize}" />
+					Value="{Binding Actor.Customize.EarMuscleTailSize}" />
 
 				<XivToolsWpf:TextBlock
 					Key="Character_Appearance_TailSize"
@@ -498,7 +496,7 @@
 					Minimum="0"
 					Slider="Absolute"
 					Visibility="{Binding HasTail, Converter={StaticResource B2V}}"
-					Value="{Binding Customize.EarMuscleTailSize}" />
+					Value="{Binding Actor.Customize.EarMuscleTailSize}" />
 
 
 				<Grid
@@ -530,7 +528,7 @@
 						Maximum="255"
 						Minimum="0"
 						ValueOffset="1"
-						Value="{Binding Customize.Jaw}" />
+						Value="{Binding Actor.Customize.Jaw}" />
 
 					<!--  Eyebrows type  -->
 					<XivToolsWpf:TextBlock
@@ -545,7 +543,7 @@
 						Maximum="255"
 						Minimum="0"
 						ValueOffset="1"
-						Value="{Binding Customize.Eyebrows}" />
+						Value="{Binding Actor.Customize.Eyebrows}" />
 
 					<!--  Nose Type  -->
 					<XivToolsWpf:TextBlock
@@ -560,7 +558,7 @@
 						Maximum="255"
 						Minimum="0"
 						ValueOffset="1"
-						Value="{Binding Customize.Nose}" />
+						Value="{Binding Actor.Customize.Nose}" />
 
 					<!--  Ear / Tail Type  -->
 					<XivToolsWpf:TextBlock
@@ -582,7 +580,7 @@
 						Maximum="255"
 						Minimum="0"
 						Visibility="{Binding HasEarsTail, Converter={StaticResource B2V}}"
-						Value="{Binding Customize.TailEarsType}" />
+						Value="{Binding Actor.Customize.TailEarsType}" />
 
 					<!--  Fur pattern  -->
 					<XivToolsWpf:TextBlock
@@ -598,7 +596,7 @@
 						Maximum="255"
 						Minimum="0"
 						Visibility="{Binding HasFur, Converter={StaticResource B2V}}"
-						Value="{Binding Customize.LipsToneFurPattern}" />
+						Value="{Binding Actor.Customize.LipsToneFurPattern}" />
 
 				</Grid>
 

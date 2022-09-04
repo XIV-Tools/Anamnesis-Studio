@@ -146,10 +146,6 @@ public class ActorService : ServiceBase<ActorService>
 			{
 				ActorBasicMemory actor = new();
 				actor.SetAddress(ptr);
-
-				if (Debugger.IsAttached && actor.IsPlayer)
-					actor.Names.GenerateRandomName();
-
 				results.Add(actor);
 			}
 			catch (Exception ex)

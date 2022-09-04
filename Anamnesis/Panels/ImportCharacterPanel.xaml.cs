@@ -26,16 +26,14 @@ public partial class ImportCharacterPanel : PanelBase
 
 	public CharacterFile.SaveModes Mode { get; set; } = CharacterFile.SaveModes.All;
 	public CharacterFile CharacterFile { get; set; }
-	public PinnedActor? Actor { get; set; }
+	public ActorMemory? Actor { get; set; }
 
 	private void OnImportClicked(object sender, RoutedEventArgs e)
 	{
-		ActorMemory? memory = this.Actor?.GetMemory();
+		if (this.Actor == null)
+			throw new Exception("Must select a target actor");
 
-		if (memory == null)
-			throw new Exception("Actor has no memory");
-
-		this.CharacterFile.Apply(memory, this.Mode).Run();
+		this.CharacterFile.Apply(this.Actor, this.Mode).Run();
 		this.Close();
 	}
 }

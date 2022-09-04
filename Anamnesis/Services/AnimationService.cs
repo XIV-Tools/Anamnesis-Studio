@@ -124,7 +124,7 @@ public class AnimationService : ServiceBase<AnimationService>
 		if (!this.SpeedControlEnabled)
 			return;
 
-		foreach (PinnedActor pinned in TargetService.Instance.PinnedActors)
+		/*foreach (PinnedActor pinned in TargetService.Instance.PinnedActors)
 		{
 			if (!pinned.IsValid)
 				continue;
@@ -134,7 +134,7 @@ public class AnimationService : ServiceBase<AnimationService>
 				continue;
 
 			this.PauseActor(actor, pause);
-		}
+		}*/
 	}
 
 	public void PauseActor(ActorMemory actor, bool pause)

@@ -413,7 +413,6 @@ public class MemoryService : ServiceBase<MemoryService>
 				{
 					Log.Information("FFXIV Process has terminated");
 					await Task.Delay(10000);
-					TargetService.Instance.ClearSelection();
 					await this.GetProcess();
 				}
 				catch (Win32Exception)

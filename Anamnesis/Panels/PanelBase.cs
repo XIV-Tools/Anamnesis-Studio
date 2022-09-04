@@ -79,4 +79,9 @@ public abstract class PanelBase : UserControl, IPanel, INotifyPropertyChanged
 			await Task.Delay(500);
 		}
 	}
+
+	protected void RaisePropertyChanged(string propertyName)
+	{
+		this.PropertyChanged?.Invoke(this, new(propertyName));
+	}
 }

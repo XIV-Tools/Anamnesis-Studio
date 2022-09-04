@@ -6,6 +6,7 @@ namespace Anamnesis;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using Anamnesis.Services;
 using PropertyChanged;
 using Serilog;
 
@@ -43,6 +44,8 @@ public abstract class ServiceBase<T> : IService, INotifyPropertyChanged
 	}
 
 	protected static ILogger Log => Serilog.Log.ForContext<T>();
+
+	protected static ServiceManager Services => App.Services;
 
 	public virtual Task Initialize()
 	{

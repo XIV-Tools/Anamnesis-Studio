@@ -43,13 +43,13 @@ public class SceneFile : JsonFileBase
 	public string TargetActorName { get; set; } = string.Empty;
 	public Dictionary<string, ActorEntry> ActorEntries { get; set; } = new();
 
-	public async Task Apply(Mode mode)
+	public Task Apply(Mode mode)
 	{
-		if (TargetService.Instance.PinnedActors.Where(i => !i.IsValid || i.Memory?.ModelObject == null).Any())
-			throw new Exception("All pinned actors must be valid and have a model");
+		throw new NotImplementedException();
+#pragma warning disable
 
 		// First up, ensure we have the actors mapped
-		Dictionary<string, ActorMemory?> actors = new();
+		/*Dictionary<string, ActorMemory?> actors = new();
 		foreach((string name, ActorEntry entry) in this.ActorEntries)
 		{
 			actors.Add(name, GetPinnedActor(name));
@@ -163,12 +163,15 @@ public class SceneFile : JsonFileBase
 		if (mode.HasFlag(Mode.Camera))
 		{
 			this.CameraShot!.Apply(CameraService.Instance, targetActor);
-		}
+		}*/
 	}
 
 	public async Task WriteToFile()
 	{
-		this.Territory = TerritoryService.Instance.CurrentTerritoryId;
+		throw new NotImplementedException();
+#pragma warning disable
+
+		/*this.Territory = TerritoryService.Instance.CurrentTerritoryId;
 		this.Weather = TerritoryService.Instance.CurrentWeatherId;
 		this.DayOfMonth = TimeService.Instance.DayOfMonth;
 		this.TimeOfDay = TimeService.Instance.TimeOfDay;
@@ -238,25 +241,7 @@ public class SceneFile : JsonFileBase
 				throw new Exception($"Duplicate actor name: {actor.Names.Text} in scene.");
 
 			this.ActorEntries.Add(actor.Names.Text, entry);
-		}
-	}
-
-	private static ActorMemory? GetPinnedActor(string name)
-	{
-		foreach (PinnedActor pinnedActor in TargetService.Instance.PinnedActors)
-		{
-			ActorMemory? actorMemory = pinnedActor.GetMemory();
-
-			if (actorMemory == null)
-				continue;
-
-			if (actorMemory.Names.Text == name)
-			{
-				return actorMemory;
-			}
-		}
-
-		return null;
+		}*/
 	}
 
 	public class ActorEntry
