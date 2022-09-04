@@ -105,11 +105,11 @@ public class Names : INotifyPropertyChanged
 
 			if (i == 0)
 			{
-				this.SurnameAbreviated += " ." + spaceSeperatedParts[i];
+				this.SurnameAbreviated += " " + spaceSeperatedParts[i];
 			}
 			else
 			{
-				this.SurnameAbreviated += " ." + initial;
+				this.SurnameAbreviated += " " + initial + ".";
 			}
 
 			if (i == spaceSeperatedParts.Length - 1)
@@ -118,13 +118,13 @@ public class Names : INotifyPropertyChanged
 			}
 			else
 			{
-				this.ForenameAbreviated += " ." + initial;
+				this.ForenameAbreviated += " " + initial + ".";
 			}
 		}
 
-		this.Initials = this.Initials.Trim(' ').Trim('.');
-		this.SurnameAbreviated = this.SurnameAbreviated.Trim(' ').Trim('.');
-		this.ForenameAbreviated = this.ForenameAbreviated.Trim(' ').Trim('.');
+		this.Initials = this.Initials.Trim(' ');
+		this.SurnameAbreviated = this.SurnameAbreviated.Trim(' ');
+		this.ForenameAbreviated = this.ForenameAbreviated.Trim(' ');
 	}
 
 	public void GenerateRandomName()
