@@ -9,15 +9,17 @@ using Anamnesis.Services;
 using Lumina.Data;
 using Lumina.Excel;
 using Lumina.Text;
+using System.Collections.Generic;
 
 using ExcelRow = Anamnesis.GameData.Sheets.ExcelRow;
+using CustomizeRaces = Anamnesis.Memory.ActorCustomizeMemory.Races;
+using CustomizeGenders = Anamnesis.Memory.ActorCustomizeMemory.Genders;
 
 [Sheet("Race", 0x3403807a)]
 public class Race : ExcelRow
 {
-	public string Name => this.CustomizeRace.ToString();
+	public string Name => this.RaceId.ToString();
 	public string DisplayName => this.Masculine;
-	public ActorCustomizeMemory.Races CustomizeRace => (ActorCustomizeMemory.Races)this.RowId;
 
 	public string Feminine { get; private set; } = string.Empty;
 	public string Masculine { get; private set; } = string.Empty;
@@ -29,7 +31,18 @@ public class Race : ExcelRow
 	public int RSEFHands { get; private set; } = 0;
 	public int RSEFLegs { get; private set; } = 0;
 	public int RSEFFeet { get; private set; } = 0;
-	public Tribe[] Tribes { get; private set; } = new Tribe[0];
+
+	// Customize options
+	public List<Tribe> Tribes { get; private set; } = new();
+	public List<CustomizeGenders> Genders { get; private set; } = new();
+
+	// Customize Flags
+	public CustomizeRaces RaceId => (CustomizeRaces)this.RowId;
+	public bool HasFurCustomize => this.RaceId == CustomizeRaces.Hrothgar;
+	public bool HasTailCustomize => this.RaceId == CustomizeRaces.Hrothgar || this.RaceId == CustomizeRaces.Miqote || this.RaceId == CustomizeRaces.AuRa;
+	public bool HasEarsCustomize => this.RaceId == CustomizeRaces.Viera || this.RaceId == CustomizeRaces.Lalafel || this.RaceId == CustomizeRaces.Elezen;
+	public bool HasEarsTailCustomize => this.HasTailCustomize | this.HasEarsCustomize;
+	public bool HasMusclesCustomize => !this.HasEarsCustomize && !this.HasTailCustomize;
 
 	public override void PopulateData(RowParser parser, Lumina.GameData gameData, Language language)
 	{
@@ -47,63 +60,74 @@ public class Race : ExcelRow
 		this.RSEFLegs = parser.ReadColumn<int>(8);
 		this.RSEFFeet = parser.ReadColumn<int>(9);
 
-		if (!Enum.IsDefined<ActorCustomizeMemory.Races>(this.CustomizeRace))
+		if (!Enum.IsDefined<ActorCustomizeMemory.Races>(this.RaceId))
 			return;
 
-		if (GameDataService.Tribes == null)
+		if (GameDataService.Instance.Tribes == null)
 			throw new Exception("No Tribes list in game data service");
 
-		this.Tribes = this.CustomizeRace switch
+		this.Tribes = this.RaceId switch
 		{
-			ActorCustomizeMemory.Races.Hyur => new[]
+			ActorCustomizeMemory.Races.Hyur => new()
 			{
-					GameDataService.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Midlander),
-					GameDataService.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Highlander),
+				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Midlander),
+				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Highlander),
 			},
 
-			ActorCustomizeMemory.Races.Elezen => new[]
+			ActorCustomizeMemory.Races.Elezen => new()
 			{
-					GameDataService.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Wildwood),
-					GameDataService.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Duskwight),
+				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Wildwood),
+				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Duskwight),
 			},
 
-			ActorCustomizeMemory.Races.Lalafel => new[]
+			ActorCustomizeMemory.Races.Lalafel => new()
 			{
-					GameDataService.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Plainsfolk),
-					GameDataService.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Dunesfolk),
+				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Plainsfolk),
+				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Dunesfolk),
 			},
 
-			ActorCustomizeMemory.Races.Miqote => new[]
+			ActorCustomizeMemory.Races.Miqote => new()
 			{
-					GameDataService.Tribes.Get((byte)ActorCustomizeMemory.Tribes.SeekerOfTheSun),
-					GameDataService.Tribes.Get((byte)ActorCustomizeMemory.Tribes.KeeperOfTheMoon),
+				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.SeekerOfTheSun),
+				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.KeeperOfTheMoon),
 			},
 
-			ActorCustomizeMemory.Races.Roegadyn => new[]
+			ActorCustomizeMemory.Races.Roegadyn => new()
 			{
-					GameDataService.Tribes.Get((byte)ActorCustomizeMemory.Tribes.SeaWolf),
-					GameDataService.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Hellsguard),
+				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.SeaWolf),
+				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Hellsguard),
 			},
 
-			ActorCustomizeMemory.Races.AuRa => new[]
+			ActorCustomizeMemory.Races.AuRa => new()
 			{
-					GameDataService.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Raen),
-					GameDataService.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Xaela),
+				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Raen),
+				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Xaela),
 			},
 
-			ActorCustomizeMemory.Races.Hrothgar => new[]
+			ActorCustomizeMemory.Races.Hrothgar => new()
 			{
-					GameDataService.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Helions),
-					GameDataService.Tribes.Get((byte)ActorCustomizeMemory.Tribes.TheLost),
+				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Helions),
+				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.TheLost),
 			},
 
-			ActorCustomizeMemory.Races.Viera => new[]
+			ActorCustomizeMemory.Races.Viera => new()
 			{
-					GameDataService.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Rava),
-					GameDataService.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Veena),
+				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Rava),
+				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Veena),
 			},
 
-			_ => throw new Exception($"Unrecognized race {this.CustomizeRace}"),
+			_ => throw new Exception($"Unrecognized race Id: {this.RaceId}"),
 		};
+
+		this.Genders.Clear();
+		if (this.RaceId == CustomizeRaces.Hrothgar)
+		{
+			this.Genders.Add(CustomizeGenders.Masculine);
+		}
+		else
+		{
+			this.Genders.Add(CustomizeGenders.Masculine);
+			this.Genders.Add(CustomizeGenders.Feminine);
+		}
 	}
 }

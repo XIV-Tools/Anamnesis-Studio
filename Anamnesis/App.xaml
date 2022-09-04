@@ -62,6 +62,7 @@
 				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/MarkdownStyles.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/WindowStyles.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/ScrollBarStyles.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/ListBoxStyles.xaml" />
 
 				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles.xaml" />
 

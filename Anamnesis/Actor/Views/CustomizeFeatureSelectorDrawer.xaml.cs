@@ -32,7 +32,7 @@ public partial class CustomizeFeatureSelectorDrawer : UserControl
 		this.tribe = tribe;
 
 		this.ContentArea.DataContext = this;
-		this.List.ItemsSource = GameDataService.CharacterMakeCustomize?.GetFeatureOptions(feature, tribe, gender);
+		this.List.ItemsSource = GameDataService.Instance.CharacterMakeCustomize?.GetFeatureOptions(feature, tribe, gender);
 
 		this.Selected = value;
 	}
@@ -52,7 +52,7 @@ public partial class CustomizeFeatureSelectorDrawer : UserControl
 		{
 			this.selected = value;
 
-			this.SelectedItem = GameDataService.CharacterMakeCustomize?.GetFeature(this.feature, this.tribe, this.gender, value);
+			this.SelectedItem = GameDataService.Instance.CharacterMakeCustomize?.GetFeature(this.feature, this.tribe, this.gender, value);
 
 			if (!this.IsLoaded)
 				return;

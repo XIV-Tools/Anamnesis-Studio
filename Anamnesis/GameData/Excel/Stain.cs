@@ -50,7 +50,7 @@ public class Stain : ExcelRow, IDye
 
 		if (itemKey != 0)
 		{
-			this.Item = GameDataService.Items.Get(itemKey);
+			this.Item = GameDataService.Instance.Items.Get(itemKey);
 			this.Icon = this.Item.Icon;
 		}
 	}

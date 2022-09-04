@@ -100,9 +100,9 @@ public partial class FacialFeaturesControl : UserControl
 			return;
 
 		ImageReference[]? facialFeatures = null;
-		if (GameDataService.CharacterMakeTypes != null)
+		if (GameDataService.Instance.CharacterMakeTypes != null)
 		{
-			foreach (CharaMakeType set in GameDataService.CharacterMakeTypes)
+			foreach (CharaMakeType set in GameDataService.Instance.CharacterMakeTypes)
 			{
 				if (set.Tribe != this.Tribe)
 					continue;

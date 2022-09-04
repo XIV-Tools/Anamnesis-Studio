@@ -40,14 +40,13 @@
 			Margin="3,0,3,3">
 
 			<XivToolsWpf:IconBlock
-				Foreground="{Binding Color, Converter={StaticResource ColorToBrush}}"
 				Icon="{Binding Icon}"
-				Visibility="{Binding IsValid, Converter={StaticResource B2V}}" />
+				Visibility="{Binding IsValid, Converter={StaticResource B2V}, FallbackValue=Visible}" />
 
 			<XivToolsWpf:IconBlock
 				Foreground="Red"
 				Icon="TimesCircle"
-				Visibility="{Binding IsValid, Converter={StaticResource !B2V}}" />
+				Visibility="{Binding IsValid, Converter={StaticResource !B2V}, FallbackValue=Collapsed}" />
 		</Grid>
 
 		<XivToolsWpf:IconBlock
@@ -63,7 +62,6 @@
 			Margin="3,0,6,2"
 			FontSize="14"
 			FontWeight="SemiBold"
-			Foreground="{DynamicResource MaterialDesignToolForeground}"
 			Text="{Binding Names.Text}" />
 
 		<!--<TextBlock
@@ -81,7 +79,7 @@
 			FontSize="8"
 			Foreground="{StaticResource PrimaryHueMidBrush}"
 			Icon="MousePointer"
-			Visibility="{Binding IsTargeted, Converter={StaticResource B2V}}" />
+			Visibility="{Binding IsTargeted, Converter={StaticResource B2V}, FallbackValue=Collapsed}" />
 
 	</Grid>
 </UserControl>

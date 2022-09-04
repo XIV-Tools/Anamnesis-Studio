@@ -19,7 +19,7 @@ public class AnimationIdToNameConverter : IValueConverter
 		try
 		{
 			ushort animId = (ushort)value;
-			ActionTimeline timeline = GameDataService.ActionTimelines.Get(animId);
+			ActionTimeline timeline = GameDataService.Instance.ActionTimelines.Get(animId);
 			animationName = timeline.Key ?? LocalizationService.GetString("Character_Action_NoAnimation");
 		}
 		catch

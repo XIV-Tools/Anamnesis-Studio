@@ -9,37 +9,30 @@ using Lumina.Excel;
 using Lumina.Text;
 
 using ExcelRow = Anamnesis.GameData.Sheets.ExcelRow;
+using CustomizeTribes = Anamnesis.Memory.ActorCustomizeMemory.Tribes;
+using CustomizeAges = Anamnesis.Memory.ActorCustomizeMemory.Ages;
+using System.Collections.Generic;
 
 [Sheet("Tribe", 0xe74759fb)]
 public class Tribe : ExcelRow
 {
-	public string Name => this.CustomizeTribe.ToString();
-	public ActorCustomizeMemory.Tribes CustomizeTribe => (ActorCustomizeMemory.Tribes)this.RowId;
-
+	public string Name => this.TribeId.ToString();
+	public string DisplayName => this.Feminine;
 	public string Feminine { get; private set; } = string.Empty;
 	public string Masculine { get; private set; } = string.Empty;
 
-	public string DisplayName
-	{
-		get
-		{
-			// big old hack to keep miqo tribe names short for the UI
-			if (this.Feminine.StartsWith("Seeker"))
-				return "Seeker";
+	// Customize options
+	public List<CustomizeAges> Ages { get; private set; } = new();
 
-			if (this.Feminine.StartsWith("Keeper"))
-				return "Keeper";
-
-			return this.Feminine;
-		}
-	}
+	// Customize Flags
+	public ActorCustomizeMemory.Tribes TribeId => (CustomizeTribes)this.RowId;
 
 	public bool Equals(Tribe? other)
 	{
 		if (other is null)
 			return false;
 
-		return this.CustomizeTribe == other.CustomizeTribe;
+		return this.TribeId == other.TribeId;
 	}
 
 	public override void PopulateData(RowParser parser, Lumina.GameData gameData, Language language)

@@ -20,10 +20,10 @@ public static class ItemUtility
 	private static readonly ConcurrentDictionary<string, IItem> ItemLookup = new ConcurrentDictionary<string, IItem>();
 	private static readonly ConcurrentDictionary<string, IItem> ChocoboItemLookup = new ConcurrentDictionary<string, IItem>();
 
-	public static IItem EmperorsNewFists => GameDataService.Items.Get(13775);
+	public static IItem EmperorsNewFists => GameDataService.Instance.Items.Get(13775);
 
-	public static ChocoboSkinItem YellowChocoboSkin => new(GameDataService.Mounts.Get(1), 1);
-	public static ChocoboSkinItem BlackChocoboSkin => new(GameDataService.Mounts.Get(1), 2);
+	public static ChocoboSkinItem YellowChocoboSkin => new(GameDataService.Instance.Mounts.Get(1), 1);
+	public static ChocoboSkinItem BlackChocoboSkin => new(GameDataService.Instance.Mounts.Get(1), 2);
 
 	/// <summary>
 	/// Searches the gamedata service item list for an item with the given model attributes.
@@ -94,7 +94,7 @@ public static class ItemUtility
 		}
 		else
 		{
-			foreach (BuddyEquip equip in GameDataService.BuddyEquips)
+			foreach (BuddyEquip equip in GameDataService.Instance.BuddyEquips)
 			{
 				if (equip.Head != null && equip.Head.Slot == slot && equip.Head.ModelSet == modelSet && equip.Head.ModelBase == modelBase && equip.Head.ModelVariant == modelVariant)
 				{
@@ -118,7 +118,7 @@ public static class ItemUtility
 
 	private static IItem ItemSearch(ItemSlots slot, ushort modelSet, ushort modelBase, ushort modelVariant)
 	{
-		foreach (IItem tItem in GameDataService.Items)
+		foreach (IItem tItem in GameDataService.Instance.Items)
 		{
 			if (slot == ItemSlots.MainHand || slot == ItemSlots.OffHand)
 			{
@@ -158,7 +158,7 @@ public static class ItemUtility
 			}
 		}
 
-		foreach (IItem tItem in GameDataService.Equipment)
+		foreach (IItem tItem in GameDataService.Instance.Equipment)
 		{
 			if (tItem.ModelSet == modelSet && tItem.ModelBase == modelBase && tItem.ModelVariant == modelVariant)
 			{
@@ -166,7 +166,7 @@ public static class ItemUtility
 			}
 		}
 
-		foreach (IItem tItem in GameDataService.Perform)
+		foreach (IItem tItem in GameDataService.Instance.Perform)
 		{
 			if (tItem.ModelSet == modelSet && tItem.ModelBase == modelBase && tItem.ModelVariant == modelVariant)
 			{

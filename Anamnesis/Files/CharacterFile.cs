@@ -174,9 +174,9 @@ public class CharacterFile : JsonFileBase
 
 		if (this.IncludeSection(SaveModes.AppearanceFace, mode) || this.IncludeSection(SaveModes.AppearanceBody, mode))
 		{
-			this.Race = actor.Customize?.Race;
+			this.Race = actor.Customize?.RaceId;
 			this.Gender = actor.Customize?.Gender;
-			this.Tribe = actor.Customize?.Tribe;
+			this.Tribe = actor.Customize?.TribeId;
 			this.Age = actor.Customize?.Age;
 		}
 
@@ -291,13 +291,13 @@ public class CharacterFile : JsonFileBase
 			if (this.IncludeSection(SaveModes.AppearanceFace, mode) || this.IncludeSection(SaveModes.AppearanceBody, mode))
 			{
 				if (this.Race != null)
-					actor.Customize.Race = (ActorCustomizeMemory.Races)this.Race;
+					actor.Customize.RaceId = (ActorCustomizeMemory.Races)this.Race;
 
 				if (this.Gender != null)
 					actor.Customize.Gender = (ActorCustomizeMemory.Genders)this.Gender;
 
 				if (this.Tribe != null)
-					actor.Customize.Tribe = (ActorCustomizeMemory.Tribes)this.Tribe;
+					actor.Customize.TribeId = (ActorCustomizeMemory.Tribes)this.Tribe;
 
 				if (this.Age != null)
 					actor.Customize.Age = (ActorCustomizeMemory.Ages)this.Age;

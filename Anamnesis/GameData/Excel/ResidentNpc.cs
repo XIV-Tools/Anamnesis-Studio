@@ -40,7 +40,7 @@ public class ResidentNpc : ExcelRow, INpcBase
 		this.name = parser.ReadString(0);
 		this.Description = parser.ReadString(8) ?? string.Empty;
 
-		this.eventNpc = GameDataService.EventNPCs.Get(this.RowId);
+		this.eventNpc = GameDataService.Instance.EventNPCs.Get(this.RowId);
 		this.ModelCharaRow = this.eventNpc.ModelCharaRow;
 	}
 

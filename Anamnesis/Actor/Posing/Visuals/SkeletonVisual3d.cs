@@ -87,15 +87,15 @@ public class SkeletonVisual3d : ModelVisual3D, INotifyPropertyChanged
 		}
 	}
 
-	public bool HasTail => this.Actor?.Customize?.Race == ActorCustomizeMemory.Races.Miqote
-		|| this.Actor?.Customize?.Race == ActorCustomizeMemory.Races.AuRa
-		|| this.Actor?.Customize?.Race == ActorCustomizeMemory.Races.Hrothgar;
+	public bool HasTail => this.Actor?.Customize?.RaceId == ActorCustomizeMemory.Races.Miqote
+		|| this.Actor?.Customize?.RaceId == ActorCustomizeMemory.Races.AuRa
+		|| this.Actor?.Customize?.RaceId == ActorCustomizeMemory.Races.Hrothgar;
 
 	public bool IsCustomFace => this.Actor == null ? false : this.IsMiqote || this.IsHrothgar;
-	public bool IsMiqote => this.Actor?.Customize?.Race == ActorCustomizeMemory.Races.Miqote;
-	public bool IsViera => this.Actor?.Customize?.Race == ActorCustomizeMemory.Races.Viera;
-	public bool IsElezen => this.Actor?.Customize?.Race == ActorCustomizeMemory.Races.Elezen;
-	public bool IsHrothgar => this.Actor?.Customize?.Race == ActorCustomizeMemory.Races.Hrothgar;
+	public bool IsMiqote => this.Actor?.Customize?.RaceId == ActorCustomizeMemory.Races.Miqote;
+	public bool IsViera => this.Actor?.Customize?.RaceId == ActorCustomizeMemory.Races.Viera;
+	public bool IsElezen => this.Actor?.Customize?.RaceId == ActorCustomizeMemory.Races.Elezen;
+	public bool IsHrothgar => this.Actor?.Customize?.RaceId == ActorCustomizeMemory.Races.Hrothgar;
 	public bool HasTailOrEars => this.IsViera || this.HasTail;
 
 	public bool IsEars01 => this.IsViera && this.Actor?.Customize?.TailEarsType <= 1;
@@ -494,7 +494,7 @@ public class SkeletonVisual3d : ModelVisual3D, INotifyPropertyChanged
 			{
 				foreach (LinkedBones.LinkSet links in LinkedBones.Links)
 				{
-					if (links.Tribe != null && this.Actor?.Customize?.Tribe != links.Tribe)
+					if (links.Tribe != null && this.Actor?.Customize?.TribeId != links.Tribe)
 						continue;
 
 					if (links.Gender != null && this.Actor?.Customize?.Gender != links.Gender)

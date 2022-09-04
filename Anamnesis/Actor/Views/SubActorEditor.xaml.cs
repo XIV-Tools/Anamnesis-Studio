@@ -113,15 +113,15 @@ public partial class SubActorEditor : UserControl
 
 		if (sender.SubActorType == Types.Companion)
 		{
-			sender.Npc = GameDataService.Companions.GetRow(newValue.DataId);
+			sender.Npc = GameDataService.Instance.Companions.GetRow(newValue.DataId);
 		}
 		else if (sender.SubActorType == Types.Mount)
 		{
-			sender.Npc = GameDataService.Mounts.GetRow(sender.Actor.MountId);
+			sender.Npc = GameDataService.Instance.Mounts.GetRow(sender.Actor.MountId);
 		}
 		else if (sender.SubActorType == Types.Ornament)
 		{
-			sender.Npc = GameDataService.Ornaments.GetRow(sender.Actor.OrnamentId);
+			sender.Npc = GameDataService.Instance.Ornaments.GetRow(sender.Actor.OrnamentId);
 		}
 	}
 

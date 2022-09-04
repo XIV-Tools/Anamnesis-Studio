@@ -4,6 +4,8 @@
 namespace Anamnesis.Memory;
 
 using System;
+using Anamnesis.GameData.Excel;
+using Anamnesis.Services;
 using PropertyChanged;
 
 public class ActorCustomizeMemory : MemoryBase
@@ -80,11 +82,11 @@ public class ActorCustomizeMemory : MemoryBase
 		return ap;
 	}*/
 
-	[Bind(0x000, BindFlags.ActorRefresh)] public Races Race { get; set; }
+	[Bind(0x000, BindFlags.ActorRefresh)] public Races RaceId { get; set; }
 	[Bind(0x001, BindFlags.ActorRefresh)] public Genders Gender { get; set; }
 	[Bind(0x002, BindFlags.ActorRefresh)] public Ages Age { get; set; }
 	[Bind(0x003, BindFlags.ActorRefresh)] public byte Height { get; set; }
-	[Bind(0x004, BindFlags.ActorRefresh)] public Tribes Tribe { get; set; }
+	[Bind(0x004, BindFlags.ActorRefresh)] public Tribes TribeId { get; set; }
 	[Bind(0x005, BindFlags.ActorRefresh)] public byte Head { get; set; }
 	[Bind(0x006, BindFlags.ActorRefresh)] public byte Hair { get; set; }
 	[Bind(0x007, BindFlags.ActorRefresh)] public byte HighlightType { get; set; }
@@ -152,5 +154,49 @@ public class ActorCustomizeMemory : MemoryBase
 	{
 		get => (byte)(this.Eyes - (this.SmallIris ? 128 : 0));
 		set => this.Eyes = (byte)(value + (this.SmallIris ? 128 : 0));
+	}
+
+	[AlsoNotifyFor(nameof(RaceId))]
+	public Race? Race
+	{
+		get => GameDataService.Instance.Races.Get((byte)this.RaceId);
+		set
+		{
+			this.RaceId = (Races)(value?.RowId ?? 0);
+
+			if (value != null)
+			{
+				// Validate tribe
+				if (this.Tribe == null || !value.Tribes.Contains(this.Tribe))
+					this.Tribe = value.Tribes[0];
+
+				// Validate gender
+				if (!value.Genders.Contains(this.Gender))
+					this.Gender = value.Genders[0];
+
+				// Validate Age
+				if (!this.CanAge)
+					this.Age = Ages.Normal;
+			}
+		}
+	}
+
+	[AlsoNotifyFor(nameof(RaceId))]
+	public Tribe? Tribe
+	{
+		get => GameDataService.Instance.Tribes.Get((byte)this.TribeId);
+		set => this.TribeId = (Tribes)(value?.RowId ?? 0);
+	}
+
+	public bool CanAge
+	{
+		get
+		{
+			bool canAge = this.TribeId == Tribes.Midlander;
+			canAge |= this.RaceId == Races.Miqote && this.Gender == Genders.Feminine;
+			canAge |= this.RaceId == Races.Elezen;
+			canAge |= this.RaceId == Races.AuRa;
+			return canAge;
+		}
 	}
 }

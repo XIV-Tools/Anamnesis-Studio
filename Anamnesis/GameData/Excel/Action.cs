@@ -30,7 +30,7 @@ public class Action : ExcelRow, IAnimation
 
 		if (animationRow >= 0)
 		{
-			this.Timeline = GameDataService.ActionTimelines.Get((uint)animationRow);
+			this.Timeline = GameDataService.Instance.ActionTimelines.Get((uint)animationRow);
 		}
 	}
 }

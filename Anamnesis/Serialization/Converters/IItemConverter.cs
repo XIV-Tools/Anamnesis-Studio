@@ -44,10 +44,10 @@ public class IItemConverter : JsonConverter<IItem>
 		}
 		else
 		{
-			if (GameDataService.Items == null)
+			if (GameDataService.Instance.Items == null)
 				throw new Exception("No items in game data service");
 
-			return GameDataService.Items.Get(uint.Parse(str));
+			return GameDataService.Instance.Items.Get(uint.Parse(str));
 		}
 	}
 

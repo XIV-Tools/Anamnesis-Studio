@@ -64,11 +64,11 @@ public class Companion : ExcelRow, INpcBase
 		public int FacePaint => 0;
 		public int ExtraFeature2OrBust => 0;
 		public int ExtraFeature1 => 0;
-		public Race? Race => GameDataService.Races.Get(1);
+		public Race? Race => GameDataService.Instance.Races.Get(1);
 		public int Gender => 0;
 		public int BodyType => 0;
 		public int Height => 0;
-		public Tribe? Tribe => GameDataService.Tribes.Get(1);
+		public Tribe? Tribe => GameDataService.Instance.Tribes.Get(1);
 		public int Face => 0;
 		public int HairStyle => 0;
 		public bool EnableHairHighlight => false;

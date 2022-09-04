@@ -82,7 +82,7 @@ public partial class ActionPage : UserControl
 	private IEnumerable<ActionTimeline> GenerateLipList()
 	{
 		// Grab "no animation" and all "speak/" animations, which are the only ones valid in this slot
-		IEnumerable<ActionTimeline> lips = GameDataService.ActionTimelines.Where(x => x.AnimationId == 0 || (x.Key?.StartsWith("speak/") ?? false));
+		IEnumerable<ActionTimeline> lips = GameDataService.Instance.ActionTimelines.Where(x => x.AnimationId == 0 || (x.Key?.StartsWith("speak/") ?? false));
 		return lips;
 	}
 

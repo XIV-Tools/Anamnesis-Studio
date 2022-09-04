@@ -51,7 +51,7 @@ public static class INpcBaseExtensions
 		if (parts.Length <= 1)
 		{
 			uint key = uint.Parse(stringKey);
-			return GameDataService.ResidentNPCs.Get(key);
+			return GameDataService.Instance.ResidentNPCs.Get(key);
 		}
 		else if (parts.Length == 2)
 		{
@@ -60,11 +60,11 @@ public static class INpcBaseExtensions
 
 			return t switch
 			{
-				'R' => GameDataService.ResidentNPCs.Get(key),
-				'B' => GameDataService.BattleNPCs.Get(key),
-				'E' => GameDataService.EventNPCs.Get(key),
-				'C' => GameDataService.Companions.Get(key),
-				'M' => GameDataService.Mounts.Get(key),
+				'R' => GameDataService.Instance.ResidentNPCs.Get(key),
+				'B' => GameDataService.Instance.BattleNPCs.Get(key),
+				'E' => GameDataService.Instance.EventNPCs.Get(key),
+				'C' => GameDataService.Instance.Companions.Get(key),
+				'M' => GameDataService.Instance.Mounts.Get(key),
 				_ => throw new Exception($"Unrecognized Npc type key: {t}"),
 			};
 		}
@@ -89,8 +89,8 @@ public static class INpcBaseExtensions
 		if (appearance == null)
 			throw new ArgumentNullException(nameof(appearance));
 
-		ActorCustomizeMemory.Races? race = appearance.Race?.CustomizeRace;
-		ActorCustomizeMemory.Tribes? tribe = appearance.Tribe?.CustomizeTribe;
+		ActorCustomizeMemory.Races? race = appearance.Race?.RaceId;
+		ActorCustomizeMemory.Tribes? tribe = appearance.Tribe?.TribeId;
 
 		if (race == null)
 			race = ActorCustomizeMemory.Races.Hyur;
@@ -134,10 +134,10 @@ public static class INpcBaseExtensions
 		file.Mouth = (byte)appearance.Mouth;
 		file.LipsToneFurPattern = (byte)appearance.LipColor;
 
-		if (appearance.Race?.CustomizeRace == ActorCustomizeMemory.Races.Miqote ||
-			appearance.Race?.CustomizeRace == ActorCustomizeMemory.Races.AuRa ||
-			appearance.Race?.CustomizeRace == ActorCustomizeMemory.Races.Viera ||
-			appearance.Race?.CustomizeRace == ActorCustomizeMemory.Races.Hrothgar)
+		if (appearance.Race?.RaceId == ActorCustomizeMemory.Races.Miqote ||
+			appearance.Race?.RaceId == ActorCustomizeMemory.Races.AuRa ||
+			appearance.Race?.RaceId == ActorCustomizeMemory.Races.Viera ||
+			appearance.Race?.RaceId == ActorCustomizeMemory.Races.Hrothgar)
 		{
 			file.EarMuscleTailSize = (byte)appearance.ExtraFeature1;
 			file.TailEarsType = (byte)appearance.ExtraFeature2OrBust;

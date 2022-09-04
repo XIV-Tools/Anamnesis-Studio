@@ -48,7 +48,7 @@ public class PoseFile : JsonFileBase
 			return BoneProcessingModes.Ignore;
 
 		// Special case for elezen ears as they cannot use other races ear values.
-		if (actor?.Customize?.Race == ActorCustomizeMemory.Races.Elezen)
+		if (actor?.Customize?.RaceId == ActorCustomizeMemory.Races.Elezen)
 		{
 			// append '_elezen' to both ear bones.
 			if (boneName == "j_mimi_l" || boneName == "j_mimi_r")

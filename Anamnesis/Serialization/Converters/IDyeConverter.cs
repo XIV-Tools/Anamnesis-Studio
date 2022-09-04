@@ -19,7 +19,7 @@ public class IDyeConverter : JsonConverter<IDye>
 			throw new Exception($"Invalid serialized item value");
 
 		uint dyeID = uint.Parse(str);
-		return GameDataService.Dyes.Get(dyeID);
+		return GameDataService.Instance.Dyes.Get(dyeID);
 	}
 
 	public override void Write(Utf8JsonWriter writer, IDye value, JsonSerializerOptions options)

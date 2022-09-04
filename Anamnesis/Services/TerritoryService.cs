@@ -37,7 +37,7 @@ public class TerritoryService : ServiceBase<TerritoryService>
 				return;
 
 			this.currentWeatherId = value;
-			this.CurrentWeather = GameDataService.Weathers.GetOrDefault(value);
+			this.CurrentWeather = GameDataService.Instance.Weathers.GetOrDefault(value);
 		}
 	}
 
@@ -79,13 +79,13 @@ public class TerritoryService : ServiceBase<TerritoryService>
 					{
 						this.CurrentTerritoryId = (uint)newTerritoryId;
 
-						if (GameDataService.Territories == null)
+						if (GameDataService.Instance.Territories == null)
 						{
 							this.CurrentTerritoryName = $"Unkown ({this.CurrentTerritoryId})";
 						}
 						else
 						{
-							this.CurrentTerritory = GameDataService.Territories.Get(this.CurrentTerritoryId);
+							this.CurrentTerritory = GameDataService.Instance.Territories.Get(this.CurrentTerritoryId);
 							this.CurrentTerritoryName = this.CurrentTerritory?.Place + " (" + this.CurrentTerritory?.Region + ")";
 						}
 

@@ -71,20 +71,20 @@ public partial class EquipmentPanel : ActorPanelBase
 		if (this.Actor == null)
 			return;
 
-		if (this.Actor.Customize?.Race == null)
+		if (this.Actor.Customize?.RaceId == null)
 			return;
 
-		var race = GameDataService.Races.GetRow((uint)this.Actor.Customize.Race);
+		var race = GameDataService.Instance.Races.GetRow((uint)this.Actor.Customize.RaceId);
 
 		if (race == null)
 			return;
 
 		if (this.Actor.Customize.Gender == ActorCustomizeMemory.Genders.Masculine)
 		{
-			var body = GameDataService.Items.Get((uint)race.RSEMBody);
-			var hands = GameDataService.Items.Get((uint)race.RSEMHands);
-			var legs = GameDataService.Items.Get((uint)race.RSEMLegs);
-			var feet = GameDataService.Items.Get((uint)race.RSEMFeet);
+			var body = GameDataService.Instance.Items.Get((uint)race.RSEMBody);
+			var hands = GameDataService.Instance.Items.Get((uint)race.RSEMHands);
+			var legs = GameDataService.Instance.Items.Get((uint)race.RSEMLegs);
+			var feet = GameDataService.Instance.Items.Get((uint)race.RSEMFeet);
 
 			this.Actor.Equipment?.Chest?.Equip(body);
 			this.Actor.Equipment?.Arms?.Equip(hands);
@@ -93,10 +93,10 @@ public partial class EquipmentPanel : ActorPanelBase
 		}
 		else
 		{
-			var body = GameDataService.Items.Get((uint)race.RSEFBody);
-			var hands = GameDataService.Items.Get((uint)race.RSEFHands);
-			var legs = GameDataService.Items.Get((uint)race.RSEFLegs);
-			var feet = GameDataService.Items.Get((uint)race.RSEFFeet);
+			var body = GameDataService.Instance.Items.Get((uint)race.RSEFBody);
+			var hands = GameDataService.Instance.Items.Get((uint)race.RSEFHands);
+			var legs = GameDataService.Instance.Items.Get((uint)race.RSEFLegs);
+			var feet = GameDataService.Instance.Items.Get((uint)race.RSEFFeet);
 
 			this.Actor.Equipment?.Chest?.Equip(body);
 			this.Actor.Equipment?.Arms?.Equip(hands);

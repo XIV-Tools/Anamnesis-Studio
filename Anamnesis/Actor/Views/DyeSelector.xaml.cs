@@ -25,8 +25,8 @@ public partial class DyeSelector : UserControl
 	{
 		this.Selector.AddItem(DyeUtility.NoneDye);
 
-		if (GameDataService.Dyes != null)
-			this.Selector.AddItems(GameDataService.Dyes);
+		if (GameDataService.Instance.Dyes != null)
+			this.Selector.AddItems(GameDataService.Instance.Dyes);
 
 		return Task.CompletedTask;
 	}

@@ -69,8 +69,8 @@ public class BattleNpc : ExcelRow, INpcBase
 			BNpcCustomize? customize = customizeSheet?.GetOrDefault(npc.customizeRow);
 			if (customize != null)
 			{
-				this.Race = GameDataService.Races.Get(Math.Max(customize.Race.Row, 1));
-				this.Tribe = GameDataService.Tribes.Get(Math.Max(customize.Tribe.Row, 1));
+				this.Race = GameDataService.Instance.Races.Get(Math.Max(customize.Race.Row, 1));
+				this.Tribe = GameDataService.Instance.Tribes.Get(Math.Max(customize.Tribe.Row, 1));
 
 				this.FacePaintColor = customize.FacePaintColor;
 				this.FacePaint = customize.FacePaint;
@@ -106,29 +106,29 @@ public class BattleNpc : ExcelRow, INpcBase
 			if (npcEquip != null)
 			{
 				this.MainHand = LuminaExtensions.GetWeaponItem(ItemSlots.MainHand, npcEquip.ModelMainHand);
-				this.DyeMainHand = GameDataService.Dyes.Get(npcEquip.DyeMainHand.Row);
+				this.DyeMainHand = GameDataService.Instance.Dyes.Get(npcEquip.DyeMainHand.Row);
 				this.OffHand = LuminaExtensions.GetWeaponItem(ItemSlots.OffHand, npcEquip.ModelOffHand);
-				this.DyeOffHand = GameDataService.Dyes.Get(npcEquip.DyeOffHand.Row);
+				this.DyeOffHand = GameDataService.Instance.Dyes.Get(npcEquip.DyeOffHand.Row);
 				this.Head = LuminaExtensions.GetGearItem(ItemSlots.Head, npcEquip.ModelHead);
-				this.DyeHead = GameDataService.Dyes.Get(npcEquip.DyeHead.Row);
+				this.DyeHead = GameDataService.Instance.Dyes.Get(npcEquip.DyeHead.Row);
 				this.Body = LuminaExtensions.GetGearItem(ItemSlots.Body, npcEquip.ModelBody);
-				this.DyeBody = GameDataService.Dyes.Get(npcEquip.DyeBody.Row);
+				this.DyeBody = GameDataService.Instance.Dyes.Get(npcEquip.DyeBody.Row);
 				this.Hands = LuminaExtensions.GetGearItem(ItemSlots.Hands, npcEquip.ModelHead);
-				this.DyeHands = GameDataService.Dyes.Get(npcEquip.DyeHands.Row);
+				this.DyeHands = GameDataService.Instance.Dyes.Get(npcEquip.DyeHands.Row);
 				this.Legs = LuminaExtensions.GetGearItem(ItemSlots.Legs, npcEquip.ModelLegs);
-				this.DyeLegs = GameDataService.Dyes.Get(npcEquip.DyeLegs.Row);
+				this.DyeLegs = GameDataService.Instance.Dyes.Get(npcEquip.DyeLegs.Row);
 				this.Feet = LuminaExtensions.GetGearItem(ItemSlots.Feet, npcEquip.ModelFeet);
-				this.DyeFeet = GameDataService.Dyes.Get(npcEquip.DyeFeet.Row);
+				this.DyeFeet = GameDataService.Instance.Dyes.Get(npcEquip.DyeFeet.Row);
 				this.Ears = LuminaExtensions.GetGearItem(ItemSlots.Ears, npcEquip.ModelEars);
-				this.DyeEars = GameDataService.Dyes.Get(npcEquip.DyeEars.Row);
+				this.DyeEars = GameDataService.Instance.Dyes.Get(npcEquip.DyeEars.Row);
 				this.Neck = LuminaExtensions.GetGearItem(ItemSlots.Neck, npcEquip.ModelNeck);
-				this.DyeNeck = GameDataService.Dyes.Get(npcEquip.DyeNeck.Row);
+				this.DyeNeck = GameDataService.Instance.Dyes.Get(npcEquip.DyeNeck.Row);
 				this.Wrists = LuminaExtensions.GetGearItem(ItemSlots.Wrists, npcEquip.ModelWrists);
-				this.DyeWrists = GameDataService.Dyes.Get(npcEquip.DyeWrists.Row);
+				this.DyeWrists = GameDataService.Instance.Dyes.Get(npcEquip.DyeWrists.Row);
 				this.LeftRing = LuminaExtensions.GetGearItem(ItemSlots.LeftRing, npcEquip.ModelLeftRing);
-				this.DyeLeftRing = GameDataService.Dyes.Get(npcEquip.DyeLeftRing.Row);
+				this.DyeLeftRing = GameDataService.Instance.Dyes.Get(npcEquip.DyeLeftRing.Row);
 				this.RightRing = LuminaExtensions.GetGearItem(ItemSlots.RightRing, npcEquip.ModelRightRing);
-				this.DyeRightRing = GameDataService.Dyes.Get(npcEquip.DyeRightRing.Row);
+				this.DyeRightRing = GameDataService.Instance.Dyes.Get(npcEquip.DyeRightRing.Row);
 			}
 		}
 

@@ -121,11 +121,11 @@ public class DatCharacterFile : FileBase, IUpgradeCharacterFile
 		ActorCustomizeMemory customize = actor.Customize;
 
 		CharaMakeType? makeType = null;
-		if (GameDataService.CharacterMakeTypes != null)
+		if (GameDataService.Instance.CharacterMakeTypes != null)
 		{
-			foreach (CharaMakeType set in GameDataService.CharacterMakeTypes)
+			foreach (CharaMakeType set in GameDataService.Instance.CharacterMakeTypes)
 			{
-				if (set.Tribe != customize.Tribe || set.Gender != customize.Gender)
+				if (set.Tribe != customize.TribeId || set.Gender != customize.Gender)
 					continue;
 
 				makeType = set;
@@ -147,7 +147,7 @@ public class DatCharacterFile : FileBase, IUpgradeCharacterFile
 		bool useDefaultHair = false;
 		bool useDefaultFacePaint = false;
 
-		CharaMakeCustomize? hair = GameDataService.CharacterMakeCustomize.GetFeature(CustomizeSheet.Features.Hair, customize.Tribe, customize.Gender, customize.Hair);
+		CharaMakeCustomize? hair = GameDataService.Instance.CharacterMakeCustomize.GetFeature(CustomizeSheet.Features.Hair, customize.TribeId, customize.Gender, customize.Hair);
 
 		if (hair != null)
 		{
@@ -170,7 +170,7 @@ public class DatCharacterFile : FileBase, IUpgradeCharacterFile
 
 		if (customize.FacePaint != 0)
 		{
-			CharaMakeCustomize? facePaint = GameDataService.CharacterMakeCustomize.GetFeature(CustomizeSheet.Features.FacePaint, customize.Tribe, customize.Gender, customize.FacePaint);
+			CharaMakeCustomize? facePaint = GameDataService.Instance.CharacterMakeCustomize.GetFeature(CustomizeSheet.Features.FacePaint, customize.TribeId, customize.Gender, customize.FacePaint);
 			useDefaultFacePaint = facePaint == null || facePaint.IsPurchasable;
 		}
 
@@ -182,11 +182,11 @@ public class DatCharacterFile : FileBase, IUpgradeCharacterFile
 		// Appearance Data
 		byte[] saveData = new byte[]
 		{
-			(byte)customize.Race,
+			(byte)customize.RaceId,
 			(byte)customize.Gender,
 			0x01,
 			customize.Height,
-			(byte)customize.Tribe,
+			(byte)customize.TribeId,
 			customize.Head,
 			(byte)(useDefaultHair ? 0x01 : customize.Hair),
 			(byte)(customize.EnableHighlights ? 0x80 : 0x00),

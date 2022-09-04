@@ -36,14 +36,14 @@ public partial class AnimationSelector : UserControl, INotifyPropertyChanged
 
 	protected Task LoadItems()
 	{
-		if (GameDataService.Emotes != null)
+		if (GameDataService.Instance.Emotes != null)
 			this.LoadEmotes();
 
-		if (GameDataService.ActionTimelines != null)
-			this.Selector.AddItems(GameDataService.Actions);
+		if (GameDataService.Instance.ActionTimelines != null)
+			this.Selector.AddItems(GameDataService.Instance.Actions);
 
-		if (GameDataService.ActionTimelines != null)
-			this.Selector.AddItems(GameDataService.ActionTimelines);
+		if (GameDataService.Instance.ActionTimelines != null)
+			this.Selector.AddItems(GameDataService.Instance.ActionTimelines);
 
 		return Task.CompletedTask;
 	}
@@ -116,10 +116,10 @@ public partial class AnimationSelector : UserControl, INotifyPropertyChanged
 
 	private void LoadEmotes()
 	{
-		if (GameDataService.Emotes == null)
+		if (GameDataService.Instance.Emotes == null)
 			return;
 
-		foreach (var emote in GameDataService.Emotes)
+		foreach (var emote in GameDataService.Instance.Emotes)
 		{
 			if (emote == null)
 				continue;

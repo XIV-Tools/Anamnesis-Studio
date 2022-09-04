@@ -71,20 +71,20 @@ public partial class CustomizePanel : ActorPanelBase
 		if (this.Actor == null)
 			return;
 
-		if (this.Actor.Customize?.Race == null)
+		if (this.Actor.Customize?.RaceId == null)
 			return;
 
-		var race = GameDataService.Races.GetRow((uint)this.Actor.Customize.Race);
+		var race = GameDataService.Instance.Races.GetRow((uint)this.Actor.Customize.RaceId);
 
 		if (race == null)
 			return;
 
 		if (this.Actor.Customize.Gender == ActorCustomizeMemory.Genders.Masculine)
 		{
-			var body = GameDataService.Items.Get((uint)race.RSEMBody);
-			var hands = GameDataService.Items.Get((uint)race.RSEMHands);
-			var legs = GameDataService.Items.Get((uint)race.RSEMLegs);
-			var feet = GameDataService.Items.Get((uint)race.RSEMFeet);
+			var body = GameDataService.Instance.Items.Get((uint)race.RSEMBody);
+			var hands = GameDataService.Instance.Items.Get((uint)race.RSEMHands);
+			var legs = GameDataService.Instance.Items.Get((uint)race.RSEMLegs);
+			var feet = GameDataService.Instance.Items.Get((uint)race.RSEMFeet);
 
 			this.Actor.Equipment?.Chest?.Equip(body);
 			this.Actor.Equipment?.Arms?.Equip(hands);
@@ -93,10 +93,10 @@ public partial class CustomizePanel : ActorPanelBase
 		}
 		else
 		{
-			var body = GameDataService.Items.Get((uint)race.RSEFBody);
-			var hands = GameDataService.Items.Get((uint)race.RSEFHands);
-			var legs = GameDataService.Items.Get((uint)race.RSEFLegs);
-			var feet = GameDataService.Items.Get((uint)race.RSEFFeet);
+			var body = GameDataService.Instance.Items.Get((uint)race.RSEFBody);
+			var hands = GameDataService.Instance.Items.Get((uint)race.RSEFHands);
+			var legs = GameDataService.Instance.Items.Get((uint)race.RSEFLegs);
+			var feet = GameDataService.Instance.Items.Get((uint)race.RSEFFeet);
 
 			this.Actor.Equipment?.Chest?.Equip(body);
 			this.Actor.Equipment?.Arms?.Equip(hands);
@@ -126,7 +126,7 @@ public partial class CustomizePanel : ActorPanelBase
 	private ListCollectionView GenerateVoiceList()
 	{
 		List<VoiceEntry> entries = new();
-		foreach (var makeType in GameDataService.CharacterMakeTypes)
+		foreach (var makeType in GameDataService.Instance.CharacterMakeTypes)
 		{
 			if (makeType == null)
 				continue;
@@ -134,7 +134,7 @@ public partial class CustomizePanel : ActorPanelBase
 			if (makeType.Tribe == 0)
 				continue;
 
-			Tribe? tribe = GameDataService.Tribes.GetRow((uint)makeType.Tribe);
+			Tribe? tribe = GameDataService.Instance.Tribes.GetRow((uint)makeType.Tribe);
 
 			if (tribe == null)
 				continue;

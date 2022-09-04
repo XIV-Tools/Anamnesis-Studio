@@ -79,7 +79,7 @@ public partial class ItemView : UserControl
 		}
 		set
 		{
-			IItem? item = GameDataService.Items?.Get(value);
+			IItem? item = GameDataService.Instance.Items?.Get(value);
 			this.SetItem(item);
 		}
 	}
@@ -282,7 +282,7 @@ public partial class ItemView : UserControl
 		{
 			await Task.Yield();
 			await Dispatch.MainThread();
-			if (this.ItemModel == null || GameDataService.Dyes == null)
+			if (this.ItemModel == null || GameDataService.Instance.Dyes == null)
 				return;
 
 			this.IsLoading = true;
@@ -300,7 +300,7 @@ public partial class ItemView : UserControl
 				if (valueVm is ItemMemory itemVm)
 				{
 					IItem? item = ItemUtility.GetItem(slots, 0, itemVm.Base, itemVm.Variant, this.Actor.IsChocobo);
-					IDye? dye = GameDataService.Dyes.Get(itemVm.Dye);
+					IDye? dye = GameDataService.Instance.Dyes.Get(itemVm.Dye);
 
 					await Dispatch.MainThread();
 
@@ -314,7 +314,7 @@ public partial class ItemView : UserControl
 					if (weaponVm.Set == 0)
 						weaponVm.Dye = 0;
 
-					IDye? dye = GameDataService.Dyes.Get(weaponVm.Dye);
+					IDye? dye = GameDataService.Instance.Dyes.Get(weaponVm.Dye);
 
 					await Dispatch.MainThread();
 

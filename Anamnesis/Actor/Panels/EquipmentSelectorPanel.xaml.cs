@@ -145,7 +145,7 @@ public partial class EquipmentSelectorPanel : PanelBase
 			this.Selector.AddItem(ItemUtility.YellowChocoboSkin);
 			this.Selector.AddItem(ItemUtility.BlackChocoboSkin);
 
-			foreach (BuddyEquip buddyEquip in GameDataService.BuddyEquips)
+			foreach (BuddyEquip buddyEquip in GameDataService.Instance.BuddyEquips)
 			{
 				if (buddyEquip.Head != null)
 					this.Selector.AddItem(buddyEquip.Head);
@@ -166,9 +166,9 @@ public partial class EquipmentSelectorPanel : PanelBase
 			this.Selector.AddItem(ItemUtility.InvisibileBodyItem);
 			this.Selector.AddItem(ItemUtility.InvisibileHeadItem);
 
-			this.Selector.AddItems(GameDataService.Equipment);
-			this.Selector.AddItems(GameDataService.Items);
-			this.Selector.AddItems(GameDataService.Perform);
+			this.Selector.AddItems(GameDataService.Instance.Equipment);
+			this.Selector.AddItems(GameDataService.Instance.Items);
+			this.Selector.AddItems(GameDataService.Instance.Perform);
 		}
 
 		return Task.CompletedTask;
@@ -280,7 +280,7 @@ public partial class EquipmentSelectorPanel : PanelBase
 		if (item.EquipRestriction == null || this.actor == null || this.actor.Customize == null)
 			return true;
 
-		return item.EquipRestriction.CanEquip(this.actor.Customize.Race, this.actor.Customize.Gender);
+		return item.EquipRestriction.CanEquip(this.actor.Customize.RaceId, this.actor.Customize.Gender);
 	}
 
 	private bool MatchesSearch(IItem item, string[]? search = null)

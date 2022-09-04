@@ -25,7 +25,7 @@ public class GameService : ServiceBase<GameService>
 
 		try
 		{
-			if (GameDataService.Territories == null)
+			if (GameDataService.Instance.Territories == null)
 				return false;
 
 			int territoryID = MemoryService.Read<int>(AddressService.Territory);
@@ -33,7 +33,7 @@ public class GameService : ServiceBase<GameService>
 			if (territoryID == -1)
 				return false;
 
-			if (GameDataService.Territories.GetOrDefault((uint)territoryID) == null)
+			if (GameDataService.Instance.Territories.GetOrDefault((uint)territoryID) == null)
 				return false;
 
 			return true;

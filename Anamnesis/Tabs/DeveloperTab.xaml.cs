@@ -27,7 +27,7 @@ public partial class DeveloperTab : UserControl
 
 	private void OnNpcNameSearchClicked(object sender, RoutedEventArgs e)
 	{
-		GenericSelectorUtil.Show(GameDataService.BattleNpcNames, (v) =>
+		GenericSelectorUtil.Show(GameDataService.Instance.BattleNpcNames, (v) =>
 		{
 			if (v.Description == null)
 				return;

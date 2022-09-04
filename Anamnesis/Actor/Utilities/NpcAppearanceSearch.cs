@@ -29,9 +29,9 @@ public static class NpcAppearanceSearch
 		using (WaitDialog dlg = await WaitDialog.ShowAsync("Please Wait...", "NPC Appearance search"))
 		{
 			await dlg.SetProgress(0.1);
-			Search(actor, GameDataService.BattleNPCs, ref appearances);
+			Search(actor, GameDataService.Instance.BattleNPCs, ref appearances);
 			await dlg.SetProgress(0.5);
-			Search(actor, GameDataService.EventNPCs, ref appearances);
+			Search(actor, GameDataService.Instance.EventNPCs, ref appearances);
 			////await dlg.SetProgress(0.8);
 			////Search(actor, GameDataService.ResidentNPCs, ref appearances);
 
@@ -79,7 +79,7 @@ public static class NpcAppearanceSearch
 
 	private static void SearchNames(string name, ref List<ExcelRow> results)
 	{
-		foreach (BattleNpcName battleNpcName in GameDataService.BattleNpcNames)
+		foreach (BattleNpcName battleNpcName in GameDataService.Instance.BattleNpcNames)
 		{
 			if (battleNpcName.Name.ToLower() == name.ToLower())
 			{
@@ -87,7 +87,7 @@ public static class NpcAppearanceSearch
 			}
 		}
 
-		foreach (ResidentNpc residentNpc in GameDataService.ResidentNPCs)
+		foreach (ResidentNpc residentNpc in GameDataService.Instance.ResidentNPCs)
 		{
 			if (residentNpc.Name.ToLower() == name.ToLower())
 			{
@@ -95,7 +95,7 @@ public static class NpcAppearanceSearch
 			}
 		}
 
-		foreach (EventNpc eventNpc in GameDataService.EventNPCs)
+		foreach (EventNpc eventNpc in GameDataService.Instance.EventNPCs)
 		{
 			if (eventNpc.Name.ToLower() == name.ToLower())
 			{
@@ -150,8 +150,8 @@ public static class NpcAppearanceSearch
 		// It gets weird checking models other than players for race and tribe, so... try and skip
 		if (appearance.ModelCharaRow == 0)
 		{
-			if (customize.Race != appearance.Race?.CustomizeRace ||
-				customize.Tribe != appearance.Tribe?.CustomizeTribe ||
+			if (customize.RaceId != appearance.Race?.RaceId ||
+				customize.TribeId != appearance.Tribe?.TribeId ||
 				customize.Gender != (ActorCustomizeMemory.Genders)appearance.Gender ||
 				customize.Age != (ActorCustomizeMemory.Ages)appearance.BodyType)
 			{

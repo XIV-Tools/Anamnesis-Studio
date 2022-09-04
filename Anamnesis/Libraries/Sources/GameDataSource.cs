@@ -62,21 +62,21 @@ public class GameDataSource : LibrarySourceBase
 
 		if (packType == Packs.NPCs)
 		{
-			await this.Populate(pack, GameDataService.ResidentNPCs, "Library_GameData_NPC", "Library_GameData_NPC_Resident");
-			await this.Populate(pack, GameDataService.BattleNPCs, "Library_GameData_NPC", "Library_GameData_NPC_Battle");
-			await this.Populate(pack, GameDataService.EventNPCs, "Library_GameData_NPC", "Library_GameData_NPC_Event");
+			await this.Populate(pack, GameDataService.Instance.ResidentNPCs, "Library_GameData_NPC", "Library_GameData_NPC_Resident");
+			await this.Populate(pack, GameDataService.Instance.BattleNPCs, "Library_GameData_NPC", "Library_GameData_NPC_Battle");
+			await this.Populate(pack, GameDataService.Instance.EventNPCs, "Library_GameData_NPC", "Library_GameData_NPC_Event");
 		}
 		else if (packType == Packs.Mounts)
 		{
-			await this.Populate(pack, GameDataService.Mounts, "Library_GameData_Mount");
+			await this.Populate(pack, GameDataService.Instance.Mounts, "Library_GameData_Mount");
 		}
 		else if (packType == Packs.Companions)
 		{
-			await this.Populate(pack, GameDataService.Companions, "Library_GameData_Companion");
+			await this.Populate(pack, GameDataService.Instance.Companions, "Library_GameData_Companion");
 		}
 		else if (packType == Packs.Ornaments)
 		{
-			await this.Populate(pack, GameDataService.Ornaments, "Library_GameData_Ornament");
+			await this.Populate(pack, GameDataService.Instance.Ornaments, "Library_GameData_Ornament");
 		}
 	}
 

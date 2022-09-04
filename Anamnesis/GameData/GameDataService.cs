@@ -24,8 +24,8 @@ public class GameDataService : ServiceBase<GameDataService>
 
 	private static readonly Dictionary<Type, Lumina.Excel.ExcelSheetImpl> Sheets = new Dictionary<Type, Lumina.Excel.ExcelSheetImpl>();
 
-	private static Dictionary<string, string>? npcNames;
-	private static Dictionary<uint, ItemCategories>? itemCategories;
+	private Dictionary<string, string>? npcNames;
+	private Dictionary<uint, ItemCategories>? itemCategories;
 
 	public enum ClientRegion
 	{
@@ -35,32 +35,6 @@ public class GameDataService : ServiceBase<GameDataService>
 	}
 
 	public static ClientRegion Region { get; private set; }
-
-	public static ExcelSheet<Race> Races { get; private set; } = null!;
-	public static ExcelSheet<Tribe> Tribes { get; private set; } = null!;
-	public static ExcelSheet<Item> Items { get; private set; } = null!;
-	public static ExcelSheet<Perform> Perform { get; private set; } = null!;
-	public static ExcelSheet<Stain> Dyes { get; private set; } = null!;
-	public static ExcelSheet<EventNpc> EventNPCs { get; private set; } = null!;
-	public static ExcelSheet<BattleNpc> BattleNPCs { get; private set; } = null!;
-	public static ExcelSheet<Mount> Mounts { get; private set; } = null!;
-	public static ExcelSheet<MountCustomize> MountCustomize { get; private set; } = null!;
-	public static ExcelSheet<Companion> Companions { get; private set; } = null!;
-	public static ExcelSheet<Territory> Territories { get; private set; } = null!;
-	public static ExcelSheet<Weather> Weathers { get; private set; } = null!;
-	public static ExcelSheet<CharaMakeCustomize> CharacterMakeCustomize { get; private set; } = null!;
-	public static ExcelSheet<CharaMakeType> CharacterMakeTypes { get; private set; } = null!;
-	public static ExcelSheet<ResidentNpc> ResidentNPCs { get; private set; } = null!;
-	public static ExcelSheet<WeatherRate> WeatherRates { get; private set; } = null!;
-	public static ExcelSheet<EquipRaceCategory> EquipRaceCategories { get; private set; } = null!;
-	public static ExcelSheet<BattleNpcName> BattleNpcNames { get; private set; } = null!;
-	public static ExcelSheet<GameData.Excel.Action> Actions { get; private set; } = null!;
-	public static ExcelSheet<ActionTimeline> ActionTimelines { get; private set; } = null!;
-	public static ExcelSheet<Emote> Emotes { get; private set; } = null!;
-	public static ExcelSheet<Ornament> Ornaments { get; private set; } = null!;
-	public static ExcelSheet<BuddyEquip> BuddyEquips { get; private set; } = null!;
-
-	public static EquipmentSheet Equipment { get; private set; } = null!;
 
 	public static string GamePath
 	{
@@ -110,6 +84,32 @@ public class GameDataService : ServiceBase<GameDataService>
 		}
 	}
 
+	public ExcelSheet<Race> Races { get; private set; } = null!;
+	public ExcelSheet<Tribe> Tribes { get; private set; } = null!;
+	public ExcelSheet<Item> Items { get; private set; } = null!;
+	public ExcelSheet<Perform> Perform { get; private set; } = null!;
+	public ExcelSheet<Stain> Dyes { get; private set; } = null!;
+	public ExcelSheet<EventNpc> EventNPCs { get; private set; } = null!;
+	public ExcelSheet<BattleNpc> BattleNPCs { get; private set; } = null!;
+	public ExcelSheet<Mount> Mounts { get; private set; } = null!;
+	public ExcelSheet<MountCustomize> MountCustomize { get; private set; } = null!;
+	public ExcelSheet<Companion> Companions { get; private set; } = null!;
+	public ExcelSheet<Territory> Territories { get; private set; } = null!;
+	public ExcelSheet<Weather> Weathers { get; private set; } = null!;
+	public ExcelSheet<CharaMakeCustomize> CharacterMakeCustomize { get; private set; } = null!;
+	public ExcelSheet<CharaMakeType> CharacterMakeTypes { get; private set; } = null!;
+	public ExcelSheet<ResidentNpc> ResidentNPCs { get; private set; } = null!;
+	public ExcelSheet<WeatherRate> WeatherRates { get; private set; } = null!;
+	public ExcelSheet<EquipRaceCategory> EquipRaceCategories { get; private set; } = null!;
+	public ExcelSheet<BattleNpcName> BattleNpcNames { get; private set; } = null!;
+	public ExcelSheet<GameData.Excel.Action> Actions { get; private set; } = null!;
+	public ExcelSheet<ActionTimeline> ActionTimelines { get; private set; } = null!;
+	public ExcelSheet<Emote> Emotes { get; private set; } = null!;
+	public ExcelSheet<Ornament> Ornaments { get; private set; } = null!;
+	public ExcelSheet<BuddyEquip> BuddyEquips { get; private set; } = null!;
+
+	public EquipmentSheet Equipment { get; private set; } = null!;
+
 	public static ExcelSheet<T> GetSheet<T>()
 		where T : Lumina.Excel.ExcelRow
 	{
@@ -144,24 +144,24 @@ public class GameDataService : ServiceBase<GameDataService>
 
 	public static string? GetNpcName(INpcBase npc)
 	{
-		if (npcNames == null)
+		if (Instance.npcNames == null)
 			return null;
 
 		string stringKey = npc.ToStringKey();
 		string? name;
 
-		if (!npcNames.TryGetValue(stringKey, out name))
+		if (!Instance.npcNames.TryGetValue(stringKey, out name))
 			return null;
 
 		// Is this a BattleNpcName entry?
 		if (name.Contains("N:"))
 		{
-			if (BattleNpcNames == null)
+			if (Instance.BattleNpcNames == null)
 				return name;
 
 			uint bNpcNameKey = uint.Parse(name.Remove(0, 2));
 
-			BattleNpcName? row = BattleNpcNames.GetRow(bNpcNameKey);
+			BattleNpcName? row = Instance.BattleNpcNames.GetRow(bNpcNameKey);
 			if (row == null || string.IsNullOrEmpty(row.Name))
 				return name;
 
@@ -174,7 +174,7 @@ public class GameDataService : ServiceBase<GameDataService>
 	public static ItemCategories GetCategory(Item item)
 	{
 		ItemCategories category = ItemCategories.None;
-		if (itemCategories != null && !itemCategories.TryGetValue(item.RowId, out category))
+		if (Instance.itemCategories != null && !Instance.itemCategories.TryGetValue(item.RowId, out category))
 			category = ItemCategories.None;
 
 		if (FavoritesService.IsFavorite(item))
@@ -207,9 +207,9 @@ public class GameDataService : ServiceBase<GameDataService>
 		// these are json files that we write by hand
 		try
 		{
-			Equipment = new EquipmentSheet("Data/Equipment.json");
-			itemCategories = EmbeddedFileUtility.Load<Dictionary<uint, ItemCategories>>("Data/ItemCategories.json");
-			npcNames = EmbeddedFileUtility.Load<Dictionary<string, string>>("Data/NpcNames.json");
+			this.Equipment = new EquipmentSheet("Data/Equipment.json");
+			this.itemCategories = EmbeddedFileUtility.Load<Dictionary<uint, ItemCategories>>("Data/ItemCategories.json");
+			this.npcNames = EmbeddedFileUtility.Load<Dictionary<string, string>>("Data/NpcNames.json");
 		}
 		catch (Exception ex)
 		{
@@ -223,29 +223,29 @@ public class GameDataService : ServiceBase<GameDataService>
 
 			LuminaData = new LuminaData(GameDataService.GamePath + "\\game\\sqpack\\", options);
 
-			Races = GetSheet<Race>();
-			Tribes = GetSheet<Tribe>();
-			Items = GetSheet<Item>();
-			Dyes = GetSheet<Stain>();
-			EventNPCs = GetSheet<EventNpc>();
-			BattleNPCs = GetSheet<BattleNpc>();
-			Mounts = GetSheet<Mount>();
-			MountCustomize = GetSheet<MountCustomize>();
-			Companions = GetSheet<Companion>();
-			Territories = GetSheet<Territory>();
-			Weathers = GetSheet<Weather>();
-			CharacterMakeCustomize = GetSheet<CharaMakeCustomize>();
-			CharacterMakeTypes = GetSheet<CharaMakeType>();
-			ResidentNPCs = GetSheet<ResidentNpc>();
-			Perform = GetSheet<Perform>();
-			WeatherRates = GetSheet<WeatherRate>();
-			EquipRaceCategories = GetSheet<EquipRaceCategory>();
-			BattleNpcNames = GetSheet<BattleNpcName>();
-			Actions = GetSheet<GameData.Excel.Action>();
-			ActionTimelines = GetSheet<ActionTimeline>();
-			Emotes = GetSheet<Emote>();
-			Ornaments = GetSheet<Ornament>();
-			BuddyEquips = GetSheet<BuddyEquip>();
+			this.Races = GetSheet<Race>();
+			this.Tribes = GetSheet<Tribe>();
+			this.Items = GetSheet<Item>();
+			this.Dyes = GetSheet<Stain>();
+			this.EventNPCs = GetSheet<EventNpc>();
+			this.BattleNPCs = GetSheet<BattleNpc>();
+			this.Mounts = GetSheet<Mount>();
+			this.MountCustomize = GetSheet<MountCustomize>();
+			this.Companions = GetSheet<Companion>();
+			this.Territories = GetSheet<Territory>();
+			this.Weathers = GetSheet<Weather>();
+			this.CharacterMakeCustomize = GetSheet<CharaMakeCustomize>();
+			this.CharacterMakeTypes = GetSheet<CharaMakeType>();
+			this.ResidentNPCs = GetSheet<ResidentNpc>();
+			this.Perform = GetSheet<Perform>();
+			this.WeatherRates = GetSheet<WeatherRate>();
+			this.EquipRaceCategories = GetSheet<EquipRaceCategory>();
+			this.BattleNpcNames = GetSheet<BattleNpcName>();
+			this.Actions = GetSheet<GameData.Excel.Action>();
+			this.ActionTimelines = GetSheet<ActionTimeline>();
+			this.Emotes = GetSheet<Emote>();
+			this.Ornaments = GetSheet<Ornament>();
+			this.BuddyEquips = GetSheet<BuddyEquip>();
 		}
 		catch (Exception ex)
 		{

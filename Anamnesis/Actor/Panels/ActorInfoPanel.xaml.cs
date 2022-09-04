@@ -25,7 +25,7 @@ public partial class ActorInfoPanel : ActorPanelBase
 	private ListCollectionView GenerateVoiceList()
 	{
 		List<VoiceEntry> entries = new();
-		foreach (var makeType in GameDataService.CharacterMakeTypes)
+		foreach (var makeType in GameDataService.Instance.CharacterMakeTypes)
 		{
 			if (makeType == null)
 				continue;
@@ -33,7 +33,7 @@ public partial class ActorInfoPanel : ActorPanelBase
 			if (makeType.Tribe == 0)
 				continue;
 
-			Tribe? tribe = GameDataService.Tribes.GetRow((uint)makeType.Tribe);
+			Tribe? tribe = GameDataService.Instance.Tribes.GetRow((uint)makeType.Tribe);
 
 			if (tribe == null)
 				continue;

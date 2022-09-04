@@ -51,23 +51,23 @@ public partial class NpcSelector : UserControl, INotifyPropertyChanged
 
 	protected Task LoadItems()
 	{
-		if (GameDataService.ResidentNPCs != null)
-			this.Selector.AddItems(GameDataService.ResidentNPCs);
+		if (GameDataService.Instance.ResidentNPCs != null)
+			this.Selector.AddItems(GameDataService.Instance.ResidentNPCs);
 
-		if (GameDataService.BattleNPCs != null)
-			this.Selector.AddItems(GameDataService.BattleNPCs);
+		if (GameDataService.Instance.BattleNPCs != null)
+			this.Selector.AddItems(GameDataService.Instance.BattleNPCs);
 
-		if (GameDataService.EventNPCs != null)
-			this.Selector.AddItems(GameDataService.EventNPCs);
+		if (GameDataService.Instance.EventNPCs != null)
+			this.Selector.AddItems(GameDataService.Instance.EventNPCs);
 
-		if (GameDataService.Mounts != null)
-			this.Selector.AddItems(GameDataService.Mounts);
+		if (GameDataService.Instance.Mounts != null)
+			this.Selector.AddItems(GameDataService.Instance.Mounts);
 
-		if (GameDataService.Companions != null)
-			this.Selector.AddItems(GameDataService.Companions);
+		if (GameDataService.Instance.Companions != null)
+			this.Selector.AddItems(GameDataService.Instance.Companions);
 
-		if (GameDataService.Ornaments != null)
-			this.Selector.AddItems(GameDataService.Ornaments);
+		if (GameDataService.Instance.Ornaments != null)
+			this.Selector.AddItems(GameDataService.Instance.Ornaments);
 
 		return Task.CompletedTask;
 	}

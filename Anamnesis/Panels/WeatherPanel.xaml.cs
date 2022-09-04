@@ -28,7 +28,7 @@ public partial class WeatherPanel : PanelBase
 		if (TerritoryService.Instance.CurrentTerritory == null)
 			return Task.CompletedTask;
 
-		this.WeatherSelector.AddItems(GameDataService.Weathers);
+		this.WeatherSelector.AddItems(GameDataService.Instance.Weathers);
 
 		return Task.CompletedTask;
 	}
