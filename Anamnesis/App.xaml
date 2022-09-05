@@ -49,6 +49,7 @@
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ValidationErrorTemplate.xaml" />
 
 				<!--  XivToolsWPF  -->
+				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/AnimationResources.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/BorderStyles.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/GroupBoxStyles.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/ButtonStyles.xaml" />
@@ -63,6 +64,7 @@
 				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/WindowStyles.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/ScrollBarStyles.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/ListBoxStyles.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles/SliderStyles.xaml" />
 
 				<ResourceDictionary Source="pack://application:,,,/XivToolsWpf;component/Styles.xaml" />
 
@@ -92,12 +94,7 @@
 				</Style.Triggers>
 			</Style>
 
-			<SineEase
-				x:Key="SinEaseIn"
-				EasingMode="EaseIn" />
-			<SineEase
-				x:Key="SinEaseOut"
-				EasingMode="EaseOut" />
+
 
 			<Storyboard x:Key="Collapse_ScaleX">
 				<DoubleAnimation

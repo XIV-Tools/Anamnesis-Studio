@@ -33,77 +33,167 @@
 	<Grid x:Name="ContentArea">
 		<StackPanel>
 
-			<Grid Grid.Row="0">
+			<!--  Race & Tribe  -->
+			<XivToolsWpf:TextBlock
+				Key="Character_Customize_RaceTribe"
+				Style="{StaticResource Header}" />
+			<Grid
+				Grid.Row="0"
+				Grid.ColumnSpan="2">
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition />
 					<ColumnDefinition />
 				</Grid.ColumnDefinitions>
 
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition />
-				</Grid.RowDefinitions>
+				<ComboBox
+					Grid.Column="0"
+					Margin="3"
+					ItemTemplate="{StaticResource DisplayNameComboBox}"
+					ItemsSource="{Binding Services.GameData.Races}"
+					SelectedItem="{Binding Actor.Customize.Race}" />
 
-				<!--  Race & Tribe  -->
-				<Grid
-					Grid.Row="0"
-					Grid.ColumnSpan="2">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition />
-						<ColumnDefinition />
-					</Grid.ColumnDefinitions>
-
-					<ComboBox
-						Grid.Column="0"
-						Margin="3"
-						ItemTemplate="{StaticResource DisplayNameComboBox}"
-						ItemsSource="{Binding Services.GameData.Races}"
-						SelectedItem="{Binding Actor.Customize.Race}" />
-
-					<ComboBox
-						Grid.Column="1"
-						Margin="3"
-						ItemTemplate="{StaticResource DisplayNameComboBox}"
-						ItemsSource="{Binding Actor.Customize.Race.Tribes}"
-						SelectedItem="{Binding Actor.Customize.Tribe}" />
-				</Grid>
-
-				<!--  Gender  -->
-				<ListBox
-					Grid.Row="1"
-					Grid.ColumnSpan="2"
-					ItemsSource="{Binding Actor.Customize.Race.Genders}"
-					SelectedItem="{Binding Actor.Customize.Gender}"
-					Style="{StaticResource SwitchSelector}" />
-
-				<!--  Age  -->
-				<ListBox
-					x:Name="AgeComboBox"
-					Grid.Row="2"
-					Grid.ColumnSpan="2"
-					IsEnabled="{Binding Actor.Customize.CanAge}"
-					SelectedItem="{Binding Actor.Customize.Age}"
-					Style="{StaticResource SwitchSelector}" />
-
+				<ComboBox
+					Grid.Column="1"
+					Margin="3"
+					ItemTemplate="{StaticResource DisplayNameComboBox}"
+					ItemsSource="{Binding Actor.Customize.Race.Tribes}"
+					SelectedItem="{Binding Actor.Customize.Tribe}" />
 			</Grid>
+
+			<!--  Gender  -->
+			<XivToolsWpf:TextBlock
+				Key="Character_Customize_Gender"
+				Style="{StaticResource Header}" />
+
+			<ListBox
+				Grid.Row="1"
+				Grid.ColumnSpan="2"
+				ItemsSource="{Binding Actor.Customize.Race.Genders}"
+				SelectedItem="{Binding Actor.Customize.Gender}"
+				Style="{StaticResource SwitchSelector}" />
+
+			<!--  Age  -->
+			<XivToolsWpf:TextBlock
+				Key="Character_Customize_Age"
+				Style="{StaticResource Header}" />
+
+			<ListBox
+				x:Name="AgeComboBox"
+				IsEnabled="{Binding Actor.Customize.CanAge}"
+				SelectedItem="{Binding Actor.Customize.Age}"
+				Style="{StaticResource SwitchSelector}" />
+
+			<!--  Height  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_Height" />
+			<controls:HeightEditor
+				Age="{Binding Actor.Customize.Age}"
+				Gender="{Binding Actor.Customize.Gender}"
+				Tribe="{Binding Actor.Customize.TribeId}"
+				Value="{Binding Actor.Customize.Height}" />
+
+			<!--  Muscle Tone  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_Muscle" />
+			<XivToolsWpf:NumberBox
+				Maximum="500"
+				Minimum="0"
+				Slider="Absolute"
+				Value="{Binding Actor.Customize.EarMuscleTailSize}" />
+
+			<!--  Bust Size  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_BustSize" />
+			<XivToolsWpf:NumberBox
+				Maximum="100"
+				Minimum="0"
+				Slider="Absolute"
+				Value="{Binding Actor.Customize.Bust}" />
+
+			<!--  Tail Shape  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_Tail" />
+
+			<!--  Tail Length  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_TailSize" />
+
+			<!--  Face  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_Face" />
+
+			<!--  Skin Color  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_Skin" />
+
+			<!--  Hairstyle  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_Hair" />
+
+			<!--  Hair Color  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_HairColor" />
+
+			<!--  Fur Color  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_HairColor" />
+
+			<!--  Fur Pattern  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_HairColor" />
+
+			<!--  Jaw  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_Jaw" />
+
+			<!--  Eye Shape  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_Eyes" />
+
+			<!--  Iris Size  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_Iris" />
+
+			<!--  Eye Color  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_EyeColor" />
+
+			<!--  Limbal Ring  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_EyeColor" />
+
+			<!--  Limbal Ring Color  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_EyeColor" />
+
+			<!--  Eyebrows  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_Eyebrows" />
+
+			<!--  Nose  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_Nose" />
+
+			<!--  Fang Length  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_Nose" />
+
+			<!--  Mouth  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_Lips" />
+
+			<!--  Lip Color  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_LipColor" />
+
+			<!--  Ear Shape  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_LipColor" />
+
+			<!--  Ear Length  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_LipColor" />
+
+			<!--  Ear Clasps  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_LipColor" />
+
+			<!--  Ear Clasp Color  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_LipColor" />
+
+			<!--  Facial Features  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_Features" />
+
+			<!--  Tattoos  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_Tattoos" />
+
+			<!--  Tattoo Color  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_TattooColor" />
+
+			<!--  Face Paint  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_FacePaint" />
+
+			<!--  Face Paint Color  -->
+			<XivToolsWpf:TextBlock Key="Character_Appearance_FacePaintColor" />
+
+			<!--  Voice  -->
+			<XivToolsWpf:TextBlock Key="Character_Actor_Voice" />
+
 		</StackPanel>
 	</Grid>
 </UserControl>

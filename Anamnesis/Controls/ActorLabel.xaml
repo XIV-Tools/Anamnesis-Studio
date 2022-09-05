@@ -39,14 +39,12 @@
 			Height="18"
 			Margin="3,0,3,3">
 
-			<XivToolsWpf:IconBlock
-				Icon="{Binding Icon}"
-				Visibility="{Binding IsValid, Converter={StaticResource B2V}, FallbackValue=Visible}" />
+			<XivToolsWpf:IconBlock Icon="{Binding Icon}" />
 
-			<XivToolsWpf:IconBlock
+			<!--<XivToolsWpf:IconBlock
 				Foreground="Red"
 				Icon="TimesCircle"
-				Visibility="{Binding IsValid, Converter={StaticResource !B2V}, FallbackValue=Collapsed}" />
+				Visibility="{Binding IsValid, Converter={StaticResource !B2V}, FallbackValue=Collapsed}" />-->
 		</Grid>
 
 		<XivToolsWpf:IconBlock
