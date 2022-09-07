@@ -4,6 +4,7 @@
 namespace Anamnesis.Memory;
 
 using System;
+using System.Security.AccessControl;
 using Anamnesis.GameData.Excel;
 using Anamnesis.Services;
 using PropertyChanged;
@@ -197,6 +198,23 @@ public class ActorCustomizeMemory : MemoryBase
 			canAge |= this.RaceId == Races.Elezen;
 			canAge |= this.RaceId == Races.AuRa;
 			return canAge;
+		}
+	}
+
+	[AlsoNotifyFor(nameof(RaceId), nameof(TribeId), nameof(Gender))]
+	public CharaMakeType? MakeType
+	{
+		get
+		{
+			foreach (CharaMakeType set in GameDataService.Instance.CharacterMakeTypes)
+			{
+				if (set.Tribe != this.TribeId || set.Gender != this.Gender)
+					continue;
+
+				return set;
+			}
+
+			return null;
 		}
 	}
 }

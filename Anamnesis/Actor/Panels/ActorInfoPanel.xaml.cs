@@ -38,7 +38,7 @@ public partial class ActorInfoPanel : ActorPanelBase
 			if (tribe == null)
 				continue;
 
-			int voiceCount = makeType.Voices!.Count;
+			int voiceCount = makeType.Voices!.Length;
 			for (int i = 0; i < voiceCount; i++)
 			{
 				byte voiceId = makeType.Voices[i]!;

@@ -107,6 +107,7 @@ public class GameDataService : ServiceBase<GameDataService>
 	public ExcelSheet<Emote> Emotes { get; private set; } = null!;
 	public ExcelSheet<Ornament> Ornaments { get; private set; } = null!;
 	public ExcelSheet<BuddyEquip> BuddyEquips { get; private set; } = null!;
+	public ExcelSheet<Lobby> Lobby { get; private set; } = null!;
 
 	public EquipmentSheet Equipment { get; private set; } = null!;
 
@@ -246,6 +247,7 @@ public class GameDataService : ServiceBase<GameDataService>
 			this.Emotes = GetSheet<Emote>();
 			this.Ornaments = GetSheet<Ornament>();
 			this.BuddyEquips = GetSheet<BuddyEquip>();
+			this.Lobby = GetSheet<Lobby>();
 		}
 		catch (Exception ex)
 		{

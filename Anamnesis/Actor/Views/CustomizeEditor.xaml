@@ -109,6 +109,23 @@
 
 			<!--  Tail Shape  -->
 			<XivToolsWpf:TextBlock Key="Character_Appearance_Tail" />
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+
+				<controls:CustomizeIconOption
+					Grid.Column="0"
+					Menu="{Binding Actor.Customize.MakeType.TailEarsTypes}"
+					Value="{Binding Actor.Customize.TailEarsType}" />
+
+				<XivToolsWpf:NumberBox
+					Grid.Column="1"
+					Maximum="{Binding Actor.Customize.MakeType.TailEarsTypes.Max}"
+					Minimum="{Binding Actor.Customize.MakeType.TailEarsTypes.Min}"
+					Value="{Binding Actor.Customize.TailEarsType}" />
+			</Grid>
 
 			<!--  Tail Length  -->
 			<XivToolsWpf:TextBlock Key="Character_Appearance_TailSize" />

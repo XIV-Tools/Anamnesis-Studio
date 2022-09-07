@@ -4,6 +4,7 @@
 namespace Anamnesis.Memory;
 
 using System;
+using System.Reflection;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class BindAttribute : Attribute

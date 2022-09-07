@@ -88,7 +88,9 @@ public class DatCharacterFile : FileBase, IUpgradeCharacterFile
 
 	public bool ValidateAllowedOptions(CharaMakeType makeType, ActorCustomizeMemory customize)
 	{
-		if (makeType == null || makeType.CustomizeRanges == null)
+		throw new NotImplementedException();
+
+		/*if (makeType == null || makeType.CustomizeRanges == null)
 			return false;
 
 		Dictionary<int, int> validate = new Dictionary<int, int>()
@@ -110,7 +112,7 @@ public class DatCharacterFile : FileBase, IUpgradeCharacterFile
 				return false;
 		}
 
-		return true;
+		return true;*/
 	}
 
 	public void WriteToFile(ActorMemory actor)
@@ -208,7 +210,8 @@ public class DatCharacterFile : FileBase, IUpgradeCharacterFile
 			customize.Bust,
 			(byte)(useDefaultFacePaint ? 0x00 : customize.FacePaint),
 			customize.FacePaintColor,
-			makeType.Voices.Contains(actor.Voice) ? actor.Voice : makeType.Voices[0],
+			////makeType.Voices.Contains(actor.Voice) ? actor.Voice : makeType.Voices[0],
+			actor.Voice,
 			0x00,
 
 			// Timestamp
