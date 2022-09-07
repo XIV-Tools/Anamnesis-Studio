@@ -8,7 +8,8 @@ using Anamnesis.Memory;
 using Anamnesis.Services;
 using Lumina.Data;
 using Lumina.Excel;
-
+using System.Collections.Generic;
+using System.Windows.Documents;
 using ExcelRow = Anamnesis.GameData.Sheets.ExcelRow;
 using LuminaData = Lumina.GameData;
 
@@ -55,7 +56,7 @@ public class CharaMakeType : ExcelRow
 	public Menu? Jaws { get; set; }
 	public Menu? Mouths { get; set; }
 	public Menu? LipsToneFurPatterns { get; set; }
-	public Menu? EarMuscleTailSize { get; set; }
+	public Menu? EarMuscleTailSizes { get; set; }
 	public Menu? TailEarsTypes { get; set; }
 	public Menu? Busts { get; set; }
 	public Menu? FacePaints { get; set; }
@@ -128,7 +129,7 @@ public class CharaMakeType : ExcelRow
 				case 18: this.Jaws = menu; break;
 				case 19: this.Mouths = menu; break;
 				case 20: this.LipsToneFurPatterns = menu; break;
-				case 21: this.EarMuscleTailSize = menu; break;
+				case 21: this.EarMuscleTailSizes = menu; break;
 				case 22: this.TailEarsTypes = menu; break;
 				case 23: this.Busts = menu; break;
 				case 25: this.FacePaintColors = menu; break;
@@ -189,6 +190,23 @@ public class CharaMakeType : ExcelRow
 		public byte Min { get; set; }
 		public byte Max { get; set; }
 		public Option[]? Options { get; set; }
+
+		public byte[]? Values
+		{
+			get
+			{
+				if (this.Options == null)
+					return null;
+
+				List<byte> values = new();
+				foreach (Option op in this.Options)
+				{
+					values.Add(op.Value);
+				}
+
+				return values.ToArray();
+			}
+		}
 
 		public Option? GetOption(byte value)
 		{

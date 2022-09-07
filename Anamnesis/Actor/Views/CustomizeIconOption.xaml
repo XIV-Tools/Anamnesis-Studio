@@ -10,12 +10,29 @@
 
 	<Grid x:Name="ContentArea">
 
-		<ToggleButton Style="{StaticResource XivToolsComboBoxButton}">
-			<Image
-				Width="42"
-				Height="42"
-				Source="{Binding Option.Icon, Converter={StaticResource Img}}" />
-		</ToggleButton>
+		<ComboBox
+			Height="54"
+			ItemsSource="{Binding Menu.Options}"
+			SelectedItem="{Binding Option}">
+
+			<ComboBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<UniformGrid Rows="2" />
+				</ItemsPanelTemplate>
+			</ComboBox.ItemsPanel>
+
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<Image
+						Width="42"
+						Height="42"
+						Margin="0,2"
+						Source="{Binding Icon, Converter={StaticResource Img}}" />
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+
+
+		</ComboBox>
 
 	</Grid>
 </UserControl>

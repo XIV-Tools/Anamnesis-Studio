@@ -92,11 +92,14 @@
 				Value="{Binding Actor.Customize.Height}" />
 
 			<!--  Muscle Tone  -->
-			<XivToolsWpf:TextBlock Key="Character_Appearance_Muscle" />
+			<XivToolsWpf:TextBlock
+				Key="Character_Appearance_Muscle"
+				Visibility="{Binding Actor.Customize.Race.HasMusclesCustomize, Converter={StaticResource B2V}}" />
 			<XivToolsWpf:NumberBox
-				Maximum="500"
-				Minimum="0"
+				Maximum="{Binding Actor.Customize.MakeType.EarMuscleTailSizes.Max}"
+				Minimum="{Binding Actor.Customize.MakeType.EarMuscleTailSizes.Min}"
 				Slider="Absolute"
+				Visibility="{Binding Actor.Customize.Race.HasMusclesCustomize, Converter={StaticResource B2V}}"
 				Value="{Binding Actor.Customize.EarMuscleTailSize}" />
 
 			<!--  Bust Size  -->
@@ -108,27 +111,66 @@
 				Value="{Binding Actor.Customize.Bust}" />
 
 			<!--  Tail Shape  -->
-			<XivToolsWpf:TextBlock Key="Character_Appearance_Tail" />
-			<Grid>
+			<XivToolsWpf:TextBlock
+				Key="Character_Appearance_Tail"
+				Visibility="{Binding Actor.Customize.Race.HasTailCustomize, Converter={StaticResource B2V}}" />
+			<Grid Visibility="{Binding Actor.Customize.Race.HasTailCustomize, Converter={StaticResource B2V}}">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition />
+					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
 
 				<controls:CustomizeIconOption
+					Grid.RowSpan="2"
 					Grid.Column="0"
+					Margin="0,0,1,0"
 					Menu="{Binding Actor.Customize.MakeType.TailEarsTypes}"
 					Value="{Binding Actor.Customize.TailEarsType}" />
 
-				<XivToolsWpf:NumberBox
-					Grid.Column="1"
-					Maximum="{Binding Actor.Customize.MakeType.TailEarsTypes.Max}"
-					Minimum="{Binding Actor.Customize.MakeType.TailEarsTypes.Min}"
-					Value="{Binding Actor.Customize.TailEarsType}" />
-			</Grid>
 
-			<!--  Tail Length  -->
-			<XivToolsWpf:TextBlock Key="Character_Appearance_TailSize" />
+				<ToggleButton
+					x:Name="ShowCustom"
+					Grid.Row="0"
+					Grid.Column="2"
+					Width="28"
+					Style="{StaticResource TransparentIconToggleButton}">
+					<XivToolsWpf:IconBlock Icon="Pencil" />
+				</ToggleButton>
+
+				<ListBox
+					Grid.Row="0"
+					Grid.Column="1"
+					ItemsSource="{Binding Actor.Customize.MakeType.TailEarsTypes.Values}"
+					SelectedItem="{Binding Actor.Customize.TailEarsType}"
+					Style="{StaticResource SwitchSelector}"
+					Visibility="{Binding IsChecked, ElementName=ShowCustom, Converter={StaticResource !B2V}}" />
+
+				<XivToolsWpf:NumberBox
+					Grid.Row="0"
+					Grid.Column="1"
+					Margin="0,1,1,1"
+					Buttons="True"
+					Visibility="{Binding IsChecked, ElementName=ShowCustom, Converter={StaticResource B2V}}"
+					Value="{Binding Actor.Customize.TailEarsType}" />
+
+
+				<XivToolsWpf:NumberBox
+					Grid.Row="1"
+					Grid.Column="1"
+					Grid.ColumnSpan="2"
+					Margin="0,1,0,1"
+					Maximum="{Binding Actor.Customize.MakeType.EarMuscleTailSizes.Max}"
+					Minimum="{Binding Actor.Customize.MakeType.EarMuscleTailSizes.Min}"
+					Slider="Absolute"
+					TickFrequency="1"
+					Value="{Binding Actor.Customize.EarMuscleTailSize}" />
+			</Grid>
 
 			<!--  Face  -->
 			<XivToolsWpf:TextBlock Key="Character_Appearance_Face" />
