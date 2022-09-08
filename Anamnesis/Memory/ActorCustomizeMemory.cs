@@ -160,7 +160,7 @@ public class ActorCustomizeMemory : MemoryBase
 	[AlsoNotifyFor(nameof(RaceId))]
 	public Race? Race
 	{
-		get => GameDataService.Instance.Races.Get((byte)this.RaceId);
+		get => GameDataService.Instance.Races.Find((byte)this.RaceId);
 		set
 		{
 			this.RaceId = (Races)(value?.RowId ?? 0);
@@ -185,7 +185,7 @@ public class ActorCustomizeMemory : MemoryBase
 	[AlsoNotifyFor(nameof(RaceId))]
 	public Tribe? Tribe
 	{
-		get => GameDataService.Instance.Tribes.Get((byte)this.TribeId);
+		get => GameDataService.Instance.Tribes.Find((byte)this.TribeId);
 		set => this.TribeId = (Tribes)(value?.RowId ?? 0);
 	}
 

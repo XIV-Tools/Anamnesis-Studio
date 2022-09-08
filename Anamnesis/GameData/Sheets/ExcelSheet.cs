@@ -39,6 +39,16 @@ public class ExcelSheet<T> : Lumina.Excel.ExcelSheet<T>, IEnumerable<T>, IEnumer
 		return GetSheet(lumina, attr.Name, lumina.Options.DefaultExcelLanguage, attr.ColumnHash);
 	}
 
+	public T? Find(byte row)
+	{
+		return this.Find((uint)row);
+	}
+
+	public T? Find(uint row, uint subRow = uint.MaxValue)
+	{
+		return this.GetRowInternal(row, subRow);
+	}
+
 	public T Get(byte row)
 	{
 		return this.Get((uint)row);
