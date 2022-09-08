@@ -70,7 +70,7 @@
 				Grid.ColumnSpan="2"
 				ItemsSource="{Binding Actor.Customize.Race.Genders}"
 				SelectedItem="{Binding Actor.Customize.Gender}"
-				Style="{StaticResource SwitchSelector}" />
+				Style="{StaticResource XivToolsSwitchSelector}" />
 
 			<!--  Age  -->
 			<XivToolsWpf:TextBlock
@@ -81,7 +81,7 @@
 				x:Name="AgeComboBox"
 				IsEnabled="{Binding Actor.Customize.CanAge}"
 				SelectedItem="{Binding Actor.Customize.Age}"
-				Style="{StaticResource SwitchSelector}" />
+				Style="{StaticResource XivToolsSwitchSelector}" />
 
 			<!--  Height  -->
 			<XivToolsWpf:TextBlock Key="Character_Appearance_Height" />
@@ -123,42 +123,21 @@
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition />
-					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
 
 				<controls:CustomizeIconOption
 					Grid.RowSpan="2"
 					Grid.Column="0"
+					Width="80"
 					Margin="0,0,1,0"
 					Menu="{Binding Actor.Customize.MakeType.TailEarsTypes}"
 					Value="{Binding Actor.Customize.TailEarsType}" />
 
-
-				<ToggleButton
-					x:Name="ShowCustom"
-					Grid.Row="0"
-					Grid.Column="2"
-					Width="28"
-					Style="{StaticResource TransparentIconToggleButton}">
-					<XivToolsWpf:IconBlock Icon="Pencil" />
-				</ToggleButton>
-
-				<ListBox
+				<controls:CustomizeNumberOption
 					Grid.Row="0"
 					Grid.Column="1"
-					ItemsSource="{Binding Actor.Customize.MakeType.TailEarsTypes.Values}"
-					SelectedItem="{Binding Actor.Customize.TailEarsType}"
-					Style="{StaticResource SwitchSelector}"
-					Visibility="{Binding IsChecked, ElementName=ShowCustom, Converter={StaticResource !B2V}}" />
-
-				<XivToolsWpf:NumberBox
-					Grid.Row="0"
-					Grid.Column="1"
-					Margin="0,1,1,1"
-					Buttons="True"
-					Visibility="{Binding IsChecked, ElementName=ShowCustom, Converter={StaticResource B2V}}"
+					Menu="{Binding Actor.Customize.MakeType.TailEarsTypes}"
 					Value="{Binding Actor.Customize.TailEarsType}" />
-
 
 				<XivToolsWpf:NumberBox
 					Grid.Row="1"

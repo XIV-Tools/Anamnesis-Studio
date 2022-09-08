@@ -1,0 +1,145 @@
+﻿<UserControl
+	x:Class="Anamnesis.Actor.Views.CustomizeNumberOption"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:Anamnesis.Actor.Views"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	d:DesignWidth="256"
+	mc:Ignorable="d">
+
+	<Grid x:Name="ContentArea">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition />
+			<ColumnDefinition Width="Auto" />
+		</Grid.ColumnDefinitions>
+
+		<Border
+			Grid.Column="1"
+			Margin="1,0,0,0"
+			CornerRadius="0,6,6,0"
+			Style="{StaticResource XivToolsControlBorder}">
+
+			<ToggleButton
+				x:Name="ShowCustom"
+				Width="28"
+				Margin="0"
+				IsChecked="{Binding ManualEntry}"
+				Style="{StaticResource TransparentIconToggleButton}">
+				<XivToolsWpf:IconBlock
+					FontSize="10"
+					Icon="Pen" />
+			</ToggleButton>
+		</Border>
+
+		<Border
+			Grid.Column="0"
+			CornerRadius="6,0,0,6"
+			Style="{StaticResource XivToolsControlBorder}">
+			<Grid>
+
+				<ListBox
+					Margin="0"
+					ItemsSource="{Binding Menu.Values}"
+					SelectedItem="{Binding Value}">
+					<ListBox.RenderTransform>
+						<TranslateTransform />
+					</ListBox.RenderTransform>
+
+					<ListBox.Style>
+						<Style
+							BasedOn="{StaticResource XivToolsSwitchSelectorNoBorder}"
+							TargetType="{x:Type ListBox}">
+							<Style.Triggers>
+								<DataTrigger
+									Binding="{Binding ManualEntry}"
+									Value="True">
+									<DataTrigger.EnterActions>
+										<StopStoryboard BeginStoryboardName="FromManual" />
+										<BeginStoryboard Name="ToManual">
+											<Storyboard>
+												<DoubleAnimation
+													EasingFunction="{StaticResource SinEaseInOut}"
+													Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+													To="-28"
+													Duration="0:0:0.150" />
+											</Storyboard>
+										</BeginStoryboard>
+									</DataTrigger.EnterActions>
+									<DataTrigger.ExitActions>
+										<StopStoryboard BeginStoryboardName="ToManual" />
+										<BeginStoryboard Name="FromManual">
+											<Storyboard>
+												<DoubleAnimation
+													EasingFunction="{StaticResource SinEaseInOut}"
+													Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+													From="-28"
+													To="0"
+													Duration="0:0:0.150" />
+											</Storyboard>
+										</BeginStoryboard>
+									</DataTrigger.ExitActions>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</ListBox.Style>
+				</ListBox>
+
+				<XivToolsWpf:NumberBox
+					Grid.Column="0"
+					Height="{Binding ActualHeight, ElementName=ListSelector}"
+					Margin="0"
+					BorderBrush="Transparent"
+					Buttons="True"
+					Value="{Binding Value}">
+					<XivToolsWpf:NumberBox.RenderTransform>
+						<TranslateTransform Y="28" />
+					</XivToolsWpf:NumberBox.RenderTransform>
+
+					<XivToolsWpf:NumberBox.Style>
+						<Style TargetType="{x:Type XivToolsWpf:NumberBox}">
+							<Style.Triggers>
+								<DataTrigger
+									Binding="{Binding ManualEntry}"
+									Value="True">
+
+									<DataTrigger.EnterActions>
+
+										<BeginStoryboard>
+											<Storyboard>
+												<DoubleAnimation
+													EasingFunction="{StaticResource SinEaseInOut}"
+													Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+													From="28"
+													To="0"
+													Duration="0:0:0.150" />
+											</Storyboard>
+										</BeginStoryboard>
+									</DataTrigger.EnterActions>
+									<DataTrigger.ExitActions>
+
+										<BeginStoryboard>
+											<Storyboard>
+												<DoubleAnimation
+													EasingFunction="{StaticResource SinEaseInOut}"
+													Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+													From="0"
+													To="28"
+													Duration="0:0:0.150" />
+											</Storyboard>
+										</BeginStoryboard>
+									</DataTrigger.ExitActions>
+
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</XivToolsWpf:NumberBox.Style>
+
+				</XivToolsWpf:NumberBox>
+
+			</Grid>
+
+		</Border>
+	</Grid>
+</UserControl>
