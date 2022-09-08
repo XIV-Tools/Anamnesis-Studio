@@ -80,10 +80,17 @@
 
 			<Border
 				Background="{DynamicResource MaterialDesignBackground}"
-				BorderBrush="{Binding TitleColor, Converter={StaticResource ColorToBrush}}"
+				BorderBrush="{DynamicResource PrimaryHueMidBrush}"
 				BorderThickness="1"
 				CornerRadius="6"
 				Visibility="{Binding IsActive, Converter={StaticResource B2V}}" />
+
+			<Border
+				Background="{DynamicResource MaterialDesignBackground}"
+				BorderBrush="{DynamicResource MaterialDesignBackground}"
+				BorderThickness="1"
+				CornerRadius="6"
+				Visibility="{Binding IsActive, Converter={StaticResource !B2V}}" />
 
 		</Grid>
 
@@ -121,19 +128,6 @@
 					Fill="Transparent"
 					MouseDown="OnTitleMouseDown" />
 
-				<Separator
-					Margin="3,0"
-					VerticalAlignment="Bottom"
-					Background="{DynamicResource MaterialDesignCardBackground}"
-					IsHitTestVisible="False"
-					Opacity="0.5"
-					Visibility="{Binding IsActive, Converter={StaticResource !B2V}}" />
-
-				<Separator
-					Margin="3,0"
-					VerticalAlignment="Bottom"
-					Background="{Binding TitleColor, Converter={StaticResource ColorToBrush}, FallbackValue={StaticResource PrimaryHueMidBrush}}"
-					IsHitTestVisible="False" />
 
 				<StackPanel
 					HorizontalAlignment="Right"
