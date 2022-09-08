@@ -369,10 +369,10 @@ public class MemoryService : ServiceBase<MemoryService>
 	{
 		Process? proc = null;
 
-		await Dispatch.MainThread();
-
 		if (App.Current == null)
 			return;
+
+		await App.Current.Dispatcher.MainThread();
 
 		App.Current.MainWindow.Topmost = false;
 
@@ -386,7 +386,7 @@ public class MemoryService : ServiceBase<MemoryService>
 		// if still no process, shutdown.
 		if (proc == null)
 		{
-			await Dispatch.MainThread();
+			await App.Current.Dispatcher.MainThread();
 			App.Current.MainWindow.Close();
 			App.Current.Shutdown();
 			return;

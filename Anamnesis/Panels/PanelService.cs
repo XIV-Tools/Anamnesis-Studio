@@ -7,21 +7,59 @@ using Anamnesis.Services;
 using Anamnesis.Windows;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
+using Anamnesis.Actor.Panels;
+using Anamnesis.Libraries.Panels;
+using XivToolsWpf;
+using XivToolsWpf.Extensions;
 
 public class PanelService : ServiceBase<PanelService>
 {
 	private static readonly List<PanelBase> OpenPanels = new();
+	private static readonly Dictionary<Type, PanelBase> Panelcache = new();
 
-	public static T Show<T>(object? context = null)
+	private static readonly List<Type> PreLoadPanels = new()
+	{
+		typeof(CustomizePanel),
+		typeof(LibraryPanel),
+		typeof(CameraPanel),
+		typeof(ExceptionPanel),
+		typeof(GenericDialogPanel),
+		typeof(SettingsPanel),
+		typeof(WeatherPanel),
+		typeof(BonesPanel),
+		typeof(TransformPanel),
+	};
+
+	public enum PanelThreadingMode
+	{
+		ApplicationThread,
+		CustomThread,
+	}
+
+	public static async Task<T> Show<T>(object? context = null, PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
 		where T : PanelBase
 	{
-		T? panel = Show(typeof(T), context) as T;
+		PanelBase panel = await Show(typeof(T), context, threadMode);
 
-		if (panel == null)
-			throw new Exception($"Failed to create instance of panel: {typeof(T)}");
+		if (panel is not T tPanel)
+			throw new Exception("Panel was wrong type");
 
-		return panel;
+		return tPanel;
+	}
+
+	public static async Task<T> Show<T>(PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
+		where T : PanelBase
+	{
+		PanelBase panel = await Show(typeof(T), null, threadMode);
+
+		if (panel is not T tPanel)
+			throw new Exception("Panel was wrong type");
+
+		return tPanel;
 	}
 
 	public static List<PanelBase> GetPanels(Type panelType)
@@ -39,25 +77,43 @@ public class PanelService : ServiceBase<PanelService>
 		return results;
 	}
 
-	public static PanelBase Show(Type panelType, object? context = null)
+	public static async Task<PanelBase> Spawn(Type panelType, PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
 	{
-		IPanelHost panelHost = CreateHost();
-		PanelBase? panel;
-
-		try
+		if (!Panelcache.ContainsKey(panelType))
 		{
-			panel = Activator.CreateInstance(panelType, panelHost) as PanelBase;
-		}
-		catch (Exception)
-		{
-			panel = Activator.CreateInstance(panelType, panelHost, context) as PanelBase;
+			if (threadMode == PanelThreadingMode.CustomThread)
+			{
+				Thread panelMainThread = new Thread(PanelMainThread);
+				panelMainThread.SetApartmentState(ApartmentState.STA);
+				panelMainThread.Start(panelType);
+
+				while (!Panelcache.ContainsKey(panelType))
+				{
+					await Task.Delay(1);
+				}
+			}
+			else
+			{
+				PanelBase? newPanel = Activator.CreateInstance(panelType) as PanelBase;
+
+				if (newPanel == null)
+					throw new Exception($"Failed to create instance of panel: {panelType}");
+
+				Panelcache.Add(panelType, newPanel);
+			}
 		}
 
-		if (panel == null)
-			throw new Exception($"Failed to create instance of panel: {panelType}");
+		return Panelcache[panelType];
+	}
 
-		panel.DataContext = context;
+	public static async Task<PanelBase> Show(Type panelType, object? context = null, PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
+	{
+		PanelBase panel = await Spawn(panelType, threadMode);
+
+		await panel.Dispatcher.MainThread();
+		IPanelHost panelHost = panelHost = CreateHost();
 		panelHost.AddPanel(panel);
+		panel.SetContext(panelHost, context);
 		panelHost.Show();
 
 		// Copy width and height values from the inner panel to the host
@@ -124,6 +180,60 @@ public class PanelService : ServiceBase<PanelService>
 		}
 
 		SettingsService.Save();
+	}
+
+	public override Task Start()
+	{
+		this.PreloadPanels().Run();
+		return base.Start();
+	}
+
+	public override Task Shutdown()
+	{
+		foreach (PanelBase panel in Panelcache.Values)
+		{
+			if (panel.Dispatcher != App.Current?.Dispatcher)
+			{
+				panel.Dispatcher.BeginInvokeShutdown(DispatcherPriority.Normal);
+			}
+		}
+
+		return base.Shutdown();
+	}
+
+	private static void PanelMainThread(object? panelTypeObj)
+	{
+		if (panelTypeObj is not Type panelType)
+			return;
+
+		PanelBase? newPanel = Activator.CreateInstance(panelType) as PanelBase;
+
+		if (newPanel == null)
+			throw new Exception($"Failed to create instance of panel: {panelType}");
+
+		Panelcache.Add(panelType, newPanel);
+
+		Log.Information($"Panel: {panelType} has started");
+
+		Dispatcher.Run();
+
+		Log.Information($"Panel: {panelType} has shutdown");
+	}
+
+	private async Task PreloadPanels()
+	{
+		try
+		{
+			foreach (Type panelType in PreLoadPanels)
+			{
+				Log.Information($"Spwning panel: {panelType}");
+				await Spawn(panelType);
+			}
+		}
+		catch (Exception ex)
+		{
+			Log.Error(ex, "Failed to spawn panels");
+		}
 	}
 
 	[Serializable]

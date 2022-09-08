@@ -12,42 +12,6 @@ using XivToolsWpf;
 
 public partial class GenericDialogPanel : PanelBase
 {
-	public GenericDialogPanel(IPanelHost host, DialogInfo info)
-		: base(host)
-	{
-		this.InitializeComponent();
-		this.ContentArea.DataContext = this;
-
-		this.Title = info.Title;
-		this.Message = info.Message;
-
-		switch (info.Buttons)
-		{
-			case MessageBoxButton.OK:
-			{
-				this.Left = null;
-				this.Right = "OK";
-				break;
-			}
-
-			case MessageBoxButton.OKCancel:
-			{
-				this.Left = "Cancel";
-				this.Right = "OK";
-				break;
-			}
-
-			case MessageBoxButton.YesNoCancel: throw new NotImplementedException();
-
-			case MessageBoxButton.YesNo:
-			{
-				this.Left = "No";
-				this.Right = "Yes";
-				break;
-			}
-		}
-	}
-
 	public bool? Result { get; set; }
 	public string Message { get; set; } = string.Empty;
 
@@ -74,10 +38,8 @@ public partial class GenericDialogPanel : PanelBase
 
 	public static async Task<bool?> ShowAsync(string message, string title, MessageBoxButton buttons)
 	{
-		await Dispatch.MainThread();
-
 		DialogInfo info = new(title, message, buttons);
-		GenericDialogPanel? panel = NavigationService.Navigate(new("GenericDialog", info)) as GenericDialogPanel;
+		GenericDialogPanel? panel = await NavigationService.Navigate(new("GenericDialog", info)) as GenericDialogPanel;
 
 		if (panel == null)
 			throw new Exception("Failed to open generic dialog");
@@ -85,6 +47,43 @@ public partial class GenericDialogPanel : PanelBase
 		await panel.WhileOpen();
 
 		return panel.Result;
+	}
+
+	public override void SetContext(IPanelHost host, object? context)
+	{
+		base.SetContext(host, context);
+
+		if (context is not DialogInfo info)
+			return;
+
+		this.Title = info.Title;
+		this.Message = info.Message;
+
+		switch (info.Buttons)
+		{
+			case MessageBoxButton.OK:
+				{
+					this.Left = null;
+					this.Right = "OK";
+					break;
+				}
+
+			case MessageBoxButton.OKCancel:
+				{
+					this.Left = "Cancel";
+					this.Right = "OK";
+					break;
+				}
+
+			case MessageBoxButton.YesNoCancel: throw new NotImplementedException();
+
+			case MessageBoxButton.YesNo:
+				{
+					this.Left = "No";
+					this.Right = "Yes";
+					break;
+				}
+		}
 	}
 
 	public void Cancel()

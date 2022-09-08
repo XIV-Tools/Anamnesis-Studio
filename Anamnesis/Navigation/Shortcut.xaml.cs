@@ -16,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using XivToolsWpf;
 using XivToolsWpf.DependencyProperties;
+using XivToolsWpf.Extensions;
 
 [AddINotifyPropertyChangedInterface]
 public partial class Shortcut : UserControl
@@ -92,7 +93,7 @@ public partial class Shortcut : UserControl
 	{
 		try
 		{
-			NavigationService.Navigate(new(this, this.Destination, this.Context));
+			NavigationService.Navigate(new(this, this.Destination, this.Context)).Run();
 		}
 		catch (Exception ex)
 		{

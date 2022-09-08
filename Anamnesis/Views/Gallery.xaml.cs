@@ -90,7 +90,7 @@ public partial class Gallery : UserControl
 
 				if (!Directory.Exists(dir))
 				{
-					await Dispatch.MainThread();
+					await this.Dispatcher.MainThread();
 					SettingsService.Current.GalleryDirectory = null;
 					continue;
 				}
@@ -153,7 +153,7 @@ public partial class Gallery : UserControl
 		if (entry.Url == null || entry.Author == null)
 			return;
 
-		await Dispatch.MainThread();
+		await this.Dispatcher.MainThread();
 		this.CanSkip = false;
 		bool valid = true;
 
@@ -176,7 +176,7 @@ public partial class Gallery : UserControl
 			}
 		}
 
-		await Dispatch.MainThread();
+		await this.Dispatcher.MainThread();
 
 		if (!valid)
 		{
@@ -215,7 +215,7 @@ public partial class Gallery : UserControl
 		while (image.Source != null && !image.Source.CanFreeze)
 			await Task.Delay(100);
 
-		await Dispatch.MainThread();
+		await this.Dispatcher.MainThread();
 
 		this.CanSkip = true;
 

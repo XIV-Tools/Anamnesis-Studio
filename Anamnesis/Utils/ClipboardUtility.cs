@@ -24,7 +24,7 @@ public static class ClipboardUtility
 		{
 			try
 			{
-				await Dispatch.MainThread();
+				await App.Current.Dispatcher.MainThread();
 				Clipboard.SetText(text);
 				success = true;
 			}

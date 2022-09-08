@@ -14,13 +14,6 @@ public partial class WeatherPanel : PanelBase
 {
 	private static readonly WeatherFilter FilterInstance = new();
 
-	public WeatherPanel(IPanelHost host)
-		: base(host)
-	{
-		this.InitializeComponent();
-		this.ContentArea.DataContext = this;
-	}
-
 	public WeatherFilter Filter => FilterInstance;
 
 	protected Task LoadItems()

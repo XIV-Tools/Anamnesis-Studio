@@ -11,11 +11,6 @@ using XivToolsWpf.Extensions;
 
 public abstract class ActorPanelBase : PanelBase
 {
-	protected ActorPanelBase(IPanelHost host)
-		: base(host)
-	{
-	}
-
 	public ActorMemory? Actor { get; set; }
 
 	protected virtual Task OnActorChanged()

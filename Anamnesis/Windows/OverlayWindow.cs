@@ -26,7 +26,7 @@ public class OverlayWindow : FloatingWindow
 
 	public override Rect Rect
 	{
-		get => new Rect(this.Left, this.Top, this.Width + 1, this.Height + 1);
+		get => new Rect(this.Left, this.Top, this.Width, this.Height);
 		set
 		{
 			if (value.Height != this.Height || value.Width != this.Width)

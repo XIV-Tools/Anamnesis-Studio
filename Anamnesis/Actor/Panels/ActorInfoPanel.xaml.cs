@@ -11,12 +11,9 @@ using System.Windows.Data;
 
 public partial class ActorInfoPanel : ActorPanelBase
 {
-	public ActorInfoPanel(IPanelHost host)
-		: base(host)
+	public ActorInfoPanel()
+		: base()
 	{
-		this.InitializeComponent();
-		this.ContentArea.DataContext = this;
-
 		this.VoiceEntries = this.GenerateVoiceList();
 	}
 

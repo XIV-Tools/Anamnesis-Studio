@@ -13,21 +13,6 @@ using System.Threading.Tasks;
 
 public partial class ImportPosePanel : PanelBase
 {
-	public ImportPosePanel(IPanelHost host, OpenResult openFile)
-		: base(host)
-	{
-		this.InitializeComponent();
-		this.ContentArea.DataContext = this;
-
-		if (openFile.File is not PoseFile file)
-			throw new Exception("Import file was not a pose file");
-
-		this.Title = openFile.Path?.Name;
-		this.File = file;
-
-		this.Initialize().Run();
-	}
-
 	public enum Destinations
 	{
 		Expression,
@@ -39,10 +24,26 @@ public partial class ImportPosePanel : PanelBase
 
 	public PoseFile.Mode Mode { get; set; } = PoseFile.Mode.Scale | PoseFile.Mode.Rotation | PoseFile.Mode.WorldRotation | PoseFile.Mode.WorldScale;
 	public Destinations Destination { get; set; } = Destinations.All;
-	public PoseFile File { get; set; }
+	public PoseFile? File { get; set; }
 
 	public SkeletonVisual3d? Skeleton { get; private set; }
 	public ActorMemory? Actor { get; private set; }
+
+	public override void SetContext(IPanelHost host, object? context)
+	{
+		base.SetContext(host, context);
+
+		if (context is not OpenResult openFile)
+			return;
+
+		if (openFile.File is not PoseFile file)
+			throw new Exception("Import file was not a pose file");
+
+		this.Title = openFile.Path?.Name;
+		this.File = file;
+
+		this.Initialize().Run();
+	}
 
 	private async Task Initialize()
 	{
@@ -62,7 +63,7 @@ public partial class ImportPosePanel : PanelBase
 		if (this.Actor == null || this.Skeleton == null)
 			return;
 
-		this.File.Apply(this.Actor, this.Skeleton, null, this.Mode).Run();
+		this.File?.Apply(this.Actor, this.Skeleton, null, this.Mode).Run();
 		this.Close();
 	}
 

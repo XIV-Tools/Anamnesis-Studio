@@ -15,13 +15,6 @@ using Anamnesis.Files;
 [AddINotifyPropertyChangedInterface]
 public partial class NavigationPanel : PanelBase
 {
-	public NavigationPanel(IPanelHost host)
-		: base(host)
-	{
-		this.InitializeComponent();
-		this.ContentArea.DataContext = this;
-	}
-
 	public bool Expanded { get; set; } = true;
 
 	private async void OnIconMouseDown(object sender, MouseButtonEventArgs e)

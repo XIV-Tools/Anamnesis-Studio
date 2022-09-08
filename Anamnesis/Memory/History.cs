@@ -65,7 +65,7 @@ public class History
 
 		Task.Run(async () =>
 		{
-			await Dispatch.MainThread();
+			await App.Current.Dispatcher.MainThread();
 			this.Entries.Remove(restore);
 		});
 
@@ -85,7 +85,7 @@ public class History
 
 		Task.Run(async () =>
 		{
-			await Dispatch.MainThread();
+			await App.Current.Dispatcher.MainThread();
 			this.Entries.Add(oldEntry);
 		});
 

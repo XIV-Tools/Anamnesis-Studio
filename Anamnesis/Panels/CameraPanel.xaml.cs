@@ -14,13 +14,6 @@ public partial class CameraPanel : PanelBase
 	private static DirectoryInfo? lastLoadDir;
 	private static DirectoryInfo? lastSaveDir;
 
-	public CameraPanel(IPanelHost host)
-		: base(host)
-	{
-		this.InitializeComponent();
-		this.ContentArea.DataContext = this;
-	}
-
 	private async void OnImportCamera(object sender, RoutedEventArgs e)
 	{
 		ActorBasicMemory? targetActor = this.Services.Target.PlayerTarget;

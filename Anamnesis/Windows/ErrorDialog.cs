@@ -24,7 +24,7 @@ public static class ErrorDialog
 		if (ex.SourceException is ErrorException || ex.SourceException?.InnerException is ErrorException)
 			return;
 
-		await Dispatch.MainThread();
+		await App.Current.Dispatcher.MainThread();
 
 		SplashWindow.HideWindow();
 

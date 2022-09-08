@@ -21,7 +21,7 @@ public static class GenericSelectorUtil
 	public static async Task ShowAsync<T>(IEnumerable<T> items, Action<T> selected)
 		where T : class, ISelectable
 	{
-		await Dispatch.MainThread();
+		await App.Current.Dispatcher.MainThread();
 
 		GenericSelector sel = new(items);
 		sel.SelectionChanged += (c) =>

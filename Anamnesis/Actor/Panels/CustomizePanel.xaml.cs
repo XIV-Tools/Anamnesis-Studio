@@ -14,13 +14,6 @@ using System.Windows.Data;
 
 public partial class CustomizePanel : ActorPanelBase
 {
-	public CustomizePanel(IPanelHost host)
-		: base(host)
-	{
-		this.InitializeComponent();
-		this.ContentArea.DataContext = this;
-	}
-
 	private void OnClearClicked(object? sender = null, RoutedEventArgs? e = null)
 	{
 		if (this.Actor == null)

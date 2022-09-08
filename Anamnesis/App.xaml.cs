@@ -94,13 +94,13 @@ public partial class App : Application
 
 			await Services.InitializeCriticalServices();
 			SettingsService.ApplyTheme();
-			await Dispatch.MainThread();
+			await this.Dispatcher.MainThread();
 
 			Window oldwindow = this.MainWindow;
 
 			if (SettingsService.Current.OverlayWindow)
 			{
-				NavigationPanel nav = PanelService.Show<NavigationPanel>();
+				NavigationPanel nav = await PanelService.Show<NavigationPanel>(PanelService.PanelThreadingMode.ApplicationThread);
 				this.MainWindow = nav.Host as Window;
 			}
 			else
@@ -186,9 +186,9 @@ public partial class App : Application
 			await Task.Delay(500);
 
 			sw.Restart();
-			await Dispatch.MainThread();
+			await this.Dispatcher.MainThread();
 			await Task.Delay(16);
-			await Dispatch.MainThread();
+			await this.Dispatcher.MainThread();
 			long ms = sw.ElapsedMilliseconds;
 
 			if (ms > 50)

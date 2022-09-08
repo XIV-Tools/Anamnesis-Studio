@@ -143,7 +143,7 @@ public partial class ItemView : UserControl
 
 		try
 		{
-			NavigationService.Navigate(new NavigationService.Request(this, "ActorEquipmentSelector", this));
+			////NavigationService.Navigate(new NavigationService.Request(this, "ActorEquipmentSelector", this));
 		}
 		catch (Exception ex)
 		{
@@ -281,7 +281,7 @@ public partial class ItemView : UserControl
 		Task.Run(async () =>
 		{
 			await Task.Yield();
-			await Dispatch.MainThread();
+			await this.Dispatcher.MainThread();
 			if (this.ItemModel == null || GameDataService.Instance.Dyes == null)
 				return;
 
@@ -302,7 +302,7 @@ public partial class ItemView : UserControl
 					IItem? item = ItemUtility.GetItem(slots, 0, itemVm.Base, itemVm.Variant, this.Actor.IsChocobo);
 					IDye? dye = GameDataService.Instance.Dyes.Get(itemVm.Dye);
 
-					await Dispatch.MainThread();
+					await this.Dispatcher.MainThread();
 
 					this.Item = item;
 					this.Dye = dye;
@@ -316,7 +316,7 @@ public partial class ItemView : UserControl
 
 					IDye? dye = GameDataService.Instance.Dyes.Get(weaponVm.Dye);
 
-					await Dispatch.MainThread();
+					await this.Dispatcher.MainThread();
 
 					this.Item = item;
 					this.Dye = dye;

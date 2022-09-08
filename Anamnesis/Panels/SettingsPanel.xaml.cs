@@ -19,12 +19,9 @@ using Anamnesis.Services;
 
 public partial class SettingsPanel : PanelBase
 {
-	public SettingsPanel(IPanelHost host)
-		: base(host)
+	public SettingsPanel()
+		: base()
 	{
-		this.InitializeComponent();
-		this.ContentArea.DataContext = this;
-
 		List<double> sizes = new List<double>();
 		sizes.Add(0.75);
 		sizes.Add(1.0);

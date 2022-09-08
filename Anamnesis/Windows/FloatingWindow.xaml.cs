@@ -15,6 +15,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -236,7 +237,7 @@ public partial class FloatingWindow : Window, IPanelHost
 		panel.PropertyChanged -= this.OnPanelPropertyChanged;
 		this.panels.Remove(panel);
 
-		if (this.panels.Count <= 0)
+		if (this.IsOpen && this.panels.Count <= 0)
 		{
 			this.Close();
 		}
@@ -249,6 +250,11 @@ public partial class FloatingWindow : Window, IPanelHost
 
 		this.BeginStoryboard("CloseStoryboard");
 		this.IsOpen = false;
+
+		foreach (IPanel panel in this.Panels.ToArray())
+		{
+			panel.Close();
+		}
 	}
 
 	protected virtual void OnWindowLoaded()
@@ -352,10 +358,12 @@ public partial class FloatingWindow : Window, IPanelHost
 		base.Close();
 	}
 
-	private void OnPanelPropertyChanged(object? sender, PropertyChangedEventArgs? e = null)
+	private async void OnPanelPropertyChanged(object? sender, PropertyChangedEventArgs? e = null)
 	{
 		if (this.panels.Count <= 0)
 			throw new Exception("Panel host reciving panel events without any panel children");
+
+		await this.Dispatcher.MainThread();
 
 		if (this.panels.Count == 1)
 		{

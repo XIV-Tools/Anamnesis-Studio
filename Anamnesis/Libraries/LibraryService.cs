@@ -68,7 +68,7 @@ public class LibraryService : ServiceBase<LibraryService>
 		if (pack.Name == null)
 			return;
 
-		await Dispatch.MainThread();
+		await App.Current.Dispatcher.MainThread();
 
 		Pack? toReplace = null;
 		foreach (Pack other in this.Packs)

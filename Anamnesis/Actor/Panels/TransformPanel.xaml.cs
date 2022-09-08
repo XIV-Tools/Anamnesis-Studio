@@ -14,12 +14,9 @@ using CmQuaternion = Anamnesis.Memory.Quaternion;
 
 public partial class TransformPanel : ActorPanelBase
 {
-	public TransformPanel(IPanelHost host)
-		: base(host)
+	public TransformPanel()
+		: base()
 	{
-		this.InitializeComponent();
-		this.ContentArea.DataContext = this;
-
 		PoseService.EnabledChanged += this.OnPoseServiceEnabledChanged;
 	}
 

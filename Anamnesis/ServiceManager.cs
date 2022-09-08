@@ -96,7 +96,7 @@ public class ServiceManager
 
 	public async Task StartServices()
 	{
-		await Dispatch.MainThread();
+		await App.Current.Dispatcher.MainThread();
 
 		foreach (IService service in this.services)
 		{

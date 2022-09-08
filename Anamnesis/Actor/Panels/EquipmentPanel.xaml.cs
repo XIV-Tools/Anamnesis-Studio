@@ -14,13 +14,6 @@ using System.Windows;
 /// </summary>
 public partial class EquipmentPanel : ActorPanelBase
 {
-	public EquipmentPanel(IPanelHost host)
-		: base(host)
-	{
-		this.InitializeComponent();
-		this.ContentArea.DataContext = this;
-	}
-
 	private void OnClearClicked(object? sender = null, RoutedEventArgs? e = null)
 	{
 		if (this.Actor == null)

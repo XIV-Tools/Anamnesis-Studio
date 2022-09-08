@@ -451,13 +451,13 @@ public class SkeletonVisual3d : ModelVisual3D, INotifyPropertyChanged
 
 		this.Clear();
 
-		await Dispatch.MainThread();
+		await this.Dispatcher.MainThread();
 
 		this.ClearSelection();
 
 		try
 		{
-			await Dispatch.MainThread();
+			await this.Dispatcher.MainThread();
 
 			if (!GposeService.Instance.IsGpose)
 				return;
@@ -667,7 +667,7 @@ public class SkeletonVisual3d : ModelVisual3D, INotifyPropertyChanged
 
 	private async void OnTransformPropertyChanged(object? sender, PropertyChangedEventArgs? e)
 	{
-		await Dispatch.MainThread();
+		await this.Dispatcher.MainThread();
 
 		if (Application.Current == null)
 			return;

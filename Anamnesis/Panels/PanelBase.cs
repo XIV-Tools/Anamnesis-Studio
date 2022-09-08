@@ -9,26 +9,29 @@ using Serilog;
 using System;
 using System.ComponentModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 using XivToolsWpf;
 using XivToolsWpf.DependencyProperties;
 
 public abstract class PanelBase : UserControl, IPanel, INotifyPropertyChanged
 {
 	public static readonly IBind<string?> TitleDp = Binder.Register<string?, PanelBase>(nameof(Title), BindMode.OneWay);
+	private IPanelHost? host;
 
-	public PanelBase(IPanelHost host)
+	public PanelBase()
 	{
-		this.Host = host;
+		this.GetType().GetMethod("InitializeComponent")?.Invoke(this, null);
+		this.DataContext = this;
 	}
 
 	public event PropertyChangedEventHandler? PropertyChanged;
 
 	public ServiceManager Services => App.Services;
-	public IPanelHost Host { get; set; }
 	public bool IsOpen { get; private set; } = true;
 	public virtual string Id => this.GetType().ToString();
 	public string? TitleKey { get; set; }
@@ -39,6 +42,19 @@ public abstract class PanelBase : UserControl, IPanel, INotifyPropertyChanged
 	public bool CanResize { get; set; }
 	public bool CanScroll { get; set; } = false;
 	public Color? TitleColor { get; set; } = Colors.Gray;
+
+	public IPanelHost Host
+	{
+		get
+		{
+			if (this.host == null)
+				throw new Exception("Attempt to access panel host before it has been initialized");
+
+			return this.host;
+		}
+	}
+
+	public object? PanelContext { get; private set; }
 
 	public string FinalTitle
 	{
@@ -60,6 +76,12 @@ public abstract class PanelBase : UserControl, IPanel, INotifyPropertyChanged
 	}
 
 	protected ILogger Log => Serilog.Log.ForContext(this.GetType());
+
+	public virtual void SetContext(IPanelHost host, object? context)
+	{
+		this.host = host;
+		this.PanelContext = context;
+	}
 
 	public void DragMove() => this.Host.DragMove();
 

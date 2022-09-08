@@ -89,7 +89,7 @@ public class UpdateService : ServiceBase<UpdateService>
 
 			if (update)
 			{
-				await Dispatch.MainThread();
+				await App.Current.Dispatcher.MainThread();
 
 				await UpdateDialog.Show(this.currentRelease.Changes);
 			}

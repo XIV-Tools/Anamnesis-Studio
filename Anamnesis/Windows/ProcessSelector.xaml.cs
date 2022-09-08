@@ -153,7 +153,7 @@ public partial class ProcessSelector : UserControl
 			if (Application.Current == null)
 				return;
 
-			await Dispatch.MainThread();
+			await this.Dispatcher.MainThread();
 			loaded = this.IsLoaded;
 
 			if (!loaded)
@@ -163,7 +163,7 @@ public partial class ProcessSelector : UserControl
 
 			if (processes.Length == 1)
 			{
-				await Dispatch.MainThread();
+				await this.Dispatcher.MainThread();
 				this.Selected = processes[0];
 				return;
 			}

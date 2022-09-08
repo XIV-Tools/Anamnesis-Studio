@@ -16,6 +16,7 @@ using Anamnesis.Navigation;
 using Anamnesis.Services;
 using PropertyChanged;
 using XivToolsWpf;
+using XivToolsWpf.Extensions;
 
 [AddINotifyPropertyChangedInterface]
 public class PoseService : ServiceBase<PoseService>
@@ -227,8 +228,8 @@ public class PoseService : ServiceBase<PoseService>
 
 		if (enabled)
 		{
-			NavigationService.Navigate(new("Bones"));
-			NavigationService.Navigate(new("Transform"));
+			NavigationService.Navigate(new("Bones")).Run();
+			NavigationService.Navigate(new("Transform")).Run();
 		}
 		else
 		{
@@ -254,8 +255,6 @@ public class PoseService : ServiceBase<PoseService>
 	{
 		while (this.IsAlive)
 		{
-			await Dispatch.MainThread();
-
 			if (Application.Current == null)
 				return;
 

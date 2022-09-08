@@ -29,14 +29,6 @@ public partial class LibraryPanel : PanelBase
 	private int filterDelay = 500;
 	private EntryBase? selectedEntry;
 
-	public LibraryPanel(IPanelHost host)
-		: base(host)
-	{
-		this.InitializeComponent();
-
-		this.ContentArea.DataContext = this;
-	}
-
 	public LibraryFilter Filter { get; init; } = new();
 	public FastObservableCollection<Tag> FilterByTags { get; init; } = new();
 	public FastObservableCollection<EntryBase> Entries { get; init; } = new();
@@ -214,7 +206,7 @@ public partial class LibraryPanel : PanelBase
 		if (this.Filter.CancelRequested)
 			return;
 
-		await Dispatch.MainThread();
+		await this.Dispatcher.MainThread();
 
 		this.Entries.Replace(filteredItems);
 	}
@@ -252,7 +244,7 @@ public partial class LibraryPanel : PanelBase
 			if (filter.CancelRequested)
 				return;
 
-			await Dispatch.MainThread();
+			await this.Dispatcher.MainThread();
 			this.FilterByTags.Replace(tags.Values);
 		}
 
@@ -281,7 +273,7 @@ public partial class LibraryPanel : PanelBase
 			if (filter.CancelRequested)
 				return;
 
-			await Dispatch.MainThread();
+			await this.Dispatcher.MainThread();
 			foreach (Tag tag in this.FilterByTags)
 			{
 				tag.IsAvailable = availableTags.Contains(tag.Name);
@@ -289,7 +281,7 @@ public partial class LibraryPanel : PanelBase
 		}
 		else
 		{
-			await Dispatch.MainThread();
+			await this.Dispatcher.MainThread();
 			foreach (Tag tag in this.FilterByTags)
 			{
 				tag.IsAvailable = true;

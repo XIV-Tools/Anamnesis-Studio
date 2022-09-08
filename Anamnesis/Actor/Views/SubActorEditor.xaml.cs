@@ -148,7 +148,7 @@ public partial class SubActorEditor : UserControl
 			|| e.PropertyName == nameof(ActorMemory.OrnamentId)
 			|| e.PropertyName == nameof(ActorMemory.DataId))
 		{
-			await Dispatch.MainThread();
+			await this.Dispatcher.MainThread();
 			OnChanged(this, this.SubActor, this.SubActor);
 		}
 	}

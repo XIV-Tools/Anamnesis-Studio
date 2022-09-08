@@ -98,7 +98,7 @@ public class HotkeyService : ServiceBase<HotkeyService>
 		{
 			// Slight delay before starting the keyboard binding service.
 			await Task.Delay(1000);
-			await Dispatch.MainThread();
+			await App.Current.Dispatcher.MainThread();
 
 			Hook.OnKeyboardInput += this.OnKeyboardInput;
 

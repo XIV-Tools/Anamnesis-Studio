@@ -27,7 +27,7 @@ public partial class WaitDialog : UserControl, IDisposable
 
 	public static async Task<WaitDialog> ShowAsync(string message, string caption)
 	{
-		await Dispatch.MainThread();
+		await App.Current.Dispatcher.MainThread();
 
 		WaitDialog dlg = new();
 		dlg.Message = message;
@@ -37,7 +37,7 @@ public partial class WaitDialog : UserControl, IDisposable
 
 	public async Task SetProgress(double progress)
 	{
-		await Dispatch.MainThread();
+		await this.Dispatcher.MainThread();
 		this.Progress = progress;
 	}
 

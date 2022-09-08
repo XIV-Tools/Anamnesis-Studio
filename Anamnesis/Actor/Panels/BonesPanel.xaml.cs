@@ -33,13 +33,9 @@ public partial class BonesPanel : ActorPanelBase
 	private bool isDragging;
 	private Point origMouseDownPoint;
 
-	public BonesPanel(IPanelHost host)
-		: base(host)
+	public BonesPanel()
+		: base()
 	{
-		this.InitializeComponent();
-
-		this.ContentArea.DataContext = this;
-
 		HistoryService.OnHistoryApplied += this.OnHistoryApplied;
 		PoseService.EnabledChanged += this.OnPoseServiceEnabledChanged;
 	}

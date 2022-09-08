@@ -11,11 +11,16 @@ using XivToolsWpf.Extensions;
 
 public partial class ImportCharacterPanel : PanelBase
 {
-	public ImportCharacterPanel(IPanelHost host, OpenResult openFile)
-		: base(host)
+	public CharacterFile.SaveModes Mode { get; set; } = CharacterFile.SaveModes.All;
+	public CharacterFile? CharacterFile { get; set; }
+	public ActorMemory? Actor { get; set; }
+
+	public override void SetContext(IPanelHost host, object? context)
 	{
-		this.InitializeComponent();
-		this.ContentArea.DataContext = this;
+		base.SetContext(host, context);
+
+		if (context is not OpenResult openFile)
+			return;
 
 		if (openFile.File is not CharacterFile characterFile)
 			throw new Exception("Import file was not a character file");
@@ -24,16 +29,12 @@ public partial class ImportCharacterPanel : PanelBase
 		this.CharacterFile = characterFile;
 	}
 
-	public CharacterFile.SaveModes Mode { get; set; } = CharacterFile.SaveModes.All;
-	public CharacterFile CharacterFile { get; set; }
-	public ActorMemory? Actor { get; set; }
-
 	private void OnImportClicked(object sender, RoutedEventArgs e)
 	{
 		if (this.Actor == null)
 			throw new Exception("Must select a target actor");
 
-		this.CharacterFile.Apply(this.Actor, this.Mode).Run();
+		this.CharacterFile?.Apply(this.Actor, this.Mode).Run();
 		this.Close();
 	}
 }

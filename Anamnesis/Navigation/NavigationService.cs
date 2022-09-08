@@ -8,7 +8,11 @@ using Anamnesis.Libraries.Panels;
 using Anamnesis.Panels;
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
+using XivToolsWpf.Extensions;
 
 public class NavigationService : ServiceBase<NavigationService>
 {
@@ -32,7 +36,7 @@ public class NavigationService : ServiceBase<NavigationService>
 	/// <summary>
 	/// Navigate to a panel.
 	/// </summary>
-	public static PanelBase Navigate(Request request)
+	public static async Task<PanelBase> Navigate(Request request)
 	{
 		try
 		{
@@ -40,7 +44,7 @@ public class NavigationService : ServiceBase<NavigationService>
 			if (!Panels.TryGetValue(request.Destination, out panelType))
 				throw new Exception($"No panel type found for navigation: {request.Destination}");
 
-			return PanelService.Show(panelType, request.Context);
+			return await PanelService.Show(panelType, request.Context);
 		}
 		catch (Exception ex)
 		{
@@ -71,7 +75,7 @@ public class NavigationService : ServiceBase<NavigationService>
 		/// <summary>
 		/// Navigate to a panel.
 		/// </summary>
-		public PanelBase? Navigate() => NavigationService.Navigate(this);
+		public async Task<PanelBase?> Navigate() => await NavigationService.Navigate(this);
 
 		public PanelBase? GetOriginPanel()
 		{

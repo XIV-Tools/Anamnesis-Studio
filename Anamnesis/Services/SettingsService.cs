@@ -65,7 +65,7 @@ public class SettingsService : ServiceBase<SettingsService>
 			this.FirstTimeUser = false;
 			try
 			{
-				await Dispatch.MainThread();
+				await App.Current.Dispatcher.MainThread();
 
 				if (Keyboard.IsKeyDown(Key.LeftShift))
 					throw new Exception("User Abort");

@@ -166,7 +166,7 @@ public partial class Pose3DView : UserControl
 
 		this.cameraIsTicking = true;
 
-		await Dispatch.MainThread();
+		await this.Dispatcher.MainThread();
 
 		while (this.IsLoaded)
 		{
@@ -174,7 +174,7 @@ public partial class Pose3DView : UserControl
 				await Task.Delay(100);
 
 			await Task.Delay(33);
-			await Dispatch.MainThread();
+			await this.Dispatcher.MainThread();
 
 			try
 			{
