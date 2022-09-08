@@ -52,5 +52,9 @@ public partial class CustomizeNumberOption : UserControl, INotifyPropertyChanged
 	public static void OnMenuChanged(CustomizeNumberOption sender, CharaMakeType.Menu? newalue)
 	{
 		sender.PropertyChanged?.Invoke(sender, new(nameof(Option)));
+
+		// A bit of a hack, but as the selected value has not changed, while the list of options has,
+		// refresh the selector so it shows the correct selected item.
+		sender.ValueList.SelectedItem = sender.Value;
 	}
 }

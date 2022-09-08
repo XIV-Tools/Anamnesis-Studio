@@ -182,7 +182,7 @@ public class CharacterFile : JsonFileBase
 
 		if (this.IncludeSection(SaveModes.AppearanceFace, mode))
 		{
-			this.Head = actor.Customize?.Head;
+			this.Head = actor.Customize?.Face;
 			this.REyeColor = actor.Customize?.REyeColor;
 			this.LimbalEyes = actor.Customize?.FacialFeatureColor;
 			this.FacialFeatures = actor.Customize?.FacialFeatures;
@@ -306,7 +306,7 @@ public class CharacterFile : JsonFileBase
 			if (this.IncludeSection(SaveModes.AppearanceFace, mode))
 			{
 				if (this.Head != null)
-					actor.Customize.Head = (byte)this.Head;
+					actor.Customize.Face = (byte)this.Head;
 
 				if (this.REyeColor != null)
 					actor.Customize.REyeColor = (byte)this.REyeColor;

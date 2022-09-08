@@ -40,6 +40,7 @@
 			<Grid>
 
 				<ListBox
+					x:Name="ValueList"
 					Margin="0"
 					ItemsSource="{Binding Menu.Values}"
 					SelectedItem="{Binding Value}">

@@ -17,15 +17,15 @@
 
 			<ComboBox.ItemsPanel>
 				<ItemsPanelTemplate>
-					<UniformGrid Rows="2" />
+					<UniformGrid
+						Width="450"
+						Columns="4" />
 				</ItemsPanelTemplate>
 			</ComboBox.ItemsPanel>
 
 			<ComboBox.ItemTemplate>
 				<DataTemplate>
 					<Image
-						Width="42"
-						Height="42"
 						Margin="0,2"
 						Source="{Binding Icon, Converter={StaticResource Img}}" />
 				</DataTemplate>

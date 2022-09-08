@@ -153,6 +153,33 @@
 
 			<!--  Face  -->
 			<XivToolsWpf:TextBlock Key="Character_Appearance_Face" />
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+
+				<controls:CustomizeIconOption
+					Grid.RowSpan="2"
+					Grid.Column="0"
+					Width="80"
+					Margin="0,0,1,0"
+					Menu="{Binding Actor.Customize.MakeType.Faces}"
+					Value="{Binding Actor.Customize.Face}" />
+
+				<controls:CustomizeNumberOption
+					Grid.Row="0"
+					Grid.Column="1"
+					Menu="{Binding Actor.Customize.MakeType.Faces}"
+					Value="{Binding Actor.Customize.Face}" />
+
+
+			</Grid>
 
 			<!--  Skin Color  -->
 			<XivToolsWpf:TextBlock Key="Character_Appearance_Skin" />

@@ -40,7 +40,7 @@ public class CharaMakeType : ExcelRow
 	public Menu? Ages { get; set; }
 	public Menu? Heights { get; set; }
 	public Menu? Tribes { get; set; }
-	public Menu? Heads { get; set; }
+	public Menu? Faces { get; set; }
 	public Menu? Hairs { get; set; }
 	public Menu? HighlightTypes { get; set; }
 	public Menu? SkinTones { get; set; }
@@ -113,7 +113,7 @@ public class CharaMakeType : ExcelRow
 				case 2: this.Ages = menu; break;
 				case 3: this.Heights = menu; break;
 				case 4: this.Tribes = menu; break;
-				case 5: this.Heads = menu; break;
+				case 5: this.Faces = menu; break;
 				case 6: this.Hairs = menu; break;
 				case 7: this.HighlightTypes = menu; break;
 				case 8: this.SkinTones = menu; break;

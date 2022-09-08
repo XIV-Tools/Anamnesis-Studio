@@ -161,7 +161,7 @@ public static class NpcAppearanceSearch
 
 		if (customize.Skintone != appearance.SkinColor ||
 			customize.Eyes != appearance.EyeShape ||
-			customize.Head != appearance.Face ||
+			customize.Face != appearance.Face ||
 			(int)customize.FacialFeatures != appearance.FacialFeature ||
 			appearance.FacePaint != appearance.FacePaint ||
 			appearance.HairStyle != appearance.HairStyle ||

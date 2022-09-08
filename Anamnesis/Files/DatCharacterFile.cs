@@ -154,7 +154,7 @@ public class DatCharacterFile : FileBase, IUpgradeCharacterFile
 		if (hair != null)
 		{
 			// Check hairstyle is compatible with their face type (for hrothgars)
-			bool isIncompatible = hair.FaceType != 0 && hair.FaceType != customize.Head;
+			bool isIncompatible = hair.FaceType != 0 && hair.FaceType != customize.Face;
 			if (isIncompatible)
 			{
 				GenericDialog.Show("This character uses a hairstyle that is not compatible with their face type.", "Failed to save appearance");
@@ -189,7 +189,7 @@ public class DatCharacterFile : FileBase, IUpgradeCharacterFile
 			0x01,
 			customize.Height,
 			(byte)customize.TribeId,
-			customize.Head,
+			customize.Face,
 			(byte)(useDefaultHair ? 0x01 : customize.Hair),
 			(byte)(customize.EnableHighlights ? 0x80 : 0x00),
 			customize.Skintone,

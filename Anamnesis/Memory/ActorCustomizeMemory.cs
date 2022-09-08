@@ -88,7 +88,7 @@ public class ActorCustomizeMemory : MemoryBase
 	[Bind(0x002, BindFlags.ActorRefresh)] public Ages Age { get; set; }
 	[Bind(0x003, BindFlags.ActorRefresh)] public byte Height { get; set; }
 	[Bind(0x004, BindFlags.ActorRefresh)] public Tribes TribeId { get; set; }
-	[Bind(0x005, BindFlags.ActorRefresh)] public byte Head { get; set; }
+	[Bind(0x005, BindFlags.ActorRefresh)] public byte Face { get; set; }
 	[Bind(0x006, BindFlags.ActorRefresh)] public byte Hair { get; set; }
 	[Bind(0x007, BindFlags.ActorRefresh)] public byte HighlightType { get; set; }
 	[Bind(0x008, BindFlags.ActorRefresh)] public byte Skintone { get; set; }
