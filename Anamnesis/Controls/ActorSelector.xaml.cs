@@ -53,7 +53,7 @@ public partial class ActorSelector : UserControl
 	{
 		if (this.SyncTarget)
 		{
-			Application.Current.Dispatcher.Invoke(() =>
+			this.Dispatcher.Invoke(() =>
 			{
 				this.Select(actor);
 			});
@@ -68,8 +68,6 @@ public partial class ActorSelector : UserControl
 
 	private void OnClicked(object sender, System.Windows.RoutedEventArgs e)
 	{
-		this.ActorSelectorPopup.IsOpen = true;
-
 		this.Selector.ClearItems();
 		this.Selector.AddItems(ActorService.Instance.GetAllActors());
 		this.Selector.FilterItems();
