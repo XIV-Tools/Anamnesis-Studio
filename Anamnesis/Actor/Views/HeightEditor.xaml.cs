@@ -18,9 +18,9 @@ public partial class HeightEditor : UserControl, INotifyPropertyChanged
 {
 	public static readonly IBind<byte> ValueDp = Binder.Register<byte, HeightEditor>(nameof(Value), OnValueChanged);
 
-	public static readonly IBind<ActorCustomizeMemory.Tribes> TribeDp = Binder.Register<ActorCustomizeMemory.Tribes, HeightEditor>(nameof(Tribe), OnTribeChanged);
-	public static readonly IBind<ActorCustomizeMemory.Genders> GenderDp = Binder.Register<ActorCustomizeMemory.Genders, HeightEditor>(nameof(Gender), OnGenderChanged);
-	public static readonly IBind<ActorCustomizeMemory.Ages> AgeDp = Binder.Register<ActorCustomizeMemory.Ages, HeightEditor>(nameof(Age), OnAgeChanged);
+	public static readonly IBind<ActorCustomizeMemory.Tribes> TribeDp = Binder.Register<ActorCustomizeMemory.Tribes, HeightEditor>(nameof(Tribe), OnTribeChanged, BindMode.OneWay);
+	public static readonly IBind<ActorCustomizeMemory.Genders> GenderDp = Binder.Register<ActorCustomizeMemory.Genders, HeightEditor>(nameof(Gender), OnGenderChanged, BindMode.OneWay);
+	public static readonly IBind<ActorCustomizeMemory.Ages> AgeDp = Binder.Register<ActorCustomizeMemory.Ages, HeightEditor>(nameof(Age), OnAgeChanged, BindMode.OneWay);
 
 	public HeightEditor()
 	{

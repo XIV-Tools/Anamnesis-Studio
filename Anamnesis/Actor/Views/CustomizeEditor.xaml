@@ -60,25 +60,19 @@
 					SelectedItem="{Binding Actor.Customize.Tribe}" />
 			</Grid>
 
-			<!--  Gender  -->
+			<!--  Body Type  -->
 			<XivToolsWpf:TextBlock
 				Key="Character_Customize_Gender"
 				Style="{StaticResource Header}" />
 
 			<ListBox
-				Grid.Row="1"
-				Grid.ColumnSpan="2"
 				ItemsSource="{Binding Actor.Customize.Race.Genders}"
 				SelectedItem="{Binding Actor.Customize.Gender}"
 				Style="{StaticResource XivToolsSwitchSelector}" />
 
-			<!--  Age  -->
-			<XivToolsWpf:TextBlock
-				Key="Character_Customize_Age"
-				Style="{StaticResource Header}" />
-
 			<ListBox
 				x:Name="AgeComboBox"
+				Margin="0,4,0,0"
 				IsEnabled="{Binding Actor.Customize.CanAge}"
 				SelectedItem="{Binding Actor.Customize.Age}"
 				Style="{StaticResource XivToolsSwitchSelector}" />

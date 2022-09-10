@@ -20,9 +20,9 @@ using WpfColor = System.Windows.Media.Color;
 public partial class ColorControl : UserControl
 {
 	public static readonly IBind<byte> ValueDp = Binder.Register<byte, ColorControl>(nameof(Value), OnValueChanged);
-	public static readonly IBind<ActorCustomizeMemory.Genders> GenderDp = Binder.Register<ActorCustomizeMemory.Genders, ColorControl>(nameof(Gender), OnGenderChanged);
-	public static readonly IBind<ActorCustomizeMemory.Tribes> TribeDp = Binder.Register<ActorCustomizeMemory.Tribes, ColorControl>(nameof(Tribe), OnTribeChanged);
-	public static readonly IBind<string> ToolTipKeyDp = Binder.Register<string, ColorControl>(nameof(ToolTipKey));
+	public static readonly IBind<ActorCustomizeMemory.Genders> GenderDp = Binder.Register<ActorCustomizeMemory.Genders, ColorControl>(nameof(Gender), OnGenderChanged, BindMode.OneWay);
+	public static readonly IBind<ActorCustomizeMemory.Tribes> TribeDp = Binder.Register<ActorCustomizeMemory.Tribes, ColorControl>(nameof(Tribe), OnTribeChanged, BindMode.OneWay);
+	public static readonly IBind<string> ToolTipKeyDp = Binder.Register<string, ColorControl>(nameof(ToolTipKey), BindMode.OneWay);
 
 	private ColorData.Entry[]? colors;
 

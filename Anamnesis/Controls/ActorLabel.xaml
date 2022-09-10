@@ -16,6 +16,11 @@
 			<ColumnDefinition Width="10" />
 		</Grid.ColumnDefinitions>
 
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+
 		<Grid.ToolTip>
 			<StackPanel>
 				<TextBlock>
@@ -35,11 +40,14 @@
 		</Grid.ToolTip>
 
 		<Grid
+			Grid.RowSpan="2"
 			Grid.Column="0"
-			Height="18"
-			Margin="3,0,3,3">
+			Margin="3"
+			VerticalAlignment="Center">
 
-			<XivToolsWpf:IconBlock Icon="{Binding Icon}" />
+			<XivToolsWpf:IconBlock
+				FontSize="22"
+				Icon="{Binding Icon, FallbackValue=Question}" />
 
 			<!--<XivToolsWpf:IconBlock
 				Foreground="Red"
@@ -48,19 +56,41 @@
 		</Grid>
 
 		<XivToolsWpf:IconBlock
+			Grid.RowSpan="2"
 			Grid.Column="1"
 			Margin="3,0,6,0"
 			FontSize="10"
 			Icon="Camera"
-			Visibility="{Binding IsGPoseActor, Converter={StaticResource B2V}}" />
+			Visibility="{Binding IsGPoseActor, Converter={StaticResource B2V}, FallbackValue=Collapsed}" />
 
 		<TextBlock
 			x:Name="LabelText"
 			Grid.Column="2"
-			Margin="3,0,6,2"
+			Margin="3,0,6,0"
 			FontSize="14"
 			FontWeight="SemiBold"
-			Text="{Binding Names.Text}" />
+			Text="{Binding Names.Text, FallbackValue=Some. G}" />
+
+		<StackPanel
+			Grid.Row="1"
+			Grid.Column="2"
+			Margin="3,-2,0,2"
+			Orientation="Horizontal">
+
+			<TextBlock
+				Margin="0,0,4,0"
+				Text="{Binding Customize.Race.DisplayName, FallbackValue=Hyur}"
+				Visibility="{Binding Customize.Race.DisplayName, Converter={StaticResource NotEmptyToVisibilityConverter}}" />
+
+			<TextBlock
+				Margin="0,0,4,0"
+				Text="{Binding Customize.Tribe.DisplayName, FallbackValue=Midlander}"
+				Visibility="{Binding Customize.Tribe.DisplayName, Converter={StaticResource NotEmptyToVisibilityConverter}}" />
+
+			<TextBlock
+				Margin="0,0,4,0"
+				Text="{Binding ObjectKind}" />
+		</StackPanel>
 
 		<!--<TextBlock
 			Grid.Column="3"

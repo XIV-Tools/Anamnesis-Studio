@@ -17,9 +17,9 @@ using XivToolsWpf.DependencyProperties;
 [AddINotifyPropertyChangedInterface]
 public partial class DataPathSelector : UserControl
 {
-	public static readonly IBind<short> DataPathDp = Binder.Register<short, DataPathSelector>(nameof(DataPath), OnPathChange);
-	public static readonly IBind<byte> DataHeadDp = Binder.Register<byte, DataPathSelector>(nameof(DataHead), OnHeadChanged);
-	public static readonly IBind<ActorCustomizeMemory.Tribes> TribeDp = Binder.Register<ActorCustomizeMemory.Tribes, DataPathSelector>(nameof(Tribe), OnTribeChanged);
+	public static readonly IBind<short> DataPathDp = Binder.Register<short, DataPathSelector>(nameof(DataPath), OnPathChange, BindMode.OneWay);
+	public static readonly IBind<byte> DataHeadDp = Binder.Register<byte, DataPathSelector>(nameof(DataHead), OnHeadChanged, BindMode.OneWay);
+	public static readonly IBind<ActorCustomizeMemory.Tribes> TribeDp = Binder.Register<ActorCustomizeMemory.Tribes, DataPathSelector>(nameof(Tribe), OnTribeChanged, BindMode.OneWay);
 
 	private DataPathOption? selectedPath;
 	private bool supressEvents = false;

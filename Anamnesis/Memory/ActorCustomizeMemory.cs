@@ -182,11 +182,23 @@ public class ActorCustomizeMemory : MemoryBase
 		}
 	}
 
-	[AlsoNotifyFor(nameof(RaceId))]
+	[AlsoNotifyFor(nameof(Race), nameof(RaceId), nameof(TribeId))]
 	public Tribe? Tribe
 	{
-		get => GameDataService.Instance.Tribes.Find((byte)this.TribeId);
-		set => this.TribeId = (Tribes)(value?.RowId ?? 0);
+		get
+		{
+			if (this.Race?.Tribes == null || this.Race.Tribes.Count <= 0)
+				return null;
+
+			return GameDataService.Instance.Tribes.Find((byte)this.TribeId);
+		}
+		set
+		{
+			if (value == null)
+				return;
+
+			this.TribeId = (Tribes)value.RowId;
+		}
 	}
 
 	public bool CanAge

@@ -253,6 +253,14 @@ public abstract class MemoryBase : INotifyPropertyChanged, IDisposable
 		}
 
 		object? oldVal = bind.LastValue;
+		object? newVal = bind.Property.GetValue(this);
+
+		// Don't kick off the binding updates unless the value actually changed.
+		if (oldVal == newVal)
+			return;
+
+		if (oldVal != null && oldVal.Equals(newVal))
+			return;
 
 		lock (this)
 		{

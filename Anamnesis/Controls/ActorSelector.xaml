@@ -21,7 +21,6 @@
 		<ToggleButton
 			x:Name="SelectorButton"
 			Grid.Column="0"
-			Height="28"
 			Margin="3"
 			Click="OnClicked"
 			Style="{StaticResource XivToolsComboBoxButton}">
