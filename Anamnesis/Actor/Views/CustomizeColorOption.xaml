@@ -11,15 +11,21 @@
 	<Grid x:Name="ContentArea">
 
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="80" />
+			<ColumnDefinition MaxWidth="80" />
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
 
 		<Border
 			Grid.Column="0"
-			Margin="0,1,0,1"
+			Margin="1,1,0,1"
+			BorderBrush="{StaticResource XivToolsControlBorderBackground}"
+			BorderThickness="2"
 			CornerRadius="{Binding LeftElementCornerRadius}"
-			Style="{StaticResource XivToolsControlBorder}" />
+			Style="{StaticResource XivToolsControlBorder}">
+			<Border.Background>
+				<SolidColorBrush Color="{Binding Option.Color.WpfColor}" />
+			</Border.Background>
+		</Border>
 
 		<Border
 			Grid.Column="1"
@@ -30,9 +36,83 @@
 		<ComboBox
 			Grid.Column="0"
 			Height="26"
+			Foreground="Black"
 			ItemsSource="{Binding Menu.Options}"
 			SelectedItem="{Binding Option}"
 			Style="{StaticResource XivToolsComboBoxNoBorder}">
+
+			<ComboBox.Template>
+				<ControlTemplate TargetType="{x:Type ComboBox}">
+
+					<Grid>
+
+						<ToggleButton
+							Name="toggleButton"
+							Padding="{TemplateBinding Padding}"
+							HorizontalContentAlignment="Stretch"
+							Foreground="Black"
+							IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+							Style="{StaticResource InvisibleToggleButton}">
+
+							<controls:IconBlock
+								x:Name="Chevron"
+								Margin="0,1,6,0"
+								HorizontalAlignment="Right"
+								FontSize="12"
+								Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
+								Icon="ChevronDown" />
+						</ToggleButton>
+
+						<Popup
+							Name="PART_Popup"
+							Grid.Column="0"
+							MinWidth="{Binding ElementName=toggleButton, Path=ActualWidth, Converter={StaticResource MathAddConverter}, ConverterParameter=32}"
+							Margin="-16"
+							AllowsTransparency="True"
+							Focusable="False"
+							IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+							Placement="Bottom"
+							PlacementTarget="{Binding ElementName=toggleButton}"
+							PopupAnimation="Fade"
+							SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+							UseLayoutRounding="{TemplateBinding UseLayoutRounding}">
+
+							<Grid Margin="16">
+								<Border
+									Background="Black"
+									CornerRadius="6">
+									<Border.Effect>
+										<DropShadowEffect
+											Direction="270"
+											ShadowDepth="0" />
+									</Border.Effect>
+								</Border>
+
+								<Border
+									Background="{DynamicResource MaterialDesignBackground}"
+									CornerRadius="6">
+									<ScrollViewer
+										MinHeight="1"
+										MaxHeight="{TemplateBinding MaxDropDownHeight}">
+										<ItemsPresenter Name="ItemsPresenter" />
+									</ScrollViewer>
+								</Border>
+							</Grid>
+
+						</Popup>
+					</Grid>
+
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="Chevron" Property="Foreground" Value="#77FFFFFF" />
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="Chevron" Property="Opacity" Value="0.1" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+
+				</ControlTemplate>
+			</ComboBox.Template>
 
 			<ComboBox.ItemsPanel>
 				<ItemsPanelTemplate>
@@ -54,7 +134,9 @@
 
 			<ComboBox.ItemTemplate>
 				<DataTemplate>
-					<Border CornerRadius="2">
+					<Border
+						Margin="0"
+						CornerRadius="2">
 						<Border.Background>
 							<SolidColorBrush Color="{Binding Color.WpfColor, FallbackValue=Transparent}" />
 						</Border.Background>

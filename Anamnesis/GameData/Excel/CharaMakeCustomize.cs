@@ -34,7 +34,7 @@ public class CharaMakeCustomize : ExcelRow
 		}
 		else
 		{
-			this.Name = $"Feature #{this.RowId}";
+			this.Name = $"Feature #{this.FeatureId}";
 		}
 	}
 }

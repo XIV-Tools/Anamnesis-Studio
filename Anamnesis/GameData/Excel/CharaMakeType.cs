@@ -87,39 +87,57 @@ public class CharaMakeType : ExcelRow
 			menu.CustomizationIndex = parser.ReadColumn<uint>(3 + (6 * NumOptions) + i);
 			menu.Min = parser.ReadColumn<byte>(2999 + i);
 			menu.Max = (byte)(parser.ReadColumn<byte>(87 + i) - 1 + menu.Min);
-			menu.Options = new Menu.Option[menu.NumOptions];
 
-			// Special case to get colors
-			ColorData.Entry[]? colors = index switch
+			// Hairstyles are MakeCustomize
+			if (index == 6)
 			{
-				8 => ColorData.GetSkin(this.Tribe, this.Gender),
-				9 => ColorData.GetEyeColors(),
-				10 => ColorData.GetHair(this.Tribe, this.Gender),
-				11 => ColorData.GetHairHighlights(),
-				13 => ColorData.GetLimbalColors(), // what about for non au-ra? hmmm
-				20 => ColorData.GetLipColors(),
-				25 => ColorData.GetFacePaintColor(),
-				_ => null,
-			};
+				List<CharaMakeCustomize> customize = GameDataService.Instance.CharacterMakeCustomize.GetFeatureOptions(CustomizeSheet.Features.Hair, this.Tribe, this.Gender);
 
-			for (byte j = 0; j < menu.NumOptions; ++j)
-			{
-				menu.Options[j] = new Menu.Option();
-				menu.Options[j].Value = (byte)(menu.Min + j);
-
-				if (menu.Type == Menu.Types.ColorPicker || menu.Type == Menu.Types.DoubleColorPicker)
+				menu.NumOptions = (byte)customize.Count;
+				menu.Options = new Menu.Option[menu.NumOptions];
+				for (byte j = 0; j < menu.NumOptions; ++j)
 				{
-					////if (colors == null || colors.Length != menu.NumOptions)
-					////	throw new Exception("No color or colors where wrong count for menu type");
-
-					if (colors != null && j < colors.Length)
-					{
-						menu.Options[j].Color = colors[j];
-					}
+					menu.Options[j] = new Menu.Option();
+					menu.Options[j].Value = customize[j].FeatureId;
+					menu.Options[j].Icon = customize[j].Icon;
+					menu.Options[j].Customize = customize[j];
 				}
-				else
+			}
+			else
+			{
+				// Colors are Human.cmp
+				ColorData.Entry[]? colors = index switch
 				{
-					menu.Options[j].Icon = new ImageReference(parser.ReadColumn<uint>(3 + ((7 + j) * NumOptions) + i));
+					8 => ColorData.GetSkin(this.Tribe, this.Gender),
+					9 => ColorData.GetEyeColors(),
+					10 => ColorData.GetHair(this.Tribe, this.Gender),
+					11 => ColorData.GetHairHighlights(),
+					13 => ColorData.GetLimbalColors(), // what about for non au-ra? hmmm
+					20 => ColorData.GetLipColors(),
+					25 => ColorData.GetFacePaintColor(),
+					_ => null,
+				};
+
+				menu.Options = new Menu.Option[menu.NumOptions];
+				for (byte j = 0; j < menu.NumOptions; ++j)
+				{
+					menu.Options[j] = new Menu.Option();
+					menu.Options[j].Value = (byte)(menu.Min + j);
+
+					if (menu.Type == Menu.Types.ColorPicker || menu.Type == Menu.Types.DoubleColorPicker)
+					{
+						////if (colors == null || colors.Length != menu.NumOptions)
+						////	throw new Exception("No color or colors where wrong count for menu type");
+
+						if (colors != null && j < colors.Length)
+						{
+							menu.Options[j].Color = colors[j];
+						}
+					}
+					else
+					{
+						menu.Options[j].Icon = new ImageReference(parser.ReadColumn<uint>(3 + ((7 + j) * NumOptions) + i));
+					}
 				}
 			}
 
@@ -253,6 +271,7 @@ public class CharaMakeType : ExcelRow
 			public byte Value { get; set; }
 			public ImageReference? Icon { get; set; }
 			public ColorData.Entry Color { get; set; }
+			public CharaMakeCustomize? Customize { get; set; }
 		}
 	}
 

@@ -16,6 +16,15 @@
 			ItemsSource="{Binding Menu.Options}"
 			SelectedItem="{Binding Option}">
 
+			<ComboBox.ToolTip>
+				<StackPanel>
+					<TextBlock Text="{Binding Menu.Name}" />
+					<TextBlock
+						Text="{Binding Option.Customize.Name}"
+						Visibility="{Binding Option.Customize.Name, FallbackValue='', Converter={StaticResource NotEmptyToVisibilityConverter}}" />
+				</StackPanel>
+			</ComboBox.ToolTip>
+
 			<ComboBox.ItemsPanel>
 				<ItemsPanelTemplate>
 					<UniformGrid
@@ -26,9 +35,24 @@
 
 			<ComboBox.ItemTemplate>
 				<DataTemplate>
-					<Image
-						Margin="0,2"
-						Source="{Binding Icon, Converter={StaticResource Img}}" />
+					<Grid>
+
+						<Grid.ToolTip>
+							<TextBlock Text="{Binding Customize.Name}" />
+						</Grid.ToolTip>
+
+						<Image
+							Margin="0,2"
+							Source="{Binding Icon, Converter={StaticResource Img}}" />
+
+						<Image
+							Width="20"
+							Height="20"
+							HorizontalAlignment="Right"
+							VerticalAlignment="Bottom"
+							Source="{Binding Customize.ItemIcon, Converter={StaticResource Img}}" />
+
+					</Grid>
 				</DataTemplate>
 			</ComboBox.ItemTemplate>
 
