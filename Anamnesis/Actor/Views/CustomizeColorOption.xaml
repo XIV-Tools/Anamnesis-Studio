@@ -129,6 +129,8 @@
 					<Setter Property="VerticalContentAlignment" Value="Stretch" />
 					<Setter Property="HorizontalAlignment" Value="Stretch" />
 					<Setter Property="VerticalAlignment" Value="Stretch" />
+					<Setter Property="IsEnabled" Value="{Binding Color.Skip, Converter={StaticResource !B}}" />
+					<Setter Property="Visibility" Value="{Binding Color.Skip, Converter={StaticResource !B2V}}" />
 				</Style>
 			</ComboBox.ItemContainerStyle>
 

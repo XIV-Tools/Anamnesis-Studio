@@ -191,7 +191,7 @@ public class CharacterFile : JsonFileBase
 			this.Eyes = actor.Customize?.Eyes;
 			this.Nose = actor.Customize?.Nose;
 			this.Jaw = actor.Customize?.Jaw;
-			this.Mouth = actor.Customize?.Mouth;
+			this.Mouth = actor.Customize?.MouthId;
 			this.LipsToneFurPattern = actor.Customize?.LipsToneFurPattern;
 			this.FacePaint = actor.Customize?.FacePaint;
 			this.FacePaintColor = actor.Customize?.FacePaintColor;
@@ -333,7 +333,7 @@ public class CharacterFile : JsonFileBase
 					actor.Customize.Jaw = (byte)this.Jaw;
 
 				if (this.Mouth != null)
-					actor.Customize.Mouth = (byte)this.Mouth;
+					actor.Customize.MouthId = (byte)this.Mouth;
 
 				if (this.LipsToneFurPattern != null)
 					actor.Customize.LipsToneFurPattern = (byte)this.LipsToneFurPattern;

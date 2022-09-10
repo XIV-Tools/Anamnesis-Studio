@@ -54,7 +54,7 @@ public class CharaMakeType : ExcelRow
 	public Menu? FacialFeatureColors { get; set; }
 	public Menu? Eyebrows { get; set; }
 	public Menu? Heterochromia { get; set; }
-	public Menu? Eyes { get; set; }
+	public Menu? EyeShapes { get; set; }
 	public Menu? Noses { get; set; }
 	public Menu? Jaws { get; set; }
 	public Menu? Mouths { get; set; }
@@ -89,9 +89,10 @@ public class CharaMakeType : ExcelRow
 			menu.Max = (byte)(parser.ReadColumn<byte>(87 + i) - 1 + menu.Min);
 
 			// Hairstyles are MakeCustomize
-			if (index == 6)
+			if (index == 6 || index == 24)
 			{
-				List<CharaMakeCustomize> customize = GameDataService.Instance.CharacterMakeCustomize.GetFeatureOptions(CustomizeSheet.Features.Hair, this.Tribe, this.Gender);
+				CustomizeSheet.Features featureType = index == 6 ? CustomizeSheet.Features.Hair : CustomizeSheet.Features.FacePaint;
+				List<CharaMakeCustomize> customize = GameDataService.Instance.CharacterMakeCustomize.GetFeatureOptions(featureType, this.Tribe, this.Gender);
 
 				menu.NumOptions = (byte)customize.Count;
 				menu.Options = new Menu.Option[menu.NumOptions];
@@ -117,6 +118,9 @@ public class CharaMakeType : ExcelRow
 					25 => ColorData.GetFacePaintColor(),
 					_ => null,
 				};
+
+				if (colors != null)
+					menu.NumOptions = (byte)colors.Length;
 
 				menu.Options = new Menu.Option[menu.NumOptions];
 				for (byte j = 0; j < menu.NumOptions; ++j)
@@ -165,7 +169,7 @@ public class CharaMakeType : ExcelRow
 				case 13: this.FacialFeatureColors = menu; break;
 				case 14: this.Eyebrows = menu; break;
 				case 15: this.Heterochromia = menu; break;
-				case 16: this.Eyes = menu; break;
+				case 16: this.EyeShapes = menu; break;
 				case 17: this.Noses = menu; break;
 				case 18: this.Jaws = menu; break;
 				case 19: this.Mouths = menu; break;
@@ -173,6 +177,7 @@ public class CharaMakeType : ExcelRow
 				case 21: this.EarMuscleTailSizes = menu; break;
 				case 22: this.TailEarsTypes = menu; break;
 				case 23: this.Busts = menu; break;
+				case 24: this.FacePaints = menu; break;
 				case 25: this.FacePaintColors = menu; break;
 			}
 		}

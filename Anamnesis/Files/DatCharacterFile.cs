@@ -203,7 +203,7 @@ public class DatCharacterFile : FileBase, IUpgradeCharacterFile
 			customize.Eyes,
 			customize.Nose,
 			customize.Jaw,
-			customize.Mouth,
+			customize.MouthId,
 			customize.LipsToneFurPattern,
 			customize.EarMuscleTailSize,
 			customize.TailEarsType,

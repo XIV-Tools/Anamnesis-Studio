@@ -104,12 +104,12 @@ public class ActorCustomizeMemory : MemoryBase
 	[Bind(0x010, BindFlags.ActorRefresh)] public byte Eyes { get; set; }
 	[Bind(0x011, BindFlags.ActorRefresh)] public byte Nose { get; set; }
 	[Bind(0x012, BindFlags.ActorRefresh)] public byte Jaw { get; set; }
-	[Bind(0x013, BindFlags.ActorRefresh)] public byte Mouth { get; set; }
+	[Bind(0x013, BindFlags.ActorRefresh)] public byte MouthId { get; set; }
 	[Bind(0x014, BindFlags.ActorRefresh)] public byte LipsToneFurPattern { get; set; }
 	[Bind(0x015, BindFlags.ActorRefresh)] public byte EarMuscleTailSize { get; set; }
 	[Bind(0x016, BindFlags.ActorRefresh)] public byte TailEarsType { get; set; }
 	[Bind(0x017, BindFlags.ActorRefresh)] public byte Bust { get; set; }
-	[Bind(0x018, BindFlags.ActorRefresh)] public byte FacePaint { get; set; }
+	[Bind(0x018, BindFlags.ActorRefresh)] public byte FacePaintId { get; set; }
 	[Bind(0x019, BindFlags.ActorRefresh)] public byte FacePaintColor { get; set; }
 
 	public bool EnableHighlights
@@ -118,16 +118,16 @@ public class ActorCustomizeMemory : MemoryBase
 		set => this.HighlightType = value ? (byte)128 : (byte)0;
 	}
 
-	public byte Lips
+	public byte Mouth
 	{
-		get => (byte)(this.EnableLipColor ? this.Mouth - 128 : this.Mouth);
-		set => this.Mouth = (byte)(this.EnableLipColor ? value - 128 : value);
+		get => (byte)(this.EnableLipColor ? this.MouthId - 128 : this.MouthId);
+		set => this.MouthId = (byte)(this.EnableLipColor ? value - 128 : value);
 	}
 
 	public bool EnableLipColor
 	{
-		get => this.Mouth >= 128;
-		set => this.Mouth = (byte)(this.Lips + (value ? 128 : 0));
+		get => this.MouthId >= 128;
+		set => this.MouthId = (byte)(this.Mouth + (value ? 128 : 0));
 	}
 
 	[AlsoNotifyFor(nameof(LeftEyeColor), nameof(RightEyeColor))]
@@ -157,6 +157,7 @@ public class ActorCustomizeMemory : MemoryBase
 		}
 	}
 
+	[AlsoNotifyFor(nameof(Eyes))]
 	public bool SmallIris
 	{
 		get => this.Eyes > 128;
@@ -168,6 +169,20 @@ public class ActorCustomizeMemory : MemoryBase
 	{
 		get => (byte)(this.Eyes - (this.SmallIris ? 128 : 0));
 		set => this.Eyes = (byte)(value + (this.SmallIris ? 128 : 0));
+	}
+
+	[AlsoNotifyFor(nameof(FacePaintId))]
+	public bool FlipFacePaint
+	{
+		get => this.FacePaintId > 128;
+		set => this.FacePaintId = (byte)(this.FacePaint + (value ? 128 : 0));
+	}
+
+	[AlsoNotifyFor(nameof(FacePaintId))]
+	public byte FacePaint
+	{
+		get => (byte)(this.FacePaintId - (this.FlipFacePaint ? 128 : 0));
+		set => this.FacePaintId = (byte)(value + (this.FlipFacePaint ? 128 : 0));
 	}
 
 	[AlsoNotifyFor(nameof(RaceId))]

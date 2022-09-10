@@ -165,7 +165,7 @@ public static class NpcAppearanceSearch
 			(int)customize.FacialFeatures != appearance.FacialFeature ||
 			appearance.FacePaint != appearance.FacePaint ||
 			appearance.HairStyle != appearance.HairStyle ||
-			customize.Mouth != appearance.Mouth ||
+			customize.MouthId != appearance.Mouth ||
 			customize.Height != appearance.Height)
 		{
 			return false;

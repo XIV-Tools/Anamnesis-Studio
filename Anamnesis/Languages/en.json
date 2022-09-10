@@ -222,8 +222,7 @@
 	"Character_Appearance_Face": "Face",
 	"Character_Appearance_Features": "Facial Features",
 	"Character_Appearance_FacePaint": "Face Paint",
-	"Character_Appearance_FacePaintColor": "Face Paint Color",
-	"Character_Appearance_Lips": "Mouth",
+	"Character_Appearance_Mouth": "Mouth",
 	"Character_Appearance_LipColor": "Lip Color",
 	"Character_Appearance_Tattoos": "Tattoos",
 	"Character_Appearance_TattooColor": "Tattoo Color",
@@ -243,6 +242,8 @@
 	"Character_Appearance_EyeColor": "Eye Color",
 	"Character_Appearance_LimbalRing": "Limbal Ring",
 	"Character_Appearance_FacialFeatureColor": "Facial Feature Color",
+	"Character_Appearance_EarClasp": "Ear Clasps",
+	"Character_Appearance_EarClaspColor": "Ear Clasp Color",
 
 	"Character_Equipment_Header": "Equipment",
 	"Character_Equipment_Monster_Header": "Monster Equipment",

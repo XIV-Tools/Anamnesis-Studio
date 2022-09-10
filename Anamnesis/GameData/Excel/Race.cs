@@ -18,6 +18,7 @@ using CustomizeGenders = Anamnesis.Memory.ActorCustomizeMemory.Genders;
 [Sheet("Race", 0x3403807a)]
 public class Race : ExcelRow
 {
+	public CustomizeRaces RaceId => (CustomizeRaces)this.RowId;
 	public string Name => this.RaceId.ToString();
 	public string DisplayName => this.Masculine;
 
@@ -35,15 +36,6 @@ public class Race : ExcelRow
 	// Customize options
 	public List<Tribe> Tribes { get; private set; } = new();
 	public List<CustomizeGenders> Genders { get; private set; } = new();
-
-	// Customize Flags
-	public CustomizeRaces RaceId => (CustomizeRaces)this.RowId;
-	public bool HasFurCustomize => this.RaceId == CustomizeRaces.Hrothgar;
-	public bool HasTailCustomize => this.RaceId == CustomizeRaces.Hrothgar || this.RaceId == CustomizeRaces.Miqote || this.RaceId == CustomizeRaces.AuRa;
-	public bool HasEarsCustomize => this.RaceId == CustomizeRaces.Viera || this.RaceId == CustomizeRaces.Lalafel || this.RaceId == CustomizeRaces.Elezen;
-	public bool HasEarsTailCustomize => this.HasTailCustomize | this.HasEarsCustomize;
-	public bool HasMusclesCustomize => !this.HasEarsCustomize && !this.HasTailCustomize;
-	public bool HasLimbalRing => this.RaceId == CustomizeRaces.AuRa;
 
 	public override void PopulateData(RowParser parser, Lumina.GameData gameData, Language language)
 	{
