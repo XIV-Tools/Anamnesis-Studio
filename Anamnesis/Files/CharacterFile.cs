@@ -183,11 +183,11 @@ public class CharacterFile : JsonFileBase
 		if (this.IncludeSection(SaveModes.AppearanceFace, mode))
 		{
 			this.Head = actor.Customize?.Face;
-			this.REyeColor = actor.Customize?.REyeColor;
+			this.REyeColor = actor.Customize?.RightEyeColor;
 			this.LimbalEyes = actor.Customize?.FacialFeatureColor;
 			this.FacialFeatures = actor.Customize?.FacialFeatures;
 			this.Eyebrows = actor.Customize?.Eyebrows;
-			this.LEyeColor = actor.Customize?.LEyeColor;
+			this.LEyeColor = actor.Customize?.LeftEyeColor;
 			this.Eyes = actor.Customize?.Eyes;
 			this.Nose = actor.Customize?.Nose;
 			this.Jaw = actor.Customize?.Jaw;
@@ -204,7 +204,7 @@ public class CharacterFile : JsonFileBase
 		if (this.IncludeSection(SaveModes.AppearanceBody, mode))
 		{
 			this.Height = actor.Customize?.Height;
-			this.Skintone = actor.Customize?.Skintone;
+			this.Skintone = actor.Customize?.SkinTone;
 			this.EarMuscleTailSize = actor.Customize?.EarMuscleTailSize;
 			this.TailEarsType = actor.Customize?.TailEarsType;
 			this.Bust = actor.Customize?.Bust;
@@ -309,7 +309,7 @@ public class CharacterFile : JsonFileBase
 					actor.Customize.Face = (byte)this.Head;
 
 				if (this.REyeColor != null)
-					actor.Customize.REyeColor = (byte)this.REyeColor;
+					actor.Customize.RightEyeColor = (byte)this.REyeColor;
 
 				if (this.FacialFeatures != null)
 					actor.Customize.FacialFeatures = (ActorCustomizeMemory.FacialFeature)this.FacialFeatures;
@@ -321,7 +321,7 @@ public class CharacterFile : JsonFileBase
 					actor.Customize.Eyebrows = (byte)this.Eyebrows;
 
 				if (this.LEyeColor != null)
-					actor.Customize.LEyeColor = (byte)this.LEyeColor;
+					actor.Customize.LeftEyeColor = (byte)this.LEyeColor;
 
 				if (this.Eyes != null)
 					actor.Customize.Eyes = (byte)this.Eyes;
@@ -351,7 +351,7 @@ public class CharacterFile : JsonFileBase
 					actor.Customize.Height = (byte)this.Height;
 
 				if (this.Skintone != null)
-					actor.Customize.Skintone = (byte)this.Skintone;
+					actor.Customize.SkinTone = (byte)this.Skintone;
 
 				if (this.EarMuscleTailSize != null)
 					actor.Customize.EarMuscleTailSize = (byte)this.EarMuscleTailSize;

@@ -159,7 +159,7 @@ public static class NpcAppearanceSearch
 			}
 		}
 
-		if (customize.Skintone != appearance.SkinColor ||
+		if (customize.SkinTone != appearance.SkinColor ||
 			customize.Eyes != appearance.EyeShape ||
 			customize.Face != appearance.Face ||
 			(int)customize.FacialFeatures != appearance.FacialFeature ||

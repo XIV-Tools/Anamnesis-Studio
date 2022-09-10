@@ -43,6 +43,7 @@ public class Race : ExcelRow
 	public bool HasEarsCustomize => this.RaceId == CustomizeRaces.Viera || this.RaceId == CustomizeRaces.Lalafel || this.RaceId == CustomizeRaces.Elezen;
 	public bool HasEarsTailCustomize => this.HasTailCustomize | this.HasEarsCustomize;
 	public bool HasMusclesCustomize => !this.HasEarsCustomize && !this.HasTailCustomize;
+	public bool HasLimbalRing => this.RaceId == CustomizeRaces.AuRa;
 
 	public override void PopulateData(RowParser parser, Lumina.GameData gameData, Language language)
 	{

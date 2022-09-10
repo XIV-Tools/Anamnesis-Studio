@@ -6,6 +6,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:local="clr-namespace:Anamnesis.Actor.Views"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	Width="80"
 	mc:Ignorable="d">
 
 	<Grid x:Name="ContentArea">

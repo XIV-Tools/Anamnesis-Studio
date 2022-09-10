@@ -3,11 +3,14 @@
 
 namespace Anamnesis.GameData.Excel;
 
+using Anamnesis.Actor.Utilities;
 using Anamnesis.GameData.Sheets;
+using Anamnesis.Libraries.Items;
 using Anamnesis.Memory;
 using Anamnesis.Services;
 using Lumina.Data;
 using Lumina.Excel;
+using System;
 using System.Collections.Generic;
 using System.Windows.Documents;
 using ExcelRow = Anamnesis.GameData.Sheets.ExcelRow;
@@ -44,13 +47,13 @@ public class CharaMakeType : ExcelRow
 	public Menu? Hairs { get; set; }
 	public Menu? HighlightTypes { get; set; }
 	public Menu? SkinTones { get; set; }
-	public Menu? RightEyeColors { get; set; }
+	public Menu? EyeColors { get; set; }
 	public Menu? HairTones { get; set; }
 	public Menu? Highlights { get; set; }
 	public Menu? FacialFeatures { get; set; }
 	public Menu? FacialFeatureColors { get; set; }
 	public Menu? Eyebrows { get; set; }
-	public Menu? LeftEyeColors { get; set; }
+	public Menu? Heterochromia { get; set; }
 	public Menu? Eyes { get; set; }
 	public Menu? Noses { get; set; }
 	public Menu? Jaws { get; set; }
@@ -72,6 +75,8 @@ public class CharaMakeType : ExcelRow
 
 		for (int i = 0; i < NumOptions; i++)
 		{
+			uint index = parser.ReadColumn<uint>(3 + (6 * NumOptions) + i);
+
 			Menu menu = new();
 			menu.Id = parser.ReadColumn<uint>(3 + (0 * NumOptions) + i);
 			menu.InitVal = parser.ReadColumn<byte>(3 + (1 * NumOptions) + i);
@@ -84,17 +89,37 @@ public class CharaMakeType : ExcelRow
 			menu.Max = (byte)(parser.ReadColumn<byte>(87 + i) - 1 + menu.Min);
 			menu.Options = new Menu.Option[menu.NumOptions];
 
-			if (menu.Type == Menu.Types.ColorPicker || menu.Type == Menu.Types.DoubleColorPicker || menu.Type == Menu.Types.Percentage)
+			// Special case to get colors
+			ColorData.Entry[]? colors = index switch
 			{
-				// hmmm
-			}
-			else
+				8 => ColorData.GetSkin(this.Tribe, this.Gender),
+				9 => ColorData.GetEyeColors(),
+				10 => ColorData.GetHair(this.Tribe, this.Gender),
+				11 => ColorData.GetHairHighlights(),
+				13 => ColorData.GetLimbalColors(), // what about for non au-ra? hmmm
+				20 => ColorData.GetLipColors(),
+				25 => ColorData.GetFacePaintColor(),
+				_ => null,
+			};
+
+			for (byte j = 0; j < menu.NumOptions; ++j)
 			{
-				for (byte j = 0; j < menu.NumOptions; ++j)
+				menu.Options[j] = new Menu.Option();
+				menu.Options[j].Value = (byte)(menu.Min + j);
+
+				if (menu.Type == Menu.Types.ColorPicker || menu.Type == Menu.Types.DoubleColorPicker)
 				{
-					menu.Options[j] = new Menu.Option();
+					////if (colors == null || colors.Length != menu.NumOptions)
+					////	throw new Exception("No color or colors where wrong count for menu type");
+
+					if (colors != null && j < colors.Length)
+					{
+						menu.Options[j].Color = colors[j];
+					}
+				}
+				else
+				{
 					menu.Options[j].Icon = new ImageReference(parser.ReadColumn<uint>(3 + ((7 + j) * NumOptions) + i));
-					menu.Options[j].Value = (byte)(menu.Min + j);
 				}
 			}
 
@@ -103,8 +128,6 @@ public class CharaMakeType : ExcelRow
 			{
 				option.Graphic[j] = parser.ReadColumn<byte>(3 + ((MaxNumValues + 7 + j) * NumOptions) + i);
 			}*/
-
-			uint index = parser.ReadColumn<uint>(3 + (6 * NumOptions) + i);
 
 			switch (index)
 			{
@@ -117,13 +140,13 @@ public class CharaMakeType : ExcelRow
 				case 6: this.Hairs = menu; break;
 				case 7: this.HighlightTypes = menu; break;
 				case 8: this.SkinTones = menu; break;
-				case 9: this.RightEyeColors = menu; break;
+				case 9: this.EyeColors = menu; break;
 				case 10: this.HairTones = menu; break;
 				case 11: this.Highlights = menu; break;
 				case 12: this.FacialFeatures = menu; break;
 				case 13: this.FacialFeatureColors = menu; break;
 				case 14: this.Eyebrows = menu; break;
-				case 15: this.LeftEyeColors = menu; break;
+				case 15: this.Heterochromia = menu; break;
 				case 16: this.Eyes = menu; break;
 				case 17: this.Noses = menu; break;
 				case 18: this.Jaws = menu; break;
@@ -229,6 +252,7 @@ public class CharaMakeType : ExcelRow
 			public string? Name { get; set; }
 			public byte Value { get; set; }
 			public ImageReference? Icon { get; set; }
+			public ColorData.Entry Color { get; set; }
 		}
 	}
 

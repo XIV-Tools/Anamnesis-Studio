@@ -11,6 +11,8 @@ using PropertyChanged;
 
 public class ActorCustomizeMemory : MemoryBase
 {
+	private bool linkEyeColors;
+
 	public enum Genders : byte
 	{
 		Masculine = 0,
@@ -91,14 +93,14 @@ public class ActorCustomizeMemory : MemoryBase
 	[Bind(0x005, BindFlags.ActorRefresh)] public byte Face { get; set; }
 	[Bind(0x006, BindFlags.ActorRefresh)] public byte Hair { get; set; }
 	[Bind(0x007, BindFlags.ActorRefresh)] public byte HighlightType { get; set; }
-	[Bind(0x008, BindFlags.ActorRefresh)] public byte Skintone { get; set; }
-	[Bind(0x009, BindFlags.ActorRefresh)] public byte REyeColor { get; set; }
+	[Bind(0x008, BindFlags.ActorRefresh)] public byte SkinTone { get; set; }
+	[Bind(0x009, BindFlags.ActorRefresh)] public byte RightEyeColor { get; set; }
 	[Bind(0x00a, BindFlags.ActorRefresh)] public byte HairTone { get; set; }
 	[Bind(0x00b, BindFlags.ActorRefresh)] public byte Highlights { get; set; }
 	[Bind(0x00c, BindFlags.ActorRefresh)] public FacialFeature FacialFeatures { get; set; }
 	[Bind(0x00d, BindFlags.ActorRefresh)] public byte FacialFeatureColor { get; set; }
 	[Bind(0x00e, BindFlags.ActorRefresh)] public byte Eyebrows { get; set; }
-	[Bind(0x00f, BindFlags.ActorRefresh)] public byte LEyeColor { get; set; }
+	[Bind(0x00f, BindFlags.ActorRefresh)] public byte LeftEyeColor { get; set; }
 	[Bind(0x010, BindFlags.ActorRefresh)] public byte Eyes { get; set; }
 	[Bind(0x011, BindFlags.ActorRefresh)] public byte Nose { get; set; }
 	[Bind(0x012, BindFlags.ActorRefresh)] public byte Jaw { get; set; }
@@ -128,19 +130,30 @@ public class ActorCustomizeMemory : MemoryBase
 		set => this.Mouth = (byte)(this.Lips + (value ? 128 : 0));
 	}
 
-	[AlsoNotifyFor(nameof(LEyeColor), nameof(REyeColor))]
-	public bool LinkEyeColors { get; set; }
+	[AlsoNotifyFor(nameof(LeftEyeColor), nameof(RightEyeColor))]
+	public bool LinkEyeColors
+	{
+		get => this.linkEyeColors;
+		set
+		{
+			this.linkEyeColors = value;
+			if (value)
+			{
+				this.RightEyeColor = this.LeftEyeColor;
+			}
+		}
+	}
 
-	[AlsoNotifyFor(nameof(LEyeColor))]
+	[AlsoNotifyFor(nameof(LeftEyeColor))]
 	public byte MainEyeColor
 	{
-		get => this.LEyeColor;
+		get => this.LeftEyeColor;
 		set
 		{
 			if (this.LinkEyeColors)
-				this.REyeColor = value;
+				this.RightEyeColor = value;
 
-			this.LEyeColor = value;
+			this.LeftEyeColor = value;
 		}
 	}
 
@@ -228,5 +241,12 @@ public class ActorCustomizeMemory : MemoryBase
 
 			return null;
 		}
+	}
+
+	public override void SetAddress(IntPtr address)
+	{
+		base.SetAddress(address);
+
+		this.LinkEyeColors = this.LeftEyeColor == this.RightEyeColor;
 	}
 }

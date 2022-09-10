@@ -122,7 +122,6 @@
 				<controls:CustomizeIconOption
 					Grid.RowSpan="2"
 					Grid.Column="0"
-					Width="80"
 					Margin="0,0,1,0"
 					Menu="{Binding Actor.Customize.MakeType.TailEarsTypes}"
 					Value="{Binding Actor.Customize.TailEarsType}" />
@@ -161,7 +160,6 @@
 				<controls:CustomizeIconOption
 					Grid.RowSpan="2"
 					Grid.Column="0"
-					Width="80"
 					Margin="0,0,1,0"
 					Menu="{Binding Actor.Customize.MakeType.Faces}"
 					Value="{Binding Actor.Customize.Face}" />
@@ -177,12 +175,18 @@
 
 			<!--  Skin Color  -->
 			<XivToolsWpf:TextBlock Key="Character_Appearance_Skin" />
+			<controls:CustomizeColorOption
+				Menu="{Binding Actor.Customize.MakeType.SkinTones}"
+				Value="{Binding Actor.Customize.SkinTone}" />
 
 			<!--  Hairstyle  -->
 			<XivToolsWpf:TextBlock Key="Character_Appearance_Hair" />
 
 			<!--  Hair Color  -->
 			<XivToolsWpf:TextBlock Key="Character_Appearance_HairColor" />
+			<controls:CustomizeColorOption
+				Menu="{Binding Actor.Customize.MakeType.HairTones}"
+				Value="{Binding Actor.Customize.HairTone}" />
 
 			<!--  Fur Color  -->
 			<XivToolsWpf:TextBlock Key="Character_Appearance_HairColor" />
@@ -201,12 +205,74 @@
 
 			<!--  Eye Color  -->
 			<XivToolsWpf:TextBlock Key="Character_Appearance_EyeColor" />
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+
+				<Border
+					Grid.RowSpan="2"
+					Margin="0,0,1,0"
+					CornerRadius="6,0,0,6"
+					Style="{StaticResource XivToolsControlBorder}" />
+
+				<ToggleButton
+					Grid.RowSpan="2"
+					IsChecked="{Binding Actor.Customize.LinkEyeColors}"
+					Style="{StaticResource XivToolsToggleButton}">
+					<StackPanel>
+						<Line
+							Margin="2"
+							HorizontalAlignment="Center"
+							SnapsToDevicePixels="True"
+							Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
+							StrokeThickness="1"
+							Y1="0"
+							Y2="6" />
+						<XivToolsWpf:IconBlock Icon="Link" />
+						<Line
+							Margin="2"
+							HorizontalAlignment="Center"
+							SnapsToDevicePixels="True"
+							Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
+							StrokeThickness="1"
+							Y1="0"
+							Y2="6" />
+					</StackPanel>
+				</ToggleButton>
+
+				<controls:CustomizeColorOption
+					Grid.Row="0"
+					Grid.Column="1"
+					CornerRadius="0,6,6,0"
+					Menu="{Binding Actor.Customize.MakeType.EyeColors}"
+					Value="{Binding Actor.Customize.MainEyeColor}" />
+
+				<controls:CustomizeColorOption
+					Grid.Row="1"
+					Grid.Column="1"
+					CornerRadius="0,6,6,0"
+					IsEnabled="{Binding Actor.Customize.LinkEyeColors, Converter={StaticResource !B}}"
+					Menu="{Binding Actor.Customize.MakeType.EyeColors}"
+					Value="{Binding Actor.Customize.RightEyeColor}" />
+			</Grid>
+
 
 			<!--  Limbal Ring  -->
-			<XivToolsWpf:TextBlock Key="Character_Appearance_EyeColor" />
+			<XivToolsWpf:TextBlock
+				Key="Character_Appearance_LimbalRing"
+				Visibility="{Binding Actor.Customize.Race.HasLimbalRing, Converter={StaticResource B2V}}" />
 
-			<!--  Limbal Ring Color  -->
-			<XivToolsWpf:TextBlock Key="Character_Appearance_EyeColor" />
+			<!--  FAcial Feature Color  -->
+			<XivToolsWpf:TextBlock
+				Key="Character_Appearance_FacialFeatureColor"
+				Visibility="{Binding Actor.Customize.Race.HasLimbalRing, Converter={StaticResource !B2V}}" />
 
 			<!--  Eyebrows  -->
 			<XivToolsWpf:TextBlock Key="Character_Appearance_Eyebrows" />
