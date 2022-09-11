@@ -463,6 +463,7 @@
 					Grid.RowSpan="2"
 					Grid.Column="0"
 					Margin="0,0,1,0"
+					Flipped="{Binding Actor.Customize.FlipFacePaint}"
 					Menu="{Binding Actor.Customize.MakeType.FacePaints}"
 					Value="{Binding Actor.Customize.FacePaint}" />
 

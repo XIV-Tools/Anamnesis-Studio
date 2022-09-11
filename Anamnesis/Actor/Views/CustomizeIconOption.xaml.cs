@@ -14,6 +14,7 @@ public partial class CustomizeIconOption : UserControl, INotifyPropertyChanged
 {
 	public static IBind<byte> ValueDp = Binder.Register<byte, CustomizeIconOption>(nameof(Value), OnValueChanged);
 	public static IBind<CharaMakeType.Menu?> MenuDp = Binder.Register<CharaMakeType.Menu?, CustomizeIconOption>(nameof(Menu), OnMenuChanged);
+	public static IBind<bool> FlippedDp = Binder.Register<bool, CustomizeIconOption>(nameof(Flipped));
 
 	public CustomizeIconOption()
 	{
@@ -40,6 +41,12 @@ public partial class CustomizeIconOption : UserControl, INotifyPropertyChanged
 	{
 		get => this.Menu?.GetOption(this.Value);
 		set => this.Value = value?.Value ?? this.Menu?.InitVal ?? 0;
+	}
+
+	public bool Flipped
+	{
+		get => FlippedDp.Get(this);
+		set => FlippedDp.Set(this, value);
 	}
 
 	public static void OnValueChanged(CustomizeIconOption sender, byte newalue)
