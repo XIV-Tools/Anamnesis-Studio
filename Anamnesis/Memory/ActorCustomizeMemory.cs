@@ -258,6 +258,9 @@ public class ActorCustomizeMemory : MemoryBase
 		}
 	}
 
+	[AlsoNotifyFor(nameof(MakeType), nameof(Face))]
+	public CharaMakeType.FacialFeatureOptions? FacialFeatureOptions => this.MakeType?.GetFacialFeatures(this.Face);
+
 	public override void SetAddress(IntPtr address)
 	{
 		base.SetAddress(address);

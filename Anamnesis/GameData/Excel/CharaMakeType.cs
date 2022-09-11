@@ -12,6 +12,7 @@ using Lumina.Data;
 using Lumina.Excel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Windows.Documents;
 using ExcelRow = Anamnesis.GameData.Sheets.ExcelRow;
 using LuminaData = Lumina.GameData;
@@ -21,12 +22,12 @@ using LuminaData = Lumina.GameData;
 [Sheet("CharaMakeType", columnHash: 0x80d7db6d)]
 public class CharaMakeType : ExcelRow
 {
-	public const int NumOptions = 28;
+	public const int NumMenus = 28;
 	public const int NumVoices = 12;
 	public const int NumGraphics = 10;
 	public const int MaxNumValues = 100;
-	public const int NumFaces = 8;
-	public const int NumFeatures = 7;
+	public const byte NumFaces = 8;
+	public const int NumFeatures = 8;
 	public const int NumEquip = 3;
 
 	public string Name => this.RowId.ToString();
@@ -73,18 +74,18 @@ public class CharaMakeType : ExcelRow
 		this.Tribe = (ActorCustomizeMemory.Tribes)parser.ReadColumn<int>(1);
 		this.Gender = (ActorCustomizeMemory.Genders)parser.ReadColumn<sbyte>(2);
 
-		for (int i = 0; i < NumOptions; i++)
+		for (int i = 0; i < NumMenus; i++)
 		{
-			uint index = parser.ReadColumn<uint>(3 + (6 * NumOptions) + i);
+			uint index = parser.ReadColumn<uint>(3 + (6 * NumMenus) + i);
 
 			Menu menu = new();
-			menu.Id = parser.ReadColumn<uint>(3 + (0 * NumOptions) + i);
-			menu.InitVal = parser.ReadColumn<byte>(3 + (1 * NumOptions) + i);
-			menu.Type = (Menu.Types)parser.ReadColumn<byte>(3 + (2 * NumOptions) + i);
-			menu.NumOptions = parser.ReadColumn<byte>(3 + (3 * NumOptions) + i);
-			menu.LookAt = parser.ReadColumn<byte>(3 + (4 * NumOptions) + i);
-			menu.Mask = parser.ReadColumn<uint>(3 + (5 * NumOptions) + i);
-			menu.CustomizationIndex = parser.ReadColumn<uint>(3 + (6 * NumOptions) + i);
+			menu.Id = parser.ReadColumn<uint>(3 + (0 * NumMenus) + i);
+			menu.InitVal = parser.ReadColumn<byte>(3 + (1 * NumMenus) + i);
+			menu.Type = (Menu.Types)parser.ReadColumn<byte>(3 + (2 * NumMenus) + i);
+			menu.NumOptions = parser.ReadColumn<byte>(3 + (3 * NumMenus) + i);
+			menu.LookAt = parser.ReadColumn<byte>(3 + (4 * NumMenus) + i);
+			menu.Mask = parser.ReadColumn<uint>(3 + (5 * NumMenus) + i);
+			menu.CustomizationIndex = parser.ReadColumn<uint>(3 + (6 * NumMenus) + i);
 			menu.Min = parser.ReadColumn<byte>(2999 + i);
 			menu.Max = (byte)(parser.ReadColumn<byte>(87 + i) - 1 + menu.Min);
 
@@ -140,7 +141,7 @@ public class CharaMakeType : ExcelRow
 					}
 					else
 					{
-						menu.Options[j].Icon = new ImageReference(parser.ReadColumn<uint>(3 + ((7 + j) * NumOptions) + i));
+						menu.Options[j].Icon = new ImageReference(parser.ReadColumn<uint>(3 + ((7 + j) * NumMenus) + i));
 					}
 				}
 			}
@@ -184,19 +185,34 @@ public class CharaMakeType : ExcelRow
 
 		for (var i = 0; i < NumVoices; ++i)
 		{
-			this.Voices[i] = parser.ReadColumn<byte>(3 + ((MaxNumValues + 7 + NumGraphics) * NumOptions) + i);
+			this.Voices[i] = parser.ReadColumn<byte>(3 + ((MaxNumValues + 7 + NumGraphics) * NumMenus) + i);
 		}
 
-		/*for (var i = 0; i < NumFaces; ++i)
+		for (byte i = 0; i < NumFaces; ++i)
 		{
-			this.FacialFeatureByFace[i].Icons = new uint[NumFeatures];
-			for (var j = 0; j < NumFeatures; ++j)
+			this.FacialFeatureByFace[i] = new(i);
+			for (byte j = 0; j < NumFeatures - 1; ++j)
 			{
-				this.FacialFeatureByFace[i].Icons![j] = (uint)parser.ReadColumn<int>(3 + ((MaxNumValues + 7 + NumGraphics) * NumOptions) + NumVoices + (j * NumFaces) + i);
+				FacialFeatureOptions.Option option = new();
+				option.Icon = new(parser.ReadColumn<int>(3 + ((MaxNumValues + 7 + NumGraphics) * NumMenus) + NumVoices + (j * NumFaces) + i));
+				this.FacialFeatureByFace[i].Options[j] = option;
 			}
+
+			this.FacialFeatureByFace[i].Options[0].Value = ActorCustomizeMemory.FacialFeature.First;
+			this.FacialFeatureByFace[i].Options[1].Value = ActorCustomizeMemory.FacialFeature.Second;
+			this.FacialFeatureByFace[i].Options[2].Value = ActorCustomizeMemory.FacialFeature.Third;
+			this.FacialFeatureByFace[i].Options[3].Value = ActorCustomizeMemory.FacialFeature.Fourth;
+			this.FacialFeatureByFace[i].Options[4].Value = ActorCustomizeMemory.FacialFeature.Fifth;
+			this.FacialFeatureByFace[i].Options[5].Value = ActorCustomizeMemory.FacialFeature.Sixth;
+			this.FacialFeatureByFace[i].Options[6].Value = ActorCustomizeMemory.FacialFeature.Seventh;
+
+			FacialFeatureOptions.Option legacyTattooOption = new();
+			////legacyTattooOption.Icon = // hmmm
+			this.FacialFeatureByFace[i].Options[7] = legacyTattooOption;
+			this.FacialFeatureByFace[i].Options[7].Value = ActorCustomizeMemory.FacialFeature.LegacyTattoo;
 		}
 
-		for (var i = 0; i < NumEquip; ++i)
+		/*for (var i = 0; i < NumEquip; ++i)
 		{
 			Equip[i] = new CharaMakeType.CharaMakeTypeUnkData3347Obj()
 			{
@@ -209,6 +225,14 @@ public class CharaMakeType : ExcelRow
 				SubWeapon = parser.ReadColumn<ulong>(3 + (MaxNumValues + 7 + NumGraphics) * NumMenus + NumVoices + NumFaces * NumFeatures + i * 7 + 6),
 			};
 		}*/
+	}
+
+	public FacialFeatureOptions? GetFacialFeatures(uint faceId)
+	{
+		if (faceId <= 0 || faceId >= this.FacialFeatureByFace.Length)
+			return null;
+
+		return this.FacialFeatureByFace[faceId - 1];
 	}
 
 	public class Menu
@@ -282,6 +306,18 @@ public class CharaMakeType : ExcelRow
 
 	public class FacialFeatureOptions
 	{
-		public uint[]? Icons { get; set; }
+		public FacialFeatureOptions(byte face)
+		{
+			this.Face = face;
+		}
+
+		public byte Face { get; init; }
+		public Option[] Options { get; init; } = new Option[NumFeatures];
+
+		public class Option
+		{
+			public ActorCustomizeMemory.FacialFeature Value { get; set; }
+			public ImageReference? Icon { get; set; }
+		}
 	}
 }

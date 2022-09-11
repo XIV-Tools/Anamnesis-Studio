@@ -1,0 +1,40 @@
+﻿<UserControl
+	x:Class="Anamnesis.Actor.Views.CustomizeFacialFeaturesOption"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:Anamnesis.Actor.Views"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	d:DesignHeight="450"
+	d:DesignWidth="800"
+	mc:Ignorable="d">
+
+	<Grid x:Name="ContentArea">
+		<ItemsControl ItemsSource="{Binding Options}">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<UniformGrid Columns="4" />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<ToggleButton IsChecked="{Binding IsEnabled}">
+						<Grid
+							Width="48"
+							Height="48"
+							Margin="0,6">
+							<Image
+								Source="{Binding Icon, Converter={StaticResource Img}}"
+								Visibility="{Binding Value, Converter={StaticResource EnumToVisibility}, ConverterParameter=!LegacyTattoo}" />
+							<Image
+								Source="/Assets/LegacyTattoo.png"
+								Visibility="{Binding Value, Converter={StaticResource EnumToVisibility}, ConverterParameter=LegacyTattoo}" />
+						</Grid>
+
+					</ToggleButton>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+	</Grid>
+
+</UserControl>
