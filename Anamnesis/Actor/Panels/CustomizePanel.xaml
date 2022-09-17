@@ -10,6 +10,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:panels="clr-namespace:Anamnesis.Panels"
 	xmlns:views="clr-namespace:Anamnesis.Actor.Views"
+	MinWidth="300"
 	CanResize="True"
 	Icon="IdCardAlt"
 	TitleKey="Naviagation_Actor_Customize"
@@ -37,7 +38,9 @@
 				<views:CustomizeEditor
 					Grid.Row="0"
 					Margin="6"
-					Actor="{Binding Actor}" />
+					Actor="{Binding Actor}"
+					Visibility="{Binding Actor.Customize, Converter={StaticResource NotNullToVisibilityConverter}}" />
+
 
 				<GroupBox
 					Grid.Row="1"

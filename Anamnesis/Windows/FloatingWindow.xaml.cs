@@ -151,8 +151,8 @@ public partial class FloatingWindow : Window, IPanelHost
 
 			foreach (IPanel panel in this.Panels)
 			{
-				this.MinWidth = Math.Max(this.MinWidth, panel.MinWidth);
-				this.MinHeight = Math.Max(this.MinWidth, panel.MinWidth);
+				this.MinWidth = Math.Max(this.MinWidth, panel.MinWidth + 20);
+				this.MinHeight = Math.Max(this.MinHeight, panel.MinHeight);
 				this.MaxHeight = Math.Min(this.MaxHeight, panel.MaxHeight);
 				this.MaxWidth = Math.Min(this.MaxWidth, panel.MaxWidth);
 			}

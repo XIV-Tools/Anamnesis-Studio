@@ -18,10 +18,23 @@
 			<ColumnDefinition Width="Auto" />
 		</Grid.ColumnDefinitions>
 
+		<Border
+			Grid.Column="0"
+			Margin="3"
+			CornerRadius="6,0,0,6"
+			Style="{StaticResource XivToolsControlBorder}" />
+
+		<Border
+			Grid.Column="1"
+			Margin="0,3,3,3"
+			CornerRadius="0,6,6,0"
+			Style="{StaticResource XivToolsControlBorder}" />
+
 		<ToggleButton
 			x:Name="SelectorButton"
 			Grid.Column="0"
 			Margin="3"
+			Background="Transparent"
 			Click="OnClicked"
 			Style="{StaticResource XivToolsComboBoxButton}">
 			<local:ActorLabel DataContext="{Binding Selection}" />
@@ -31,11 +44,20 @@
 		<ToggleButton
 			Grid.Column="1"
 			Width="28"
-			Height="28"
+			Margin="0,3,3,3"
 			ana:Behaviours.Tooltip="Target_Sync"
+			Background="Transparent"
 			IsChecked="{Binding SyncTarget}"
 			Style="{StaticResource TransparentIconToggleButton}">
-			<XivToolsWpf:IconBlock Icon="MousePointer" />
+			<Grid>
+				<XivToolsWpf:IconBlock
+					Margin="4,10,0,0"
+					Icon="Sync" />
+
+				<XivToolsWpf:IconBlock
+					Margin="0,0,4,10"
+					Icon="MousePointer" />
+			</Grid>
 		</ToggleButton>
 
 

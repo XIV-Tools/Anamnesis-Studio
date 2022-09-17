@@ -45,7 +45,10 @@ public partial class ActorSelector : UserControl
 
 		if (this.Services.Target != null)
 		{
-			this.Select(this.Services.Target.PlayerTarget);
+			if (this.Services.Target.PlayerTarget != null)
+			{
+				this.Select(this.Services.Target.PlayerTarget);
+			}
 		}
 	}
 

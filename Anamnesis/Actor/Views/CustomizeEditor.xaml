@@ -47,14 +47,12 @@
 
 				<ComboBox
 					Grid.Column="0"
-					Margin="3"
 					ItemTemplate="{StaticResource DisplayNameComboBox}"
 					ItemsSource="{Binding Services.GameData.Races}"
 					SelectedItem="{Binding Actor.Customize.Race}" />
 
 				<ComboBox
 					Grid.Column="1"
-					Margin="3"
 					ItemTemplate="{StaticResource DisplayNameComboBox}"
 					ItemsSource="{Binding Actor.Customize.Race.Tribes}"
 					SelectedItem="{Binding Actor.Customize.Tribe}" />
