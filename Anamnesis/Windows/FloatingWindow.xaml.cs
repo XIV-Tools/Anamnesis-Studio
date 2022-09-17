@@ -221,6 +221,11 @@ public partial class FloatingWindow : Window, IPanelHost
 		this.Rect = copy.Rect;*/
 	}
 
+	public virtual new void Activate()
+	{
+		base.Activate();
+	}
+
 	public void AddPanel(IPanel panel)
 	{
 		// TODO: panel docking.

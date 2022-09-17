@@ -75,18 +75,16 @@ public class OverlayWindow : FloatingWindow
 		if (MemoryService.Process == null)
 			return;
 
-		GetWindowRect(MemoryService.Process.MainWindowHandle, out Win32Rect gameWindowRect);
-		int gameWindowWidth = gameWindowRect.Right - gameWindowRect.Left;
-		int gameWindowHeight = gameWindowRect.Bottom - gameWindowRect.Top;
+		Rect screenRect = this.ScreenRect;
 
 		int w = (int)this.ActualWidth - 1;
 		int h = (int)this.ActualHeight - 1;
 
-		int x = (int)this.Left - gameWindowRect.Left;
-		int y = (int)this.Top - gameWindowRect.Top;
+		int x = (int)(this.Left - screenRect.Left);
+		int y = (int)(this.Top - screenRect.Top);
 
-		x = Math.Clamp(x, 0, Math.Max(gameWindowWidth - w, 0));
-		y = Math.Clamp(y, 0, Math.Max(gameWindowHeight - h, 0));
+		x = Math.Clamp(x, 0, Math.Max((int)screenRect.Width - w, 0));
+		y = Math.Clamp(y, 0, Math.Max((int)screenRect.Height - h, 0));
 
 		// SHOWWINDOW
 		SetWindowPos(this.windowInteropHelper.Handle, IntPtr.Zero, x, y, w, h,  0x0040);

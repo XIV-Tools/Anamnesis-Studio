@@ -16,6 +16,7 @@ public interface IPanelHost
 	Rect ScreenRect { get; }
 	SizeToContent SizeToContent { get; }
 
+	void Activate();
 	void Show(Rect? desiredPosition = null);
 	void Show(IPanelHost copy);
 	void AddPanel(IPanel panel);

@@ -16,11 +16,13 @@ using Anamnesis.Libraries.Panels;
 using XivToolsWpf;
 using XivToolsWpf.Extensions;
 using System.Data;
+using Octokit;
+using System.Runtime.CompilerServices;
 
 public class PanelService : ServiceBase<PanelService>
 {
 	private static readonly List<PanelBase> OpenPanels = new();
-	private static readonly Dictionary<Type, PanelBase> Panelcache = new();
+	private static readonly Dictionary<Type, PanelBase?> Panelcache = new();
 
 	private static readonly List<Type> PreLoadPanels = new()
 	{
@@ -82,16 +84,13 @@ public class PanelService : ServiceBase<PanelService>
 	{
 		if (!Panelcache.ContainsKey(panelType))
 		{
+			Panelcache.Add(panelType, null);
+
 			if (threadMode == PanelThreadingMode.CustomThread)
 			{
 				Thread panelMainThread = new Thread(PanelMainThread);
 				panelMainThread.SetApartmentState(ApartmentState.STA);
 				panelMainThread.Start(panelType);
-
-				while (!Panelcache.ContainsKey(panelType))
-				{
-					await Task.Delay(1);
-				}
 			}
 			else
 			{
@@ -100,15 +99,34 @@ public class PanelService : ServiceBase<PanelService>
 				if (newPanel == null)
 					throw new Exception($"Failed to create instance of panel: {panelType}");
 
-				Panelcache.Add(panelType, newPanel);
+				Panelcache[panelType] = newPanel;
 			}
 		}
 
-		return Panelcache[panelType];
+		while (Panelcache[panelType] == null)
+			await Task.Delay(1);
+
+		if (Panelcache[panelType] == null)
+			throw new Exception("Panel not loaded!");
+
+		PanelBase panel = Panelcache[panelType]!;
+		return panel;
 	}
 
 	public static async Task<PanelBase> Show(Type panelType, object? context = null, PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
 	{
+		foreach (PanelBase otherPanel in OpenPanels)
+		{
+			if (otherPanel.GetType() == panelType)
+			{
+				// This panel is open, swap to it instead of opening another.
+				await otherPanel.Dispatcher.MainThread();
+				otherPanel.SetContext(otherPanel.Host, context);
+				otherPanel.Host.Activate();
+				return otherPanel;
+			}
+		}
+
 		PanelBase panel = await Spawn(panelType, threadMode);
 
 		await panel.Dispatcher.MainThread();
@@ -188,11 +206,11 @@ public class PanelService : ServiceBase<PanelService>
 
 	public override Task Shutdown()
 	{
-		foreach (PanelBase panel in Panelcache.Values)
+		foreach (PanelBase? panel in Panelcache.Values)
 		{
-			if (panel.Dispatcher != App.Current?.Dispatcher)
+			if (panel?.Dispatcher != App.Current?.Dispatcher)
 			{
-				panel.Dispatcher.BeginInvokeShutdown(DispatcherPriority.Normal);
+				panel?.Dispatcher.BeginInvokeShutdown(DispatcherPriority.Normal);
 			}
 		}
 
@@ -209,7 +227,7 @@ public class PanelService : ServiceBase<PanelService>
 		if (newPanel == null)
 			throw new Exception($"Failed to create instance of panel: {panelType}");
 
-		Panelcache.Add(panelType, newPanel);
+		Panelcache[panelType] = newPanel;
 
 		Log.Information($"Panel: {panelType} has started");
 
@@ -220,13 +238,19 @@ public class PanelService : ServiceBase<PanelService>
 
 	private async Task PreloadPanels()
 	{
+		await Dispatch.NonUiThread();
+
+		List<Task> tasks = new();
+
 		try
 		{
 			foreach (Type panelType in PreLoadPanels)
 			{
 				Log.Information($"Spwning panel: {panelType}");
-				await Spawn(panelType);
+				tasks.Add(Spawn(panelType));
 			}
+
+			await Task.WhenAll(tasks);
 		}
 		catch (Exception ex)
 		{

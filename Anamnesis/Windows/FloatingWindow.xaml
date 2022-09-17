@@ -33,7 +33,7 @@
 				Storyboard.TargetProperty="Opacity"
 				From="0"
 				To="1"
-				Duration="00:00:00.4">
+				Duration="00:00:00.150">
 				<DoubleAnimation.EasingFunction>
 					<SineEase EasingMode="EaseOut" />
 				</DoubleAnimation.EasingFunction>
