@@ -15,6 +15,7 @@ using Anamnesis.Actor.Panels;
 using Anamnesis.Libraries.Panels;
 using XivToolsWpf;
 using XivToolsWpf.Extensions;
+using System.Data;
 
 public class PanelService : ServiceBase<PanelService>
 {
@@ -114,34 +115,9 @@ public class PanelService : ServiceBase<PanelService>
 		IPanelHost panelHost = panelHost = CreateHost();
 		panelHost.AddPanel(panel);
 		panel.SetContext(panelHost, context);
-		panelHost.Show();
 
-		// Copy width and height values from the inner panel to the host
-		if (panel.CanResize && (double.IsNormal(panel.Width) || double.IsNormal(panel.Height)))
-		{
-			Rect rect = panelHost.Rect;
-
-			if (double.IsNormal(panel.Width))
-				rect.Width = panel.Width;
-
-			if (double.IsNormal(panel.Height))
-				rect.Height = panel.Height + 28; // height of panel titlebar
-
-			panel.Width = double.NaN;
-			panel.Height = double.NaN;
-			panelHost.Rect = rect;
-		}
-
-		Rect? lastPos = GetLastPosition(panelHost);
-		if (lastPos != null)
-		{
-			panelHost.RelativeRect = (Rect)lastPos;
-		}
-		else
-		{
-			// Center screen
-			panelHost.RelativeRect = new Rect(0.5, 0.5, 0, 0);
-		}
+		Rect? desiredPosition = GetLastPosition(panelHost);
+		panelHost.Show(desiredPosition);
 
 		OpenPanels.Add(panel);
 		return panel;
@@ -162,7 +138,23 @@ public class PanelService : ServiceBase<PanelService>
 	{
 		if (SettingsService.Current.Panels.TryGetValue(panel.Id, out PanelsData? data) && data != null)
 		{
-			return data.Position;
+			Rect pos = data.Position;
+
+			if (data.SizeToContent == SizeToContent.WidthAndHeight)
+			{
+				pos.Width = double.NaN;
+				pos.Height = double.NaN;
+			}
+			else if (data.SizeToContent == SizeToContent.Width)
+			{
+				pos.Width = double.NaN;
+			}
+			else if (data.SizeToContent == SizeToContent.Height)
+			{
+				pos.Height = double.NaN;
+			}
+
+			return pos;
 		}
 
 		return null;
@@ -170,14 +162,20 @@ public class PanelService : ServiceBase<PanelService>
 
 	public static void SavePosition(IPanelHost panel)
 	{
-		if (SettingsService.Current.Panels.TryGetValue(panel.Id, out PanelsData? data) && data != null)
+		Rect pos = new();
+		pos.Width = panel.Rect.Width;
+		pos.Height = panel.Rect.Height;
+		pos.X = (panel.Rect.X - panel.ScreenRect.Left) / panel.ScreenRect.Width;
+		pos.Y = (panel.Rect.Y - panel.ScreenRect.Top) / panel.ScreenRect.Height;
+
+		if (!SettingsService.Current.Panels.TryGetValue(panel.Id, out PanelsData? data) || data == null)
 		{
-			data.Position = panel.RelativeRect;
+			data = new();
+			SettingsService.Current.Panels.Add(panel.Id, data);
 		}
-		else
-		{
-			SettingsService.Current.Panels.Add(panel.Id, new(panel.RelativeRect));
-		}
+
+		data.Position = pos;
+		data.SizeToContent = panel.SizeToContent;
 
 		SettingsService.Save();
 	}
@@ -243,11 +241,7 @@ public class PanelService : ServiceBase<PanelService>
 		{
 		}
 
-		public PanelsData(Rect pos)
-		{
-			this.Position = pos;
-		}
-
-		public Rect Position { get; set; }
+		public Rect Position { get; set; } = default;
+		public SizeToContent SizeToContent { get; set; } = SizeToContent.WidthAndHeight;
 	}
 }

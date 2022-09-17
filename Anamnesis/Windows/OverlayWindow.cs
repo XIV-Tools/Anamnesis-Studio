@@ -4,54 +4,25 @@
 namespace Anamnesis.Windows;
 
 using Anamnesis.Memory;
+using Anamnesis.Panels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
+using XivToolsWpf;
+using XivToolsWpf.Extensions;
 
 public class OverlayWindow : FloatingWindow
 {
 	private readonly WindowInteropHelper windowInteropHelper;
-	private int x = 0;
-	private int y = 0;
 
 	public OverlayWindow()
 	{
 		this.windowInteropHelper = new(this);
 	}
 
-	public override Rect Rect
-	{
-		get => new Rect(this.Left, this.Top, this.Width, this.Height);
-		set
-		{
-			if (value.Height != this.Height || value.Width != this.Width)
-			{
-				this.SizeToContent = SizeToContent.Manual;
-			}
-
-			this.Width = value.Width;
-			this.Height = value.Height;
-
-			if (MemoryService.Process != null)
-			{
-				GetWindowRect(MemoryService.Process.MainWindowHandle, out Win32Rect gameWindowRect);
-				this.x = (int)value.Left - gameWindowRect.Left;
-				this.y = (int)value.Top - gameWindowRect.Top;
-
-				// Size of the window chrome.
-				// No idea how to get this correctly...
-				this.y -= 26;
-				this.x -= 2;
-			}
-
-			this.UpdatePosition();
-		}
-	}
+	public override Rect Rect => new Rect(this.Left, this.Top, this.Width, this.Height);
 
 	public override Rect ScreenRect
 	{
@@ -60,8 +31,17 @@ public class OverlayWindow : FloatingWindow
 			if (MemoryService.Process == null)
 				return new Rect(0, 0, 0, 0);
 
+			GetClientRect(MemoryService.Process.MainWindowHandle, out Win32Rect clientRect);
 			GetWindowRect(MemoryService.Process.MainWindowHandle, out Win32Rect gameRect);
-			return new Rect(gameRect.Left, gameRect.Top, gameRect.Right - gameRect.Left, gameRect.Bottom - gameRect.Top);
+
+			int chromeWidth = ((gameRect.Right - gameRect.Left) - clientRect.Right) / 2;
+			int titleBarHeight = ((gameRect.Bottom - gameRect.Top) - clientRect.Bottom) - chromeWidth;
+
+			return new Rect(
+				gameRect.Left + chromeWidth,
+				gameRect.Top + titleBarHeight,
+				(gameRect.Right - gameRect.Left) - (chromeWidth * 2),
+				(gameRect.Bottom - gameRect.Top) - chromeWidth);
 		}
 	}
 
@@ -73,11 +53,6 @@ public class OverlayWindow : FloatingWindow
 		if (MemoryService.Process == null)
 			return;
 
-		GetWindowRect(MemoryService.Process.MainWindowHandle, out Win32Rect rect);
-
-		this.Left = rect.Left + 20;
-		this.Top = rect.Top + 20;
-
 		SetParent(this.windowInteropHelper.Handle, MemoryService.Process.MainWindowHandle);
 
 		const uint WS_POPUP = 0x80000000;
@@ -88,9 +63,6 @@ public class OverlayWindow : FloatingWindow
 		style = (int)((style & ~WS_POPUP) | WS_CHILD);
 		SetWindowLong(this.windowInteropHelper.Handle, GWL_STYLE, style);
 
-		SetWindowPos(this.windowInteropHelper.Handle, IntPtr.Zero, 0, 0, 128, 128, 0x0040);
-		SetWindowPos(this.windowInteropHelper.Handle, IntPtr.Zero, 0, 0, 0, 0, 0x0001);
-
 		this.UpdatePosition();
 
 		this.Activate();
@@ -100,9 +72,6 @@ public class OverlayWindow : FloatingWindow
 	{
 		base.UpdatePosition();
 
-		if (!this.IsActive)
-			return;
-
 		if (MemoryService.Process == null)
 			return;
 
@@ -110,24 +79,25 @@ public class OverlayWindow : FloatingWindow
 		int gameWindowWidth = gameWindowRect.Right - gameWindowRect.Left;
 		int gameWindowHeight = gameWindowRect.Bottom - gameWindowRect.Top;
 
-		this.Width = Math.Clamp(this.Width, (int)this.MinWidth, gameWindowWidth - 64);
-		this.Height = Math.Clamp(this.Height, (int)this.MinHeight, gameWindowHeight - 64);
-		int w = (int)this.Width - 1;
-		int h = (int)this.Height - 1;
+		int w = (int)this.ActualWidth - 1;
+		int h = (int)this.ActualHeight - 1;
 
-		int x = Math.Clamp(this.x, 0, Math.Max(gameWindowWidth - w, 0));
-		int y = Math.Clamp(this.y, 0, Math.Max(gameWindowHeight - h, 0));
+		int x = (int)this.Left - gameWindowRect.Left;
+		int y = (int)this.Top - gameWindowRect.Top;
+
+		x = Math.Clamp(x, 0, Math.Max(gameWindowWidth - w, 0));
+		y = Math.Clamp(y, 0, Math.Max(gameWindowHeight - h, 0));
 
 		// SHOWWINDOW
-		SetWindowPos(this.windowInteropHelper.Handle, IntPtr.Zero, 0, 0, w, h,  0x0040);
+		SetWindowPos(this.windowInteropHelper.Handle, IntPtr.Zero, x, y, w, h,  0x0040);
 
 		// NOSIZE
-		SetWindowPos(this.windowInteropHelper.Handle, IntPtr.Zero, x, y, 0, 0,  0x0001);
+		SetWindowPos(this.windowInteropHelper.Handle, IntPtr.Zero, x, y, w, h,  0x0001);
 
 		if (this.Topmost)
 		{
 			// NOSIZE | NOMOVE
-			SetWindowPos(this.windowInteropHelper.Handle, (IntPtr)(-1), 0, 0, 0, 0,  0x0001 | 0x0003);
+			SetWindowPos(this.windowInteropHelper.Handle, (IntPtr)(-1), x, y, w, h,  0x0001 | 0x0003);
 		}
 	}
 

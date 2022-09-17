@@ -12,10 +12,11 @@ public interface IPanelHost
 	bool IsVisible { get; }
 
 	IEnumerable<IPanel> Panels { get; }
-	Rect Rect { get; set; }
-	Rect RelativeRect { get; set; }
+	Rect Rect { get; }
+	Rect ScreenRect { get; }
+	SizeToContent SizeToContent { get; }
 
-	void Show();
+	void Show(Rect? desiredPosition = null);
 	void Show(IPanelHost copy);
 	void AddPanel(IPanel panel);
 	void RemovePanel(IPanel panel);

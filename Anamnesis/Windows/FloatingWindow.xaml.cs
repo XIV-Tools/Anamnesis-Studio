@@ -34,6 +34,8 @@ using MediaColor = System.Windows.Media.Color;
 [AddINotifyPropertyChangedInterface]
 public partial class FloatingWindow : Window, IPanelHost
 {
+	private const double MaxSizeScreenPadding = 25;
+
 	private readonly WindowInteropHelper windowInteropHelper;
 	private readonly List<IPanel> panels = new();
 
@@ -91,26 +93,7 @@ public partial class FloatingWindow : Window, IPanelHost
 		}
 	}
 
-	public virtual Rect Rect
-	{
-		get
-		{
-			return new Rect(this.Left, this.Top, this.Width, this.Height);
-		}
-		set
-		{
-			if (value.Height != this.Height || value.Width != this.Width)
-			{
-				this.SizeToContent = SizeToContent.Manual;
-			}
-
-			this.Left = (int)value.X;
-			this.Top = (int)value.Y;
-			this.Width = value.Width;
-			this.Height = value.Height;
-			this.UpdatePosition();
-		}
-	}
+	public virtual Rect Rect => new Rect(this.Left, this.Top, this.Width, this.Height);
 
 	public string Id
 	{
@@ -141,65 +124,81 @@ public partial class FloatingWindow : Window, IPanelHost
 	public virtual bool CanPopIn => true;
 	public bool AutoClose { get; set; } = false;
 
-	public Rect RelativeRect
-	{
-		get
-		{
-			Rect screen = this.ScreenRect;
-			Rect pos = this.Rect;
-			Rect value = new();
-			value.X = (pos.X - screen.X) / (screen.Width - pos.Width);
-			value.Y = (pos.Y - screen.Y) / (screen.Height - pos.Height);
-			value.Width = pos.Width;
-			value.Height = pos.Height;
-
-			return value;
-		}
-
-		set
-		{
-			Rect screen = this.ScreenRect;
-			Rect pos = this.Rect;
-			pos.X = screen.X + (screen.Width * value.X) - (pos.Width * value.X);
-			pos.Y = screen.Y + (screen.Height * value.Y) - (pos.Height * value.Y);
-
-			if (this.CanResize)
-			{
-				if (value.Height > 0)
-				{
-					pos.Height = value.Height;
-				}
-
-				if (value.Width > 0)
-				{
-					pos.Width = value.Width;
-				}
-			}
-
-			this.Rect = pos;
-		}
-	}
-
 	public virtual new void Show()
 	{
-		base.Show();
+		throw new NotSupportedException();
+	}
 
+	public virtual void Show(Rect? desiredPosition)
+	{
 		Rect screen = this.ScreenRect;
-		Rect pos = this.Rect;
 
-		double maxHeight = Math.Max(screen.Height - pos.Top, 0);
+		// Center screen
+		if (desiredPosition == null)
+		{
+			this.MaxWidth = Math.Clamp(this.MaxWidth, this.MinWidth, screen.Width - MaxSizeScreenPadding);
+			this.MaxHeight = Math.Clamp(this.MaxHeight, this.MinHeight, screen.Height - MaxSizeScreenPadding);
 
-		if (maxHeight == 0)
-			maxHeight = 1080;
+			this.Left = screen.Left + ((screen.Width / 2) - (this.ActualWidth / 2));
+			this.Top = screen.Top + ((screen.Height / 2) - (this.ActualHeight / 2));
+		}
+		else
+		{
+			this.MaxWidth = Math.Max(screen.Width - ((Rect)desiredPosition).Left, 0);
+			this.MaxHeight = Math.Max(screen.Height - ((Rect)desiredPosition).Top, 0);
+			this.MinWidth = 64;
+			this.MinHeight = 64;
 
-		this.MaxHeight = maxHeight;
+			foreach (IPanel panel in this.Panels)
+			{
+				this.MinWidth = Math.Max(this.MinWidth, panel.MinWidth);
+				this.MinHeight = Math.Max(this.MinWidth, panel.MinWidth);
+				this.MaxHeight = Math.Min(this.MaxHeight, panel.MaxHeight);
+				this.MaxWidth = Math.Min(this.MaxWidth, panel.MaxWidth);
+			}
+
+			this.MinWidth = Math.Clamp(this.MinWidth, 0, screen.Width);
+			this.MinHeight = Math.Clamp(this.MinHeight, 0, screen.Height);
+			this.MaxWidth = Math.Clamp(this.MaxWidth, this.MinWidth, screen.Width - MaxSizeScreenPadding);
+			this.MaxHeight = Math.Clamp(this.MaxHeight, this.MinHeight, screen.Height - MaxSizeScreenPadding);
+
+			this.Left = screen.Left + (((Rect)desiredPosition).X * screen.Width);
+			this.Top = screen.Top + (((Rect)desiredPosition).Y * screen.Height);
+
+			double height = ((Rect)desiredPosition).Height;
+			double width = ((Rect)desiredPosition).Width;
+
+			if (double.IsNaN(height) && double.IsNaN(width))
+			{
+				this.SizeToContent = SizeToContent.WidthAndHeight;
+			}
+			else if (double.IsNaN(height))
+			{
+				this.Width = Math.Clamp(width, this.MinWidth, this.MaxWidth);
+				this.SizeToContent = SizeToContent.Height;
+			}
+			else if (double.IsNaN(width))
+			{
+				this.Height = Math.Clamp(height, this.MinHeight, this.MaxHeight);
+				this.SizeToContent = SizeToContent.Width;
+			}
+			else
+			{
+				this.SizeToContent = SizeToContent.Manual;
+				this.Width = Math.Clamp(width, this.MinWidth, this.MaxWidth);
+				this.Height = Math.Clamp(height, this.MinHeight, this.MaxHeight);
+			}
+		}
+
+		this.UpdatePosition();
+		base.Show();
 		this.IsOpen = true;
 	}
 
 	public virtual void Show(IPanelHost copy)
 	{
 		this.playOpenAnimation = false;
-		this.Show();
+		this.Show(copy.Rect);
 
 		throw new NotImplementedException();
 

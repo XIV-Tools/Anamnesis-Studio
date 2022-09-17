@@ -18,6 +18,11 @@ public interface IPanel : INotifyPropertyChanged
 	string FinalTitle { get; }
 	Rect Rect { get; }
 
+	double MinWidth { get; }
+	double MinHeight { get; }
+	double MaxWidth { get; }
+	double MaxHeight { get; }
+
 	bool ShowBackground { get; set; }
 	bool CanResize { get; set; }
 	bool CanScroll { get; set; }
