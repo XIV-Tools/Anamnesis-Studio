@@ -6,11 +6,13 @@
 	xmlns:ana="clr-namespace:Anamnesis"
 	xmlns:controls="clr-namespace:Anamnesis.Controls"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:designer="clr-namespace:XivToolsWpf.Designer;assembly=XivToolsWpf"
 	xmlns:local="clr-namespace:Anamnesis.Actor.Panels"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:panels="clr-namespace:Anamnesis.Panels"
 	xmlns:views="clr-namespace:Anamnesis.Actor.Views"
 	MinWidth="300"
+	designer:DesignModeProperties.Background="LightGray"
 	CanResize="True"
 	Icon="IdCardAlt"
 	TitleKey="Naviagation_Actor_Customize"
@@ -25,51 +27,61 @@
 
 		<controls:ActorSelector Selection="{Binding Actor}" />
 
-		<ScrollViewer
-			Grid.Row="1"
-			ana:Behaviours.SmoothScroll="True">
-			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-				</Grid.RowDefinitions>
+		<TabControl Grid.Row="1">
 
-				<views:CustomizeEditor
-					Grid.Row="0"
-					Margin="6"
-					Actor="{Binding Actor}"
-					Visibility="{Binding Actor.Customize, Converter={StaticResource NotNullToVisibilityConverter}}" />
+			<TabItem Header="Naviagation_Actor_Customize">
+				<ScrollViewer ana:Behaviours.SmoothScroll="True">
 
+					<views:CustomizeEditor
+						Grid.Row="0"
+						Margin="6"
+						Actor="{Binding Actor}"
+						Visibility="{Binding Actor.Customize, Converter={StaticResource NotNullToVisibilityConverter}}" />
 
-				<GroupBox
-					Grid.Row="1"
-					Style="{StaticResource PanelGroupBox}"
-					Visibility="{Binding Actor.ModelObject, Converter={StaticResource NotNullToVisibilityConverter}}">
-					<GroupBox.Header>
-						<XivToolsWpf:Header
-							Key="Character_Model_Header"
-							Icon="GraduationCap" />
-					</GroupBox.Header>
+				</ScrollViewer>
+			</TabItem>
 
-					<views:CharacterModelEditor DataContext="{Binding Actor}" />
-				</GroupBox>
+			<TabItem Header="Character_ExAppearance_Header">
+				<ScrollViewer ana:Behaviours.SmoothScroll="True">
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+						</Grid.RowDefinitions>
 
-				<GroupBox
-					Grid.Row="2"
-					Style="{StaticResource PanelGroupBox}"
-					Visibility="{Binding Actor.ModelObject.ExtendedAppearance, Converter={StaticResource NotNullToVisibilityConverter}, FallbackValue=Collapsed}">
-					<GroupBox.Header>
-						<XivToolsWpf:Header
-							Key="Character_ExAppearance_Header"
-							Icon="UserCog" />
-					</GroupBox.Header>
+						<GroupBox
+							Grid.Row="0"
+							Style="{StaticResource PanelGroupBox}"
+							Visibility="{Binding Actor.ModelObject, Converter={StaticResource NotNullToVisibilityConverter}}">
+							<GroupBox.Header>
+								<XivToolsWpf:Header
+									Key="Character_Model_Header"
+									Icon="GraduationCap" />
+							</GroupBox.Header>
 
-					<views:ExtendedAppearanceEditor DataContext="{Binding Actor.ModelObject.ExtendedAppearance}" />
+							<views:CharacterModelEditor DataContext="{Binding Actor}" />
+						</GroupBox>
 
-				</GroupBox>
-			</Grid>
-		</ScrollViewer>
+						<GroupBox
+							Grid.Row="1"
+							Style="{StaticResource PanelGroupBox}"
+							Visibility="{Binding Actor.ModelObject.ExtendedAppearance, Converter={StaticResource NotNullToVisibilityConverter}, FallbackValue=Collapsed}">
+							<GroupBox.Header>
+								<XivToolsWpf:Header
+									Key="Character_ExAppearance_Header"
+									Icon="UserCog" />
+							</GroupBox.Header>
+
+							<views:ExtendedAppearanceEditor DataContext="{Binding Actor.ModelObject.ExtendedAppearance}" />
+
+						</GroupBox>
+					</Grid>
+				</ScrollViewer>
+			</TabItem>
+			<TabItem Header="Naviagation_Actor_Equipment" />
+
+		</TabControl>
+
 
 
 	</Grid>
