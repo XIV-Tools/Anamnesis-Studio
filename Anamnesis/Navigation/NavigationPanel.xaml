@@ -12,213 +12,100 @@
 	ShowBackground="False"
 	mc:Ignorable="d">
 
-	<panels:PanelBase.Resources>
-		<ResourceDictionary>
-
-
-			<Style
-				x:Key="IconTab"
-				BasedOn="{StaticResource TransparentIconToggleButton}"
-				TargetType="ToggleButton">
-
-				<Setter Property="Margin" Value="0,3,0,0" />
-				<Setter Property="BorderThickness" Value="0" />
-				<Setter Property="Height" Value="32" />
-				<Setter Property="Width" Value="32" />
-
-			</Style>
-
-		</ResourceDictionary>
-	</panels:PanelBase.Resources>
-
 	<Grid
 		x:Name="ContentArea"
-		Margin="0,0,6,6">
+		Margin="25">
 
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-		</Grid.RowDefinitions>
-
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition Width="Auto" />
-		</Grid.ColumnDefinitions>
-
-		<!--  Navigation Bar  -->
 		<Grid
-			Grid.Row="2"
-			Grid.Column="0"
-			Margin="6,6,0,0"
+			Margin="12,12,0,0"
 			HorizontalAlignment="Left">
 
+			<Grid.RenderTransform>
+				<TranslateTransform />
+			</Grid.RenderTransform>
+
+			<Grid.Style>
+				<Style TargetType="{x:Type Grid}">
+
+					<Setter Property="Opacity" Value="0" />
+
+					<Style.Triggers>
+						<DataTrigger
+							Binding="{Binding IsExpanded}"
+							Value="True">
+
+							<DataTrigger.EnterActions>
+								<BeginStoryboard>
+									<Storyboard>
+										<DoubleAnimation
+											EasingFunction="{StaticResource SinEaseOut}"
+											Storyboard.TargetProperty="Opacity"
+											To="1"
+											Duration="0:0:0.150" />
+										<DoubleAnimation
+											EasingFunction="{StaticResource SinEaseOut}"
+											Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+											From="-10"
+											To="0"
+											Duration="0:0:0.150" />
+									</Storyboard>
+								</BeginStoryboard>
+							</DataTrigger.EnterActions>
+
+							<DataTrigger.ExitActions>
+								<BeginStoryboard>
+									<Storyboard>
+										<DoubleAnimation
+											EasingFunction="{StaticResource SinEaseOut}"
+											Storyboard.TargetProperty="Opacity"
+											To="0"
+											Duration="0:0:0.250" />
+										<DoubleAnimation
+											EasingFunction="{StaticResource SinEaseOut}"
+											Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+											To="-10"
+											Duration="0:0:0.250" />
+									</Storyboard>
+								</BeginStoryboard>
+							</DataTrigger.ExitActions>
+
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</Grid.Style>
+
 			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
 				<RowDefinition />
 			</Grid.RowDefinitions>
 
 			<Border
-				x:Name="BackgroundBorder"
 				Grid.Row="0"
-				Grid.RowSpan="2"
+				Grid.RowSpan="3"
 				Background="{DynamicResource MaterialDesignBackground}"
 				CornerRadius="6">
 
-				<Border.Style>
-					<Style TargetType="Border">
-						<Style.Triggers>
-							<DataTrigger
-								Binding="{Binding Expanded}"
-								Value="False">
-								<Setter Property="HorizontalAlignment" Value="Left" />
-								<Setter Property="VerticalAlignment" Value="Stretch" />
-								<Setter Property="Width" Value="40" />
-
-							</DataTrigger>
-						</Style.Triggers>
-					</Style>
-				</Border.Style>
-
 				<Border.BitmapEffect>
 					<DropShadowBitmapEffect ShadowDepth="0" />
 				</Border.BitmapEffect>
 			</Border>
-
-			<ToggleButton
-				Grid.Row="0"
-				Width="28"
-				Margin="3"
-				HorizontalAlignment="Right"
-				IsChecked="{Binding Expanded}"
-				Style="{StaticResource TransparentToggleButton}"
-				Visibility="{Binding Expanded, Converter={StaticResource B2V}}">
-				<XivToolsWpf:IconBlock
-					Foreground="{DynamicResource MaterialDesignToolForeground}"
-					Icon="AngleLeft" />
-			</ToggleButton>
-
-			<ToggleButton
-				Grid.Row="0"
-				Width="33"
-				Margin="3"
-				HorizontalAlignment="Left"
-				IsChecked="{Binding Expanded}"
-				Style="{StaticResource TransparentToggleButton}"
-				Visibility="{Binding Expanded, Converter={StaticResource !B2V}}">
-				<XivToolsWpf:IconBlock
-					Foreground="{DynamicResource MaterialDesignToolForeground}"
-					Icon="AngleRight" />
-			</ToggleButton>
-
-			<StackPanel
-				Grid.Row="1"
-				Margin="3,0,0,0">
-
-				<local:Shortcut
-					Destination="Settings"
-					Icon="Cogs"
-					Label="[Naviagation_Settings]"
-					ShowText="{Binding Expanded}"
-					ToolTip="[Naviagation_Settings_Tip]" />
-
-				<local:Shortcut
-					Destination="Library"
-					Icon="Book"
-					Label="[Naviagation_Library]"
-					ShowText="{Binding Expanded}"
-					ToolTip="[Naviagation_Library_Tip]" />
-
-				<local:Shortcut
-					Destination="Weather"
-					Icon="CloudMoonRain"
-					Label="[Naviagation_Weather]"
-					ShowText="{Binding Expanded}"
-					ToolTip="[Naviagation_Weather_Tip]" />
-
-				<local:Shortcut
-					Destination="Camera"
-					Icon="Camera"
-					Label="[Naviagation_Camera]"
-					ShowText="{Binding Expanded}"
-					ToolTip="[Naviagation_Camera_Tip]" />
-
-				<local:Shortcut
-					Destination="ActorInfo"
-					Icon="Pen"
-					Label="[Naviagation_Actor_Info]"
-					ShowText="{Binding Expanded}"
-					ToolTip="[Naviagation_Actor_Info_Tip]" />
-
-				<StackPanel Visibility="{Binding Services.Pose.IsEnabled, Converter={StaticResource !B2V}}">
-					<local:Shortcut
-						Destination="ActorCustomize"
-						Icon="IdCardAlt"
-						Label="[Naviagation_Actor_Customize]"
-						ShowText="{Binding Expanded}"
-						ToolTip="[Naviagation_Actor_Customize_Tip]" />
-
-					<local:Shortcut
-						Destination="ActorEquipment"
-						Icon="HatCowboy"
-						Label="[Naviagation_Actor_Equipment]"
-						ShowText="{Binding Expanded}"
-						ToolTip="[Naviagation_Actor_Equipment_Tip]" />
-				</StackPanel>
-
-				<!--<local:Shortcut
-					Destination="Action"
-					Icon="Biking"
-					Label="[Naviagation_Actor_Action"
-					ShowText="{Binding ShowText}"
-					ToolTip="[Naviagation_Actor_Action_Tip" />-->
-
-				<StackPanel Visibility="{Binding Services.Pose.IsEnabled, Converter={StaticResource B2V}}">
-					<local:Shortcut
-						Destination="Bones"
-						Icon="Bone"
-						Label="[Naviagation_Actor_Bones"
-						ShowText="{Binding Expanded}"
-						ToolTip="[Naviagation_Actor_Bones_Tip" />
-
-					<local:Shortcut
-						Destination="Transform"
-						Icon="Circle"
-						Label="[Naviagation_Actor_Transform"
-						ShowText="{Binding Expanded}"
-						ToolTip="[Naviagation_Actor_Transform_Tip" />
-				</StackPanel>
-
-			</StackPanel>
-		</Grid>
-
-		<!--  Top bar  -->
-		<Grid
-			x:Name="TopBar"
-			Grid.Row="0"
-			Grid.ColumnSpan="2"
-			Margin="48,8,0,0">
-
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" />
-				<RowDefinition />
-			</Grid.RowDefinitions>
 
 			<Border
-				Grid.RowSpan="2"
-				Margin="-42,0,0,0"
-				Background="{DynamicResource MaterialDesignBackground}"
-				CornerRadius="6"
-				IsHitTestVisible="False">
-				<Border.BitmapEffect>
-					<DropShadowBitmapEffect ShadowDepth="0" />
-				</Border.BitmapEffect>
-			</Border>
+				Grid.Row="1"
+				Margin="3,3,3,1"
+				CornerRadius="6,6,0,0"
+				Style="{StaticResource XivToolsControlBorder}" />
+
+			<Border
+				Grid.Row="2"
+				Margin="3,1,3,3"
+				CornerRadius="0,0,6,6"
+				Style="{StaticResource XivToolsControlBorder}" />
 
 			<StackPanel
 				Grid.Row="0"
-				Margin="0,0,6,0"
+				Margin="36,6,6,6"
 				Orientation="Horizontal">
 
 				<TextBlock Text="{Binding Services.Scene.CurrentSceneName}" />
@@ -232,56 +119,54 @@
 
 			</StackPanel>
 
-			<!--  Scene Options  -->
-			<ToolBar
+			<StackPanel
 				Grid.Row="1"
-				Margin="-6,0,-12,0"
-				Background="Transparent"
-				ToolBarTray.IsLocked="True">
+				Margin="4,3,4,1"
+				Orientation="Horizontal">
+
+				<StackPanel.Resources>
+					<Style
+						BasedOn="{StaticResource TransparentIconButton}"
+						TargetType="{x:Type Button}">
+						<Setter Property="Width" Value="32" />
+						<Setter Property="Height" Value="32" />
+					</Style>
+
+					<Style
+						BasedOn="{StaticResource TransparentIconToggleButton}"
+						TargetType="{x:Type ToggleButton}">
+						<Setter Property="Width" Value="32" />
+						<Setter Property="Height" Value="32" />
+						<Setter Property="Background" Value="Transparent" />
+					</Style>
+
+					<Style TargetType="{x:Type XivToolsWpf:IconBlock}">
+						<Setter Property="FontSize" Value="14" />
+					</Style>
+				</StackPanel.Resources>
+
 				<Button
-					Width="28"
-					Height="28"
-					ana:Behaviours.Tooltip="Scene_Save"
 					Click="OnSaveSceneClicked"
-					Style="{StaticResource TransparentIconButton}">
-					<XivToolsWpf:IconBlock
-						FontSize="14"
-						Icon="Save" />
+					ToolTip="[Scene_Save]">
+					<XivToolsWpf:IconBlock Icon="Save" />
 				</Button>
 
 				<Button
-					Width="28"
-					Height="28"
-					ana:Behaviours.Tooltip="Scene_Open"
 					Click="OnOpenSceneClicked"
-					Style="{StaticResource TransparentIconButton}">
-					<XivToolsWpf:IconBlock
-						FontSize="14"
-						Icon="FolderOpen" />
+					ToolTip="[Scene_Open]">
+					<XivToolsWpf:IconBlock Icon="FolderOpen" />
 				</Button>
 
-				<Separator />
-
 				<Button
-					Width="28"
-					Height="28"
-					ana:Behaviours.Tooltip="Scene_Import"
 					Click="OnImportClicked"
-					Style="{StaticResource TransparentIconButton}">
-					<XivToolsWpf:IconBlock
-						FontSize="14"
-						Icon="FileImport" />
+					ToolTip="[Scene_Import]">
+					<XivToolsWpf:IconBlock Icon="FileImport" />
 				</Button>
 
 				<Button
-					Width="28"
-					Height="28"
-					ana:Behaviours.Tooltip="Scene_Export"
 					Click="OnExportClicked"
-					Style="{StaticResource TransparentIconButton}">
-					<XivToolsWpf:IconBlock
-						FontSize="14"
-						Icon="FileExport" />
+					ToolTip="[Scene_Export]">
+					<XivToolsWpf:IconBlock Icon="FileExport" />
 				</Button>
 
 				<!--<ToggleButton
@@ -335,10 +220,7 @@
 
 				<!--  Verbose Logging  -->
 				<ToggleButton
-					Width="28"
-					Height="28"
 					IsChecked="{Binding Services.Logs.VerboseLogging}"
-					Style="{DynamicResource TransparentIconToggleButton}"
 					ToolTip="Enable verbose logging"
 					Visibility="{Binding Services.IsDebug, Converter={StaticResource B2V}}">
 					<XivToolsWpf:IconBlock
@@ -346,17 +228,128 @@
 						Icon="FileAlt" />
 				</ToggleButton>
 
-			</ToolBar>
+			</StackPanel>
+
+			<StackPanel
+				Grid.Row="2"
+				Margin="1,2,1,4">
+
+				<StackPanel.Resources>
+					<Style
+						BasedOn="{StaticResource TransparentIconButton}"
+						TargetType="{x:Type Button}">
+						<Setter Property="Height" Value="32" />
+						<Setter Property="HorizontalContentAlignment" Value="Left" />
+						<Setter Property="Margin" Value="3,0" />
+					</Style>
+
+					<Style TargetType="{x:Type XivToolsWpf:IconBlock}">
+						<Setter Property="FontSize" Value="14" />
+					</Style>
+				</StackPanel.Resources>
+
+				<Button
+					ana:Behaviours.Navigation="Settings"
+					ToolTip="[Naviagation_Settings_Tip]">
+					<XivToolsWpf:Header
+						Icon="Cogs"
+						Text="[Naviagation_Settings]" />
+				</Button>
+
+				<Button
+					ana:Behaviours.Navigation="Library"
+					ToolTip="[Naviagation_Library_Tip]">
+					<XivToolsWpf:Header
+						Icon="Book"
+						Text="[Naviagation_Library]" />
+				</Button>
+
+				<Button
+					ana:Behaviours.Navigation="Weather"
+					ToolTip="[Naviagation_Weather_Tip]">
+					<XivToolsWpf:Header
+						Icon="CloudMoonRain"
+						Text="[Naviagation_Weather]" />
+				</Button>
+
+				<Button
+					ana:Behaviours.Navigation="Camera"
+					ToolTip="[Naviagation_Camera_Tip]">
+					<XivToolsWpf:Header
+						Icon="Camera"
+						Text="[Naviagation_Camera]" />
+				</Button>
+
+				<Button
+					ana:Behaviours.Navigation="ActorInfo"
+					ToolTip="[Naviagation_Actor_Info_Tip]">
+					<XivToolsWpf:Header
+						Icon="Pen"
+						Text="[Naviagation_Actor_Info]" />
+				</Button>
+
+				<StackPanel Visibility="{Binding Services.Pose.IsEnabled, Converter={StaticResource !B2V}}">
+
+					<Button
+						ana:Behaviours.Navigation="ActorCustomize"
+						ToolTip="[Naviagation_Actor_Customize_Tip]">
+						<XivToolsWpf:Header
+							Icon="IdCardAlt"
+							Text="[Naviagation_Actor_Customize]" />
+					</Button>
+
+					<Button
+						ana:Behaviours.Navigation="ActorEquipment"
+						ToolTip="[Naviagation_Actor_Equipment_Tip]">
+						<XivToolsWpf:Header
+							Icon="HatCowboy"
+							Text="[Naviagation_Actor_Equipment]" />
+					</Button>
+
+				</StackPanel>
+
+				<!--<local:Shortcut
+					Destination="Action"
+					Icon="Biking"
+					Label="[Naviagation_Actor_Action"
+					ShowText="{Binding ShowText}"
+					ToolTip="[Naviagation_Actor_Action_Tip" />-->
+
+				<StackPanel Visibility="{Binding Services.Pose.IsEnabled, Converter={StaticResource B2V}}">
+
+					<Button
+						ana:Behaviours.Navigation="Bones"
+						ToolTip="[Naviagation_Actor_Bones_Tip]">
+						<XivToolsWpf:Header
+							Icon="Bone"
+							Text="[Naviagation_Actor_Bones]" />
+					</Button>
+
+					<Button
+						ana:Behaviours.Navigation="Transform"
+						ToolTip="[Naviagation_Actor_Transform_Tip]">
+						<XivToolsWpf:Header
+							Icon="Circle"
+							Text="[Naviagation_Actor_Transform]" />
+					</Button>
+				</StackPanel>
+
+			</StackPanel>
+
+			<Rectangle
+				Grid.Row="0"
+				Fill="Transparent"
+				MouseDown="OnIconMouseDown" />
 		</Grid>
 
 
-
 		<Grid
+			x:Name="PoseBar"
 			Grid.Row="0"
-			Grid.Column="2"
-			Margin="20,8,0,0"
+			Margin="20,0,0,0"
 			HorizontalAlignment="Center"
-			VerticalAlignment="Top">
+			VerticalAlignment="Top"
+			Opacity="0">
 
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto" />
@@ -566,16 +559,210 @@
 
 		</Grid>
 
-
-		<Image
-			Grid.RowSpan="2"
+		<ToggleButton
 			Width="42"
 			Height="42"
 			Margin="0,0,0,0"
+			Padding="0"
 			HorizontalAlignment="Left"
 			VerticalAlignment="Top"
-			MouseDown="OnIconMouseDown"
-			Source="/Assets/Anamnesis.png" />
+			Background="Transparent"
+			Checked="OnExpandClicked"
+			IsChecked="{Binding IsExpanded}">
+
+			<ToggleButton.Style>
+				<Style
+					BasedOn="{StaticResource XivToolsToggleButton}"
+					TargetType="{x:Type ToggleButton}">
+					<Style.Setters>
+						<Setter Property="Template">
+							<Setter.Value>
+								<ControlTemplate TargetType="{x:Type ToggleButton}">
+									<Grid
+										x:Name="Grid"
+										Cursor="Hand"
+										RenderTransformOrigin="0.5,0.5">
+
+										<Grid.RenderTransform>
+											<ScaleTransform ScaleX="1" ScaleY="1" />
+										</Grid.RenderTransform>
+
+										<Ellipse
+											x:Name="Background"
+											Fill="{StaticResource MaterialDesignBackground}"
+											Opacity="0">
+											<Ellipse.BitmapEffect>
+												<DropShadowBitmapEffect ShadowDepth="0" />
+											</Ellipse.BitmapEffect>
+										</Ellipse>
+
+										<Image
+											Margin="0,0,0,0"
+											MouseDown="OnIconMouseDown"
+											Source="/Assets/Anamnesis.png" />
+
+										<Ellipse
+											x:Name="Highlight"
+											Margin="3"
+											Fill="#33FFFFFF"
+											Opacity="0" />
+
+										<Ellipse
+											x:Name="Shine"
+											Margin="1"
+											Opacity="0.75">
+											<Ellipse.Fill>
+												<LinearGradientBrush>
+													<GradientStop x:Name="Stop0" Offset="-1" Color="Transparent" />
+													<GradientStop x:Name="Stop1" Offset="-0.5" Color="White" />
+													<GradientStop x:Name="Stop2" Offset="0" Color="Transparent" />
+												</LinearGradientBrush>
+											</Ellipse.Fill>
+
+										</Ellipse>
+									</Grid>
+
+									<ControlTemplate.Triggers>
+										<Trigger Property="IsMouseOver" Value="True">
+											<Trigger.EnterActions>
+												<BeginStoryboard>
+													<Storyboard>
+														<DoubleAnimation
+															EasingFunction="{StaticResource SinEaseIn}"
+															Storyboard.TargetName="Highlight"
+															Storyboard.TargetProperty="Opacity"
+															To="1"
+															Duration="0:0:0.100" />
+													</Storyboard>
+												</BeginStoryboard>
+											</Trigger.EnterActions>
+
+											<Trigger.ExitActions>
+												<BeginStoryboard>
+													<Storyboard>
+														<DoubleAnimation
+															EasingFunction="{StaticResource SinEaseIn}"
+															Storyboard.TargetName="Highlight"
+															Storyboard.TargetProperty="Opacity"
+															To="0"
+															Duration="0:0:0.200" />
+
+													</Storyboard>
+												</BeginStoryboard>
+											</Trigger.ExitActions>
+										</Trigger>
+
+										<Trigger Property="IsChecked" Value="True">
+											<Trigger.EnterActions>
+												<BeginStoryboard>
+													<Storyboard>
+														<DoubleAnimation
+															EasingFunction="{StaticResource SinEaseIn}"
+															Storyboard.TargetName="Background"
+															Storyboard.TargetProperty="Opacity"
+															To="1"
+															Duration="0:0:0.200" />
+
+														<DoubleAnimation
+															EasingFunction="{StaticResource SinEaseInOut}"
+															Storyboard.TargetName="Stop0"
+															Storyboard.TargetProperty="Offset"
+															From="-1"
+															To="1"
+															Duration="0:0:0.500" />
+														<DoubleAnimation
+															EasingFunction="{StaticResource SinEaseInOut}"
+															Storyboard.TargetName="Stop1"
+															Storyboard.TargetProperty="Offset"
+															From="-0.5"
+															To="1.5"
+															Duration="0:0:0.300" />
+														<DoubleAnimation
+															EasingFunction="{StaticResource SinEaseInOut}"
+															Storyboard.TargetName="Stop2"
+															Storyboard.TargetProperty="Offset"
+															From="0"
+															To="2"
+															Duration="0:0:0.200" />
+													</Storyboard>
+												</BeginStoryboard>
+											</Trigger.EnterActions>
+
+											<Trigger.ExitActions>
+												<BeginStoryboard>
+													<Storyboard>
+														<DoubleAnimation
+															EasingFunction="{StaticResource SinEaseIn}"
+															Storyboard.TargetName="Background"
+															Storyboard.TargetProperty="Opacity"
+															To="0"
+															Duration="0:0:0.200" />
+													</Storyboard>
+												</BeginStoryboard>
+											</Trigger.ExitActions>
+										</Trigger>
+
+										<Trigger Property="IsPressed" Value="True">
+											<Trigger.EnterActions>
+												<BeginStoryboard>
+													<Storyboard>
+														<DoubleAnimation
+															EasingFunction="{StaticResource SinEaseIn}"
+															Storyboard.TargetName="Grid"
+															Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+															To="0.9"
+															Duration="0:0:0.100" />
+
+														<DoubleAnimation
+															EasingFunction="{StaticResource SinEaseIn}"
+															Storyboard.TargetName="Grid"
+															Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+															To="0.9"
+															Duration="0:0:0.100" />
+													</Storyboard>
+												</BeginStoryboard>
+											</Trigger.EnterActions>
+
+											<Trigger.ExitActions>
+												<BeginStoryboard>
+													<Storyboard>
+														<DoubleAnimation
+															Storyboard.TargetName="Grid"
+															Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+															From="0.9"
+															To="1"
+															Duration="0:0:0.200">
+															<DoubleAnimation.EasingFunction>
+																<BackEase EasingMode="EaseOut" />
+															</DoubleAnimation.EasingFunction>
+														</DoubleAnimation>
+
+														<DoubleAnimation
+															Storyboard.TargetName="Grid"
+															Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+															From="0.9"
+															To="1"
+															Duration="0:0:0.200">
+															<DoubleAnimation.EasingFunction>
+																<BackEase EasingMode="EaseOut" />
+															</DoubleAnimation.EasingFunction>
+														</DoubleAnimation>
+													</Storyboard>
+												</BeginStoryboard>
+											</Trigger.ExitActions>
+
+										</Trigger>
+
+									</ControlTemplate.Triggers>
+								</ControlTemplate>
+							</Setter.Value>
+						</Setter>
+					</Style.Setters>
+				</Style>
+			</ToggleButton.Style>
+
+
+		</ToggleButton>
 
 	</Grid>
 </panels:PanelBase>

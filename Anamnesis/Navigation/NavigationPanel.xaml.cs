@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 namespace Anamnesis.Navigation;
+
 using Anamnesis.Panels;
 using PropertyChanged;
 using System.Windows;
@@ -9,13 +10,20 @@ using System.Windows.Input;
 using XivToolsWpf.Extensions;
 using Anamnesis.Files;
 
-/// <summary>
-/// Interaction logic for Navigation.xaml.
-/// </summary>
 [AddINotifyPropertyChangedInterface]
 public partial class NavigationPanel : PanelBase
 {
-	public bool Expanded { get; set; } = true;
+	public bool IsExpanded { get; set; } = true;
+
+	protected override void OnMouseUp(MouseButtonEventArgs e)
+	{
+		base.OnMouseUp(e);
+
+		if (this.IsMouseOver)
+			return;
+
+		this.IsExpanded = false;
+	}
 
 	private async void OnIconMouseDown(object sender, MouseButtonEventArgs e)
 	{
@@ -52,5 +60,9 @@ public partial class NavigationPanel : PanelBase
 	private void OnExportClicked(object sender, RoutedEventArgs e)
 	{
 		FileService.Export().Run();
+	}
+
+	private void OnExpandClicked(object sender, RoutedEventArgs e)
+	{
 	}
 }
