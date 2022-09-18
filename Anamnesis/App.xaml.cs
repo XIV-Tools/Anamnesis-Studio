@@ -18,6 +18,7 @@ using Anamnesis.Windows;
 using Serilog;
 using XivToolsWpf;
 using XivToolsWpf.Extensions;
+using XivToolsWpf.Localization;
 using Application = System.Windows.Application;
 
 /// <summary>
@@ -29,6 +30,8 @@ public partial class App : Application
 
 	protected override void OnStartup(StartupEventArgs e)
 	{
+		TextBlockHook.Attach();
+
 		AppDomain.CurrentDomain.UnhandledException += this.CurrentDomain_UnhandledException;
 		this.Dispatcher.UnhandledException += this.DispatcherOnUnhandledException;
 		Application.Current.DispatcherUnhandledException += this.CurrentOnDispatcherUnhandledException;

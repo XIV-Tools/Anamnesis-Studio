@@ -8,15 +8,13 @@ using FontAwesome.Sharp;
 using Serilog;
 using System;
 using System.ComponentModel;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Threading;
 using XivToolsWpf;
 using XivToolsWpf.DependencyProperties;
+using XivToolsWpf.Localization;
 
 public abstract class PanelBase : UserControl, IPanel, INotifyPropertyChanged
 {
@@ -25,6 +23,8 @@ public abstract class PanelBase : UserControl, IPanel, INotifyPropertyChanged
 
 	public PanelBase()
 	{
+		TextBlockHook.Attach();
+
 		this.GetType().GetMethod("InitializeComponent")?.Invoke(this, null);
 		this.DataContext = this;
 	}
@@ -34,7 +34,6 @@ public abstract class PanelBase : UserControl, IPanel, INotifyPropertyChanged
 	public ServiceManager Services => App.Services;
 	public bool IsOpen { get; private set; } = true;
 	public virtual string Id => this.GetType().ToString();
-	public string? TitleKey { get; set; }
 	public string? Title { get; set; }
 	public IconChar Icon { get; set; }
 	public Rect Rect => this.Host.Rect;
@@ -55,25 +54,6 @@ public abstract class PanelBase : UserControl, IPanel, INotifyPropertyChanged
 	}
 
 	public object? PanelContext { get; private set; }
-
-	public string FinalTitle
-	{
-		get
-		{
-			StringBuilder sb = new();
-
-			if (this.TitleKey != null)
-				sb.Append(LocalizationService.GetString(this.TitleKey, true));
-
-			if (this.TitleKey != null && this.Title != null)
-				sb.Append(" ");
-
-			if (this.Title != null)
-				sb.Append(this.Title);
-
-			return sb.ToString();
-		}
-	}
 
 	protected ILogger Log => Serilog.Log.ForContext(this.GetType());
 

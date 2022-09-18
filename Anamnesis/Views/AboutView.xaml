@@ -23,7 +23,7 @@
 
 		<GroupBox Grid.Row="0">
 			<GroupBox.Header>
-				<XivToolsWpf:TextBlock Key="About_Version_Header"/>
+				<TextBlock Text="[About_Version_Header"/>
 			</GroupBox.Header>
 
 			<Grid>
@@ -35,7 +35,7 @@
 				<TextBlock x:Name="VersionLabel" Grid.Column="0" FontSize="22" Margin="6,0,0,0"/>
 				<Button Grid.Column="1" Width="28" Style="{StaticResource TransparentButton}" Click="OnCheckForUpdatesClicked">
 					<Button.ToolTip>
-						<XivToolsWpf:TextBlock Key="About_CheckForUpdates"/>
+						<TextBlock Text="[About_CheckForUpdates"/>
 					</Button.ToolTip>
 					
 					<fa:IconBlock Icon="Redo"/>
@@ -47,7 +47,7 @@
 		
 		<GroupBox Grid.Row="1">
 			<GroupBox.Header>
-				<XivToolsWpf:TextBlock Key="About_OpenSource_Header"/>
+				<TextBlock Text="[About_OpenSource_Header"/>
 			</GroupBox.Header>
 
 			<TextBlock TextWrapping="Wrap" Margin="6,0,0,10" Style="{StaticResource Body}">Anamnesis is proudly Free and Open Source Software. Please feel free to leave the team a Star on 
@@ -78,7 +78,7 @@
 		</GroupBox>
 		<GroupBox Grid.Row="2">
 			<GroupBox.Header>
-				<XivToolsWpf:TextBlock Key="About_Contact_Header"/>
+				<TextBlock Text="[About_Contact_Header"/>
 			</GroupBox.Header>
 
 			<TextBlock TextWrapping="Wrap" Margin="6,0,0,10" Style="{StaticResource Body}">Want to follow development, ask a question, look for help, raise a bug, or just say hi? Visit us on
@@ -88,7 +88,7 @@
 		
 		<GroupBox Grid.Row="3">
 			<GroupBox.Header>
-				<XivToolsWpf:TextBlock Key="About_Donate_Header"/>
+				<TextBlock Text="[About_Donate_Header"/>
 			</GroupBox.Header>
 
 			<TextBlock TextWrapping="Wrap" Margin="6,0,0,7" Style="{StaticResource Body}">This project is a labor of love. Please consider donating to the members of the dev team to say thank you!<LineBreak />
@@ -102,7 +102,7 @@
 
 		<GroupBox Grid.Row="4">
 			<GroupBox.Header>
-				<XivToolsWpf:TextBlock Key="About_Debug_Header"/>
+				<TextBlock Text="[About_Debug_Header"/>
 			</GroupBox.Header>
 
 			<Grid>
@@ -117,11 +117,11 @@
 				</Grid.RowDefinitions>
 
 				<Button Margin="3" Click="OnLogsClicked" Grid.Column="0" Grid.Row="0" Style="{StaticResource TransparentButton}">
-					<XivToolsWpf:TextBlock Key="About_Debug_OpenLogs" Margin="3"/>
+					<TextBlock Text="[About_Debug_OpenLogs" Margin="3"/>
 				</Button>
 
 				<Button Margin="3" Click="OnSetingsClicked" Grid.Column="1" Grid.Row="0" Style="{StaticResource TransparentButton}">
-					<XivToolsWpf:TextBlock Key="About_Debug_OpenSettings" Margin="3"/>
+					<TextBlock Text="[About_Debug_OpenSettings" Margin="3"/>
 				</Button>
 			</Grid>
 		</GroupBox>

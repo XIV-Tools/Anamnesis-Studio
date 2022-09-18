@@ -11,7 +11,7 @@
 	<GroupBox x:Name="ContentArea" Style="{StaticResource Cm3GroupBox}">
 		<GroupBox.Header>
 			<StackPanel Orientation="Horizontal">
-				<XivToolsWpf:Header Icon="Undo" Key="System_History" />
+				<XivToolsWpf:Header Icon="Undo" Text="[System_History" />
 				<TextBlock Text="(" Margin="6,0,2,0"/>
 				<TextBlock Text="{Binding TargetService.SelectedActor.DisplayName}"/>
 				<TextBlock Text=")" Margin="2,0,0,0"/>

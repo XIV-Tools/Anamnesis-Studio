@@ -8,9 +8,9 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:panels="clr-namespace:Anamnesis.Panels"
 	xmlns:views="clr-namespace:Anamnesis.Actor.Views"
+	Title="[Naviagation_Actor_Info"
 	Width="256"
 	Icon="Pen"
-	TitleKey="Naviagation_Actor_Info"
 	mc:Ignorable="d">
 
 	<Grid
@@ -31,11 +31,11 @@
 			<RowDefinition />
 		</Grid.RowDefinitions>
 
-		<XivToolsWpf:TextBlock
-			Key="Character_Actor_Nickname"
+		<TextBlock
 			Grid.Row="0"
 			Grid.Column="0"
-			Style="{StaticResource Label}" />
+			Style="{StaticResource Label}"
+			Text="Character_Actor_Nickname" />
 
 		<TextBox
 			Grid.Row="0"
@@ -44,11 +44,11 @@
 			Style="{StaticResource MaterialDesignTextBox}"
 			Text="{Binding Actor.Names.Nickname, UpdateSourceTrigger=PropertyChanged}" />
 
-		<XivToolsWpf:TextBlock
-			Key="Character_Actor_Alpha"
+		<TextBlock
 			Grid.Row="4"
 			Grid.Column="0"
-			Style="{StaticResource Label}" />
+			Style="{StaticResource Label}"
+			Text="[Character_Actor_Alpha" />
 		<XivToolsWpf:NumberBox
 			Grid.Row="4"
 			Grid.Column="1"
@@ -58,11 +58,11 @@
 			TickFrequency="0.1"
 			Value="{Binding Actor.Transparency}" />
 
-		<XivToolsWpf:TextBlock
-			Key="Character_Actor_Voice"
+		<TextBlock
 			Grid.Row="5"
 			Grid.Column="0"
-			Style="{StaticResource Label}" />
+			Style="{StaticResource Label}"
+			Text="[Character_Actor_Voice" />
 		<ComboBox
 			Grid.Row="5"
 			Grid.Column="1"
@@ -74,7 +74,7 @@
 				<GroupStyle>
 					<GroupStyle.HeaderTemplate>
 						<DataTemplate>
-							<XivToolsWpf:TextBlock
+							<TextBlock
 								Padding="10,5"
 								HorizontalAlignment="Left"
 								FontSize="13"
@@ -95,11 +95,11 @@
 		</ComboBox>
 
 
-		<XivToolsWpf:TextBlock
-			Key="SubActor_Title"
+		<TextBlock
 			Grid.Row="6"
 			Grid.Column="0"
-			Style="{StaticResource Label}" />
+			Style="{StaticResource Label}"
+			Text="[SubActor_Title" />
 
 		<StackPanel
 			Grid.Row="6"

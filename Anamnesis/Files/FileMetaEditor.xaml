@@ -35,13 +35,13 @@
 				<XivToolsWpf:IconBlock Icon="Clipboard"/>
 
 				<Button.ToolTip>
-					<XivToolsWpf:TextBlock Key="FileMeta_ImageFromClip"/>
+					<TextBlock Text="[FileMeta_ImageFromClip"/>
 				</Button.ToolTip>
 			</Button>
 
 			<Button Grid.Row="1" Grid.Column="1" Margin="3" Style="{DynamicResource TransparentButton}" Content="..." Click="OnImageBrowseClicked">
 				<Button.ToolTip>
-					<XivToolsWpf:TextBlock Key="FileBrowser_Browse"/>
+					<TextBlock Text="[FileBrowser_Browse"/>
 				</Button.ToolTip>
 			</Button>
 		</Grid>
@@ -61,17 +61,17 @@
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
 
-			<XivToolsWpf:TextBlock Grid.Column="0" Grid.Row="0" Key="FileMeta_Author" Style="{DynamicResource Label}"/>
+			<TextBlock Grid.Column="0" Grid.Row="0" Text="[FileMeta_Author" Style="{DynamicResource Label}"/>
 			<TextBox Grid.Column="1" Grid.Row="0" Text="{Binding File.Author}" MaxLines="1" Style="{DynamicResource MaterialDesignTextBox}"/>
 
-			<XivToolsWpf:TextBlock Grid.Column="0" Grid.Row="1" Key="FileMeta_Version" Style="{DynamicResource Label}"/>
+			<TextBlock Grid.Column="0" Grid.Row="1" Text="[FileMeta_Version" Style="{DynamicResource Label}"/>
 			<TextBox Grid.Column="1" Grid.Row="1" Text="{Binding File.Version}" MaxLines="1" Style="{DynamicResource MaterialDesignTextBox}"/>
 
-			<XivToolsWpf:TextBlock Grid.Column="0" Grid.Row="2" Key="FileMeta_Description" Style="{DynamicResource Label}" Margin="0, 12, 6, 0"/>
+			<TextBlock Grid.Column="0" Grid.Row="2" Text="[FileMeta_Description" Style="{DynamicResource Label}" Margin="0, 12, 6, 0"/>
 			<TextBox Grid.Column="1" Grid.Row="2" Text="{Binding File.Description}" Height="72" AcceptsReturn="True" MaxLines="8" Style="{DynamicResource MaterialDesignTextBox}" Margin="0, 12, 0, 0"/>
 
 			<Button Grid.Row="5" HorizontalAlignment="Right" Grid.Column="1" Margin="0, 12, 0, 0" Click="OnSaveClicked">
-				<XivToolsWpf:TextBlock Key="Common_SaveFile" />
+				<TextBlock Text="[Common_SaveFile" />
 			</Button>
 			
 		</Grid>

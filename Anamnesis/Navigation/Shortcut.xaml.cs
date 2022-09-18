@@ -21,8 +21,7 @@ using XivToolsWpf.Extensions;
 [AddINotifyPropertyChangedInterface]
 public partial class Shortcut : UserControl
 {
-	public static readonly IBind<string> LabelKeyDp = Binder.Register<string, Shortcut>(nameof(LabelKey), BindMode.OneWay);
-	public static readonly IBind<string> ToolTipKeyDp = Binder.Register<string, Shortcut>(nameof(ToolTipKey), BindMode.OneWay);
+	public static readonly IBind<string> LabelDp = Binder.Register<string, Shortcut>(nameof(Label), BindMode.OneWay);
 	public static readonly IBind<IconChar> IconDp = Binder.Register<IconChar, Shortcut>(nameof(Icon), BindMode.OneWay);
 	public static readonly IBind<string> DestinationDp = Binder.Register<string, Shortcut>(nameof(Destination), BindMode.OneWay);
 	public static readonly IBind<object> ContextDp = Binder.Register<object, Shortcut>(nameof(Context), BindMode.OneWay);
@@ -35,16 +34,10 @@ public partial class Shortcut : UserControl
 		this.ButtonContent.DataContext = this;
 	}
 
-	public string LabelKey
+	public string Label
 	{
-		get => LabelKeyDp.Get(this);
-		set => LabelKeyDp.Set(this, value);
-	}
-
-	public string ToolTipKey
-	{
-		get => ToolTipKeyDp.Get(this);
-		set => ToolTipKeyDp.Set(this, value);
+		get => LabelDp.Get(this);
+		set => LabelDp.Set(this, value);
 	}
 
 	public IconChar Icon

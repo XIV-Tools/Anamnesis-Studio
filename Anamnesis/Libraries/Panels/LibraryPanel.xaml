@@ -12,11 +12,11 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:panels="clr-namespace:Anamnesis.Panels"
 	xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
+	Title="[Naviagation_Library]"
 	Width="800"
 	Height="450"
 	CanResize="True"
 	Icon="Book"
-	TitleKey="Naviagation_Library"
 	mc:Ignorable="d">
 
 	<Grid x:Name="ContentArea">
@@ -156,14 +156,14 @@
 						IsIndeterminate="True"
 						Visibility="{Binding SelectedEntry.Source.IsLoading, Converter={StaticResource B2V}, FallbackValue=Collapsed}" />
 
-					<XivToolsWpf:TextBlock
+					<TextBlock
 						Grid.Row="1"
 						Grid.ColumnSpan="3"
 						Margin="0,6,0,0"
 						Style="{StaticResource Header}"
 						Text="{Binding SelectedEntry.Name}" />
 
-					<XivToolsWpf:TextBlock
+					<TextBlock
 						Grid.Row="2"
 						Grid.ColumnSpan="2"
 						Margin="10,0,0,12"
@@ -172,27 +172,27 @@
 						Visibility="{Binding SelectedEntry.Description, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
 
 
-					<XivToolsWpf:TextBlock
-						Key="FileMeta_Author"
+					<TextBlock
 						Grid.Row="3"
 						Grid.Column="0"
 						Margin="0,0,6,0"
 						Style="{StaticResource Label}"
+						Text="[FileMeta_Author"
 						Visibility="{Binding SelectedEntry.Author, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
-					<XivToolsWpf:TextBlock
+					<TextBlock
 						Grid.Row="3"
 						Grid.Column="1"
 						Text="{Binding SelectedEntry.Author}"
 						Visibility="{Binding SelectedEntry.Author, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
 
-					<XivToolsWpf:TextBlock
-						Key="FileMeta_Version"
+					<TextBlock
 						Grid.Row="4"
 						Grid.Column="0"
 						Margin="0,0,6,0"
 						Style="{StaticResource Label}"
+						Text="[FileMeta_Version"
 						Visibility="{Binding SelectedEntry.Version, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
-					<XivToolsWpf:TextBlock
+					<TextBlock
 						Grid.Row="4"
 						Grid.Column="1"
 						Text="{Binding SelectedEntry.Version}"
@@ -222,7 +222,7 @@
 											Icon="{Binding DisplayIcon}" />
 										<TextBlock
 											Margin="3,0"
-											Text="{Binding DisplayKey}" />
+											Text="{Binding Display}" />
 									</StackPanel>
 								</Button>
 							</DataTemplate>
@@ -321,7 +321,7 @@
 										</Style>
 									</ToggleButton.Style>
 
-									<XivToolsWpf:TextBlock
+									<TextBlock
 										MaxWidth="60"
 										Margin="4"
 										FontSize="11"
@@ -368,13 +368,13 @@
 					Style="{StaticResource TransparentIconButton}">
 					<StackPanel Orientation="Horizontal">
 						<XivToolsWpf:IconBlock Icon="ChevronLeft" />
-						<XivToolsWpf:TextBlock
+						<TextBlock
 							Margin="6,0,6,0"
 							Text="Back" />
 					</StackPanel>
 				</Button>
 
-				<XivToolsWpf:TextBlock
+				<TextBlock
 					Grid.Column="1"
 					HorizontalAlignment="Center"
 					VerticalAlignment="Center"
@@ -519,7 +519,7 @@
 
 							<controls1:EntryIcon />
 
-							<XivToolsWpf:TextBlock
+							<TextBlock
 								Grid.Row="1"
 								VerticalAlignment="Top"
 								Text="{Binding Name}"
@@ -555,7 +555,7 @@
 								Height="48"
 								Margin="0,-6,0,-4" />
 
-							<XivToolsWpf:TextBlock
+							<TextBlock
 								Grid.Column="1"
 								Margin="12,0,0,0"
 								VerticalAlignment="Center"
@@ -574,13 +574,12 @@
 				IsIndeterminate="True"
 				Visibility="{Binding Filter.IsFiltering, Converter={StaticResource B2V}}" />
 
-			<XivToolsWpf:TextBlock
-				Key="Library_ItemCount"
+			<TextBlock
 				Grid.Row="2"
 				Margin="3,3,20,3"
 				HorizontalAlignment="Right"
 				Style="{StaticResource Label}"
-				Value="{Binding Entries.Count}" />
+				Text="{Binding Entries.Count, StringFormat='[Library_ItemCount]'}" />
 		</Grid>
 	</Grid>
 </panels:PanelBase>

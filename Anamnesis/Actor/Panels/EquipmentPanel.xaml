@@ -9,10 +9,10 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:views="clr-namespace:Anamnesis.Actor.Views"
 	xmlns:views1="clr-namespace:Anamnesis.Views"
+	Title="[Naviagation_Actor_Equipment"
 	Width="350"
 	Height="450"
 	Icon="IdCardAlt"
-	TitleKey="Naviagation_Actor_Equipment"
 	mc:Ignorable="d">
 
 	<Grid x:Name="ContentArea">
@@ -53,7 +53,7 @@
 
 				<Button.ToolTip>
 					<StackPanel>
-						<XivToolsWpf:TextBlock Key="Character_Equipment_Clear" />
+						<TextBlock Text="Character_Equipment_Clear" />
 						<views1:HotkeyPrompt Function="AppearancePage.ClearEquipment" />
 					</StackPanel>
 				</Button.ToolTip>

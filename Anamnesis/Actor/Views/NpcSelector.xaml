@@ -161,13 +161,13 @@
 							Orientation="Horizontal"
 							Visibility="{Binding ModelCharaRow, Converter={StaticResource NotZeroToVisibility}}">
 
-							<xivToolsWpf:TextBlock
-								Key="Character_Actor_Model"
+							<TextBlock
 								Margin="2,0,0,0"
 								Opacity="0.5"
-								Style="{StaticResource Label}" />
+								Style="{StaticResource Label}"
+								Text="[Character_Actor_Model]" />
 
-							<xivToolsWpf:TextBlock
+							<TextBlock
 								Margin="0"
 								Opacity="0.5"
 								Style="{StaticResource Label}"
@@ -201,16 +201,16 @@
 										Visibility="{Binding Description, Converter={StaticResource NotNullToVisibilityConverter}}" />
 
 									<StackPanel Orientation="Horizontal">
-										<xivToolsWpf:TextBlock Text="{Binding TypeName}" />
-										<xivToolsWpf:TextBlock
+										<TextBlock Text="{Binding TypeName}" />
+										<TextBlock
 											Margin="0"
 											Text=": #" />
 										<TextBlock Text="{Binding RowId}" />
 									</StackPanel>
 
 									<StackPanel Orientation="Horizontal">
-										<xivToolsWpf:TextBlock Key="Character_Actor_Model" />
-										<xivToolsWpf:TextBlock
+										<TextBlock Text="[Character_Actor_Model]" />
+										<TextBlock
 											Margin="0"
 											Text=": #" />
 										<TextBlock

@@ -7,11 +7,11 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:local="clr-namespace:Anamnesis.Panels"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	Title="[Common_ImportFile]"
 	Height="328"
 	MinWidth="500"
 	CanResize="False"
 	Icon="FileImport"
-	TitleKey="Common_ImportFile"
 	mc:Ignorable="d">
 
 	<Grid x:Name="ContentArea">
@@ -70,7 +70,7 @@
 				VerticalAlignment="Top"
 				Orientation="Vertical">
 
-				<XivToolsWpf:TextBlock
+				<TextBlock
 					Margin="0,0,0,6"
 					Text="{Binding File.Description}"
 					TextWrapping="Wrap"
@@ -79,11 +79,11 @@
 				<StackPanel
 					Orientation="Horizontal"
 					Visibility="{Binding File.Author, Converter={StaticResource NotNullToVisibilityConverter}}">
-					<XivToolsWpf:TextBlock
-						Key="FileMeta_Author"
+					<TextBlock
 						Margin="0,0,6,0"
-						Style="{StaticResource Label}" />
-					<XivToolsWpf:TextBlock
+						Style="{StaticResource Label}"
+						Text="[FileMeta_Author" />
+					<TextBlock
 						FontWeight="SemiBold"
 						Text="{Binding File.Author}" />
 				</StackPanel>
@@ -91,11 +91,11 @@
 				<StackPanel
 					Orientation="Horizontal"
 					Visibility="{Binding File.Version, Converter={StaticResource NotNullToVisibilityConverter}}">
-					<XivToolsWpf:TextBlock
-						Key="FileMeta_Version"
+					<TextBlock
 						Margin="0,0,6,0"
-						Style="{StaticResource Label}" />
-					<XivToolsWpf:TextBlock
+						Style="{StaticResource Label}"
+						Text="[FileMeta_Version" />
+					<TextBlock
 						FontWeight="SemiBold"
 						Text="{Binding File.Version}" />
 				</StackPanel>
@@ -163,35 +163,35 @@
 				Grid.Row="0"
 				Grid.Column="1"
 				IsChecked="{Binding Destination, Converter={StaticResource EnumToBool}, ConverterParameter=Expression}">
-				<XivToolsWpf:TextBlock Key="Pose_Expression" />
+				<TextBlock Text="[Pose_Expression" />
 			</RadioButton>
 
 			<RadioButton
 				Grid.Row="1"
 				Grid.Column="1"
 				IsChecked="{Binding Destination, Converter={StaticResource EnumToBool}, ConverterParameter=Body}">
-				<XivToolsWpf:TextBlock Key="Pose_Body" />
+				<TextBlock Text="[Pose_Body" />
 			</RadioButton>
 
 			<RadioButton
 				Grid.Row="2"
 				Grid.Column="1"
 				IsChecked="{Binding Destination, Converter={StaticResource EnumToBool}, ConverterParameter=ScalePack}">
-				<XivToolsWpf:TextBlock Key="Pose_ScalePack" />
+				<TextBlock Text="[Pose_ScalePack" />
 			</RadioButton>
 
 			<RadioButton
 				Grid.Row="3"
 				Grid.Column="1"
 				IsChecked="{Binding Destination, Converter={StaticResource EnumToBool}, ConverterParameter=Selection}">
-				<XivToolsWpf:TextBlock Key="Pose_Selected" />
+				<TextBlock Text="[Pose_Selected" />
 			</RadioButton>
 
 			<RadioButton
 				Grid.Row="4"
 				Grid.Column="1"
 				IsChecked="{Binding Destination, Converter={StaticResource EnumToBool}, ConverterParameter=All}">
-				<XivToolsWpf:TextBlock Key="Pose_All" />
+				<TextBlock Text="[Pose_All" />
 			</RadioButton>
 
 		</Grid>
@@ -204,7 +204,7 @@
 			Click="OnImportClicked"
 			IsEnabled="{Binding Actor, Converter={StaticResource NotNullToBoolConverter}}">
 
-			<XivToolsWpf:TextBlock Key="Common_ImportFile" />
+			<TextBlock Text="[Common_ImportFile" />
 
 		</Button>
 	</Grid>

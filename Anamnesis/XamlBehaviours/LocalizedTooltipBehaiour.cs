@@ -24,8 +24,8 @@ public class LocalizedTooltipBehaiour : Behaviour
 	{
 		base.OnLoaded();
 
-		XivToolsWpf.Controls.TextBlock text = new();
-		text.Key = this.Key;
+		TextBlock text = new();
+		text.Text = this.Key;
 
 		if (this.Host is FrameworkElement frameworkElement)
 		{

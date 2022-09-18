@@ -128,7 +128,7 @@
 					Style="{StaticResource TransparentIconToggleButton}"
 					Visibility="{Binding IsValidWeapon, Converter={StaticResource B2V}}">
 					<ToggleButton.ToolTip>
-						<XivToolsWpf:TextBlock Key="Character_Equipment_WeaponToggle" />
+						<TextBlock Text="[Character_Equipment_WeaponToggle]" />
 					</ToggleButton.ToolTip>
 
 					<fa:IconBlock
@@ -148,7 +148,7 @@
 					Style="{StaticResource TransparentIconToggleButton}"
 					Visibility="{Binding IsHead, Converter={StaticResource B2V}}">
 					<ToggleButton.ToolTip>
-						<XivToolsWpf:TextBlock Key="Character_Equipment_HatToggle" />
+						<TextBlock Text="[Character_Equipment_HatToggle" />
 					</ToggleButton.ToolTip>
 
 					<fa:IconBlock
@@ -167,7 +167,7 @@
 					Style="{StaticResource TransparentIconToggleButton}"
 					Visibility="{Binding IsHead, Converter={StaticResource B2V}}">
 					<ToggleButton.ToolTip>
-						<XivToolsWpf:TextBlock Key="Character_Equipment_VisorToggle" />
+						<TextBlock Text="[Character_Equipment_VisorToggle" />
 					</ToggleButton.ToolTip>
 
 					<fa:IconBlock
@@ -181,7 +181,7 @@
 					Visibility="{Binding IsWeapon, Converter={StaticResource B2V}}"
 					Value="{Binding ExtendedViewModel.Tint}">
 					<ana:RgbColorControl.ToolTip>
-						<XivToolsWpf:TextBlock Key="Character_Equipment_Tint" />
+						<TextBlock Text="[Character_Equipment_Tint" />
 					</ana:RgbColorControl.ToolTip>
 
 				</ana:RgbColorControl>
@@ -200,7 +200,7 @@
 					Style="{DynamicResource TransparentButton}">
 
 					<Button.ToolTip>
-						<XivToolsWpf:TextBlock Key="Character_Equipment_Dye" />
+						<TextBlock Text="[Character_Equipment_Dye" />
 					</Button.ToolTip>
 
 					<Grid>

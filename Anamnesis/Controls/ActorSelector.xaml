@@ -92,42 +92,42 @@
 						Grid.Row="0"
 						Grid.Column="0"
 						IsChecked="{Binding Filter.IncludePlayers}">
-						<XivToolsWpf:TextBlock Key="Target_Players" />
+						<TextBlock Text="[Target_Players]" />
 					</CheckBox>
 
 					<CheckBox
 						Grid.Row="0"
 						Grid.Column="1"
 						IsChecked="{Binding Filter.IncludeCompanions}">
-						<XivToolsWpf:TextBlock Key="Target_Companions" />
+						<TextBlock Text="[Target_Companions]" />
 					</CheckBox>
 
 					<CheckBox
 						Grid.Row="0"
 						Grid.Column="2"
 						IsChecked="{Binding Filter.IncludeNPCs}">
-						<XivToolsWpf:TextBlock Key="Target_Npc" />
+						<TextBlock Text="[Target_Npc]" />
 					</CheckBox>
 
 					<CheckBox
 						Grid.Row="1"
 						Grid.Column="0"
 						IsChecked="{Binding Filter.IncludeMounts}">
-						<XivToolsWpf:TextBlock Key="Target_Mounts" />
+						<TextBlock Text="[Target_Mounts]" />
 					</CheckBox>
 
 					<CheckBox
 						Grid.Row="1"
 						Grid.Column="1"
 						IsChecked="{Binding Filter.IncludeOrnaments}">
-						<XivToolsWpf:TextBlock Key="Target_Ornaments" />
+						<TextBlock Text="[Target_Ornaments]" />
 					</CheckBox>
 
 					<CheckBox
 						Grid.Row="1"
 						Grid.Column="2"
 						IsChecked="{Binding Filter.IncludeOther}">
-						<XivToolsWpf:TextBlock Key="Target_Other" />
+						<TextBlock Text="[Target_Other]" />
 					</CheckBox>
 
 					<CheckBox
@@ -135,7 +135,7 @@
 						Grid.Column="0"
 						Grid.ColumnSpan="3"
 						IsChecked="{Binding Filter.IncludeHidden}">
-						<XivToolsWpf:TextBlock Key="Target_Hidden" />
+						<TextBlock Text="[Target_Hidden]" />
 					</CheckBox>
 
 					<Grid
@@ -190,8 +190,8 @@
 											Foreground="{DynamicResource MaterialDesignBody}"
 											Text="{Binding Names.Text}" />
 
-										<XivToolsWpf:TextBlock
-											Key="Target_Gpose"
+										<TextBlock
+											Text="[Target_Gpose"
 											Margin="6,0,0,0"
 											FontWeight="Light"
 											Foreground="{DynamicResource MaterialDesignBody}"

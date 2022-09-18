@@ -9,11 +9,11 @@
 	xmlns:local="clr-namespace:Anamnesis.Actor.Panels"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:panels="clr-namespace:Anamnesis.Panels"
+	Title="[Naviagation_Actor_Transform"
 	Width="250"
 	Height="512"
 	CanResize="False"
 	Icon="Circle"
-	TitleKey="Naviagation_Actor_Transform"
 	mc:Ignorable="d">
 
 	<Grid x:Name="ContentArea">
@@ -34,22 +34,22 @@
 				Grid.ColumnSpan="2"
 				Margin="8,4,6,3">
 
-				<XivToolsWpf:TextBlock
+				<TextBlock
 					FontWeight="Bold"
 					Style="{StaticResource Header}"
 					Text="{Binding Skeleton.CurrentBone.Tooltip}" />
 
-				<XivToolsWpf:TextBlock
+				<TextBlock
 					HorizontalAlignment="Right"
 					VerticalAlignment="Top"
 					FontSize="10"
 					Style="{StaticResource Header}"
 					Text="{Binding Skeleton.CurrentBone.BoneName}" />
 
-				<XivToolsWpf:TextBlock
-					Key="Pose_NothingSelected"
+				<TextBlock
 					HorizontalAlignment="Left"
 					Style="{StaticResource Header}"
+					Text="[Pose_NothingSelected]"
 					Visibility="{Binding Skeleton.CurrentBone, Converter={StaticResource NullToVisibilityConverter}}" />
 			</Grid>
 
@@ -71,7 +71,7 @@
 						<XivToolsWpf:IconBlock
 							FontSize="11"
 							Icon="Link" />
-						<XivToolsWpf:TextBlock
+						<TextBlock
 							Margin="4,0,0,0"
 							Text="{Binding Skeleton.CurrentBone.LinkedBonesCount, FallbackValue=0}" />
 					</StackPanel>
@@ -80,9 +80,9 @@
 						<StackPanel
 							Width="256"
 							Orientation="Vertical">
-							<XivToolsWpf:TextBlock
-								Key="Pose_Linked"
-								FontWeight="Bold" />
+							<TextBlock
+								FontWeight="Bold"
+								Text="[Pose_Linked" />
 
 							<ItemsControl
 								Margin="10,0,0,0"
@@ -90,8 +90,8 @@
 								<ItemsControl.ItemTemplate>
 									<DataTemplate>
 										<StackPanel Orientation="Horizontal">
-											<XivToolsWpf:TextBlock Key="{Binding TooltipKey}" />
-											<XivToolsWpf:TextBlock
+											<TextBlock Text="{Binding Tooltip}" />
+											<TextBlock
 												Margin="6,0,0,0"
 												Text="{Binding BoneName, StringFormat=( {0:D} )}" />
 										</StackPanel>
@@ -99,9 +99,9 @@
 								</ItemsControl.ItemTemplate>
 							</ItemsControl>
 
-							<XivToolsWpf:TextBlock
-								Key="Pose_Linked_Tooltip"
+							<TextBlock
 								Margin="0,20,0,0"
+								Text="[Pose_Linked_Tooltip"
 								TextWrapping="Wrap" />
 						</StackPanel>
 					</ToggleButton.ToolTip>
@@ -141,7 +141,7 @@
 					Padding="6,3"
 					Click="OnFlipClicked"
 					Style="{StaticResource TransparentButton}">
-					<XivToolsWpf:TextBlock Key="Pose_Flip" />
+					<TextBlock Text="[Pose_Flip" />
 				</Button>
 
 			</WrapPanel>
@@ -172,8 +172,8 @@
 					</controls:TransformEditor>
 
 					<XivToolsWpf:InfoControl
-						Key="Pose_WarningNotFrozen"
-						Margin="0,0,0,45">
+						Margin="0,0,0,45"
+						Text="[Pose_WarningNotFrozen">
 
 						<XivToolsWpf:InfoControl.Visibility>
 							<MultiBinding Converter="{StaticResource MultiBoolAndToVisibility}">

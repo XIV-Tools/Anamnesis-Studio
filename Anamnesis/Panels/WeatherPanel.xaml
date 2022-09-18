@@ -10,11 +10,11 @@
 	xmlns:materialdesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:xivToolsWpfSelectors="clr-namespace:XivToolsWpf.Selectors;assembly=XivToolsWpf"
+	Title="[Naviagation_Weather]"
 	Width="256"
 	d:DesignHeight="450"
 	d:DesignWidth="800"
 	Icon="CloudMoonRain"
-	TitleKey="Naviagation_Weather"
 	mc:Ignorable="d">
 
 	<Grid
@@ -68,11 +68,11 @@
 				</materialdesign:ToggleButtonAssist.OnContent>
 			</ToggleButton>
 
-			<XivToolsWpf:TextBlock
-				Key="Scene_World_Time"
+			<TextBlock
 				Grid.Row="0"
 				Grid.Column="1"
-				Style="{StaticResource Label}" />
+				Style="{StaticResource Label}"
+				Text="[Scene_World_Time" />
 			<XivToolsWpf:NumberBox
 				Grid.Column="2"
 				Margin="3"
@@ -89,11 +89,11 @@
 				HorizontalAlignment="Right"
 				Text="{Binding Services.Time.TimeString}" />
 
-			<XivToolsWpf:TextBlock
-				Key="Scene_World_Day"
+			<TextBlock
 				Grid.Row="1"
 				Grid.Column="1"
-				Style="{StaticResource Label}" />
+				Style="{StaticResource Label}"
+				Text="[Scene_World_Day" />
 			<XivToolsWpf:NumberBox
 				Grid.Row="1"
 				Grid.Column="2"
@@ -106,10 +106,10 @@
 				Value="{Binding Services.Time.DayOfMonth}" />
 		</Grid>
 
-		<XivToolsWpf:TextBlock
-			Key="Scene_World_Weather"
+		<TextBlock
 			Grid.Row="1"
-			Style="{StaticResource Label}" />
+			Style="{StaticResource Label}"
+			Text="[Scene_World_Weather" />
 
 		<Grid
 			Grid.Row="1"
@@ -177,7 +177,7 @@
 					Margin="12,12,0,0"
 					ana:Behaviours.Tooltip="Weather_Selector_Natural_Tooltip"
 					IsChecked="{Binding Filter.NaturalWeathers}">
-					<XivToolsWpf:TextBlock Key="Weather_Selector_Natural" />
+					<TextBlock Text="[Weather_Selector_Natural" />
 				</CheckBox>
 
 				<xivToolsWpfSelectors:Selector

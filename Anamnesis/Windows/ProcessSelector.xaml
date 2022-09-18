@@ -16,8 +16,8 @@
 		</Grid.RowDefinitions>
 
 		<StackPanel Margin="8">
-			<XivToolsWpf:TextBlock Grid.Row="0" TextWrapping="Wrap" Key="ProcessSelector_NotFound" FontSize="16"/>
-			<XivToolsWpf:TextBlock Grid.Row="0" TextWrapping="Wrap" Key="ProcessSelector_NotFound2" />
+			<TextBlock Grid.Row="0" TextWrapping="Wrap" Text="[ProcessSelector_NotFound" FontSize="16"/>
+			<TextBlock Grid.Row="0" TextWrapping="Wrap" Text="[ProcessSelector_NotFound2" />
 		</StackPanel>
 
 		<Expander x:Name="ManualExpander" Grid.Row="1" IsExpanded="False" Expanded="OnManualExpanded" Collapsed="OnManualCollapsed">
@@ -78,10 +78,10 @@
 				</Button>
 
 				<CheckBox Grid.Row="1" Grid.Column="0" Margin="6" IsChecked="{Binding ShowAll}">
-					<XivToolsWpf:TextBlock Key="Common_All"/>
+					<TextBlock Text="[Common_All"/>
 				</CheckBox>
 
-				<XivToolsWpf:InfoControl Grid.Row="1" Grid.Column="1" Key="ProcessSelector_AllWarning" Margin="3" Visibility="{Binding ShowAll, Converter={StaticResource B2V}}"/>
+				<XivToolsWpf:InfoControl Grid.Row="1" Grid.Column="1" Text="[ProcessSelector_AllWarning" Margin="3" Visibility="{Binding ShowAll, Converter={StaticResource B2V}}"/>
 				
 				<Button Grid.Row="1" Grid.Column="2" x:Name="OkButton" Content="OK" HorizontalAlignment="Right" Width="84" Margin="8" Click="OnOkClicked" IsEnabled="False" Visibility="Collapsed"/>
 			</Grid>

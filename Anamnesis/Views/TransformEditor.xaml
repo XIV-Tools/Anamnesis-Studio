@@ -26,14 +26,14 @@
 			</GroupBox.IsEnabled>
 				
 			<GroupBox.Header>
-				<XivToolsWpf:TextBlock Key="Pose_Position"/>
+				<TextBlock Text="[Pose_Position"/>
 			</GroupBox.Header>
 			<controls:VectorEditor Value="{Binding Value.Position}" Expanded="True" Minimum="-4096" Maximum="4096" Sliders="Relative" TickFrequency="0.01"/>
 		</GroupBox>
 
 		<GroupBox Grid.Row="2" IsEnabled="{Binding Value.CanScale}">
 			<GroupBox.Header>
-				<XivToolsWpf:TextBlock Key="Pose_Scale"/>
+				<TextBlock Text="[Pose_Scale"/>
 			</GroupBox.Header>
 			<controls:VectorEditor Value="{Binding Value.Scale}"
 								   Expanded="False"

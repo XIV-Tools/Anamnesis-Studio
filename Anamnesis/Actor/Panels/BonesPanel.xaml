@@ -10,11 +10,11 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:panels="clr-namespace:Anamnesis.Panels"
 	xmlns:views="clr-namespace:Anamnesis.Actor.Views"
+	Title="[Naviagation_Actor_Bones"
 	Width="650"
 	Height="512"
 	CanResize="False"
 	Icon="Bone"
-	TitleKey="Naviagation_Actor_Bones"
 	mc:Ignorable="d">
 
 	<Grid x:Name="ContentArea">
@@ -108,10 +108,10 @@
 			</Grid>
 
 			<XivToolsWpf:InfoControl
-				Key="Pose_WarningNotGPose"
 				Grid.Row="0"
 				Grid.RowSpan="2"
 				Margin="6,7"
+				Text="Pose_WarningNotGPose"
 				Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource !B2V}}" />
 
 			<Grid
@@ -119,10 +119,10 @@
 				Grid.RowSpan="2"
 				Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource B2V}}">
 				<XivToolsWpf:InfoControl
-					Key="Pose_NotEnabled"
 					Margin="6,7"
 					VerticalAlignment="Bottom"
 					IsError="False"
+					Text="[Pose_NotEnabled"
 					Visibility="{Binding Services.Pose.IsEnabled, Converter={StaticResource !B2V}}" />
 			</Grid>
 		</Grid>
@@ -131,19 +131,19 @@
 			<Grid Visibility="{Binding Actor.ModelObject, Converter={StaticResource NotNullToVisibilityConverter}}">
 				<Grid Visibility="{Binding Skeleton, Converter={StaticResource NullToVisibilityConverter}}">
 					<XivToolsWpf:InfoControl
-						Key="Pose_NoSkeleton"
 						Margin="12"
 						VerticalAlignment="Bottom"
-						IsError="True" />
+						IsError="True"
+						Text="[Pose_NoSkeleton" />
 				</Grid>
 			</Grid>
 
 			<Grid Visibility="{Binding Actor.ModelObject, Converter={StaticResource NullToVisibilityConverter}}">
 				<XivToolsWpf:InfoControl
-					Key="Pose_NoModel"
 					Margin="12"
 					VerticalAlignment="Bottom"
-					IsError="True" />
+					IsError="True"
+					Text="[Pose_NoModel" />
 			</Grid>
 		</Grid>
 

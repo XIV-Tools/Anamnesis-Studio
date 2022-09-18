@@ -16,27 +16,26 @@
 		</Grid.RowDefinitions>
 
 		<Grid.ToolTip>
-			<XivToolsWpf:TextBlock Text="{Binding Source.Name}" />
+			<TextBlock Text="{Binding Source.Name}" />
 		</Grid.ToolTip>
 
-		<XivToolsWpf:TextBlock
+		<TextBlock
 			Grid.Row="0"
 			Text="{Binding Name}"
 			TextTrimming="CharacterEllipsis" />
 
-		<XivToolsWpf:TextBlock
+		<TextBlock
 			Grid.Row="1"
 			FontSize="10"
 			Opacity="0.75"
 			Text="{Binding Author}" />
 
-		<XivToolsWpf:TextBlock
-			Key="Library_ItemCount"
+		<TextBlock
 			Grid.Row="1"
 			HorizontalAlignment="Right"
 			FontSize="10"
 			Opacity="0.75"
-			Value="{Binding ItemCount}" />
+			Text="{Binding ItemCount, StringFormat='{}[Library_ItemCount]'}" />
 
 		<Grid
 			Grid.RowSpan="2"
@@ -45,7 +44,7 @@
 			Background="Transparent">
 
 			<Grid.ToolTip>
-				<XivToolsWpf:TextBlock Text="{Binding Source.Name}" />
+				<TextBlock Text="{Binding Source.Name}" />
 			</Grid.ToolTip>
 
 			<XivToolsWpf:IconBlock

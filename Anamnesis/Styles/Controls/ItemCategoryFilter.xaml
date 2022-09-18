@@ -99,14 +99,14 @@
 					Padding="3"
 					MinWidth="64"
 					Click="OnNoneClicked">
-				<XivToolsWpf:TextBlock Key="Common_None" />
+				<TextBlock Text="[Common_None" />
 			</Button>
 			
 			<Button Style="{StaticResource TransparentButton}"
 					Padding="3"
 					MinWidth="64"
 					Click="OnAllClicked">
-				<XivToolsWpf:TextBlock Key="Common_All" />
+				<TextBlock Text="[Common_All" />
 			</Button>
 			
 		</StackPanel>

@@ -43,7 +43,7 @@ public partial class CharacterModelEditor : UserControl
 					this.ModeIcon.Icon = FontAwesome.Sharp.IconChar.Tint;
 					this.Model.Wetness = 1;
 					this.Model.LockWetness = true;
-					this.ModeTooltip.Key = "Character_Model_WetWet";
+					this.ModeTooltip.Text = "[Character_Model_WetWet]";
 					break;
 				}
 
@@ -53,7 +53,7 @@ public partial class CharacterModelEditor : UserControl
 					this.ModeIcon.Icon = FontAwesome.Sharp.IconChar.Water;
 					this.Model.Drenched = 1;
 					this.Model.ForceDrenched = true;
-					this.ModeTooltip.Key = "Character_Model_WetDrenched";
+					this.ModeTooltip.Text = "[Character_Model_WetDrenched]";
 					break;
 				}
 
@@ -65,7 +65,7 @@ public partial class CharacterModelEditor : UserControl
 					this.Model.LockWetness = false;
 					this.Model.Drenched = 0;
 					this.Model.ForceDrenched = false;
-					this.ModeTooltip.Key = "Character_Model_WetNone";
+					this.ModeTooltip.Text = "[Character_Model_WetNone]";
 					break;
 				}
 		}

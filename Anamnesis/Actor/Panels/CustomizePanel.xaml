@@ -11,11 +11,12 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:panels="clr-namespace:Anamnesis.Panels"
 	xmlns:views="clr-namespace:Anamnesis.Actor.Views"
+	Title="[Naviagation_Actor_Customize"
 	MinWidth="300"
+	ana:Behaviours.DesignerLocalization="True"
 	designer:DesignModeProperties.Background="LightGray"
 	CanResize="True"
 	Icon="IdCardAlt"
-	TitleKey="Naviagation_Actor_Customize"
 	mc:Ignorable="d">
 
 	<Grid x:Name="ContentArea">
@@ -29,7 +30,7 @@
 
 		<TabControl Grid.Row="1">
 
-			<TabItem Header="Naviagation_Actor_Customize">
+			<TabItem Header="[Naviagation_Actor_Customize]">
 				<ScrollViewer ana:Behaviours.SmoothScroll="True">
 
 					<views:CustomizeEditor
@@ -41,7 +42,7 @@
 				</ScrollViewer>
 			</TabItem>
 
-			<TabItem Header="Character_ExAppearance_Header">
+			<TabItem Header="[Character_ExAppearance_Header]">
 				<ScrollViewer ana:Behaviours.SmoothScroll="True">
 					<Grid>
 						<Grid.RowDefinitions>
@@ -55,8 +56,8 @@
 							Visibility="{Binding Actor.ModelObject, Converter={StaticResource NotNullToVisibilityConverter}}">
 							<GroupBox.Header>
 								<XivToolsWpf:Header
-									Key="Character_Model_Header"
-									Icon="GraduationCap" />
+									Icon="GraduationCap"
+									Text="[Character_Model_Header]" />
 							</GroupBox.Header>
 
 							<views:CharacterModelEditor DataContext="{Binding Actor}" />
@@ -68,8 +69,8 @@
 							Visibility="{Binding Actor.ModelObject.ExtendedAppearance, Converter={StaticResource NotNullToVisibilityConverter}, FallbackValue=Collapsed}">
 							<GroupBox.Header>
 								<XivToolsWpf:Header
-									Key="Character_ExAppearance_Header"
-									Icon="UserCog" />
+									Icon="UserCog"
+									Text="[Character_ExAppearance_Header]" />
 							</GroupBox.Header>
 
 							<views:ExtendedAppearanceEditor DataContext="{Binding Actor.ModelObject.ExtendedAppearance}" />
@@ -78,7 +79,7 @@
 					</Grid>
 				</ScrollViewer>
 			</TabItem>
-			<TabItem Header="Naviagation_Actor_Equipment" />
+			<TabItem Header="[Naviagation_Actor_Equipment]" />
 
 		</TabControl>
 

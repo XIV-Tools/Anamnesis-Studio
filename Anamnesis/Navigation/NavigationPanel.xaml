@@ -119,75 +119,75 @@
 				<local:Shortcut
 					Destination="Settings"
 					Icon="Cogs"
-					LabelKey="Naviagation_Settings"
+					Label="[Naviagation_Settings]"
 					ShowText="{Binding Expanded}"
-					ToolTipKey="Naviagation_Settings_Tip" />
+					ToolTip="[Naviagation_Settings_Tip]" />
 
 				<local:Shortcut
 					Destination="Library"
 					Icon="Book"
-					LabelKey="Naviagation_Library"
+					Label="[Naviagation_Library]"
 					ShowText="{Binding Expanded}"
-					ToolTipKey="Naviagation_Library_Tip" />
+					ToolTip="[Naviagation_Library_Tip]" />
 
 				<local:Shortcut
 					Destination="Weather"
 					Icon="CloudMoonRain"
-					LabelKey="Naviagation_Weather"
+					Label="[Naviagation_Weather]"
 					ShowText="{Binding Expanded}"
-					ToolTipKey="Naviagation_Weather_Tip" />
+					ToolTip="[Naviagation_Weather_Tip]" />
 
 				<local:Shortcut
 					Destination="Camera"
 					Icon="Camera"
-					LabelKey="Naviagation_Camera"
+					Label="[Naviagation_Camera]"
 					ShowText="{Binding Expanded}"
-					ToolTipKey="Naviagation_Camera_Tip" />
+					ToolTip="[Naviagation_Camera_Tip]" />
 
 				<local:Shortcut
 					Destination="ActorInfo"
 					Icon="Pen"
-					LabelKey="Naviagation_Actor_Info"
+					Label="[Naviagation_Actor_Info]"
 					ShowText="{Binding Expanded}"
-					ToolTipKey="Naviagation_Actor_Info_Tip" />
+					ToolTip="[Naviagation_Actor_Info_Tip]" />
 
 				<StackPanel Visibility="{Binding Services.Pose.IsEnabled, Converter={StaticResource !B2V}}">
 					<local:Shortcut
 						Destination="ActorCustomize"
 						Icon="IdCardAlt"
-						LabelKey="Naviagation_Actor_Customize"
+						Label="[Naviagation_Actor_Customize]"
 						ShowText="{Binding Expanded}"
-						ToolTipKey="Naviagation_Actor_Customize_Tip" />
+						ToolTip="[Naviagation_Actor_Customize_Tip]" />
 
 					<local:Shortcut
 						Destination="ActorEquipment"
 						Icon="HatCowboy"
-						LabelKey="Naviagation_Actor_Equipment"
+						Label="[Naviagation_Actor_Equipment]"
 						ShowText="{Binding Expanded}"
-						ToolTipKey="Naviagation_Actor_Equipment_Tip" />
+						ToolTip="[Naviagation_Actor_Equipment_Tip]" />
 				</StackPanel>
 
 				<!--<local:Shortcut
 					Destination="Action"
 					Icon="Biking"
-					LabelKey="Naviagation_Actor_Action"
+					Label="[Naviagation_Actor_Action"
 					ShowText="{Binding ShowText}"
-					ToolTipKey="Naviagation_Actor_Action_Tip" />-->
+					ToolTip="[Naviagation_Actor_Action_Tip" />-->
 
 				<StackPanel Visibility="{Binding Services.Pose.IsEnabled, Converter={StaticResource B2V}}">
 					<local:Shortcut
 						Destination="Bones"
 						Icon="Bone"
-						LabelKey="Naviagation_Actor_Bones"
+						Label="[Naviagation_Actor_Bones"
 						ShowText="{Binding Expanded}"
-						ToolTipKey="Naviagation_Actor_Bones_Tip" />
+						ToolTip="[Naviagation_Actor_Bones_Tip" />
 
 					<local:Shortcut
 						Destination="Transform"
 						Icon="Circle"
-						LabelKey="Naviagation_Actor_Transform"
+						Label="[Naviagation_Actor_Transform"
 						ShowText="{Binding Expanded}"
-						ToolTipKey="Naviagation_Actor_Transform_Tip" />
+						ToolTip="[Naviagation_Actor_Transform_Tip" />
 				</StackPanel>
 
 			</StackPanel>
@@ -311,7 +311,7 @@
 								HorizontalContentAlignment="Left"
 								Click="OnExportCharacterClicked"
 								Style="{StaticResource TransparentIconButton}">
-								<XivToolsWpf:TextBlock Key="File_Character" />
+								<TextBlock Text="[File_Character" />
 							</Button>
 
 							<Button
@@ -319,7 +319,7 @@
 								HorizontalContentAlignment="Left"
 								Click="OnExportPoseClicked"
 								Style="{StaticResource TransparentIconButton}">
-								<XivToolsWpf:TextBlock Key="File_Pose" />
+								<TextBlock Text="[File_Pose" />
 							</Button>
 
 							<Button
@@ -327,7 +327,7 @@
 								HorizontalContentAlignment="Left"
 								Click="OnExportCameraClicked"
 								Style="{StaticResource TransparentIconButton}">
-								<XivToolsWpf:TextBlock Key="File_CameraShot" />
+								<TextBlock Text="[File_CameraShot" />
 							</Button>
 						</StackPanel>
 					</Grid>
@@ -365,14 +365,14 @@
 
 			<Grid.ToolTip>
 				<StackPanel Orientation="Vertical">
-					<XivToolsWpf:TextBlock
-						Key="Pose_Toggle"
-						Margin="0"
-						Padding="0" />
-					<XivToolsWpf:TextBlock
-						Key="Pose_WarningNotGPose"
+					<TextBlock
 						Margin="0"
 						Padding="0"
+						Text="[Pose_Toggle" />
+					<TextBlock
+						Margin="0"
+						Padding="0"
+						Text="[Pose_WarningNotGPose"
 						Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource !B2V}}" />
 				</StackPanel>
 			</Grid.ToolTip>
@@ -407,7 +407,7 @@
 						FontSize="18"
 						Icon="Running" />
 
-					<XivToolsWpf:TextBlock
+					<TextBlock
 						Grid.Column="1"
 						Margin="6,2,6,0"
 						Text="Pose" />
@@ -478,7 +478,7 @@
 					VerticalContentAlignment="Center"
 					IsChecked="{Binding Services.Pose.FreezePhysics}"
 					IsEnabled="{Binding Services.Pose.IsEnabled}">
-					<XivToolsWpf:TextBlock Key="Pose_FreezePhysics" />
+					<TextBlock Text="[Pose_FreezePhysics" />
 				</CheckBox>
 
 				<CheckBox
@@ -486,7 +486,7 @@
 					VerticalContentAlignment="Center"
 					IsChecked="{Binding Services.Pose.EnableParenting}"
 					IsEnabled="{Binding Services.Pose.IsEnabled}">
-					<XivToolsWpf:TextBlock Key="Pose_Parenting" />
+					<TextBlock Text="[Pose_Parenting" />
 				</CheckBox>
 
 				<Border
@@ -507,7 +507,7 @@
 							<RowDefinition Height="Auto" />
 						</Grid.RowDefinitions>
 
-						<XivToolsWpf:TextBlock
+						<TextBlock
 							Grid.ColumnSpan="3"
 							Margin="2,0,0,0"
 							FontSize="10"
@@ -520,12 +520,12 @@
 							VerticalContentAlignment="Center"
 							IsChecked="{Binding Services.Pose.FreezeRotation}"
 							IsEnabled="{Binding Services.Pose.IsEnabled}">
-							<XivToolsWpf:TextBlock
-								Key="Pose_EnableRotation"
-								Margin="0,-2,0,2" />
+							<TextBlock
+								Margin="0,-2,0,2"
+								Text="[Pose_EnableRotation" />
 
 							<CheckBox.ToolTip>
-								<XivToolsWpf:TextBlock Key="Pose_EnableRotationTooltip" />
+								<TextBlock Text="[Pose_EnableRotationTooltip" />
 							</CheckBox.ToolTip>
 						</CheckBox>
 
@@ -536,12 +536,12 @@
 							VerticalContentAlignment="Center"
 							IsChecked="{Binding Services.Pose.FreezePositions}"
 							IsEnabled="{Binding Services.Pose.IsEnabled}">
-							<XivToolsWpf:TextBlock
-								Key="Pose_EnablePosition"
-								Margin="0,-2,0,2" />
+							<TextBlock
+								Margin="0,-2,0,2"
+								Text="[Pose_EnablePosition" />
 
 							<CheckBox.ToolTip>
-								<XivToolsWpf:TextBlock Key="Pose_EnablePositionTooltip" />
+								<TextBlock Text="[Pose_EnablePositionTooltip" />
 							</CheckBox.ToolTip>
 						</CheckBox>
 
@@ -552,12 +552,12 @@
 							VerticalContentAlignment="Center"
 							IsChecked="{Binding Services.Pose.FreezeScale}"
 							IsEnabled="{Binding Services.Pose.IsEnabled}">
-							<XivToolsWpf:TextBlock
-								Key="Pose_EnableScale"
-								Margin="0,-2,0,2" />
+							<TextBlock
+								Margin="0,-2,0,2"
+								Text="[Pose_EnableScale" />
 
 							<CheckBox.ToolTip>
-								<XivToolsWpf:TextBlock Key="Pose_EnableScaleTooltip" />
+								<TextBlock Text="[Pose_EnableScaleTooltip" />
 							</CheckBox.ToolTip>
 						</CheckBox>
 					</Grid>

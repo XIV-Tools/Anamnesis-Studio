@@ -376,7 +376,10 @@ public partial class FloatingWindow : Window, IPanelHost
 			this.CanScroll = this.panels[0].CanScroll;
 			this.TitleIcon.Icon = this.panels[0].Icon;
 			this.TitleColor = this.panels[0].TitleColor;
-			this.Title = this.panels[0].FinalTitle;
+
+			if (!string.IsNullOrEmpty(this.panels[0].Title))
+				this.Title = this.panels[0].Title;
+
 			this.TitleText.Text = this.Title;
 		}
 		else

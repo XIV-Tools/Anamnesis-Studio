@@ -18,11 +18,11 @@ public class HkaPoseMemory : MemoryBase
 		{
 			if (PoseService.SelectedBoneName == null)
 			{
-				change.Name = LocalizationService.GetStringFormatted("History_ChangeBone", "??");
+				change.Name = "[History_ChangeBone]";
 			}
 			else
 			{
-				change.Name = LocalizationService.GetStringFormatted("History_ChangeBone", PoseService.SelectedBoneName);
+				change.Name = "[History_ChangeBone]" + PoseService.SelectedBoneName;
 			}
 		}
 

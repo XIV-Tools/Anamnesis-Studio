@@ -55,13 +55,13 @@
 					<controls:Header
 						Icon="Running"
 						Text="Actor - " />
-					<XivToolsWpf:TextBlock Text="{Binding TargetService.PlayerTarget.DisplayName}" />
+					<TextBlock Text="{Binding TargetService.PlayerTarget.DisplayName}" />
 				</StackPanel>
 			</GroupBox.Header>
 
 			<StackPanel>
 
-				<XivToolsWpf:TextBlock Text="{Binding TargetService.PlayerTarget.Index, StringFormat=Index: {0:D}}" />
+				<TextBlock Text="{Binding TargetService.PlayerTarget.Index, StringFormat=Index: {0:D}}" />
 
 				<ComboBox
 					ItemsSource="{Binding Source={x:Static anaMem:ActorType.AllActorTypes}}"

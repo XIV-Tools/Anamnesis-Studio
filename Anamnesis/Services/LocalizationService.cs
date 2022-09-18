@@ -5,12 +5,14 @@ namespace Anamnesis.Services;
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
 using Anamnesis.Files;
-using XivToolsWpf.DependencyInjection;
+using XivToolsWpf.Designer;
+using XivToolsWpf.Localization;
 
-public class LocalizationService : ServiceBase<LocalizationService>, ILocaleProvider
+public class LocalizationService : ServiceBase<LocalizationService>
 {
 	public const string FallbackCulture = "EN";
 
@@ -19,11 +21,7 @@ public class LocalizationService : ServiceBase<LocalizationService>, ILocaleProv
 	private static Locale? fallbackLocale;
 	private static Locale? currentLocale;
 
-	public event LocalizationEvent? LocaleChanged;
-
 	public static bool Loaded => Exists && currentLocale != null;
-
-	bool ILocaleProvider.Loaded => Loaded;
 
 	public static void Add(string culture, string cultureName, string key, string value)
 	{
@@ -45,6 +43,19 @@ public class LocalizationService : ServiceBase<LocalizationService>, ILocaleProv
 		}
 	}
 
+	public static string GetLocalizedText(string key)
+	{
+		if (Locales.Count <= 0)
+			Load();
+
+		bool silent = false;
+
+		if (App.Current == null)
+			silent = true;
+
+		return GetString(key, silent);
+	}
+
 	public static bool HasString(string key)
 	{
 		string val;
@@ -52,29 +63,6 @@ public class LocalizationService : ServiceBase<LocalizationService>, ILocaleProv
 			return false;
 
 		return true;
-	}
-
-	public static string GetStringFormatted(string key, params object[] param)
-	{
-		string str = GetString(key);
-		return string.Format(str, param);
-	}
-
-	public static string GetStringAllLanguages(string key)
-	{
-		StringBuilder builder = new StringBuilder();
-
-		foreach ((string code, Locale locale) in Locales)
-		{
-			string val;
-			if (locale.Get(key, out val))
-			{
-				builder.AppendLine(val);
-				builder.AppendLine();
-			}
-		}
-
-		return builder.ToString().TrimEnd();
 	}
 
 	public static string GetString(string key, bool silent = false)
@@ -119,7 +107,7 @@ public class LocalizationService : ServiceBase<LocalizationService>, ILocaleProv
 			currentLocale = fallbackLocale;
 		}
 
-		Instance.LocaleChanged?.Invoke();
+		// UPDATE ALL TEXT BLOCKS!!
 	}
 
 	public static Locale? GetLocale(string locale)
@@ -143,10 +131,21 @@ public class LocalizationService : ServiceBase<LocalizationService>, ILocaleProv
 
 	public override async Task Initialize()
 	{
-		DependencyFactory.RegisterDependency<ILocaleProvider>(this);
-
 		await base.Initialize();
 
+		TextBlockHook.GetLocalizedText = GetLocalizedText;
+		TextBlockHook.Attach();
+
+		Load();
+	}
+
+	public override async Task Start()
+	{
+		await base.Start();
+	}
+
+	private static void Load()
+	{
 		string[] languageFilePaths = EmbeddedFileUtility.GetAllFilesInDirectory("Languages");
 		foreach (string languageFilePath in languageFilePaths)
 		{
@@ -170,16 +169,6 @@ public class LocalizationService : ServiceBase<LocalizationService>, ILocaleProv
 		fallbackLocale = Locales[FallbackCulture];
 		SetLocale(SettingsService.Current.Language);
 	}
-
-	public override async Task Start()
-	{
-		await base.Start();
-	}
-
-	bool ILocaleProvider.HasString(string key) => HasString(key);
-	string ILocaleProvider.GetStringFormatted(string key, params object[] param) => GetStringFormatted(key, param);
-	string ILocaleProvider.GetStringAllLanguages(string key) => GetStringAllLanguages(key);
-	string ILocaleProvider.GetString(string key, bool silent) => GetString(key, silent);
 
 	public class Locale
 	{

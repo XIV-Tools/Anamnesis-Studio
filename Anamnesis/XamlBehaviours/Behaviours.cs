@@ -4,12 +4,15 @@
 namespace Anamnesis;
 
 using Anamnesis.Navigation;
+using Anamnesis.Services;
 using Anamnesis.XamlBehaviours;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using XivToolsWpf.Behaviours;
 using XivToolsWpf.DragAndDrop;
 using XivToolsWpf.Extensions;
+using XivToolsWpf.Localization;
 
 public static class Behaviours
 {
@@ -34,5 +37,14 @@ public static class Behaviours
 		{
 			NavigationService.Navigate(new(host, destination)).Run();
 		};
+	}
+
+	public static void SetDesignerLocalization(DependencyObject host, bool enable)
+	{
+		if (!DesignerProperties.GetIsInDesignMode(host))
+			return;
+
+		TextBlockHook.GetLocalizedText = LocalizationService.GetLocalizedText;
+		TextBlockHook.Attach();
 	}
 }

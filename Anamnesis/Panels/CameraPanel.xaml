@@ -8,9 +8,9 @@
 	xmlns:local="clr-namespace:Anamnesis.Panels"
 	xmlns:materialdesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	Title="[Scene_Camera_Header]"
 	d:DesignHeight="450"
 	Icon="Camera"
-	TitleKey="Scene_Camera_Header"
 	mc:Ignorable="d">
 
 	<Grid
@@ -36,21 +36,21 @@
 			<RowDefinition />
 		</Grid.RowDefinitions>
 
-		<XivToolsWpf:TextBlock
-			Key="Scene_Camera_Delimit"
+		<TextBlock
 			Grid.Row="0"
-			Style="{StaticResource Label}" />
+			Style="{StaticResource Label}"
+			Text="[Scene_Camera_Delimit" />
 
 		<CheckBox
 			Grid.Row="0"
 			Grid.Column="1"
 			IsChecked="{Binding Services.Camera.DelimitCamera}" />
 
-		<XivToolsWpf:TextBlock
-			Key="Scene_Camera_Position"
+		<TextBlock
 			Grid.Row="1"
 			Grid.Column="0"
-			Style="{StaticResource Label}" />
+			Style="{StaticResource Label}"
+			Text="[Scene_Camera_Position" />
 
 		<Grid
 			Grid.Row="1"
@@ -65,11 +65,11 @@
 				Value="{Binding Services.Camera.GPoseCamera.Position}" />
 		</Grid>
 
-		<XivToolsWpf:TextBlock
-			Key="Scene_Camera_Angle"
+		<TextBlock
 			Grid.Row="2"
 			Grid.Column="0"
-			Style="{StaticResource Label}" />
+			Style="{StaticResource Label}"
+			Text="[Scene_Camera_Angle" />
 		<Grid
 			Grid.Row="2"
 			Grid.Column="1">
@@ -111,11 +111,11 @@
 		</Grid>
 
 
-		<XivToolsWpf:TextBlock
-			Key="Scene_Camera_Rotation"
+		<TextBlock
 			Grid.Row="3"
 			Grid.Column="0"
-			Style="{StaticResource Label}" />
+			Style="{StaticResource Label}"
+			Text="[Scene_Camera_Rotation" />
 
 		<XivToolsWpf:NumberBox
 			Grid.Row="3"
@@ -128,11 +128,11 @@
 			Wrap="True"
 			Value="{Binding Services.Camera.Camera.Rotation, Converter={StaticResource Rad2Deg}}" />
 
-		<XivToolsWpf:TextBlock
-			Key="Scene_Camera_Pan"
+		<TextBlock
 			Grid.Row="4"
 			Grid.Column="0"
-			Style="{StaticResource Label}" />
+			Style="{StaticResource Label}"
+			Text="[Scene_Camera_Pan" />
 
 		<controls:Vector2DEditor
 			Grid.Row="4"
@@ -144,11 +144,11 @@
 			Wrap="True"
 			Value="{Binding Services.Camera.Camera.Pan, Converter={StaticResource Vec2DRad2Deg}}" />
 
-		<XivToolsWpf:TextBlock
-			Key="Scene_Camera_Zoom"
+		<TextBlock
 			Grid.Row="5"
 			Grid.Column="0"
-			Style="{StaticResource Label}" />
+			Style="{StaticResource Label}"
+			Text="[Scene_Camera_Zoom" />
 
 		<XivToolsWpf:NumberBox
 			Grid.Row="5"
@@ -160,11 +160,11 @@
 			TickFrequency="1"
 			Value="{Binding Services.Camera.Camera.Zoom}" />
 
-		<XivToolsWpf:TextBlock
-			Key="Scene_Camera_FoV"
+		<TextBlock
 			Grid.Row="6"
 			Grid.Column="0"
-			Style="{StaticResource Label}" />
+			Style="{StaticResource Label}"
+			Text="[Scene_Camera_FoV" />
 
 		<XivToolsWpf:NumberBox
 			Grid.Row="6"
@@ -202,10 +202,10 @@
 
 
 		<XivToolsWpf:InfoControl
-			Key="Scene_Camera_GPoseWarn"
 			Grid.RowSpan="10"
 			Grid.ColumnSpan="2"
 			MaxWidth="256"
+			Text="[Scene_Camera_GPoseWarn"
 			Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource !B2V}}" />
 
 	</Grid>

@@ -102,14 +102,14 @@
 					Margin="{Binding ContentPadding}"
 					Icon="{Binding Icon}" />
 
-				<XivToolsWpf:TextBlock
-					Key="{Binding LabelKey}"
+				<TextBlock
 					x:Name="LabelText"
 					Grid.Column="1"
-					Margin="6,0,0,0" />
+					Margin="6,0,0,0"
+					Text="{Binding Label}" />
 
 				<Grid.ToolTip>
-					<XivToolsWpf:TextBlock Key="{Binding ToolTipKey}" />
+					<TextBlock Text="{Binding ToolTip}" />
 				</Grid.ToolTip>
 			</Grid>
 		</Button>
