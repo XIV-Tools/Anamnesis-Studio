@@ -14,6 +14,7 @@
 	Title="[Naviagation_Actor_Customize"
 	MinWidth="300"
 	ana:Behaviours.DesignerLocalization="True"
+	d:DataContext="{Binding RelativeSource={RelativeSource Self}}"
 	designer:DesignModeProperties.Background="LightGray"
 	CanResize="True"
 	Icon="IdCardAlt"
