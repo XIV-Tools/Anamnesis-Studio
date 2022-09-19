@@ -225,6 +225,10 @@ public partial class FloatingWindow : Window, IPanelHost
 
 	public new void Close()
 	{
+		this.PanelsData.IsOpen = false;
+		this.PanelsData.SavePosition(this);
+		this.PanelsData.Save();
+
 		this.BeginStoryboard("CloseStoryboard");
 		this.IsOpen = false;
 
@@ -232,10 +236,6 @@ public partial class FloatingWindow : Window, IPanelHost
 		{
 			panel.Close();
 		}
-
-		this.PanelsData.IsOpen = false;
-		this.PanelsData.SavePosition(this);
-		this.PanelsData.Save();
 	}
 
 	protected virtual void OnWindowLoaded()

@@ -281,32 +281,12 @@
 				</Button>
 
 				<Button
-					ana:Behaviours.Navigation="ActorInfo"
-					ToolTip="[Naviagation_Actor_Info_Tip]">
+					ana:Behaviours.Navigation="Character"
+					ToolTip="[Naviagation_Actor_Character_Tip]">
 					<XivToolsWpf:Header
-						Icon="Pen"
-						Text="[Naviagation_Actor_Info]" />
+						Icon="User"
+						Text="[Naviagation_Actor_Character]" />
 				</Button>
-
-				<StackPanel Visibility="{Binding Services.Pose.IsEnabled, Converter={StaticResource !B2V}}">
-
-					<Button
-						ana:Behaviours.Navigation="ActorCustomize"
-						ToolTip="[Naviagation_Actor_Customize_Tip]">
-						<XivToolsWpf:Header
-							Icon="IdCardAlt"
-							Text="[Naviagation_Actor_Customize]" />
-					</Button>
-
-					<Button
-						ana:Behaviours.Navigation="ActorEquipment"
-						ToolTip="[Naviagation_Actor_Equipment_Tip]">
-						<XivToolsWpf:Header
-							Icon="HatCowboy"
-							Text="[Naviagation_Actor_Equipment]" />
-					</Button>
-
-				</StackPanel>
 
 				<!--<local:Shortcut
 					Destination="Action"

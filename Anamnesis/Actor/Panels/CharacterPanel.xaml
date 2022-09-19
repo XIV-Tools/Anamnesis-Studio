@@ -1,5 +1,5 @@
 ﻿<local:ActorPanelBase
-	x:Class="Anamnesis.Actor.Panels.CustomizePanel"
+	x:Class="Anamnesis.Actor.Panels.CharacterPanel"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
@@ -11,13 +11,13 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:panels="clr-namespace:Anamnesis.Panels"
 	xmlns:views="clr-namespace:Anamnesis.Actor.Views"
-	Title="[Naviagation_Actor_Customize"
+	Title="[Naviagation_Actor_Character]"
 	MinWidth="300"
 	ana:Behaviours.DesignerLocalization="True"
 	d:DataContext="{Binding RelativeSource={RelativeSource Self}}"
 	designer:DesignModeProperties.Background="LightGray"
 	CanResize="True"
-	Icon="IdCardAlt"
+	Icon="User"
 	mc:Ignorable="d">
 
 	<Grid x:Name="ContentArea">
@@ -31,7 +31,9 @@
 
 		<TabControl Grid.Row="1">
 
-			<TabItem Header="[Naviagation_Actor_Customize]">
+			<TabItem Header="[Character_Tab_Info]" />
+
+			<TabItem Header="[Character_Tab_Customize]">
 				<ScrollViewer ana:Behaviours.SmoothScroll="True">
 
 					<views:CustomizeEditor
@@ -43,7 +45,7 @@
 				</ScrollViewer>
 			</TabItem>
 
-			<TabItem Header="[Character_ExAppearance_Header]">
+			<TabItem Header="[Character_Tab_Shaders]">
 				<ScrollViewer ana:Behaviours.SmoothScroll="True">
 					<Grid>
 						<Grid.RowDefinitions>
@@ -80,7 +82,7 @@
 					</Grid>
 				</ScrollViewer>
 			</TabItem>
-			<TabItem Header="[Naviagation_Actor_Equipment]">
+			<TabItem Header="[Character_Tab_Equipment]">
 				<views:EquipmentEditor />
 			</TabItem>
 

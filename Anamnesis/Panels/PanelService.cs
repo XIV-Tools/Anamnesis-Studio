@@ -27,7 +27,7 @@ public class PanelService : ServiceBase<PanelService>
 
 	private static readonly List<Type> PreLoadPanels = new()
 	{
-		typeof(CustomizePanel),
+		typeof(CharacterPanel),
 		typeof(LibraryPanel),
 		typeof(CameraPanel),
 		typeof(ExceptionPanel),
@@ -227,7 +227,7 @@ public class PanelService : ServiceBase<PanelService>
 					}
 					catch (Exception ex)
 					{
-						Log.Error(ex, $"Failed to reopen panel: {panelId}");
+						Log.Warning(ex, $"Failed to reopen panel: {panelId}");
 					}
 				}
 			}

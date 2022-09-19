@@ -8,11 +8,8 @@ using Anamnesis.Libraries.Panels;
 using Anamnesis.Panels;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
-using XivToolsWpf.Extensions;
 
 public class NavigationService : ServiceBase<NavigationService>
 {
@@ -22,9 +19,7 @@ public class NavigationService : ServiceBase<NavigationService>
 		{ "Exception", typeof(ExceptionPanel) },
 		{ "Settings", typeof(SettingsPanel) },
 		{ "Weather", typeof(WeatherPanel) },
-		{ "ActorInfo", typeof(ActorInfoPanel) },
-		{ "ActorCustomize", typeof(CustomizePanel) },
-		{ "ActorEquipment", typeof(EquipmentPanel) },
+		{ "Character", typeof(CharacterPanel) },
 		{ "Camera", typeof(CameraPanel) },
 		{ "Bones", typeof(BonesPanel) },
 		{ "Transform", typeof(TransformPanel) },

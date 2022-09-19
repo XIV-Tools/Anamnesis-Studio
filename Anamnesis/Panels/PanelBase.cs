@@ -34,13 +34,18 @@ public abstract class PanelBase : UserControl, IPanel, INotifyPropertyChanged
 	public ServiceManager Services => App.Services;
 	public bool IsOpen { get; private set; } = true;
 	public virtual string Id => this.GetType().ToString();
-	public string? Title { get; set; }
 	public IconChar Icon { get; set; }
 	public Rect Rect => this.Host.Rect;
 	public bool ShowBackground { get; set; } = true;
 	public bool CanResize { get; set; }
 	public bool CanScroll { get; set; } = false;
 	public Color? TitleColor { get; set; } = Colors.Gray;
+
+	public string? Title
+	{
+		get => TitleDp.Get(this);
+		set => TitleDp.Set(this, value);
+	}
 
 	public IPanelHost Host
 	{

@@ -182,12 +182,9 @@
 	"Naviagation_Weather_Tip": "Change Time and Weather",
 	"Naviagation_Camera": "Camera",
 	"Naviagation_Camera_Tip": "Change camera position and settings",
-	"Naviagation_Actor_Info": "Info",
-	"Naviagation_Actor_Info_Tip": "Change nickname, sub actors, and other actor settings",
-	"Naviagation_Actor_Customize": "Customize",
-	"Naviagation_Actor_Customize_Tip": "Change appearance",
-	"Naviagation_Actor_Equipment": "Gear",
-	"Naviagation_Actor_Equipment_Tip": "Change Gear",
+	"Naviagation_Actor_Character": "Character",
+	"Naviagation_Actor_Character_Tip": "Change appearance, gear and other character settings",
+
 	"Naviagation_Actor_Action": "Action",
 	"Naviagation_Actor_Action_Tip": "Play animations",
 	"Naviagation_Actor_Transform": "Transform",
@@ -200,6 +197,11 @@
 	"OverlayWindow_AutoClose": "Auto close",
 	"OverlayWindow_PopOut": "Pop-out",
 	"OverlayWindow_PopIn": "Pop-in",
+
+	"Character_Tab_Info": "Info",
+	"Character_Tab_Customize": "Customize",
+	"Character_Tab_Shaders": "Shaders",
+	"Character_Tab_Equipment": "Gear",
 
 	"Character_Load_FfxivDat": "FFXIV Saved Appearance Data",
 	"Character_Load_CMTool": "CMTool save",
