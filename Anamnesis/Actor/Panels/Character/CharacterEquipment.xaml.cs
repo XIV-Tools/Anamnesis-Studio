@@ -1,15 +1,15 @@
 ﻿// © Anamnesis.
 // Licensed under the MIT license.
 
-namespace Anamnesis.Actor.Views;
+namespace Anamnesis.Actor.Panels.Character;
 
 using System.Windows.Controls;
 using PropertyChanged;
 
 [AddINotifyPropertyChangedInterface]
-public partial class EquipmentEditor : UserControl
+public partial class CharacterEquipment : UserControl
 {
-	public EquipmentEditor()
+	public CharacterEquipment()
 	{
 		this.InitializeComponent();
 	}

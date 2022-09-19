@@ -1,7 +1,7 @@
 ﻿// © Anamnesis.
 // Licensed under the MIT license.
 
-namespace Anamnesis.Actor.Views;
+namespace Anamnesis.Actor.Panels.Character;
 
 using System.Collections.Generic;
 using System.Windows.Controls;
@@ -11,11 +11,11 @@ using PropertyChanged;
 using XivToolsWpf.DependencyProperties;
 
 [AddINotifyPropertyChangedInterface]
-public partial class CustomizeEditor : UserControl
+public partial class CharacterCustomize : UserControl
 {
-	public static IBind<ActorMemory?> ActorDp = Binder.Register<ActorMemory?, CustomizeEditor>(nameof(Actor));
+	public static IBind<ActorMemory?> ActorDp = Binder.Register<ActorMemory?, CharacterCustomize>(nameof(Actor));
 
-	public CustomizeEditor()
+	public CharacterCustomize()
 	{
 		this.InitializeComponent();
 		this.ContentArea.DataContext = this;
