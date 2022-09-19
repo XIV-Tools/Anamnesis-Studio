@@ -43,12 +43,13 @@ public partial class ActorSelector : UserControl
 		if (this.Selection != null)
 			return;
 
-		if (this.Services.Target != null)
+		if (this.Services.Target.TargetedActor != null)
 		{
-			if (this.Services.Target.PlayerTarget != null)
-			{
-				this.Select(this.Services.Target.PlayerTarget);
-			}
+			this.Select(this.Services.Target.TargetedActor);
+		}
+		else
+		{
+			this.Select(this.Services.Actor.GetDefaultActor());
 		}
 	}
 
@@ -65,11 +66,11 @@ public partial class ActorSelector : UserControl
 
 	private void OnAddPlayerTargetActorClicked(object sender, RoutedEventArgs e)
 	{
-		this.Selector.Value = TargetService.GetTargetedActor();
+		this.Selector.Value = this.Services.Target.TargetedActor;
 		this.Selector.RaiseSelectionChanged();
 	}
 
-	private void OnClicked(object sender, System.Windows.RoutedEventArgs e)
+	private void OnClicked(object sender, RoutedEventArgs e)
 	{
 		this.Selector.ClearItems();
 		this.Selector.AddItems(ActorService.Instance.GetAllActors());

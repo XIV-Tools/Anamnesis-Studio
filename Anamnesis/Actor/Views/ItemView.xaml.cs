@@ -29,6 +29,7 @@ using XivToolsWpf.DependencyProperties;
 [AddINotifyPropertyChangedInterface]
 public partial class ItemView : UserControl
 {
+	public static readonly IBind<ActorMemory?> ActorDp = Binder.Register<ActorMemory?, ItemView>(nameof(Actor), BindMode.OneWay);
 	public static readonly IBind<ItemSlots> SlotDp = Binder.Register<ItemSlots, ItemView>(nameof(Slot), BindMode.OneWay);
 	public static readonly IBind<IEquipmentItemMemory?> ItemModelDp = Binder.Register<IEquipmentItemMemory?, ItemView>(nameof(ItemModel), OnItemModelChanged, BindMode.TwoWay);
 	public static readonly IBind<WeaponSubModelMemory?> WeaponExModelDp = Binder.Register<WeaponSubModelMemory?, ItemView>(nameof(ExtendedViewModel));
@@ -63,7 +64,11 @@ public partial class ItemView : UserControl
 		set => ItemModelDp.Set(this, value);
 	}
 
-	public ActorMemory? Actor { get; private set; }
+	public ActorMemory? Actor
+	{
+		get => ActorDp.Get(this);
+		set => ActorDp.Set(this, value);
+	}
 
 	public WeaponSubModelMemory? ExtendedViewModel
 	{
@@ -138,9 +143,6 @@ public partial class ItemView : UserControl
 
 	private void OnClick(object sender, RoutedEventArgs e)
 	{
-		if (this.Actor?.CanRefresh != true)
-			return;
-
 		try
 		{
 			////NavigationService.Navigate(new NavigationService.Request(this, "ActorEquipmentSelector", this));
@@ -156,18 +158,15 @@ public partial class ItemView : UserControl
 
 	private void OnSlotMouseUp(object sender, MouseButtonEventArgs e)
 	{
-		if (this.Actor?.CanRefresh != true)
-			return;
-
 		if (e.ChangedButton == MouseButton.Middle && e.ButtonState == MouseButtonState.Released)
 		{
-			this.ItemModel?.Clear(this.Actor.IsHuman);
+			this.ItemModel?.Clear(this.Actor?.IsHuman ?? false);
 		}
 	}
 
 	private void OnDyeMouseUp(object sender, MouseButtonEventArgs e)
 	{
-		if (this.Actor?.CanRefresh != true || this.ItemModel == null)
+		if (this.ItemModel == null)
 			return;
 
 		if (e.ChangedButton == MouseButton.Middle && e.ButtonState == MouseButtonState.Released)
@@ -287,6 +286,11 @@ public partial class ItemView : UserControl
 
 			this.IsLoading = true;
 
+			if (this.Actor == null)
+				return;
+
+			ActorMemory actor = this.Actor;
+
 			try
 			{
 				IEquipmentItemMemory? valueVm = this.ItemModel;
@@ -294,12 +298,9 @@ public partial class ItemView : UserControl
 
 				await Dispatch.NonUiThread();
 
-				if (this.Actor == null)
-					throw new Exception("No Actor in item view");
-
 				if (valueVm is ItemMemory itemVm)
 				{
-					IItem? item = ItemUtility.GetItem(slots, 0, itemVm.Base, itemVm.Variant, this.Actor.IsChocobo);
+					IItem? item = ItemUtility.GetItem(slots, 0, itemVm.Base, itemVm.Variant, actor.IsChocobo);
 					IDye? dye = GameDataService.Instance.Dyes.Get(itemVm.Dye);
 
 					await this.Dispatcher.MainThread();
@@ -309,7 +310,7 @@ public partial class ItemView : UserControl
 				}
 				else if (valueVm is WeaponMemory weaponVm)
 				{
-					IItem? item = ItemUtility.GetItem(slots, weaponVm.Set, weaponVm.Base, weaponVm.Variant, this.Actor.IsChocobo);
+					IItem? item = ItemUtility.GetItem(slots, weaponVm.Set, weaponVm.Base, weaponVm.Variant, actor.IsChocobo);
 
 					if (weaponVm.Set == 0)
 						weaponVm.Dye = 0;
@@ -331,10 +332,5 @@ public partial class ItemView : UserControl
 
 			this.IsLoading = false;
 		});
-	}
-
-	private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-	{
-		this.Actor = this.DataContext as ActorMemory;
 	}
 }

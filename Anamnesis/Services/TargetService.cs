@@ -14,32 +14,39 @@ using XivToolsWpf.Extensions;
 [AddINotifyPropertyChangedInterface]
 public class TargetService : ServiceBase<TargetService>
 {
-	public static readonly int OverworldPlayerTargetOffset = 0x80;
-	public static readonly int GPosePlayerTargetOffset = 0x98;
+	public const int OverworldPlayerTargetOffset = 0x80;
+	public const int GPosePlayerTargetOffset = 0x98;
+
+	private readonly ActorBasicMemory playerTarget = new();
 
 	public delegate void TargetEvent(ActorBasicMemory? actor);
 
 	public static event TargetEvent? TargetChanged;
 
-	public ActorBasicMemory PlayerTarget { get; private set; } = new();
-
-	public static ActorBasicMemory GetTargetedActor()
+	public ActorBasicMemory? TargetedActor
 	{
-		Instance.UpdatePlayerTarget();
-		return Instance.PlayerTarget;
-	}
-
-	public static void SetPlayerTarget(ActorBasicMemory actor)
-	{
-		if (actor.IsValid)
+		get
 		{
-			Instance.SetPlayerTarget(actor.Address);
+			if (!this.playerTarget.IsValid || this.playerTarget.ObjectKind == ActorTypes.None)
+				return null;
+
+			return this.playerTarget;
 		}
 	}
 
-	public static ActorBasicMemory? GetPlayerTarget()
+	public void SetTarget(ActorBasicMemory actor)
 	{
-		return Instance.PlayerTarget;
+		if (actor.IsValid)
+		{
+			if (GposeService.Instance.IsGpose)
+			{
+				MemoryService.Write<IntPtr>(IntPtr.Add(AddressService.PlayerTargetSystem, GPosePlayerTargetOffset), actor.Address, "Update player target");
+			}
+			else
+			{
+				MemoryService.Write<IntPtr>(IntPtr.Add(AddressService.PlayerTargetSystem, OverworldPlayerTargetOffset), actor.Address, "Update player target");
+			}
+		}
 	}
 
 	public override async Task Initialize()
@@ -70,19 +77,19 @@ public class TargetService : ServiceBase<TargetService>
 
 		try
 		{
-			if (currentPlayerTargetPtr != this.PlayerTarget.Address)
+			if (currentPlayerTargetPtr != this.playerTarget.Address)
 			{
 				if (currentPlayerTargetPtr == IntPtr.Zero)
 				{
-					this.PlayerTarget.Dispose();
+					this.playerTarget.Dispose();
 				}
 				else
 				{
-					this.PlayerTarget.SetAddress(currentPlayerTargetPtr);
+					this.playerTarget.SetAddress(currentPlayerTargetPtr);
 				}
 
-				this.RaisePropertyChanged(nameof(TargetService.PlayerTarget));
-				TargetChanged?.Invoke(this.PlayerTarget);
+				this.RaisePropertyChanged(nameof(TargetService.TargetedActor));
+				TargetChanged?.Invoke(this.TargetedActor);
 			}
 		}
 		catch
@@ -91,33 +98,15 @@ public class TargetService : ServiceBase<TargetService>
 		}
 
 		// Tick the actor if it still exists
-		if(this.PlayerTarget != null && this.PlayerTarget.Address != IntPtr.Zero)
+		if (this.TargetedActor != null && this.TargetedActor.Address != IntPtr.Zero)
 		{
 			try
 			{
-				this.PlayerTarget.Tick();
+				this.TargetedActor.Tick();
 			}
 			catch
 			{
 				// Should only fail to tick if the game isn't running
-			}
-		}
-	}
-
-	private void SetPlayerTarget(IntPtr? ptr)
-	{
-		if (ptr != null && ptr != IntPtr.Zero)
-		{
-			if (Services.Actor.IsActorInTable((IntPtr)ptr))
-			{
-				if (GposeService.Instance.IsGpose)
-				{
-					MemoryService.Write<IntPtr>(IntPtr.Add(AddressService.PlayerTargetSystem, GPosePlayerTargetOffset), (IntPtr)ptr, "Update player target");
-				}
-				else
-				{
-					MemoryService.Write<IntPtr>(IntPtr.Add(AddressService.PlayerTargetSystem, OverworldPlayerTargetOffset), (IntPtr)ptr, "Update player target");
-				}
 			}
 		}
 	}

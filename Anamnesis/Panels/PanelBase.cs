@@ -54,6 +54,7 @@ public abstract class PanelBase : UserControl, IPanel, INotifyPropertyChanged
 	}
 
 	public object? PanelContext { get; private set; }
+	public PanelService.PanelsData PanelsData => this.Host.PanelsData;
 
 	protected ILogger Log => Serilog.Log.ForContext(this.GetType());
 

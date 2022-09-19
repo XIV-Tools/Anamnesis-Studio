@@ -15,9 +15,10 @@ public interface IPanelHost
 	Rect Rect { get; }
 	Rect ScreenRect { get; }
 	SizeToContent SizeToContent { get; }
+	PanelService.PanelsData PanelsData { get; }
 
 	void Activate();
-	void Show(Rect? desiredPosition = null);
+	void Show();
 	void Show(IPanelHost copy);
 	void AddPanel(IPanel panel);
 	void RemovePanel(IPanel panel);

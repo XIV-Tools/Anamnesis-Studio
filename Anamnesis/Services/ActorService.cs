@@ -34,6 +34,26 @@ public class ActorService : ServiceBase<ActorService>
 
 	public ReadOnlyCollection<IntPtr> ActorTable => Array.AsReadOnly(this.actorTable);
 
+	/// <summary>
+	/// Gets the first actor in the actor table that has a valid object kind.
+	/// </summary>
+	public ActorBasicMemory? GetDefaultActor()
+	{
+		List<ActorBasicMemory> actors = this.GetAllActors();
+		foreach (ActorBasicMemory actor in actors)
+		{
+			if (actor.ObjectKind == ActorTypes.None)
+				continue;
+
+			if (!actor.IsValid)
+				continue;
+
+			return actor;
+		}
+
+		return null;
+	}
+
 	public bool CanRefreshActor(ActorMemory actor)
 	{
 		if (PoseService.Instance.IsEnabled)

@@ -40,6 +40,8 @@ public partial class NavigationPanel : PanelBase
 				Application.Current.Shutdown();
 			}
 		}
+
+		this.PanelsData.SavePosition(this.Host);
 	}
 
 	private void OnSaveSceneClicked(object sender, RoutedEventArgs e)

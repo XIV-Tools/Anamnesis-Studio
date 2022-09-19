@@ -4,29 +4,21 @@
 namespace Anamnesis.Windows;
 
 using Anamnesis.Extensions;
-using Anamnesis.Memory;
 using Anamnesis.Panels;
 using Anamnesis.Services;
 using FontAwesome.Sharp;
 using MaterialDesignThemes.Wpf;
-using Newtonsoft.Json.Linq;
 using PropertyChanged;
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using XivToolsWpf;
 
 using MediaColor = System.Windows.Media.Color;
@@ -40,8 +32,6 @@ public partial class FloatingWindow : Window, IPanelHost
 	private readonly List<IPanel> panels = new();
 
 	private bool canResize = true;
-	private bool playOpenAnimation = true;
-	private bool isOpeningAnimation = true;
 
 	public FloatingWindow()
 	{
@@ -57,6 +47,7 @@ public partial class FloatingWindow : Window, IPanelHost
 	public ContentPresenter PanelGroupArea => this.ContentPresenter;
 	public bool ShowBackground { get; set; } = true;
 	public bool IsOpen { get; private set; }
+	public PanelService.PanelsData PanelsData { get; private set; } = new();
 
 	public IEnumerable<IPanel> Panels => this.panels.AsReadOnly();
 
@@ -126,12 +117,9 @@ public partial class FloatingWindow : Window, IPanelHost
 
 	public virtual new void Show()
 	{
-		throw new NotSupportedException();
-	}
-
-	public virtual void Show(Rect? desiredPosition)
-	{
 		Rect screen = this.ScreenRect;
+
+		Rect? desiredPosition = this.PanelsData.GetLastPosition();
 
 		// Center screen
 		if (desiredPosition == null)
@@ -197,28 +185,7 @@ public partial class FloatingWindow : Window, IPanelHost
 
 	public virtual void Show(IPanelHost copy)
 	{
-		this.playOpenAnimation = false;
-		this.Show(copy.Rect);
-
 		throw new NotImplementedException();
-
-		/*if (this.PanelGroupArea.Content is PanelBase panel)
-			panel.Host = this;
-
-		this.TitleKey = copy.TitleKey;
-		this.Title = copy.Title;
-		this.Icon = copy.Icon;
-		this.TitleColor = copy.TitleColor;
-		this.ShowBackground = copy.ShowBackground;
-		this.Topmost = copy.Topmost;
-		this.CanResize = copy.CanResize;
-
-		if (copy is FloatingWindow wnd)
-		{
-			this.AutoClose = wnd.AutoClose;
-		}
-
-		this.Rect = copy.Rect;*/
 	}
 
 	public virtual new void Activate()
@@ -232,6 +199,11 @@ public partial class FloatingWindow : Window, IPanelHost
 		this.PanelGroupArea.Content = panel as PanelBase;
 
 		this.panels.Add(panel);
+		this.PanelsData = App.Services.Panels.GetData(this);
+		this.PanelsData.PanelIds.Add(panel.Id);
+		this.PanelsData.IsOpen = true;
+		this.PanelsData.Save();
+
 		panel.PropertyChanged += this.OnPanelPropertyChanged;
 		this.OnPanelPropertyChanged(this, null);
 	}
@@ -240,6 +212,10 @@ public partial class FloatingWindow : Window, IPanelHost
 	{
 		panel.PropertyChanged -= this.OnPanelPropertyChanged;
 		this.panels.Remove(panel);
+		this.PanelsData = App.Services.Panels.GetData(this);
+		this.PanelsData.PanelIds.Remove(panel.Id);
+		this.PanelsData.IsOpen = true;
+		this.PanelsData.Save();
 
 		if (this.IsOpen && this.panels.Count <= 0)
 		{
@@ -249,9 +225,6 @@ public partial class FloatingWindow : Window, IPanelHost
 
 	public new void Close()
 	{
-		if (!this.isOpeningAnimation)
-			PanelService.SavePosition(this);
-
 		this.BeginStoryboard("CloseStoryboard");
 		this.IsOpen = false;
 
@@ -259,6 +232,10 @@ public partial class FloatingWindow : Window, IPanelHost
 		{
 			panel.Close();
 		}
+
+		this.PanelsData.IsOpen = false;
+		this.PanelsData.SavePosition(this);
+		this.PanelsData.Save();
 	}
 
 	protected virtual void OnWindowLoaded()
@@ -286,14 +263,7 @@ public partial class FloatingWindow : Window, IPanelHost
 
 		this.OnWindowLoaded();
 
-		if (this.playOpenAnimation)
-		{
-			this.BeginStoryboard("OpenStoryboard");
-		}
-		else
-		{
-			this.Opacity = 1.0;
-		}
+		this.BeginStoryboard("OpenStoryboard");
 	}
 
 	private void OnTitleMouseDown(object sender, MouseButtonEventArgs e)
@@ -345,7 +315,6 @@ public partial class FloatingWindow : Window, IPanelHost
 
 	private void OnOpenStoryboardCompleted(object sender, EventArgs e)
 	{
-		this.isOpeningAnimation = false;
 	}
 
 	private void OnPopOutClicked(object sender, RoutedEventArgs e)

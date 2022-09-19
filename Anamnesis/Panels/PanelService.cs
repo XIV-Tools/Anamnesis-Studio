@@ -18,6 +18,7 @@ using XivToolsWpf.Extensions;
 using System.Data;
 using Octokit;
 using System.Runtime.CompilerServices;
+using System.Linq;
 
 public class PanelService : ServiceBase<PanelService>
 {
@@ -41,6 +42,16 @@ public class PanelService : ServiceBase<PanelService>
 	{
 		ApplicationThread,
 		CustomThread,
+	}
+
+	public static async Task<PanelBase> Show(string panelId, object? context = null, PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
+	{
+		Type? panelType = Type.GetType(panelId);
+
+		if (panelType == null)
+			throw new Exception($"Failed to locate panel type: {panelId}");
+
+		return await Show(panelType, context, threadMode);
 	}
 
 	public static async Task<T> Show<T>(object? context = null, PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
@@ -133,9 +144,7 @@ public class PanelService : ServiceBase<PanelService>
 		IPanelHost panelHost = panelHost = CreateHost();
 		panelHost.AddPanel(panel);
 		panel.SetContext(panelHost, context);
-
-		Rect? desiredPosition = GetLastPosition(panelHost);
-		panelHost.Show(desiredPosition);
+		panelHost.Show();
 
 		OpenPanels.Add(panel);
 		return panel;
@@ -152,50 +161,15 @@ public class PanelService : ServiceBase<PanelService>
 		return new OverlayWindow();
 	}
 
-	public static Rect? GetLastPosition(IPanelHost panel)
+	public PanelsData GetData(IPanelHost panelHost)
 	{
-		if (SettingsService.Current.Panels.TryGetValue(panel.Id, out PanelsData? data) && data != null)
-		{
-			Rect pos = data.Position;
-
-			if (data.SizeToContent == SizeToContent.WidthAndHeight)
-			{
-				pos.Width = double.NaN;
-				pos.Height = double.NaN;
-			}
-			else if (data.SizeToContent == SizeToContent.Width)
-			{
-				pos.Width = double.NaN;
-			}
-			else if (data.SizeToContent == SizeToContent.Height)
-			{
-				pos.Height = double.NaN;
-			}
-
-			return pos;
-		}
-
-		return null;
-	}
-
-	public static void SavePosition(IPanelHost panel)
-	{
-		Rect pos = new();
-		pos.Width = panel.Rect.Width;
-		pos.Height = panel.Rect.Height;
-		pos.X = (panel.Rect.X - panel.ScreenRect.Left) / panel.ScreenRect.Width;
-		pos.Y = (panel.Rect.Y - panel.ScreenRect.Top) / panel.ScreenRect.Height;
-
-		if (!SettingsService.Current.Panels.TryGetValue(panel.Id, out PanelsData? data) || data == null)
+		if (!SettingsService.Current.Panels.TryGetValue(panelHost.Id, out PanelsData? data) || data == null)
 		{
 			data = new();
-			SettingsService.Current.Panels.Add(panel.Id, data);
+			SettingsService.Current.Panels.Add(panelHost.Id, data);
 		}
 
-		data.Position = pos;
-		data.SizeToContent = panel.SizeToContent;
-
-		SettingsService.Save();
+		return data;
 	}
 
 	public override Task Start()
@@ -240,10 +214,30 @@ public class PanelService : ServiceBase<PanelService>
 	{
 		await Dispatch.NonUiThread();
 
-		List<Task> tasks = new();
+		// Open last used panels
+		foreach (PanelsData data in SettingsService.Current.Panels.Values)
+		{
+			if (data.IsOpen)
+			{
+				foreach (string panelId in data.PanelIds.ToArray())
+				{
+					try
+					{
+						await PanelService.Show(panelId);
+					}
+					catch (Exception ex)
+					{
+						Log.Error(ex, $"Failed to reopen panel: {panelId}");
+					}
+				}
+			}
+		}
 
+		// Preload panels
 		try
 		{
+			List<Task> tasks = new();
+
 			foreach (Type panelType in PreLoadPanels)
 			{
 				Log.Information($"Spwning panel: {panelType}");
@@ -265,7 +259,49 @@ public class PanelService : ServiceBase<PanelService>
 		{
 		}
 
+		public List<string> PanelIds { get; init; } = new();
 		public Rect Position { get; set; } = default;
 		public SizeToContent SizeToContent { get; set; } = SizeToContent.WidthAndHeight;
+		public bool IsOpen { get; set; } = false;
+
+		public Rect? GetLastPosition()
+		{
+			Rect pos = this.Position;
+
+			if (this.SizeToContent == SizeToContent.WidthAndHeight)
+			{
+				pos.Width = double.NaN;
+				pos.Height = double.NaN;
+			}
+			else if (this.SizeToContent == SizeToContent.Width)
+			{
+				pos.Width = double.NaN;
+			}
+			else if (this.SizeToContent == SizeToContent.Height)
+			{
+				pos.Height = double.NaN;
+			}
+
+			return pos;
+		}
+
+		public void SavePosition(IPanelHost panel)
+		{
+			Rect pos = new();
+			pos.Width = panel.Rect.Width;
+			pos.Height = panel.Rect.Height;
+			pos.X = (panel.Rect.X - panel.ScreenRect.Left) / panel.ScreenRect.Width;
+			pos.Y = (panel.Rect.Y - panel.ScreenRect.Top) / panel.ScreenRect.Height;
+
+			this.Position = pos;
+			this.SizeToContent = panel.SizeToContent;
+
+			this.Save();
+		}
+
+		public void Save()
+		{
+			SettingsService.Save();
+		}
 	}
 }

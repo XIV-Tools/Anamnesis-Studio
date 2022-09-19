@@ -8,89 +8,79 @@
 	d:DesignHeight="600"
 	mc:Ignorable="d">
 
-	<WrapPanel x:Name="ContentArea">
+	<UniformGrid
+		x:Name="ContentArea"
+		Columns="2">
 
 		<local:ItemView
-			Grid.Row="0"
-			Grid.Column="0"
-			ExtendedViewModel="{Binding ModelObject.Weapons}"
+			Actor="{Binding Actor}"
+			ExtendedViewModel="{Binding Actor.ModelObject.Weapons}"
 			IsEnabled="{Binding IsChocobo, Converter={StaticResource !B}}"
-			ItemModel="{Binding MainHand}"
+			ItemModel="{Binding Actor.MainHand}"
 			Slot="MainHand" />
 
 		<local:ItemView
-			Grid.Row="0"
-			Grid.Column="1"
-			ExtendedViewModel="{Binding ModelObject.Weapons.SubModel}"
+			Actor="{Binding Actor}"
+			ExtendedViewModel="{Binding Actor.ModelObject.Weapons.SubModel}"
 			IsEnabled="{Binding IsChocobo, Converter={StaticResource !B}}"
-			ItemModel="{Binding OffHand}"
+			ItemModel="{Binding Actor.OffHand}"
 			Slot="OffHand" />
 
 		<local:ItemView
-			Grid.Row="1"
-			Grid.Column="0"
-			ItemModel="{Binding Equipment.Head}"
+			Actor="{Binding Actor}"
+			ItemModel="{Binding Actor.Equipment.Head}"
 			Slot="Head" />
 
 		<local:ItemView
-			Grid.Row="2"
-			Grid.Column="0"
-			ItemModel="{Binding Equipment.Chest}"
-			Slot="Body" />
-
-		<local:ItemView
-			Grid.Row="3"
-			Grid.Column="0"
-			IsEnabled="{Binding IsChocobo, Converter={StaticResource !B}}"
-			ItemModel="{Binding Equipment.Arms}"
-			Slot="Hands" />
-
-		<local:ItemView
-			Grid.Row="4"
-			Grid.Column="0"
-			ItemModel="{Binding Equipment.Legs}"
-			Slot="Legs" />
-
-		<local:ItemView
-			Grid.Row="5"
-			Grid.Column="0"
-			ItemModel="{Binding Equipment.Feet}"
-			Slot="Feet" />
-
-		<local:ItemView
-			Grid.Row="1"
-			Grid.Column="1"
-			IsEnabled="{Binding IsChocobo, Converter={StaticResource !B}}"
-			ItemModel="{Binding Equipment.Ear}"
+			Actor="{Binding Actor}"
+			IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
+			ItemModel="{Binding Actor.Equipment.Ear}"
 			Slot="Ears" />
 
 		<local:ItemView
-			Grid.Row="2"
-			Grid.Column="1"
-			IsEnabled="{Binding IsChocobo, Converter={StaticResource !B}}"
-			ItemModel="{Binding Equipment.Neck}"
+			Actor="{Binding Actor}"
+			ItemModel="{Binding Actor.Equipment.Chest}"
+			Slot="Body" />
+
+		<local:ItemView
+			Actor="{Binding Actor}"
+			IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
+			ItemModel="{Binding Actor.Equipment.Neck}"
 			Slot="Neck" />
 
 		<local:ItemView
-			Grid.Row="3"
-			Grid.Column="1"
-			IsEnabled="{Binding IsChocobo, Converter={StaticResource !B}}"
-			ItemModel="{Binding Equipment.Wrist}"
+			Actor="{Binding Actor}"
+			IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
+			ItemModel="{Binding Actor.Equipment.Arms}"
+			Slot="Hands" />
+
+		<local:ItemView
+			Actor="{Binding Actor}"
+			IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
+			ItemModel="{Binding Actor.Equipment.Wrist}"
 			Slot="Wrists" />
 
 		<local:ItemView
-			Grid.Row="4"
-			Grid.Column="1"
-			IsEnabled="{Binding IsChocobo, Converter={StaticResource !B}}"
-			ItemModel="{Binding Equipment.RFinger}"
+			Actor="{Binding Actor}"
+			ItemModel="{Binding Actor.Equipment.Legs}"
+			Slot="Legs" />
+
+		<local:ItemView
+			Actor="{Binding Actor}"
+			IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
+			ItemModel="{Binding Actor.Equipment.RFinger}"
 			Slot="RightRing" />
 
 		<local:ItemView
-			Grid.Row="5"
-			Grid.Column="1"
-			IsEnabled="{Binding IsChocobo, Converter={StaticResource !B}}"
-			ItemModel="{Binding Equipment.LFinger}"
+			Actor="{Binding Actor}"
+			ItemModel="{Binding Actor.Equipment.Feet}"
+			Slot="Feet" />
+
+		<local:ItemView
+			Actor="{Binding Actor}"
+			IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
+			ItemModel="{Binding Actor.Equipment.LFinger}"
 			Slot="LeftRing" />
 
-	</WrapPanel>
+	</UniformGrid>
 </UserControl>

@@ -69,7 +69,7 @@
 			Margin="3,0,6,0"
 			FontSize="14"
 			FontWeight="SemiBold"
-			Text="{Binding Names.Text, FallbackValue=Some. G}" />
+			Text="{Binding Names.Text}" />
 
 		<StackPanel
 			Grid.Row="1"
@@ -79,12 +79,12 @@
 
 			<TextBlock
 				Margin="0,0,4,0"
-				Text="{Binding Customize.Race.DisplayName, FallbackValue=Hyur}"
+				Text="{Binding Customize.Race.DisplayName}"
 				Visibility="{Binding Customize.Race.DisplayName, Converter={StaticResource NotEmptyToVisibilityConverter}}" />
 
 			<TextBlock
 				Margin="0,0,4,0"
-				Text="{Binding Customize.Tribe.DisplayName, FallbackValue=Midlander}"
+				Text="{Binding Customize.Tribe.DisplayName}"
 				Visibility="{Binding Customize.Tribe.DisplayName, Converter={StaticResource NotEmptyToVisibilityConverter}}" />
 
 			<TextBlock

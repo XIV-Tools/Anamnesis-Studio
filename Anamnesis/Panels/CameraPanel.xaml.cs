@@ -16,7 +16,7 @@ public partial class CameraPanel : PanelBase
 
 	private async void OnImportCamera(object sender, RoutedEventArgs e)
 	{
-		ActorBasicMemory? targetActor = this.Services.Target.PlayerTarget;
+		ActorBasicMemory? targetActor = this.Services.Target.TargetedActor;
 		if (targetActor == null || !targetActor.IsValid)
 			return;
 		ActorMemory actorMemory = new ActorMemory();
@@ -54,7 +54,7 @@ public partial class CameraPanel : PanelBase
 
 	private async void OnExportCamera(object sender, RoutedEventArgs e)
 	{
-		ActorBasicMemory? targetActor = this.Services.Target.PlayerTarget;
+		ActorBasicMemory? targetActor = this.Services.Target.TargetedActor;
 		if (targetActor == null || !targetActor.IsValid)
 			return;
 		ActorMemory actorMemory = new ActorMemory();

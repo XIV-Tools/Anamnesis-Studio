@@ -9,7 +9,6 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	Width="175"
 	Margin="0"
-	DataContextChanged="OnDataContextChanged"
 	mc:Ignorable="d">
 
 	<GroupBox

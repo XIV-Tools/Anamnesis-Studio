@@ -80,7 +80,9 @@
 					</Grid>
 				</ScrollViewer>
 			</TabItem>
-			<TabItem Header="[Naviagation_Actor_Equipment]" />
+			<TabItem Header="[Naviagation_Actor_Equipment]">
+				<views:EquipmentEditor />
+			</TabItem>
 
 		</TabControl>
 
