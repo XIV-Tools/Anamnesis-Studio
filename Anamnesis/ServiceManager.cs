@@ -45,7 +45,7 @@ public class ServiceManager
 	public TexToolsService TexTools { get; } = new();
 	public FavoritesService Favorites { get; } = new();
 	public AnimationService Animation { get; } = new();
-	public Keyboard.HotkeyService Hotkeys { get; } = new();
+	public Keyboard.KeyboardService Hotkeys { get; } = new();
 	public HistoryService History { get; } = new();
 	public SceneService Scene { get; } = new();
 	public PanelService Panels { get; } = new();

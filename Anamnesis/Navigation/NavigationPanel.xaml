@@ -92,6 +92,14 @@
 			</Border>
 
 			<Border
+				Grid.Row="0"
+				Grid.RowSpan="3"
+				BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+				BorderThickness="1"
+				CornerRadius="6"
+				Visibility="{Binding IsActive, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Converter={StaticResource B2V}}" />
+
+			<Border
 				Grid.Row="1"
 				Margin="3,3,3,1"
 				CornerRadius="6,6,0,0"

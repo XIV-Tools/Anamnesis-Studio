@@ -48,25 +48,6 @@ public partial class QuaternionEditor : UserControl
 		this.InitializeComponent();
 		this.ContentArea.DataContext = this;
 
-		HotkeyService.RegisterHotkeyHandler("QuaternionEditor.RotateXPlus", (k) => this.Rotate(k, 1, 0, 0));
-		HotkeyService.RegisterHotkeyHandler("QuaternionEditor.RotateXMinus", (k) => this.Rotate(k, -1, 0, 0));
-		HotkeyService.RegisterHotkeyHandler("QuaternionEditor.RotateYPlus", (k) => this.Rotate(k, 0, 1, 0));
-		HotkeyService.RegisterHotkeyHandler("QuaternionEditor.RotateYMinus", (k) => this.Rotate(k, 0, -1, 0));
-		HotkeyService.RegisterHotkeyHandler("QuaternionEditor.RotateZPlus", (k) => this.Rotate(k, 0, 0, 1));
-		HotkeyService.RegisterHotkeyHandler("QuaternionEditor.RotateZMinus", (k) => this.Rotate(k, 0, 0, -1));
-		HotkeyService.RegisterHotkeyHandler("QuaternionEditor.RotateXPlusFast", (k) => this.Rotate(k, 10, 0, 0));
-		HotkeyService.RegisterHotkeyHandler("QuaternionEditor.RotateXMinusFast", (k) => this.Rotate(k, -10, 0, 0));
-		HotkeyService.RegisterHotkeyHandler("QuaternionEditor.RotateYPlusFast", (k) => this.Rotate(k, 0, 10, 0));
-		HotkeyService.RegisterHotkeyHandler("QuaternionEditor.RotateYMinusFast", (k) => this.Rotate(k, 0, -10, 0));
-		HotkeyService.RegisterHotkeyHandler("QuaternionEditor.RotateZPlusFast", (k) => this.Rotate(k, 0, 0, 10));
-		HotkeyService.RegisterHotkeyHandler("QuaternionEditor.RotateZMinusFast", (k) => this.Rotate(k, 0, 0, -10));
-		HotkeyService.RegisterHotkeyHandler("QuaternionEditor.RotateXPlusSlow", (k) => this.Rotate(k, 0.1, 0, 0));
-		HotkeyService.RegisterHotkeyHandler("QuaternionEditor.RotateXMinusSlow", (k) => this.Rotate(k, -0.1, 0, 0));
-		HotkeyService.RegisterHotkeyHandler("QuaternionEditor.RotateYPlusSlow", (k) => this.Rotate(k, 0, 0.1, 0));
-		HotkeyService.RegisterHotkeyHandler("QuaternionEditor.RotateYMinusSlow", (k) => this.Rotate(k, 0, -0.1, 0));
-		HotkeyService.RegisterHotkeyHandler("QuaternionEditor.RotateZPlusSlow", (k) => this.Rotate(k, 0, 0, 0.1));
-		HotkeyService.RegisterHotkeyHandler("QuaternionEditor.RotateZMinusSlow", (k) => this.Rotate(k, 0, 0, -0.1));
-
 		this.TickFrequency = 0.5;
 
 		this.rotationGizmo = new RotationGizmo(this);

@@ -37,7 +37,11 @@ public partial class NavigationPanel : PanelBase
 			if (result == true)
 			{
 				this.Close();
-				Application.Current.Shutdown();
+
+				Application.Current.Dispatcher.Invoke(() =>
+				{
+					Application.Current.Shutdown();
+				});
 			}
 		}
 

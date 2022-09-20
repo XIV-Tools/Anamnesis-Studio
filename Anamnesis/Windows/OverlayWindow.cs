@@ -117,6 +117,10 @@ public class OverlayWindow : FloatingWindow
 	[DllImport("user32.dll", EntryPoint = "GetWindowLong")]
 	private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
+	[DllImport("user32.dll")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	private static extern bool SetForegroundWindow(IntPtr hWnd);
+
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Win32Rect
 	{

@@ -9,6 +9,7 @@ using Anamnesis.Services;
 using FontAwesome.Sharp;
 using MaterialDesignThemes.Wpf;
 using PropertyChanged;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,7 +21,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using XivToolsWpf;
-
+using XivToolsWpf.Windows;
 using MediaColor = System.Windows.Media.Color;
 
 [AddINotifyPropertyChangedInterface]
@@ -188,9 +189,9 @@ public partial class FloatingWindow : Window, IPanelHost
 		throw new NotImplementedException();
 	}
 
-	public virtual new void Activate()
+	public virtual new bool Activate()
 	{
-		base.Activate();
+		return base.Activate();
 	}
 
 	public void AddPanel(IPanel panel)
@@ -361,5 +362,13 @@ public partial class FloatingWindow : Window, IPanelHost
 			this.Title = string.Empty;
 			this.TitleText.Text = string.Empty;
 		}
+	}
+
+	private void OnPreviewKeyDown(object sender, KeyEventArgs e)
+	{
+	}
+
+	private void OnPreviewKeyUp(object sender, KeyEventArgs e)
+	{
 	}
 }

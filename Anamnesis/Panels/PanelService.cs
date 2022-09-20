@@ -221,6 +221,9 @@ public class PanelService : ServiceBase<PanelService>
 			{
 				foreach (string panelId in data.PanelIds.ToArray())
 				{
+					if (panelId == "Anamnesis.Panels.GenericDialogPanel" || panelId == "Anamnesis.Panels.ExceptionPanel")
+						continue;
+
 					try
 					{
 						await PanelService.Show(panelId);
@@ -234,7 +237,7 @@ public class PanelService : ServiceBase<PanelService>
 		}
 
 		// Preload panels
-		try
+		/*try
 		{
 			List<Task> tasks = new();
 
@@ -249,7 +252,7 @@ public class PanelService : ServiceBase<PanelService>
 		catch (Exception ex)
 		{
 			Log.Error(ex, "Failed to spawn panels");
-		}
+		}*/
 	}
 
 	[Serializable]

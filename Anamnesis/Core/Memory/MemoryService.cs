@@ -232,30 +232,21 @@ public class MemoryService : ServiceBase<MemoryService>
 		return WriteProcessMemory(Handle, address, buffer, buffer.Length, out _);
 	}
 
-	public static void SendKey(Key key, KeyboardKeyStates state)
+	public static void PostMessage(uint msg, IntPtr wParam, IntPtr lParam)
 	{
 		if (Process == null)
 			return;
 
-		int vkey = KeyInterop.VirtualKeyFromKey(key);
+		PostMessage(Process.MainWindowHandle, msg, wParam, lParam);
 
-		if (key == Key.LeftShift || key == Key.RightShift)
-			vkey = 0x10;
-
-		if (key == Key.LeftCtrl || key == Key.RightCtrl)
-			vkey = 0x11;
-
-		if (key == Key.LeftAlt || key == Key.RightAlt)
-			vkey = 0x12;
-
-		if (state == KeyboardKeyStates.Pressed)
+		/*if (state == KeyboardKeyStates.Pressed)
 		{
 			PostMessage(Process.MainWindowHandle, 0x100, (IntPtr)vkey, IntPtr.Zero);
 		}
 		else if (state == KeyboardKeyStates.Released)
 		{
 			PostMessage(Process.MainWindowHandle, 0x0101, (IntPtr)vkey, IntPtr.Zero);
-		}
+		}*/
 	}
 
 	public override async Task Initialize()

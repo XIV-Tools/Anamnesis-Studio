@@ -100,15 +100,14 @@ public partial class App : Application
 			await this.Dispatcher.MainThread();
 
 			Window oldwindow = this.MainWindow;
+			this.MainWindow = new Anamnesis.Windows.MainWindow();
 
 			if (SettingsService.Current.OverlayWindow)
 			{
-				NavigationPanel nav = await PanelService.Show<NavigationPanel>(PanelService.PanelThreadingMode.ApplicationThread);
-				this.MainWindow = nav.Host as Window;
+				await PanelService.Show<NavigationPanel>(PanelService.PanelThreadingMode.CustomThread);
 			}
 			else
 			{
-				this.MainWindow = new Anamnesis.Windows.MainWindow();
 				this.MainWindow.Show();
 			}
 

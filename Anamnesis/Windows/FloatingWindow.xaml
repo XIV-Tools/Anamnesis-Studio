@@ -16,6 +16,8 @@
 	MouseEnter="OnMouseEnter"
 	MouseLeave="OnMouseLeave"
 	Opacity="0"
+	PreviewKeyDown="OnPreviewKeyDown"
+	PreviewKeyUp="OnPreviewKeyUp"
 	PreviewMouseDown="OnPreviewMouseDown"
 	ResizeMode="CanResizeWithGrip"
 	SizeToContent="WidthAndHeight"

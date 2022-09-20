@@ -17,7 +17,7 @@ public interface IPanelHost
 	SizeToContent SizeToContent { get; }
 	PanelService.PanelsData PanelsData { get; }
 
-	void Activate();
+	bool Activate();
 	void Show();
 	void Show(IPanelHost copy);
 	void AddPanel(IPanel panel);
