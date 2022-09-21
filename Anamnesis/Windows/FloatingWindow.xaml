@@ -139,6 +139,7 @@
 
 					<Button
 						Width="22"
+						Background="Transparent"
 						Click="OnTitlebarCloseButtonClicked"
 						Style="{StaticResource TransparentIconButton}"
 						Visibility="{Binding CanManualyClose, Converter={StaticResource B2V}}">
@@ -149,6 +150,7 @@
 
 					<Button
 						Width="22"
+						Background="Transparent"
 						Click="OnTitlebarContextButtonClicked"
 						Style="{StaticResource TransparentIconButton}">
 						<XivToolsWpf:IconBlock

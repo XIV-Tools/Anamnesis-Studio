@@ -154,24 +154,28 @@
 				</StackPanel.Resources>
 
 				<Button
+					Background="Transparent"
 					Click="OnSaveSceneClicked"
 					ToolTip="[Scene_Save]">
 					<XivToolsWpf:IconBlock Icon="Save" />
 				</Button>
 
 				<Button
+					Background="Transparent"
 					Click="OnOpenSceneClicked"
 					ToolTip="[Scene_Open]">
 					<XivToolsWpf:IconBlock Icon="FolderOpen" />
 				</Button>
 
 				<Button
+					Background="Transparent"
 					Click="OnImportClicked"
 					ToolTip="[Scene_Import]">
 					<XivToolsWpf:IconBlock Icon="FileImport" />
 				</Button>
 
 				<Button
+					Background="Transparent"
 					Click="OnExportClicked"
 					ToolTip="[Scene_Export]">
 					<XivToolsWpf:IconBlock Icon="FileExport" />
@@ -258,6 +262,7 @@
 
 				<Button
 					ana:Behaviours.Navigation="Settings"
+					Background="Transparent"
 					ToolTip="[Naviagation_Settings_Tip]">
 					<XivToolsWpf:Header
 						Icon="Cogs"
@@ -266,6 +271,7 @@
 
 				<Button
 					ana:Behaviours.Navigation="Library"
+					Background="Transparent"
 					ToolTip="[Naviagation_Library_Tip]">
 					<XivToolsWpf:Header
 						Icon="Book"
@@ -274,6 +280,7 @@
 
 				<Button
 					ana:Behaviours.Navigation="Weather"
+					Background="Transparent"
 					ToolTip="[Naviagation_Weather_Tip]">
 					<XivToolsWpf:Header
 						Icon="CloudMoonRain"
@@ -282,6 +289,7 @@
 
 				<Button
 					ana:Behaviours.Navigation="Camera"
+					Background="Transparent"
 					ToolTip="[Naviagation_Camera_Tip]">
 					<XivToolsWpf:Header
 						Icon="Camera"
@@ -290,6 +298,7 @@
 
 				<Button
 					ana:Behaviours.Navigation="Character"
+					Background="Transparent"
 					ToolTip="[Naviagation_Actor_Character_Tip]">
 					<XivToolsWpf:Header
 						Icon="User"
