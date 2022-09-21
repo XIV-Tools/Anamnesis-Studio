@@ -165,7 +165,7 @@ public class PanelService : ServiceBase<PanelService>
 
 	public override Task Start()
 	{
-		this.PreloadPanels().Run();
+		this.CompleteStart().Run();
 		return base.Start();
 	}
 
@@ -217,7 +217,7 @@ public class PanelService : ServiceBase<PanelService>
 		Log.Information($"Panel: {panelType} has shutdown");
 	}
 
-	private async Task PreloadPanels()
+	private async Task CompleteStart()
 	{
 		await Dispatch.NonUiThread();
 

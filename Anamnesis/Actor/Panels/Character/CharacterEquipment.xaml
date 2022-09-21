@@ -2,85 +2,89 @@
 	x:Class="Anamnesis.Actor.Panels.Character.CharacterEquipment"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ana="clr-namespace:Anamnesis"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:local="clr-namespace:Anamnesis.Actor.Views"
+	xmlns:equipment="clr-namespace:Anamnesis.Actor.Panels.Character.Equipment"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	d:DesignHeight="600"
 	mc:Ignorable="d">
 
-	<UniformGrid
+	<ScrollViewer
 		x:Name="ContentArea"
-		Columns="2">
+		ana:Behaviours.SmoothScroll="True">
 
-		<local:ItemView
-			Actor="{Binding Actor}"
-			ExtendedViewModel="{Binding Actor.ModelObject.Weapons}"
-			IsEnabled="{Binding IsChocobo, Converter={StaticResource !B}}"
-			ItemModel="{Binding Actor.MainHand}"
-			Slot="MainHand" />
+		<UniformGrid
+			Width="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}}"
+			Columns="2">
 
-		<local:ItemView
-			Actor="{Binding Actor}"
-			ExtendedViewModel="{Binding Actor.ModelObject.Weapons.SubModel}"
-			IsEnabled="{Binding IsChocobo, Converter={StaticResource !B}}"
-			ItemModel="{Binding Actor.OffHand}"
-			Slot="OffHand" />
+			<equipment:ItemView
+				Actor="{Binding Actor}"
+				IsEnabled="{Binding IsChocobo, Converter={StaticResource !B}}"
+				ItemModel="{Binding Actor.MainHand}"
+				Slot="MainHand" />
 
-		<local:ItemView
-			Actor="{Binding Actor}"
-			ItemModel="{Binding Actor.Equipment.Head}"
-			Slot="Head" />
+			<equipment:ItemView
+				Actor="{Binding Actor}"
+				IsEnabled="{Binding IsChocobo, Converter={StaticResource !B}}"
+				ItemModel="{Binding Actor.OffHand}"
+				Slot="OffHand" />
 
-		<local:ItemView
-			Actor="{Binding Actor}"
-			IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
-			ItemModel="{Binding Actor.Equipment.Ear}"
-			Slot="Ears" />
+			<equipment:ItemView
+				Actor="{Binding Actor}"
+				ItemModel="{Binding Actor.Equipment.Head}"
+				Slot="Head" />
 
-		<local:ItemView
-			Actor="{Binding Actor}"
-			ItemModel="{Binding Actor.Equipment.Chest}"
-			Slot="Body" />
+			<equipment:ItemView
+				Actor="{Binding Actor}"
+				IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
+				ItemModel="{Binding Actor.Equipment.Ear}"
+				Slot="Ears" />
 
-		<local:ItemView
-			Actor="{Binding Actor}"
-			IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
-			ItemModel="{Binding Actor.Equipment.Neck}"
-			Slot="Neck" />
+			<equipment:ItemView
+				Actor="{Binding Actor}"
+				ItemModel="{Binding Actor.Equipment.Chest}"
+				Slot="Body" />
 
-		<local:ItemView
-			Actor="{Binding Actor}"
-			IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
-			ItemModel="{Binding Actor.Equipment.Arms}"
-			Slot="Hands" />
+			<equipment:ItemView
+				Actor="{Binding Actor}"
+				IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
+				ItemModel="{Binding Actor.Equipment.Neck}"
+				Slot="Neck" />
 
-		<local:ItemView
-			Actor="{Binding Actor}"
-			IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
-			ItemModel="{Binding Actor.Equipment.Wrist}"
-			Slot="Wrists" />
+			<equipment:ItemView
+				Actor="{Binding Actor}"
+				IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
+				ItemModel="{Binding Actor.Equipment.Arms}"
+				Slot="Hands" />
 
-		<local:ItemView
-			Actor="{Binding Actor}"
-			ItemModel="{Binding Actor.Equipment.Legs}"
-			Slot="Legs" />
+			<equipment:ItemView
+				Actor="{Binding Actor}"
+				IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
+				ItemModel="{Binding Actor.Equipment.Wrist}"
+				Slot="Wrists" />
 
-		<local:ItemView
-			Actor="{Binding Actor}"
-			IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
-			ItemModel="{Binding Actor.Equipment.RFinger}"
-			Slot="RightRing" />
+			<equipment:ItemView
+				Actor="{Binding Actor}"
+				ItemModel="{Binding Actor.Equipment.Legs}"
+				Slot="Legs" />
 
-		<local:ItemView
-			Actor="{Binding Actor}"
-			ItemModel="{Binding Actor.Equipment.Feet}"
-			Slot="Feet" />
+			<equipment:ItemView
+				Actor="{Binding Actor}"
+				IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
+				ItemModel="{Binding Actor.Equipment.RFinger}"
+				Slot="RightRing" />
 
-		<local:ItemView
-			Actor="{Binding Actor}"
-			IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
-			ItemModel="{Binding Actor.Equipment.LFinger}"
-			Slot="LeftRing" />
+			<equipment:ItemView
+				Actor="{Binding Actor}"
+				ItemModel="{Binding Actor.Equipment.Feet}"
+				Slot="Feet" />
 
-	</UniformGrid>
+			<equipment:ItemView
+				Actor="{Binding Actor}"
+				IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
+				ItemModel="{Binding Actor.Equipment.LFinger}"
+				Slot="LeftRing" />
+
+		</UniformGrid>
+	</ScrollViewer>
 </UserControl>

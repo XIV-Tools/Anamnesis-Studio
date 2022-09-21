@@ -1,5 +1,5 @@
 ﻿<UserControl
-	x:Class="Anamnesis.Actor.Views.ItemView"
+	x:Class="Anamnesis.Actor.Panels.Character.Equipment.ItemView"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
@@ -7,40 +7,37 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	Width="175"
-	Margin="0"
 	mc:Ignorable="d">
 
-	<GroupBox
+	<Grid
 		x:Name="ContentArea"
-		Margin="3,0">
-		<GroupBox.Header>
-			<Grid Width="180">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition />
-				</Grid.ColumnDefinitions>
+		Margin="3,0"
+		MouseUp="OnSlotMouseUp">
 
-				<TextBlock
-					Grid.Column="0"
-					FontWeight="Light"
-					Foreground="{DynamicResource MaterialDesignBodyLight}"
-					Text="{Binding SlotName}" />
-				<TextBlock
-					Grid.Column="1"
-					Margin="0"
-					Text=":" />
-				<TextBlock
-					Grid.Column="2"
-					Margin="4,0,0,0"
-					Text="{Binding Item.Name}"
-					TextTrimming="CharacterEllipsis"
-					TextWrapping="NoWrap" />
-			</Grid>
-		</GroupBox.Header>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
 
-		<Grid Margin="0,2,0,0">
+		<TextBlock
+			Grid.Row="0"
+			Style="{StaticResource Label}"
+			Text="{Binding SlotName}" />
+
+		<ToggleButton
+			Grid.Row="1"
+			IsChecked="{Binding IsPopupOpen}"
+			Style="{StaticResource XivToolsComboBoxButton}">
+
+			<TextBlock
+				Text="{Binding Item.Name}"
+				TextTrimming="CharacterEllipsis"
+				TextWrapping="NoWrap" />
+
+		</ToggleButton>
+
+		<Grid Grid.Row="2">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto" />
 				<ColumnDefinition />
@@ -51,30 +48,23 @@
 				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 
-			<Button
+			<ToggleButton
 				Grid.Row="0"
 				Grid.RowSpan="2"
-				Width="48"
-				Height="48"
-				Click="OnClick"
-				IsEnabled="{Binding Actor.CanRefresh}"
-				MouseUp="OnSlotMouseUp"
-				Style="{DynamicResource TransparentButton}">
+				Width="54"
+				Height="54"
+				IsChecked="{Binding IsPopupOpen}"
+				Style="{DynamicResource TransparentIconToggleButton}">
 				<Grid>
 					<Image
 						x:Name="SlotIcon"
-						Margin="6"
 						Opacity="0.3"
 						Source="{Binding IconSource}" />
 
 					<Grid Visibility="{Binding ItemModel, Converter={StaticResource NotNullToVisibilityConverter}}">
 						<Image
-							Margin="2"
+							Margin="-2"
 							Source="{Binding Item.Icon, Converter={StaticResource Img}}" />
-						<Image
-							Margin="2"
-							Source="/Assets/IconOverlay.png"
-							Visibility="{Binding Item.Icon, Converter={StaticResource NotNullToVisibilityConverter}}" />
 					</Grid>
 
 					<Grid.ToolTip>
@@ -89,7 +79,7 @@
 					</Grid.ToolTip>
 
 				</Grid>
-			</Button>
+			</ToggleButton>
 
 			<ProgressBar
 				Grid.Row="0"
@@ -102,7 +92,6 @@
 				Grid.Row="0"
 				Grid.Column="1"
 				Margin="3,0,0,0"
-				IsEnabled="{Binding Actor.CanRefresh}"
 				Minimum="0"
 				X="{Binding ItemModel.Set}"
 				Y="{Binding ItemModel.Base}"
@@ -143,7 +132,6 @@
 					Padding="0"
 					BorderThickness="1"
 					IsChecked="{Binding Actor.HatHidden}"
-					IsEnabled="{Binding Actor.CanRefresh}"
 					Style="{StaticResource TransparentIconToggleButton}"
 					Visibility="{Binding IsHead, Converter={StaticResource B2V}}">
 					<ToggleButton.ToolTip>
@@ -162,7 +150,6 @@
 					Padding="0"
 					BorderThickness="1"
 					IsChecked="{Binding Actor.VisorToggled}"
-					IsEnabled="{Binding Actor.CanRefresh}"
 					Style="{StaticResource TransparentIconToggleButton}"
 					Visibility="{Binding IsHead, Converter={StaticResource B2V}}">
 					<ToggleButton.ToolTip>
@@ -174,17 +161,6 @@
 						Icon="Mask" />
 				</ToggleButton>
 
-				<!--  Weapon Tint  -->
-				<ana:RgbColorControl
-					Margin="2,0,0,0"
-					Visibility="{Binding IsWeapon, Converter={StaticResource B2V}}"
-					Value="{Binding ExtendedViewModel.Tint}">
-					<ana:RgbColorControl.ToolTip>
-						<TextBlock Text="[Character_Equipment_Tint" />
-					</ana:RgbColorControl.ToolTip>
-
-				</ana:RgbColorControl>
-
 				<!--  Dye  -->
 				<Button
 					Grid.RowSpan="2"
@@ -194,7 +170,6 @@
 					Margin="2,4,0,0"
 					VerticalAlignment="Top"
 					Click="OnDyeClick"
-					IsEnabled="{Binding Actor.CanRefresh}"
 					MouseUp="OnDyeMouseUp"
 					Style="{DynamicResource TransparentButton}">
 
@@ -207,10 +182,6 @@
 							<Image
 								Margin="2"
 								Source="{Binding Dye.Icon, Converter={StaticResource Img}}" />
-							<Image
-								Margin="2"
-								Source="/AppearanceModule;component/Assets/IconOverlay.png"
-								Visibility="{Binding Dye.Icon, Converter={StaticResource NotNullToVisibilityConverter}}" />
 
 							<Grid.ToolTip>
 								<StackPanel>
@@ -246,5 +217,5 @@
 			</Grid>-->
 
 		</Grid>
-	</GroupBox>
+	</Grid>
 </UserControl>

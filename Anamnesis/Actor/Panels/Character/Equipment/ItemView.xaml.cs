@@ -1,7 +1,7 @@
 ﻿// © Anamnesis.
 // Licensed under the MIT license.
 
-namespace Anamnesis.Actor.Views;
+namespace Anamnesis.Actor.Panels.Character.Equipment;
 
 using System;
 using System.ComponentModel;
@@ -32,7 +32,6 @@ public partial class ItemView : UserControl
 	public static readonly IBind<ActorMemory?> ActorDp = Binder.Register<ActorMemory?, ItemView>(nameof(Actor), BindMode.OneWay);
 	public static readonly IBind<ItemSlots> SlotDp = Binder.Register<ItemSlots, ItemView>(nameof(Slot), BindMode.OneWay);
 	public static readonly IBind<IEquipmentItemMemory?> ItemModelDp = Binder.Register<IEquipmentItemMemory?, ItemView>(nameof(ItemModel), OnItemModelChanged, BindMode.TwoWay);
-	public static readonly IBind<WeaponSubModelMemory?> WeaponExModelDp = Binder.Register<WeaponSubModelMemory?, ItemView>(nameof(ExtendedViewModel));
 
 	private bool lockViewModel = false;
 
@@ -57,6 +56,7 @@ public partial class ItemView : UserControl
 	public ImageSource? IconSource { get; set; }
 	public bool CanDye { get; set; }
 	public bool IsLoading { get; set; }
+	public bool IsPopupOpen { get; set; }
 
 	public IEquipmentItemMemory? ItemModel
 	{
@@ -68,12 +68,6 @@ public partial class ItemView : UserControl
 	{
 		get => ActorDp.Get(this);
 		set => ActorDp.Set(this, value);
-	}
-
-	public WeaponSubModelMemory? ExtendedViewModel
-	{
-		get => WeaponExModelDp.Get(this);
-		set => WeaponExModelDp.Set(this, value);
 	}
 
 	public uint ItemKey
@@ -141,26 +135,12 @@ public partial class ItemView : UserControl
 		sender.OnViewModelPropertyChanged(null, null);
 	}
 
-	private void OnClick(object sender, RoutedEventArgs e)
-	{
-		try
-		{
-			////NavigationService.Navigate(new NavigationService.Request(this, "ActorEquipmentSelector", this));
-		}
-		catch (Exception ex)
-		{
-			Log.Error(ex, "Failed to select new gear");
-		}
-
-		////EquipmentSelector selector = new EquipmentSelector(this.Slot, this.Actor);
-		////SelectorDrawer.Show(selector, this.Item, (i) => this.SetItem(i, selector.AutoOffhand, selector.ForceMainModel, selector.ForceOffModel));
-	}
-
 	private void OnSlotMouseUp(object sender, MouseButtonEventArgs e)
 	{
 		if (e.ChangedButton == MouseButton.Middle && e.ButtonState == MouseButtonState.Released)
 		{
 			this.ItemModel?.Clear(this.Actor?.IsHuman ?? false);
+			e.Handled = true;
 		}
 	}
 

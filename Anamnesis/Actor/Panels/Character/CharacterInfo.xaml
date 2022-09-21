@@ -38,7 +38,6 @@
 			Grid.Row="0"
 			Grid.Column="1"
 			Grid.ColumnSpan="2"
-			Style="{StaticResource MaterialDesignTextBox}"
 			Text="{Binding Actor.Names.Nickname, UpdateSourceTrigger=PropertyChanged}" />
 
 		<TextBlock
