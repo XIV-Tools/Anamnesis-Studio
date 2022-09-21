@@ -196,6 +196,7 @@ public class PanelService : ServiceBase<PanelService>
 	{
 		// TODO: if OverlayMode!
 		return new OverlayWindow();
+		////return new FloatingWindow();
 	}
 
 	private void PanelMainThread(object? panelTypeObj)

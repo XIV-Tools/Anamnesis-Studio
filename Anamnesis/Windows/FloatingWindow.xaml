@@ -3,6 +3,7 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
+	xmlns:controls="clr-namespace:Anamnesis.Controls"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:local="clr-namespace:Anamnesis.Windows"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -76,21 +77,22 @@
 
 			<Border
 				Background="{DynamicResource MaterialDesignBackground}"
-				CornerRadius="6">
+				CornerRadius="6"
+				Opacity="1">
 				<Border.BitmapEffect>
 					<DropShadowBitmapEffect ShadowDepth="0" />
 				</Border.BitmapEffect>
 			</Border>
 
 			<Border
-				Background="{DynamicResource MaterialDesignBackground}"
+				Background="Transparent"
 				BorderBrush="{DynamicResource PrimaryHueMidBrush}"
 				BorderThickness="1"
 				CornerRadius="6"
 				Visibility="{Binding IsActive, Converter={StaticResource B2V}}" />
 
 			<Border
-				Background="{DynamicResource MaterialDesignBackground}"
+				Background="Transparent"
 				BorderBrush="{DynamicResource MaterialDesignBackground}"
 				BorderThickness="1"
 				CornerRadius="6"

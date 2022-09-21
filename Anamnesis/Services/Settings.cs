@@ -30,6 +30,7 @@ public class Settings : INotifyPropertyChanged
 	public bool AlwaysOnTop { get; set; } = true;
 	public bool OverlayWindow { get; set; } = false;
 	public double Opacity { get; set; } = 1.0;
+	public double WindowOpacity { get; set; } = 0.75;
 	public double Scale { get; set; } = 1.0;
 	public Point WindowPosition { get; set; }
 	public Point OverlayWindowPosition { get; set; }

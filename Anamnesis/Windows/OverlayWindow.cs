@@ -4,24 +4,13 @@
 namespace Anamnesis.Windows;
 
 using Anamnesis.Memory;
-using Anamnesis.Panels;
 using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Interop;
-using XivToolsWpf;
-using XivToolsWpf.Extensions;
 
 public class OverlayWindow : FloatingWindow
 {
-	private readonly WindowInteropHelper windowInteropHelper;
-
-	public OverlayWindow()
-	{
-		this.windowInteropHelper = new(this);
-	}
-
 	public override Rect Rect => new Rect(this.Left, this.Top, this.Width, this.Height);
 
 	public override Rect ScreenRect
@@ -50,6 +39,8 @@ public class OverlayWindow : FloatingWindow
 
 	protected override void OnWindowLoaded()
 	{
+		base.OnWindowLoaded();
+
 		if (MemoryService.Process == null)
 			return;
 

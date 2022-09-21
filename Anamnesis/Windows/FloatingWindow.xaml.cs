@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,9 +28,10 @@ using MediaColor = System.Windows.Media.Color;
 [AddINotifyPropertyChangedInterface]
 public partial class FloatingWindow : Window
 {
+	protected readonly WindowInteropHelper windowInteropHelper;
+
 	private const double MaxSizeScreenPadding = 25;
 
-	private readonly WindowInteropHelper windowInteropHelper;
 	private readonly List<PanelBase> panels = new();
 
 	private bool canResize = true;
@@ -45,6 +47,7 @@ public partial class FloatingWindow : Window
 		this.TitleColor = Application.Current.Resources.GetTheme().ToolForeground;
 	}
 
+	public ServiceManager Services => App.Services;
 	public ContentPresenter PanelGroupArea => this.ContentPresenter;
 	public bool ShowBackground { get; set; } = true;
 	public bool IsOpen { get; private set; }
@@ -259,8 +262,6 @@ public partial class FloatingWindow : Window
 	private void OnWindowLoaded(object sender, RoutedEventArgs e)
 	{
 		this.UpdatePosition();
-		this.Activate();
-
 		this.OnWindowLoaded();
 
 		this.BeginStoryboard("OpenStoryboard");
