@@ -5,6 +5,7 @@ namespace Anamnesis.Panels;
 
 using Anamnesis.Navigation;
 using Anamnesis.Services;
+using Anamnesis.Windows;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -39,7 +40,7 @@ public partial class GenericDialogPanel : PanelBase
 	public static async Task<bool?> ShowAsync(string message, string title, MessageBoxButton buttons)
 	{
 		DialogInfo info = new(title, message, buttons);
-		GenericDialogPanel? panel = await NavigationService.Navigate(new("GenericDialog", info)) as GenericDialogPanel;
+		GenericDialogPanel? panel = await App.Services.Navigation.Navigate(new("GenericDialog", info)) as GenericDialogPanel;
 
 		if (panel == null)
 			throw new Exception("Failed to open generic dialog");
@@ -49,7 +50,7 @@ public partial class GenericDialogPanel : PanelBase
 		return panel.Result;
 	}
 
-	public override void SetContext(IPanelHost host, object? context)
+	public override void SetContext(FloatingWindow host, object? context)
 	{
 		base.SetContext(host, context);
 

@@ -33,7 +33,7 @@ public class MemoryService : ServiceBase<MemoryService>
 	public static SignatureScanner? Scanner { get; private set; }
 	public static Process? Process { get; private set; }
 	public static bool IsProcessAlive { get; private set; }
-	public static bool DoesProcessHaveFocus { get; private set; }
+	public static bool ProcessHasFocus { get; private set; }
 
 	public int LastTickCount { get; set; }
 
@@ -238,15 +238,6 @@ public class MemoryService : ServiceBase<MemoryService>
 			return;
 
 		PostMessage(Process.MainWindowHandle, msg, wParam, lParam);
-
-		/*if (state == KeyboardKeyStates.Pressed)
-		{
-			PostMessage(Process.MainWindowHandle, 0x100, (IntPtr)vkey, IntPtr.Zero);
-		}
-		else if (state == KeyboardKeyStates.Released)
-		{
-			PostMessage(Process.MainWindowHandle, 0x0101, (IntPtr)vkey, IntPtr.Zero);
-		}*/
 	}
 
 	public override async Task Initialize()
@@ -395,7 +386,7 @@ public class MemoryService : ServiceBase<MemoryService>
 		{
 			await Task.Delay(100);
 
-			DoesProcessHaveFocus = GetDoesProcessHaveFocus();
+			ProcessHasFocus = GetDoesProcessHaveFocus();
 			IsProcessAlive = GetIsProcessAlive();
 
 			if (!IsProcessAlive)

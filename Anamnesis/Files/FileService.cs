@@ -107,12 +107,12 @@ public class FileService : ServiceBase<FileService>
 
 			if (result.File is CharacterFile characterFile)
 			{
-				await NavigationService.Navigate(new("ImportCharacter", result));
+				await Services.Navigation.Navigate(new("ImportCharacter", result));
 				return;
 			}
 			else if (result.File is PoseFile poseFile)
 			{
-				await NavigationService.Navigate(new("ImportPose", result));
+				await Services.Navigation.Navigate(new("ImportPose", result));
 				return;
 			}
 

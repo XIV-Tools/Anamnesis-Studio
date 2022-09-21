@@ -25,12 +25,12 @@ using XivToolsWpf.Windows;
 using MediaColor = System.Windows.Media.Color;
 
 [AddINotifyPropertyChangedInterface]
-public partial class FloatingWindow : Window, IPanelHost
+public partial class FloatingWindow : Window
 {
 	private const double MaxSizeScreenPadding = 25;
 
 	private readonly WindowInteropHelper windowInteropHelper;
-	private readonly List<IPanel> panels = new();
+	private readonly List<PanelBase> panels = new();
 
 	private bool canResize = true;
 
@@ -50,7 +50,7 @@ public partial class FloatingWindow : Window, IPanelHost
 	public bool IsOpen { get; private set; }
 	public PanelService.PanelsData PanelsData { get; private set; } = new();
 
-	public IEnumerable<IPanel> Panels => this.panels.AsReadOnly();
+	public IEnumerable<PanelBase> Panels => this.panels.AsReadOnly();
 
 	public new bool Topmost
 	{
@@ -92,7 +92,7 @@ public partial class FloatingWindow : Window, IPanelHost
 		get
 		{
 			StringBuilder sb = new();
-			foreach (IPanel panel in this.panels)
+			foreach (PanelBase panel in this.panels)
 			{
 				sb.Append(panel.Id);
 			}
@@ -110,7 +110,6 @@ public partial class FloatingWindow : Window, IPanelHost
 		}
 	}
 
-	public IPanelHost Host => this;
 	public MediaColor? TitleColor { get; set; }
 	public virtual bool CanPopOut => false;
 	public virtual bool CanPopIn => true;
@@ -138,7 +137,7 @@ public partial class FloatingWindow : Window, IPanelHost
 			this.MinWidth = 64;
 			this.MinHeight = 64;
 
-			foreach (IPanel panel in this.Panels)
+			foreach (PanelBase panel in this.Panels)
 			{
 				this.MinWidth = Math.Max(this.MinWidth, panel.MinWidth + 20);
 				this.MinHeight = Math.Max(this.MinHeight, panel.MinHeight);
@@ -184,7 +183,7 @@ public partial class FloatingWindow : Window, IPanelHost
 		this.IsOpen = true;
 	}
 
-	public virtual void Show(IPanelHost copy)
+	public virtual void Show(FloatingWindow copy)
 	{
 		throw new NotImplementedException();
 	}
@@ -194,7 +193,7 @@ public partial class FloatingWindow : Window, IPanelHost
 		return base.Activate();
 	}
 
-	public void AddPanel(IPanel panel)
+	public void AddPanel(PanelBase panel)
 	{
 		// TODO: panel docking.
 		this.PanelGroupArea.Content = panel as PanelBase;
@@ -209,7 +208,7 @@ public partial class FloatingWindow : Window, IPanelHost
 		this.OnPanelPropertyChanged(this, null);
 	}
 
-	public void RemovePanel(IPanel panel)
+	public void RemovePanel(PanelBase panel)
 	{
 		panel.PropertyChanged -= this.OnPanelPropertyChanged;
 		this.panels.Remove(panel);
@@ -233,7 +232,7 @@ public partial class FloatingWindow : Window, IPanelHost
 		this.BeginStoryboard("CloseStoryboard");
 		this.IsOpen = false;
 
-		foreach (IPanel panel in this.Panels.ToArray())
+		foreach (PanelBase panel in this.Panels.ToArray())
 		{
 			panel.Close();
 		}
@@ -364,11 +363,39 @@ public partial class FloatingWindow : Window, IPanelHost
 		}
 	}
 
+	// Swallow all keyboard events, as we have the global keyboard hook handling
+	// keys for us.
 	private void OnPreviewKeyDown(object sender, KeyEventArgs e)
 	{
+		if (Keyboard.FocusedElement is not TextBox)
+		{
+			e.Handled = true;
+		}
 	}
 
+	// Swallow all keyboard events, as we have the global keyboard hook handling
+	// keys for us.
 	private void OnPreviewKeyUp(object sender, KeyEventArgs e)
 	{
+		if (Keyboard.FocusedElement is not TextBox)
+		{
+			e.Handled = true;
+		}
+	}
+
+	private void OnActivated(object sender, EventArgs e)
+	{
+		foreach (PanelBase panel in this.panels)
+		{
+			panel.OnActivated();
+		}
+	}
+
+	private void OnDeactivated(object sender, EventArgs e)
+	{
+		foreach (PanelBase panel in this.panels)
+		{
+			panel.OnDeactivated();
+		}
 	}
 }

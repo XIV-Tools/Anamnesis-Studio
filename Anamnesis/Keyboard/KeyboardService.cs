@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Anamnesis.Memory;
 using static Lumina.Data.Parsing.Layer.LayerCommon;
 using System.Reflection.Emit;
+using Anamnesis.Panels;
 
 // © Anamnesis.
 // Licensed under the MIT license.
@@ -28,8 +29,10 @@ public class KeyboardService : ServiceBase<KeyboardService>
 	private const int WhKeyboardLl = 13;
 	private const int WmKeyDown = 0x0100;
 	private const int WmKeyUp = 0x0101;
+	private const int WmChar = 0x0102;
 	private const int WmSysKeyDown = 0x0104;
 	private const int WmSysKeyUp = 0x0105;
+	private const int WmSysChar = 0x0106;
 
 	private static IntPtr hookId = IntPtr.Zero;
 	private static LowLevelKeyboardProc? hook;
@@ -67,10 +70,14 @@ public class KeyboardService : ServiceBase<KeyboardService>
 
 	private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
 	{
-		int vkCode = Marshal.ReadInt32(lParam);
-		if (this.HandleSingleKeyboardInput(wParam, vkCode))
+		// only process keys if Anamensis or ffxiv has focus.
+		if (MemoryService.ProcessHasFocus || App.HasFocus)
 		{
-			return new IntPtr(-1);
+			int vkCode = Marshal.ReadInt32(lParam);
+			if (this.HandleSingleKeyboardInput(wParam, vkCode))
+			{
+				return new IntPtr(-1);
+			}
 		}
 
 		return CallNextHookEx(hookId, nCode, wParam, lParam);
@@ -137,24 +144,51 @@ public class KeyboardService : ServiceBase<KeyboardService>
 
 	private bool HandleKey(Key key, ModifierKeys modifiers, KeyboardKeyStates state)
 	{
-		// TODO: Keyboard events need to be passed to the current windows, and if no window handles it,
-		// then checked through the global hotkeys somewhere, and if an anamnesis window has focus, but the event
-		// was not handled, pass it back to ffxiv...
-		// This all needs to work alongside the window native OnPreviewKeyDown and OnPreviewKeyUp events...
-		////Log.Information($"{key} - {modifiers} - {state}");
+		bool handled = false;
 
-		// If we have focus, but key was not handled, pass the event to ffxiv
-		// Pressed - PostMessage(0x100, (IntPtr)vkey, IntPtr.Zero);
-		// Released - PostMessage(0x0101, (IntPtr)vkey, IntPtr.Zero);
-		// TODO: modifier keys don't work this way, but other keys do, so figure out how to send shift and stuff to ffxiv...
-		if (state == KeyboardKeyStates.Pressed || state == KeyboardKeyStates.Down)
+		// Try all active panels
+		if (!handled)
 		{
-			MemoryService.PostMessage(WmKeyDown, (IntPtr)KeyInterop.VirtualKeyFromKey(key), IntPtr.Zero);
+			foreach (PanelBase panel in Services.Panels.ActivePanels)
+			{
+				handled = panel.HandleKey(key, modifiers, state);
+
+				if (handled)
+				{
+					break;
+				}
+			}
 		}
-		else if (state == KeyboardKeyStates.Released)
+
+		// If still unhandled, try all panels
+		if (!handled)
 		{
-			MemoryService.PostMessage(WmKeyUp, (IntPtr)KeyInterop.VirtualKeyFromKey(key), IntPtr.Zero);
+			foreach (PanelBase panel in Services.Panels.OpenPanels)
+			{
+				handled = panel.HandleKey(key, modifiers, state);
+
+				if (handled)
+				{
+					break;
+				}
+			}
 		}
+
+		// If still unhandled, pass the key to ffxiv
+		/*if (!handled && !MemoryService.ProcessHasFocus)
+		{
+			// TODO: modifier keys don't work this way, but other keys do, additonally, the chat box receves
+			// character on both key down and key up events. This might be unsolvable from here, but prhaps with
+			// the anamnesis-connect plugin hooking we could solve it.
+			if (state == KeyboardKeyStates.Pressed || state == KeyboardKeyStates.Down)
+			{
+				MemoryService.PostMessage(WmKeyDown, (IntPtr)KeyInterop.VirtualKeyFromKey(key), IntPtr.Zero);
+			}
+			else if (state == KeyboardKeyStates.Released)
+			{
+				MemoryService.PostMessage(WmKeyUp, (IntPtr)KeyInterop.VirtualKeyFromKey(key), IntPtr.Zero);
+			}
+		}*/
 
 		return false;
 	}

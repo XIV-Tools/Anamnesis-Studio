@@ -5,6 +5,7 @@ namespace Anamnesis.Panels;
 
 using Anamnesis.Files;
 using Anamnesis.Memory;
+using Anamnesis.Windows;
 using System;
 using System.Windows;
 using XivToolsWpf.Extensions;
@@ -15,7 +16,7 @@ public partial class ImportCharacterPanel : PanelBase
 	public CharacterFile? CharacterFile { get; set; }
 	public ActorMemory? Actor { get; set; }
 
-	public override void SetContext(IPanelHost host, object? context)
+	public override void SetContext(FloatingWindow host, object? context)
 	{
 		base.SetContext(host, context);
 

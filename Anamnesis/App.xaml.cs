@@ -9,7 +9,6 @@ using System.IO;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Threading;
 using Anamnesis.Navigation;
 using Anamnesis.Panels;
@@ -27,6 +26,23 @@ using Application = System.Windows.Application;
 public partial class App : Application
 {
 	public static readonly ServiceManager Services = new ServiceManager();
+
+	public static bool HasFocus
+	{
+		get
+		{
+			if (App.Current == null)
+				return false;
+
+			if (App.Current.MainWindow.IsActive)
+				return true;
+
+			if (Services.Panels.ActivePanels.Count > 0)
+				return true;
+
+			return false;
+		}
+	}
 
 	protected override void OnStartup(StartupEventArgs e)
 	{
@@ -104,7 +120,7 @@ public partial class App : Application
 
 			if (SettingsService.Current.OverlayWindow)
 			{
-				await PanelService.Show<NavigationPanel>(PanelService.PanelThreadingMode.CustomThread);
+				await Services.Panels.Show<NavigationPanel>(PanelService.PanelThreadingMode.CustomThread);
 			}
 			else
 			{

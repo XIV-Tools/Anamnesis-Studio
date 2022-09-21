@@ -17,7 +17,7 @@ public partial class ExceptionPanel : PanelBase
 	public static async Task Show(ExceptionDispatchInfo error, bool isCritical)
 	{
 		ErrorInfo info = new(error, isCritical);
-		PanelBase? panel = await NavigationService.Navigate(new("Exception", info));
+		PanelBase? panel = await App.Services.Navigation.Navigate(new("Exception", info));
 
 		while (panel.IsOpen)
 		{
@@ -25,14 +25,14 @@ public partial class ExceptionPanel : PanelBase
 		}
 	}
 
-	public override void SetContext(IPanelHost host, object? context)
+	public override void SetContext(FloatingWindow host, object? context)
 	{
 		base.SetContext(host, context);
 
 		if (context is not ErrorInfo data)
 			return;
 
-		Window? hostWindow = this.Host as Window;
+		Window? hostWindow = this.Window as Window;
 
 		this.ContentArea.Content = new XivToolsWpf.Dialogs.ErrorDialog(hostWindow, data.Error, data.IsCritical);
 		this.Title = "Anamnesis v" + VersionInfo.Date.ToString("yyyy-MM-dd HH:mm");

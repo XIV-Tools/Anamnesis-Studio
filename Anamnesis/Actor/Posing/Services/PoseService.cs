@@ -228,8 +228,8 @@ public class PoseService : ServiceBase<PoseService>
 
 		if (enabled)
 		{
-			NavigationService.Navigate(new("Bones")).Run();
-			NavigationService.Navigate(new("Transform")).Run();
+			Services.Navigation.Navigate(new("Bones")).Run();
+			Services.Navigation.Navigate(new("Transform")).Run();
 		}
 		else
 		{

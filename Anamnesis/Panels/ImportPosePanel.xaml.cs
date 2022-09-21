@@ -10,6 +10,7 @@ using System;
 using Anamnesis.Actor;
 using XivToolsWpf.Extensions;
 using System.Threading.Tasks;
+using Anamnesis.Windows;
 
 public partial class ImportPosePanel : PanelBase
 {
@@ -29,7 +30,7 @@ public partial class ImportPosePanel : PanelBase
 	public SkeletonVisual3d? Skeleton { get; private set; }
 	public ActorMemory? Actor { get; private set; }
 
-	public override void SetContext(IPanelHost host, object? context)
+	public override void SetContext(FloatingWindow host, object? context)
 	{
 		base.SetContext(host, context);
 

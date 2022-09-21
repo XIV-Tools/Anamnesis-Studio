@@ -15,16 +15,9 @@ using Anamnesis.Actor.Panels;
 using Anamnesis.Libraries.Panels;
 using XivToolsWpf;
 using XivToolsWpf.Extensions;
-using System.Data;
-using Octokit;
-using System.Runtime.CompilerServices;
-using System.Linq;
 
 public class PanelService : ServiceBase<PanelService>
 {
-	private static readonly List<PanelBase> OpenPanels = new();
-	private static readonly Dictionary<Type, PanelBase?> Panelcache = new();
-
 	private static readonly List<Type> PreLoadPanels = new()
 	{
 		typeof(CharacterPanel),
@@ -44,20 +37,24 @@ public class PanelService : ServiceBase<PanelService>
 		CustomThread,
 	}
 
-	public static async Task<PanelBase> Show(string panelId, object? context = null, PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
+	public List<PanelBase> OpenPanels { get; init; } = new();
+	public List<PanelBase> ActivePanels { get; init; } = new();
+	private Dictionary<Type, PanelBase?> Panelcache { get; init; } = new();
+
+	public async Task<PanelBase> Show(string panelId, object? context = null, PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
 	{
 		Type? panelType = Type.GetType(panelId);
 
 		if (panelType == null)
 			throw new Exception($"Failed to locate panel type: {panelId}");
 
-		return await Show(panelType, context, threadMode);
+		return await this.Show(panelType, context, threadMode);
 	}
 
-	public static async Task<T> Show<T>(object? context = null, PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
+	public async Task<T> Show<T>(object? context = null, PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
 		where T : PanelBase
 	{
-		PanelBase panel = await Show(typeof(T), context, threadMode);
+		PanelBase panel = await this.Show(typeof(T), context, threadMode);
 
 		if (panel is not T tPanel)
 			throw new Exception("Panel was wrong type");
@@ -65,10 +62,10 @@ public class PanelService : ServiceBase<PanelService>
 		return tPanel;
 	}
 
-	public static async Task<T> Show<T>(PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
+	public async Task<T> Show<T>(PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
 		where T : PanelBase
 	{
-		PanelBase panel = await Show(typeof(T), null, threadMode);
+		PanelBase panel = await this.Show(typeof(T), null, threadMode);
 
 		if (panel is not T tPanel)
 			throw new Exception("Panel was wrong type");
@@ -76,11 +73,11 @@ public class PanelService : ServiceBase<PanelService>
 		return tPanel;
 	}
 
-	public static List<PanelBase> GetPanels(Type panelType)
+	public List<PanelBase> GetPanels(Type panelType)
 	{
 		List<PanelBase> results = new();
 
-		foreach (PanelBase panel in OpenPanels)
+		foreach (PanelBase panel in this.OpenPanels)
 		{
 			if (panel.GetType() == panelType)
 			{
@@ -91,15 +88,15 @@ public class PanelService : ServiceBase<PanelService>
 		return results;
 	}
 
-	public static async Task<PanelBase> Spawn(Type panelType, PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
+	public async Task<PanelBase> Spawn(Type panelType, PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
 	{
-		if (!Panelcache.ContainsKey(panelType))
+		if (!this.Panelcache.ContainsKey(panelType))
 		{
-			Panelcache.Add(panelType, null);
+			this.Panelcache.Add(panelType, null);
 
 			if (threadMode == PanelThreadingMode.CustomThread)
 			{
-				Thread panelMainThread = new Thread(PanelMainThread);
+				Thread panelMainThread = new Thread(this.PanelMainThread);
 				panelMainThread.SetApartmentState(ApartmentState.STA);
 				panelMainThread.Start(panelType);
 			}
@@ -110,58 +107,52 @@ public class PanelService : ServiceBase<PanelService>
 				if (newPanel == null)
 					throw new Exception($"Failed to create instance of panel: {panelType}");
 
-				Panelcache[panelType] = newPanel;
+				this.Panelcache[panelType] = newPanel;
 			}
 		}
 
-		while (Panelcache[panelType] == null)
+		while (this.Panelcache[panelType] == null)
 			await Task.Delay(1);
 
-		if (Panelcache[panelType] == null)
+		if (this.Panelcache[panelType] == null)
 			throw new Exception("Panel not loaded!");
 
-		PanelBase panel = Panelcache[panelType]!;
+		PanelBase panel = this.Panelcache[panelType]!;
 		return panel;
 	}
 
-	public static async Task<PanelBase> Show(Type panelType, object? context = null, PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
+	public async Task<PanelBase> Show(Type panelType, object? context = null, PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
 	{
-		foreach (PanelBase otherPanel in OpenPanels)
+		foreach (PanelBase otherPanel in this.OpenPanels)
 		{
 			if (otherPanel.GetType() == panelType)
 			{
 				// This panel is open, swap to it instead of opening another.
 				await otherPanel.Dispatcher.MainThread();
-				otherPanel.SetContext(otherPanel.Host, context);
-				otherPanel.Host.Activate();
+				otherPanel.SetContext(otherPanel.Window, context);
+				otherPanel.Window.Activate();
 				return otherPanel;
 			}
 		}
 
-		PanelBase panel = await Spawn(panelType, threadMode);
+		PanelBase panel = await this.Spawn(panelType, threadMode);
 
 		await panel.Dispatcher.MainThread();
-		IPanelHost panelHost = panelHost = CreateHost();
+		FloatingWindow panelHost = panelHost = this.CreateWindow();
 		panelHost.AddPanel(panel);
 		panel.SetContext(panelHost, context);
 		panelHost.Show();
 
-		OpenPanels.Add(panel);
+		this.OpenPanels.Add(panel);
 		return panel;
 	}
 
-	public static void OnPanelClosed(PanelBase panel)
+	public void OnPanelClosed(PanelBase panel)
 	{
-		OpenPanels.Remove(panel);
+		this.OpenPanels.Remove(panel);
 	}
 
-	public static IPanelHost CreateHost()
-	{
-		// TODO: if OverlayMode!
-		return new OverlayWindow();
-	}
-
-	public PanelsData GetData(IPanelHost panelHost)
+	public PanelsData GetData(FloatingWindow panelHost)
 	{
 		if (!SettingsService.Current.Panels.TryGetValue(panelHost.Id, out PanelsData? data) || data == null)
 		{
@@ -180,7 +171,7 @@ public class PanelService : ServiceBase<PanelService>
 
 	public override Task Shutdown()
 	{
-		foreach (PanelBase? panel in Panelcache.Values)
+		foreach (PanelBase? panel in this.Panelcache.Values)
 		{
 			if (panel?.Dispatcher != App.Current?.Dispatcher)
 			{
@@ -191,7 +182,23 @@ public class PanelService : ServiceBase<PanelService>
 		return base.Shutdown();
 	}
 
-	private static void PanelMainThread(object? panelTypeObj)
+	public void OnPanelActivated(PanelBase panel)
+	{
+		this.ActivePanels.Add(panel);
+	}
+
+	public void OnPanelDeactivated(PanelBase panel)
+	{
+		this.ActivePanels.Remove(panel);
+	}
+
+	private FloatingWindow CreateWindow()
+	{
+		// TODO: if OverlayMode!
+		return new OverlayWindow();
+	}
+
+	private void PanelMainThread(object? panelTypeObj)
 	{
 		if (panelTypeObj is not Type panelType)
 			return;
@@ -201,7 +208,7 @@ public class PanelService : ServiceBase<PanelService>
 		if (newPanel == null)
 			throw new Exception($"Failed to create instance of panel: {panelType}");
 
-		Panelcache[panelType] = newPanel;
+		this.Panelcache[panelType] = newPanel;
 
 		Log.Information($"Panel: {panelType} has started");
 
@@ -226,7 +233,7 @@ public class PanelService : ServiceBase<PanelService>
 
 					try
 					{
-						await PanelService.Show(panelId);
+						await this.Show(panelId);
 					}
 					catch (Exception ex)
 					{
@@ -288,7 +295,7 @@ public class PanelService : ServiceBase<PanelService>
 			return pos;
 		}
 
-		public void SavePosition(IPanelHost panel)
+		public void SavePosition(FloatingWindow panel)
 		{
 			Rect pos = new();
 			pos.Width = panel.Rect.Width;

@@ -3,7 +3,9 @@
 
 namespace Anamnesis.Panels;
 
+using Anamnesis.Keyboard;
 using Anamnesis.Services;
+using Anamnesis.Windows;
 using FontAwesome.Sharp;
 using Serilog;
 using System;
@@ -11,15 +13,16 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using XivToolsWpf;
 using XivToolsWpf.DependencyProperties;
 using XivToolsWpf.Localization;
 
-public abstract class PanelBase : UserControl, IPanel, INotifyPropertyChanged
+public abstract class PanelBase : UserControl, INotifyPropertyChanged
 {
 	public static readonly IBind<string?> TitleDp = Binder.Register<string?, PanelBase>(nameof(Title), BindMode.OneWay);
-	private IPanelHost? host;
+	private FloatingWindow? window;
 
 	public PanelBase()
 	{
@@ -35,11 +38,17 @@ public abstract class PanelBase : UserControl, IPanel, INotifyPropertyChanged
 	public bool IsOpen { get; private set; } = true;
 	public virtual string Id => this.GetType().ToString();
 	public IconChar Icon { get; set; }
-	public Rect Rect => this.Host.Rect;
+	public Rect Rect => this.Window.Rect;
 	public bool ShowBackground { get; set; } = true;
 	public bool CanResize { get; set; }
 	public bool CanScroll { get; set; } = false;
 	public Color? TitleColor { get; set; } = Colors.Gray;
+
+	public bool IsActive
+	{
+		get => this.Window.IsActive;
+		set => this.Window.Activate();
+	}
 
 	public string? Title
 	{
@@ -47,35 +56,35 @@ public abstract class PanelBase : UserControl, IPanel, INotifyPropertyChanged
 		set => TitleDp.Set(this, value);
 	}
 
-	public IPanelHost Host
+	public FloatingWindow Window
 	{
 		get
 		{
-			if (this.host == null)
+			if (this.window == null)
 				throw new Exception("Attempt to access panel host before it has been initialized");
 
-			return this.host;
+			return this.window;
 		}
 	}
 
 	public object? PanelContext { get; private set; }
-	public PanelService.PanelsData PanelsData => this.Host.PanelsData;
+	public PanelService.PanelsData PanelsData => this.Window.PanelsData;
 
 	protected ILogger Log => Serilog.Log.ForContext(this.GetType());
 
-	public virtual void SetContext(IPanelHost host, object? context)
+	public virtual void SetContext(FloatingWindow host, object? context)
 	{
-		this.host = host;
+		this.window = host;
 		this.PanelContext = context;
 	}
 
-	public void DragMove() => this.Host.DragMove();
+	public void DragMove() => this.Window.DragMove();
 
 	public void Close()
 	{
-		this.Host.RemovePanel(this);
+		this.Window.RemovePanel(this);
 		this.IsOpen = false;
-		PanelService.OnPanelClosed(this);
+		this.Services.Panels.OnPanelClosed(this);
 	}
 
 	public async Task WhileOpen()
@@ -86,6 +95,21 @@ public abstract class PanelBase : UserControl, IPanel, INotifyPropertyChanged
 		{
 			await Task.Delay(500);
 		}
+	}
+
+	public virtual void OnActivated()
+	{
+		this.Services.Panels.OnPanelActivated(this);
+	}
+
+	public virtual void OnDeactivated()
+	{
+		this.Services.Panels.OnPanelDeactivated(this);
+	}
+
+	public bool HandleKey(Key key, ModifierKeys modifiers, KeyboardKeyStates state)
+	{
+		return false;
 	}
 
 	protected void RaisePropertyChanged(string propertyName)
