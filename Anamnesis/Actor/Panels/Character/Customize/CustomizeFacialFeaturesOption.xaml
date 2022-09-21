@@ -22,13 +22,43 @@
 						<Grid
 							Width="48"
 							Height="48"
-							Margin="0,6">
-							<Image
-								Source="{Binding Icon, Converter={StaticResource Img}}"
-								Visibility="{Binding Value, Converter={StaticResource EnumToVisibility}, ConverterParameter=!LegacyTattoo}" />
-							<Image
-								Source="/Assets/LegacyTattoo.png"
-								Visibility="{Binding Value, Converter={StaticResource EnumToVisibility}, ConverterParameter=LegacyTattoo}" />
+							Margin="4">
+
+							<Border
+								BorderThickness="1"
+								CornerRadius="6"
+								SnapsToDevicePixels="True"
+								Visibility="{Binding Value, Converter={StaticResource EnumToVisibility}, ConverterParameter=!LegacyTattoo}">
+								<Border.Background>
+									<ImageBrush
+										ImageSource="{Binding Icon, Converter={StaticResource Img}}"
+										Stretch="Uniform" />
+								</Border.Background>
+							</Border>
+
+							<Border
+								BorderThickness="1"
+								CornerRadius="6"
+								SnapsToDevicePixels="True"
+								Visibility="{Binding Value, Converter={StaticResource EnumToVisibility}, ConverterParameter=LegacyTattoo}">
+								<Border.Background>
+									<ImageBrush
+										ImageSource="/Assets/LegacyTattoo.png"
+										Stretch="Uniform" />
+								</Border.Background>
+							</Border>
+
+
+							<Border
+								BorderBrush="{StaticResource XivToolsControlBorderBackground}"
+								BorderThickness="1"
+								CornerRadius="6"
+								SnapsToDevicePixels="True">
+								<Border.Background>
+									<ImageBrush ImageSource="/Assets/IconOverlay.png" />
+								</Border.Background>
+							</Border>
+
 						</Grid>
 
 					</ToggleButton>

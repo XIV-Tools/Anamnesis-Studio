@@ -230,28 +230,6 @@ public partial class ItemView : UserControl
 		}
 	}
 
-	private void OnDyeClick(object sender, RoutedEventArgs e)
-	{
-		if (!this.CanDye)
-			return;
-
-		throw new NotImplementedException();
-		/*SelectorControl.Show<DyeSelector, IDye>(this.Dye, (v) =>
-		{
-			if (v == null)
-				return;
-
-			if (this.ItemModel is ItemMemory item)
-			{
-				item.Dye = v.Id;
-			}
-			else if (this.ItemModel is WeaponMemory weapon)
-			{
-				weapon.Dye = v.Id;
-			}
-		});*/
-	}
-
 	private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs? e)
 	{
 		if (this.lockViewModel)
