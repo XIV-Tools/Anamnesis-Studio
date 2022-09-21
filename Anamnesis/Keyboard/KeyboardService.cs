@@ -190,6 +190,13 @@ public class KeyboardService : ServiceBase<KeyboardService>
 			}
 		}*/
 
-		return false;
+		// Hack test key hooking, swallow any ctrl+s presses.
+		if (state == KeyboardKeyStates.Pressed && key == Key.S && modifiers == ModifierKeys.Control)
+		{
+			GenericDialogPanel.Show("Hi", "Hello world!");
+			return true;
+		}
+
+		return handled;
 	}
 }
