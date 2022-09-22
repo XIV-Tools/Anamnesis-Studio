@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 using Anamnesis.GameData.Sheets;
 using Anamnesis.Serialization.Converters;
 using Anamnesis.Services;
-using Anamnesis.TexTools;
+using Anamnesis.Tags;
 
 public class Equipment : IItem
 {
@@ -40,15 +40,11 @@ public class Equipment : IItem
 	[JsonIgnore] public ushort ModelBase => IItemConverter.SplitString(this.Id).modelBase;
 	[JsonIgnore] public ushort ModelVariant => IItemConverter.SplitString(this.Id).modelVariant;
 	[JsonIgnore] public ushort ModelSet => IItemConverter.SplitString(this.Id).modelSet;
-
-	[JsonIgnore] public bool IsWeapon => this.ModelSet != 0;
 	[JsonIgnore] public bool HasSubModel => false;
 	[JsonIgnore] public ushort SubModelBase => 0;
 	[JsonIgnore] public ushort SubModelVariant => 0;
 	[JsonIgnore] public ushort SubModelSet => 0;
 	[JsonIgnore] public ImageReference? Icon => null;
-	[JsonIgnore] public Classes EquipableClasses => Classes.All;
-	[JsonIgnore] public Mod? Mod => null;
 
 	[JsonIgnore]
 	public bool IsFavorite
@@ -57,10 +53,10 @@ public class Equipment : IItem
 		set => FavoritesService.SetFavorite(this, value);
 	}
 
-	[JsonIgnore] public bool CanOwn => false;
-	[JsonIgnore] public bool IsOwned { get; set; }
-
-	[JsonIgnore] public ItemCategories Category => ItemCategories.CustomEquipment;
+	public TagCollection Tags { get; init; } = new()
+	{
+		"Special Equipment",
+	};
 
 	public bool FitsInSlot(ItemSlots slot)
 	{

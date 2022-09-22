@@ -5,7 +5,7 @@ namespace Anamnesis.Actor.Items;
 using Anamnesis.GameData;
 using Anamnesis.GameData.Sheets;
 using Anamnesis.Services;
-using Anamnesis.TexTools;
+using Anamnesis.Tags;
 
 public class ChocoboSkinItem : IItem
 {
@@ -20,7 +20,6 @@ public class ChocoboSkinItem : IItem
 	public string Name { get; private set; }
 	public string? Description { get; private set; }
 	public ImageReference? Icon { get; private set; }
-
 	public ushort ModelSet => 0;
 	public ushort ModelBase => 1;
 	public ushort ModelVariant { get; private set; }
@@ -28,9 +27,6 @@ public class ChocoboSkinItem : IItem
 	public ushort SubModelSet => 0;
 	public ushort SubModelBase => 0;
 	public ushort SubModelVariant => 0;
-	public Classes EquipableClasses => Classes.All;
-	public bool IsWeapon => false;
-	public Mod? Mod => null;
 	public uint RowId => 0;
 	public byte EquipLevel => 0;
 
@@ -40,10 +36,11 @@ public class ChocoboSkinItem : IItem
 		set => FavoritesService.SetFavorite(this, value);
 	}
 
-	public bool CanOwn => false;
-	public bool IsOwned { get; set; }
-
-	public ItemCategories Category => ItemCategories.Standard;
+	public TagCollection Tags { get; init; } = new()
+	{
+		"Chocobo",
+		"Legs",
+	};
 
 	public bool FitsInSlot(ItemSlots slot)
 	{

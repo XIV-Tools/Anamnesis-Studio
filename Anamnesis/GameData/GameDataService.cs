@@ -25,7 +25,6 @@ public class GameDataService : ServiceBase<GameDataService>
 	private static readonly Dictionary<Type, Lumina.Excel.ExcelSheetImpl> Sheets = new Dictionary<Type, Lumina.Excel.ExcelSheetImpl>();
 
 	private Dictionary<string, string>? npcNames;
-	private Dictionary<uint, ItemCategories>? itemCategories;
 
 	public enum ClientRegion
 	{
@@ -172,21 +171,6 @@ public class GameDataService : ServiceBase<GameDataService>
 		return name;
 	}
 
-	public static ItemCategories GetCategory(Item item)
-	{
-		ItemCategories category = ItemCategories.None;
-		if (Instance.itemCategories != null && !Instance.itemCategories.TryGetValue(item.RowId, out category))
-			category = ItemCategories.None;
-
-		if (FavoritesService.IsFavorite(item))
-			category = category.SetFlag(ItemCategories.Favorites, true);
-
-		if (FavoritesService.IsOwned(item))
-			category = category.SetFlag(ItemCategories.Owned, true);
-
-		return category;
-	}
-
 	public override Task Initialize()
 	{
 		Language defaultLuminaLaunguage = Language.English;
@@ -209,7 +193,6 @@ public class GameDataService : ServiceBase<GameDataService>
 		try
 		{
 			this.Equipment = new EquipmentSheet("Data/Equipment.json");
-			this.itemCategories = EmbeddedFileUtility.Load<Dictionary<uint, ItemCategories>>("Data/ItemCategories.json");
 			this.npcNames = EmbeddedFileUtility.Load<Dictionary<string, string>>("Data/NpcNames.json");
 		}
 		catch (Exception ex)

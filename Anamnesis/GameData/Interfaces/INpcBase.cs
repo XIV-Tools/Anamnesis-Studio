@@ -5,14 +5,12 @@ namespace Anamnesis.GameData;
 
 using Anamnesis.GameData.Excel;
 using Anamnesis.GameData.Sheets;
-using Anamnesis.TexTools;
 
 public interface INpcBase : IRow
 {
 	uint ModelCharaRow { get; }
 
 	ImageReference? Icon { get; }
-	Mod? Mod { get; }
 	bool IsFavorite { get; }
 	bool CanFavorite { get; }
 	bool HasName { get; }

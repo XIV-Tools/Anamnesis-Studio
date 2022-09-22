@@ -4,6 +4,7 @@
 namespace Anamnesis.GameData.Excel;
 
 using Anamnesis.Memory;
+using Anamnesis.Tags;
 using Lumina.Data;
 using Lumina.Excel;
 
@@ -71,5 +72,42 @@ public class EquipRaceCategory : ExcelRow
 			return false;
 
 		return true;
+	}
+
+	public TagCollection ToTags()
+	{
+		TagCollection tags = new();
+
+		if (this.Male)
+			tags.Add("Masculine");
+
+		if (this.Female)
+			tags.Add("Feminine");
+
+		if (!this.Hyur)
+			tags.Add("Hyur");
+
+		if (!this.Elezen)
+			tags.Add("Elezen");
+
+		if (!this.Lalafell)
+			tags.Add("Lalafell");
+
+		if (!this.Miqote)
+			tags.Add("Miqote");
+
+		if (!this.Roegadyn)
+			tags.Add("Roegadyn");
+
+		if (!this.AuRa)
+			tags.Add("Au Ra");
+
+		if (!this.Hrothgar)
+			tags.Add("Hrothgar");
+
+		if (!this.Viera)
+			tags.Add("Vierra");
+
+		return tags;
 	}
 }

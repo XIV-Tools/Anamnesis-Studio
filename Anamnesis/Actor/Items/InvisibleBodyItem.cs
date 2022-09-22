@@ -5,7 +5,7 @@ namespace Anamnesis.Actor.Items;
 using Anamnesis.GameData;
 using Anamnesis.GameData.Sheets;
 using Anamnesis.Services;
-using Anamnesis.TexTools;
+using Anamnesis.Tags;
 
 public class InvisibleBodyItem : IItem
 {
@@ -19,9 +19,6 @@ public class InvisibleBodyItem : IItem
 	public ushort SubModelSet => 0;
 	public ushort SubModelBase => 0;
 	public ushort SubModelVariant => 0;
-	public Classes EquipableClasses => Classes.All;
-	public bool IsWeapon => false;
-	public Mod? Mod => null;
 	public uint RowId => 0;
 	public byte EquipLevel => 0;
 
@@ -31,10 +28,11 @@ public class InvisibleBodyItem : IItem
 		set => FavoritesService.SetFavorite(this, value);
 	}
 
-	public bool CanOwn => false;
-	public bool IsOwned { get; set; }
-
-	public ItemCategories Category => ItemCategories.Standard;
+	public TagCollection Tags { get; init; } = new()
+	{
+		"Invisible",
+		"Body",
+	};
 
 	public bool FitsInSlot(ItemSlots slot)
 	{

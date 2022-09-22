@@ -5,7 +5,6 @@ namespace Anamnesis.GameData.Excel;
 
 using Anamnesis.GameData.Sheets;
 using Anamnesis.Services;
-using Anamnesis.TexTools;
 using Lumina.Data;
 using Lumina.Excel;
 
@@ -22,7 +21,6 @@ public class ResidentNpc : ExcelRow, INpcBase
 	public uint ModelCharaRow { get; private set; }
 
 	public ImageReference? Icon => null;
-	public Mod? Mod => null;
 	public bool CanFavorite => true;
 	public bool HasName => this.name != null;
 	public string TypeName => "Resident NPC";

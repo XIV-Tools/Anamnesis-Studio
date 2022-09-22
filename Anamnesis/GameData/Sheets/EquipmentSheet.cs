@@ -22,6 +22,8 @@ public class EquipmentSheet : IEnumerable<Equipment>
 
 			foreach (Equipment equipment in rows)
 			{
+				equipment.Tags.Add(equipment.Slot.ToString());
+
 				this.rows.Add(index, equipment);
 				index++;
 			}

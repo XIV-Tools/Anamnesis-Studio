@@ -13,6 +13,9 @@ using XivToolsWpf;
 using Anamnesis.GameData.Excel;
 using Anamnesis.Memory;
 using XivToolsWpf.Selectors;
+using System.Collections.Generic;
+using Anamnesis.Tags;
+using Serilog;
 
 public partial class EquipmentSelector : UserControl
 {
@@ -62,7 +65,13 @@ public partial class EquipmentSelector : UserControl
 		this.Selector.AddItems(App.Services.GameData.Perform);
 		////}
 
-		return Task.CompletedTask;
+		TagCollection allTags = new();
+		foreach (IItem item in this.Selector.Entries)
+		{
+			allTags.AddRange(item.Tags);
+		}
+
+		// todo: TagCollection filter control!
 	}
 
 	private void ClearSlot()
@@ -100,8 +109,6 @@ public partial class EquipmentSelector : UserControl
 
 	public class EquipmentFilter : Selector.FilterBase<IItem>
 	{
-		public Classes Class { get; set; } = Classes.All;
-		public ItemCategories Category { get; set; } = ItemCategories.All;
 		public bool ShowLocked { get; set; } = true;
 		public bool AutoOffhand { get; set; } = true;
 		public bool ForceMainModel { get; set; } = false;
@@ -151,24 +158,7 @@ public partial class EquipmentSelector : UserControl
 			if (string.IsNullOrEmpty(item.Name))
 				return false;
 
-			if (this.Slot == ItemSlots.MainHand || this.Slot == ItemSlots.OffHand)
-			{
-				////if (this.Slot == ItemSlots.OffHand && !forceMainModel && !item.HasSubModel)
-				////	return false;
-
-				if (!item.IsWeapon)
-					return false;
-			}
-			else
-			{
-				if (!item.FitsInSlot(this.Slot))
-					return false;
-			}
-
-			if (!this.HasClass(this.Class, item.EquipableClasses))
-				return false;
-
-			if (!this.ValidCategory(item))
+			if (!item.FitsInSlot(this.Slot))
 				return false;
 
 			if (!this.ShowLocked && item is Item ivm && !this.CanEquip(ivm))
@@ -196,31 +186,7 @@ public partial class EquipmentSelector : UserControl
 
 			matches |= SearchUtility.Matches(item.RowId.ToString(), search);
 
-			if (item.Mod != null && item.Mod.ModPack != null)
-			{
-				matches |= SearchUtility.Matches(item.Mod.ModPack.Name, search);
-			}
-
 			return matches;
-		}
-
-		private bool ValidCategory(IItem item)
-		{
-			ItemCategories itemCategory = item.Category;
-
-			// Include none category
-			bool categoryFiltered = this.Category.HasFlag(ItemCategories.Standard) && itemCategory == ItemCategories.None;
-
-			categoryFiltered |= this.Category.HasFlag(ItemCategories.Standard) && itemCategory.HasFlag(ItemCategories.Standard);
-			categoryFiltered |= this.Category.HasFlag(ItemCategories.Premium) && itemCategory.HasFlag(ItemCategories.Premium);
-			categoryFiltered |= this.Category.HasFlag(ItemCategories.Limited) && itemCategory.HasFlag(ItemCategories.Limited);
-			categoryFiltered |= this.Category.HasFlag(ItemCategories.Deprecated) && itemCategory.HasFlag(ItemCategories.Deprecated);
-			categoryFiltered |= this.Category.HasFlag(ItemCategories.CustomEquipment) && itemCategory.HasFlag(ItemCategories.CustomEquipment);
-			categoryFiltered |= this.Category.HasFlag(ItemCategories.Performance) && itemCategory.HasFlag(ItemCategories.Performance);
-			categoryFiltered |= this.Category.HasFlag(ItemCategories.Modded) && item.Mod != null;
-			categoryFiltered |= this.Category.HasFlag(ItemCategories.Favorites) && item.IsFavorite;
-			categoryFiltered |= this.Category.HasFlag(ItemCategories.Owned) && item.IsOwned;
-			return categoryFiltered;
 		}
 
 		private bool CanEquip(Item item)
@@ -229,22 +195,6 @@ public partial class EquipmentSelector : UserControl
 				return true;
 
 			return item.EquipRestriction!.CanEquip(this.Actor.Customize.RaceId, this.Actor.Customize.Gender);
-		}
-
-		private bool HasClass(Classes a, Classes b)
-		{
-			foreach (Classes? job in Enum.GetValues(typeof(Classes)))
-			{
-				if (job == null || job == Classes.None)
-					continue;
-
-				if (a.HasFlag(job) && b.HasFlag(job))
-				{
-					return true;
-				}
-			}
-
-			return false;
 		}
 	}
 }

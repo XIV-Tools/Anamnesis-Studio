@@ -4,7 +4,7 @@
 namespace Anamnesis.GameData;
 
 using Anamnesis.GameData.Sheets;
-using Anamnesis.TexTools;
+using Anamnesis.Tags;
 
 public interface IItem
 {
@@ -25,16 +25,9 @@ public interface IItem
 	ushort SubModelBase { get; }
 	ushort SubModelVariant { get; }
 
-	Classes EquipableClasses { get; }
-
-	bool IsWeapon { get; }
-
-	ItemCategories Category { get; }
-
-	Mod? Mod { get; }
 	bool IsFavorite { get; set; }
-	bool CanOwn { get; }
-	bool IsOwned { get; set; }
+
+	TagCollection Tags { get; }
 
 	bool FitsInSlot(ItemSlots slot);
 }

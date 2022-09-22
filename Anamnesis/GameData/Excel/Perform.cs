@@ -4,7 +4,7 @@
 namespace Anamnesis.GameData.Excel;
 using Anamnesis.GameData.Sheets;
 using Anamnesis.Services;
-using Anamnesis.TexTools;
+using Anamnesis.Tags;
 using Lumina.Data;
 using Lumina.Excel;
 using Lumina.Text;
@@ -20,15 +20,12 @@ public class Perform : ExcelRow, IItem
 	public ushort ModelSet { get; private set; }
 	public ushort ModelBase { get; private set; }
 	public ushort ModelVariant { get; private set; }
-	public Mod? Mod { get; private set; }
 
 	public ImageReference? Icon => null;
 	public bool HasSubModel => false;
 	public ushort SubModelSet => 0;
 	public ushort SubModelBase => 0;
 	public ushort SubModelVariant => 0;
-	public Classes EquipableClasses => Classes.All;
-	public bool IsWeapon => true;
 	public byte EquipLevel => 0;
 
 	public bool IsFavorite
@@ -37,10 +34,11 @@ public class Perform : ExcelRow, IItem
 		set => FavoritesService.SetFavorite(this, value);
 	}
 
-	public bool CanOwn => false;
-	public bool IsOwned { get; set; }
-
-	public ItemCategories Category => ItemCategories.Performance;
+	public TagCollection Tags { get; init; } = new()
+	{
+		"Performance",
+		"MainHand",
+	};
 
 	public bool FitsInSlot(ItemSlots slot)
 	{
@@ -56,7 +54,5 @@ public class Perform : ExcelRow, IItem
 		this.ModelBase = parser.ReadWeaponBase(2);
 		this.ModelVariant = parser.ReadWeaponVariant(2);
 		this.Name = parser.ReadColumn<SeString>(9) ?? string.Empty;
-
-		this.Mod = TexToolsService.GetMod(this);
 	}
 }

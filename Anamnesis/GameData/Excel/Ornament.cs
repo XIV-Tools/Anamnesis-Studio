@@ -6,7 +6,6 @@ namespace Anamnesis.GameData.Excel;
 using Anamnesis.Actor.Utilities;
 using Anamnesis.GameData.Sheets;
 using Anamnesis.Services;
-using Anamnesis.TexTools;
 using Lumina.Data;
 using Lumina.Excel;
 
@@ -25,7 +24,6 @@ public class Ornament : ExcelRow, INpcBase
 	public byte AttachPoint { get; private set; }
 
 	public ImageReference? Icon { get; private set; }
-	public Mod? Mod => null;
 	public bool CanFavorite => true;
 	public bool HasName => this.name != null;
 	public string TypeName => "Ornament";

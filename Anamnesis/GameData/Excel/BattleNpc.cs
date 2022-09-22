@@ -6,7 +6,7 @@ namespace Anamnesis.GameData.Excel;
 using System;
 using Anamnesis.GameData.Sheets;
 using Anamnesis.Services;
-using Anamnesis.TexTools;
+using Anamnesis.Tags;
 using Lumina;
 using Lumina.Data;
 using Lumina.Excel;
@@ -28,7 +28,6 @@ public class BattleNpc : ExcelRow, INpcBase
 	public uint ModelCharaRow { get; private set; }
 
 	public ImageReference? Icon => null;
-	public Mod? Mod => null;
 	public bool CanFavorite => true;
 	public bool HasName => this.name != null;
 	public string TypeName => "Battle NPC";

@@ -4,7 +4,7 @@
 namespace Anamnesis.GameData.Excel;
 
 using Anamnesis.GameData.Sheets;
-using Anamnesis.TexTools;
+using Anamnesis.Tags;
 using Lumina;
 using Lumina.Data;
 using Lumina.Excel;
@@ -58,6 +58,8 @@ public class BuddyEquip : ExcelRow
 			this.ModelBase = modelBase;
 			this.ModelVariant = modelVariant;
 			this.Icon = new(icon);
+
+			this.Tags.Add(slot.ToString());
 		}
 
 		public string Name { get; private set; } = string.Empty;
@@ -73,14 +75,13 @@ public class BuddyEquip : ExcelRow
 		public ushort SubModelSet => 0;
 		public ushort SubModelBase => 0;
 		public ushort SubModelVariant => 0;
-		public Classes EquipableClasses => Classes.All;
-		public bool IsWeapon => false;
-		public ItemCategories Category => ItemCategories.None;
-		public Mod? Mod => null;
 		public bool IsFavorite { get; set; }
-		public bool CanOwn => false;
-		public bool IsOwned { get; set; }
 		public byte EquipLevel => 0;
+
+		public TagCollection Tags { get; init; } = new()
+		{
+			"Chocobo",
+		};
 
 		public bool FitsInSlot(ItemSlots slot)
 		{

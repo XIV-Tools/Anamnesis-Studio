@@ -6,7 +6,7 @@ namespace Anamnesis.Actor.Items;
 using Anamnesis.GameData;
 using Anamnesis.GameData.Sheets;
 using Anamnesis.Services;
-using Anamnesis.TexTools;
+using Anamnesis.Tags;
 
 public class DummyNoneItem : IItem
 {
@@ -17,13 +17,10 @@ public class DummyNoneItem : IItem
 	public ushort ModelVariant => 0;
 	public ushort ModelSet => 0;
 	public uint RowId => 0;
-	public bool IsWeapon => true;
 	public bool HasSubModel => false;
 	public ushort SubModelBase => 0;
 	public ushort SubModelVariant => 0;
 	public ushort SubModelSet => 0;
-	public Classes EquipableClasses => Classes.All;
-	public Mod? Mod => null;
 	public byte EquipLevel => 0;
 
 	public bool IsFavorite
@@ -32,10 +29,10 @@ public class DummyNoneItem : IItem
 		set => FavoritesService.SetFavorite(this, value);
 	}
 
-	public bool CanOwn => false;
-	public bool IsOwned { get; set; }
-
-	public ItemCategories Category => ItemCategories.Standard;
+	public TagCollection Tags { get; init; } = new()
+	{
+		"None",
+	};
 
 	public bool FitsInSlot(ItemSlots slot)
 	{

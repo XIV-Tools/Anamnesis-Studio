@@ -356,19 +356,6 @@
 											<TextBlock Text=", " />
 											<TextBlock Text="{Binding ModelVariant}" />
 										</StackPanel>
-
-										<TextBlock
-											Grid.Row="2"
-											Grid.Column="0"
-											HorizontalAlignment="Left"
-											Text="Modded: "
-											Visibility="{Binding Mod, Converter={StaticResource NotNullToVisibilityConverter}}" />
-										<TextBlock
-											Grid.Row="2"
-											Grid.Column="1"
-											HorizontalAlignment="Left"
-											Text="{Binding Mod.ModPack.Name}"
-											Visibility="{Binding Mod, Converter={StaticResource NotNullToVisibilityConverter}}" />
 									</Grid>
 								</StackPanel>
 							</ToolTipService.ToolTip>
@@ -402,29 +389,6 @@
 										FontSize="13"
 										Icon="Star"
 										Visibility="{Binding IsFavorite, IsAsync=True, Converter={StaticResource B2V}, FallbackValue=Collapsed}" />
-								</Grid>
-							</ToggleButton>
-
-							<ToggleButton
-								Grid.Row="1"
-								Margin="6,3,0,0"
-								Padding="0"
-								IsChecked="{Binding IsOwned}"
-								Style="{StaticResource InvisibleToggleButton}"
-								Visibility="{Binding CanOwn, Converter={StaticResource B2V}}">
-								<ToggleButton.ToolTip>
-									<TextBlock Text="[EquipmentSelector_OwnedToggleTip" />
-								</ToggleButton.ToolTip>
-								<Grid>
-									<XivToolsWpf:IconBlock
-										FontSize="13"
-										Icon="DollarSign"
-										Opacity="0.25"
-										Visibility="{Binding IsOwned, IsAsync=True, Converter={StaticResource !B2V}, FallbackValue=Collapsed}" />
-									<XivToolsWpf:IconBlock
-										FontSize="13"
-										Icon="DollarSign"
-										Visibility="{Binding IsOwned, IsAsync=True, Converter={StaticResource B2V}, FallbackValue=Collapsed}" />
 								</Grid>
 							</ToggleButton>
 						</Grid>

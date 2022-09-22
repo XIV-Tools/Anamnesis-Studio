@@ -134,12 +134,6 @@ public partial class NpcSelector : UserControl, INotifyPropertyChanged
 		if (this.CurrentFilter.IncludeNamed == false && npc.HasName)
 			return false;
 
-		if (this.CurrentFilter.IncludeModded == true && npc.Mod == null)
-			return false;
-
-		if (this.CurrentFilter.IncludeModded == false && npc.Mod != null)
-			return false;
-
 		if (npc is ResidentNpc)
 		{
 			if (!this.CurrentFilter.IncludeResidentNpc)
@@ -200,11 +194,6 @@ public partial class NpcSelector : UserControl, INotifyPropertyChanged
 		matches |= SearchUtility.Matches(npc.RowId.ToString(), search);
 		matches |= SearchUtility.Matches(npc.ModelCharaRow.ToString(), search);
 
-		if (npc.Mod != null && npc.Mod.ModPack != null)
-		{
-			matches |= SearchUtility.Matches(npc.Mod.ModPack.Name, search);
-		}
-
 		return matches;
 	}
 
@@ -239,7 +228,6 @@ public partial class NpcSelector : UserControl, INotifyPropertyChanged
 		public bool IncludeCompanion { get; set; } = false;
 		public bool IncludeOrnament { get; set; } = false;
 		public bool? IncludeNamed { get; set; } = true;
-		public bool? IncludeModded { get; set; } = null;
 		public bool TypesLocked { get; set; } = true;
 	}
 }

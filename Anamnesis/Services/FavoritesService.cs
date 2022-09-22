@@ -57,37 +57,6 @@ public class FavoritesService : ServiceBase<FavoritesService>
 		Save();
 	}
 
-	public static bool IsOwned(Item item)
-	{
-		if (Instance.Current == null)
-			return false;
-
-		return Instance.Current.Owned.Contains(item);
-	}
-
-	public static void SetOwned(Item item, bool favorite)
-	{
-		if (Instance.Current == null)
-			return;
-
-		bool isOwned = IsOwned(item);
-
-		if (favorite == isOwned)
-			return;
-
-		if (favorite)
-		{
-			Instance.Current.Owned.Add(item);
-		}
-		else
-		{
-			Instance.Current.Owned.Remove(item);
-		}
-
-		Instance.RaisePropertyChanged(nameof(Favorites.Items));
-		Save();
-	}
-
 	public static bool IsFavorite(IDye item)
 	{
 		if (Instance.Current == null)
@@ -195,6 +164,5 @@ public class FavoritesService : ServiceBase<FavoritesService>
 		public List<IDye> Dyes { get; set; } = new List<IDye>();
 		public List<Color4> Colors { get; set; } = new List<Color4>();
 		public List<INpcBase> Models { get; set; } = new List<INpcBase>();
-		public List<IItem> Owned { get; set; } = new List<IItem>();
 	}
 }

@@ -4,8 +4,10 @@
 namespace Lumina;
 using Anamnesis.Actor.Utilities;
 using Anamnesis.GameData;
+using Anamnesis.Tags;
 using Lumina.Excel.GeneratedSheets;
 using Serilog;
+using System;
 
 public static class LuminaExtensions
 {
@@ -88,5 +90,20 @@ public static class LuminaExtensions
 		}
 
 		return false;
+	}
+
+	public static TagCollection ToTags(this EquipSlotCategory self)
+	{
+		TagCollection tags = new();
+
+		foreach (ItemSlots slot in Enum.GetValues<ItemSlots>())
+		{
+			if (self.Contains(slot))
+			{
+				tags.Add(slot.ToString());
+			}
+		}
+
+		return tags;
 	}
 }

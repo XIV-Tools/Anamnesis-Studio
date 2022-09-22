@@ -5,7 +5,6 @@ namespace Anamnesis.GameData.Excel;
 using Anamnesis.Actor.Utilities;
 using Anamnesis.GameData.Sheets;
 using Anamnesis.Services;
-using Anamnesis.TexTools;
 using Lumina;
 using Lumina.Data;
 using Lumina.Excel;
@@ -30,7 +29,6 @@ public class Mount : ExcelRow, INpcBase
 	public byte MountCustomizeRow { get; private set; }
 
 	public ImageReference? Icon { get; private set; }
-	public Mod? Mod => null;
 	public bool CanFavorite => true;
 	public bool HasName => this.name != null;
 	public string TypeName => "Mount";

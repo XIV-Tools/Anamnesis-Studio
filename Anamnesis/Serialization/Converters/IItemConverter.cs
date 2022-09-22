@@ -69,7 +69,7 @@ public class IItemConverter : JsonConverter<IItem>
 		}
 		else
 		{
-			if (value.IsWeapon)
+			if (value.ModelSet != 0)
 			{
 				writer.WriteStringValue($"{value.ModelSet}, {value.ModelBase}, {value.ModelVariant}");
 			}

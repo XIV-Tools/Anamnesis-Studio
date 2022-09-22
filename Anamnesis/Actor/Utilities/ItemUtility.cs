@@ -120,18 +120,8 @@ public static class ItemUtility
 	{
 		foreach (IItem tItem in GameDataService.Instance.Items)
 		{
-			if (slot == ItemSlots.MainHand || slot == ItemSlots.OffHand)
-			{
-				if (!tItem.IsWeapon)
-					continue;
-			}
-			else
-			{
-				if (!tItem.FitsInSlot(slot))
-				{
-					continue;
-				}
-			}
+			if (!tItem.FitsInSlot(slot))
+				continue;
 
 			// Big old hack, but we prefer the emperors bracelets to the promise bracelets (even though they are the same model)
 			if (slot == ItemSlots.Wrists && tItem.Name.StartsWith("Promise of"))

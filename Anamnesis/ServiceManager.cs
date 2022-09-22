@@ -10,7 +10,6 @@ using Anamnesis.Files;
 using Anamnesis.Memory;
 using Anamnesis.Actor;
 using Anamnesis.Serialization;
-using Anamnesis.TexTools;
 using Serilog;
 using XivToolsWpf;
 using System.Diagnostics;
@@ -42,7 +41,6 @@ public class ServiceManager
 	public GameDataService GameData { get; } = new();
 	public PoseService Pose { get; } = new();
 	public TipService Tips { get; } = new();
-	public TexToolsService TexTools { get; } = new();
 	public FavoritesService Favorites { get; } = new();
 	public AnimationService Animation { get; } = new();
 	public Keyboard.KeyboardService Hotkeys { get; } = new();
@@ -84,7 +82,6 @@ public class ServiceManager
 		await this.InitializeService(this.GameData);
 		await this.InitializeService(this.Pose);
 		await this.InitializeService(this.Tips);
-		await this.InitializeService(this.TexTools);
 		await this.InitializeService(this.Favorites);
 		await this.InitializeService(this.Animation);
 		await this.InitializeService(this.Hotkeys);

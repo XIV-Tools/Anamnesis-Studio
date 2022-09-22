@@ -5,7 +5,7 @@ namespace Anamnesis.Actor.Items;
 using Anamnesis.GameData;
 using Anamnesis.GameData.Sheets;
 using Anamnesis.Services;
-using Anamnesis.TexTools;
+using Anamnesis.Tags;
 
 public class NpcBodyItem : IItem
 {
@@ -16,13 +16,10 @@ public class NpcBodyItem : IItem
 	public ushort ModelVariant => 1;
 	public ushort ModelSet => 0;
 	public uint RowId => 0;
-	public bool IsWeapon => false;
 	public bool HasSubModel => false;
 	public ushort SubModelBase => 0;
 	public ushort SubModelVariant => 0;
 	public ushort SubModelSet => 0;
-	public Classes EquipableClasses => Classes.All;
-	public Mod? Mod => TexToolsService.GetMod(this.Name);
 	public byte EquipLevel => 0;
 
 	public bool IsFavorite
@@ -31,10 +28,11 @@ public class NpcBodyItem : IItem
 		set => FavoritesService.SetFavorite(this, value);
 	}
 
-	public bool CanOwn => false;
-	public bool IsOwned { get; set; }
-
-	public ItemCategories Category => ItemCategories.Standard;
+	public TagCollection Tags { get; init; } = new()
+	{
+		"Npc Body",
+		"Head",
+	};
 
 	public bool FitsInSlot(ItemSlots slot)
 	{
