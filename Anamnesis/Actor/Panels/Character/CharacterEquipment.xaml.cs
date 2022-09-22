@@ -3,8 +3,10 @@
 
 namespace Anamnesis.Actor.Panels.Character;
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
+using Anamnesis.Actor.Panels.Character.Equipment;
 using Anamnesis.Actor.Utilities;
 using Anamnesis.GameData.Excel;
 using Anamnesis.Memory;
@@ -14,6 +16,8 @@ using PropertyChanged;
 [AddINotifyPropertyChangedInterface]
 public partial class CharacterEquipment : UserControl
 {
+	private ItemView? editingSlotView;
+
 	public CharacterEquipment()
 	{
 		this.InitializeComponent();
@@ -28,6 +32,31 @@ public partial class CharacterEquipment : UserControl
 
 			return null;
 		}
+	}
+
+	public void EditSlot(ItemView? view)
+	{
+		if (this.editingSlotView == view)
+			return;
+
+		if (this.editingSlotView != null)
+		{
+			this.editingSlotView.IsPopupOpen = false;
+			this.SlotEditorPopup.IsOpen = false;
+		}
+
+		this.editingSlotView = view;
+
+		if (this.editingSlotView != null)
+		{
+			this.editingSlotView.IsPopupOpen = true;
+			this.SlotEditorPopup.IsOpen = true;
+		}
+	}
+
+	private void OnSlotEditorPopupClosed(object sender, EventArgs e)
+	{
+		this.EditSlot(null);
 	}
 
 	private void OnClearClicked(object? sender = null, RoutedEventArgs? e = null)

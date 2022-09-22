@@ -21,7 +21,7 @@
 
 		<Border
 			Background="{DynamicResource MaterialDesignBackground}"
-			BorderBrush="{Binding TitleColor, Converter={StaticResource ColorToBrush}}"
+			BorderBrush="{DynamicResource PrimaryHueMidBrush}"
 			BorderThickness="1"
 			CornerRadius="6" />
 

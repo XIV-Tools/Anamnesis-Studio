@@ -56,6 +56,7 @@ public partial class ItemView : UserControl
 	public ImageSource? IconSource { get; set; }
 	public bool CanDye { get; set; }
 	public bool IsLoading { get; set; }
+
 	public bool IsPopupOpen { get; set; }
 
 	public IEquipmentItemMemory? ItemModel
@@ -228,6 +229,15 @@ public partial class ItemView : UserControl
 				weaponView.Dye = 0;
 			}
 		}
+	}
+
+	private void OnEditSlot(object sender, RoutedEventArgs e)
+	{
+		CharacterEquipment? equipmentEditor = this.FindParent<CharacterEquipment>();
+		if (equipmentEditor == null)
+			return;
+
+		equipmentEditor.EditSlot(this);
 	}
 
 	private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs? e)
