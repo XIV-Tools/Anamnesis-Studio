@@ -223,7 +223,7 @@
 			Closed="OnSlotEditorPopupClosed"
 			Placement="Left"
 			PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType={x:Type panels:CharacterPanel}}}"
-			StaysOpen="False">
+			StaysOpen="True">
 			<Grid>
 				<controls:PopupBackground />
 				<equipment:EquipmentSelector Margin="6" />

@@ -33,6 +33,7 @@ public partial class EquipmentSelector : UserControl
 	}
 
 	public EquipmentFilter Filter { get; init; } = new();
+	public TagCollection AllTags { get; init; } = new();
 
 	protected Task LoadItems()
 	{
@@ -65,13 +66,13 @@ public partial class EquipmentSelector : UserControl
 		this.Selector.AddItems(App.Services.GameData.Perform);
 		////}
 
-		TagCollection allTags = new();
+		this.AllTags.Clear();
 		foreach (IItem item in this.Selector.Entries)
 		{
-			allTags.AddRange(item.Tags);
+			this.AllTags.AddRange(item.Tags);
 		}
 
-		// todo: TagCollection filter control!
+		return Task.CompletedTask;
 	}
 
 	private void ClearSlot()
