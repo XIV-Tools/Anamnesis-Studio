@@ -32,11 +32,17 @@ public class FuncQueue
 		}
 	}
 
+	public void InvokeImmediate()
+	{
+		this.Invoke();
+		this.delay = 0;
+	}
+
 	private async Task RunTask()
 	{
 		// Double loops to handle case where a refresh delay was added
 		// while the refresh was running
-		while (this.delay > 0)
+		while (this.delay >= 0)
 		{
 			lock (this)
 				this.Pending = true;
@@ -51,6 +57,7 @@ public class FuncQueue
 				this.Pending = false;
 
 			await this.func.Invoke();
+			this.delay -= 1;
 		}
 	}
 }

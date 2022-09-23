@@ -6,6 +6,7 @@ namespace Anamnesis.Tags;
 using Anamnesis.Actor;
 using System;
 using System.Collections.Generic;
+using XivToolsWpf;
 
 public class Tag : IEquatable<Tag?>
 {
@@ -29,6 +30,14 @@ public class Tag : IEquatable<Tag?>
 	public static bool operator !=(Tag? left, Tag? right)
 	{
 		return !(left == right);
+	}
+
+	public bool Search(string[]? querry)
+	{
+		if (SearchUtility.Matches(this.Name, querry))
+			return true;
+
+		return false;
 	}
 
 	public override bool Equals(object? obj)
