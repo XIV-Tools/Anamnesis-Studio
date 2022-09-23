@@ -13,12 +13,10 @@
 	mc:Ignorable="d">
 
 	<UserControl.Resources>
-
 		<Style
 			x:Key="TagControl"
 			TargetType="{x:Type ItemsControl}">
 			<Style.Setters>
-
 				<Setter Property="ItemsPanel">
 					<Setter.Value>
 						<ItemsPanelTemplate>
@@ -26,115 +24,8 @@
 						</ItemsPanelTemplate>
 					</Setter.Value>
 				</Setter>
-
-				<Setter Property="ItemTemplate">
-					<Setter.Value>
-						<DataTemplate DataType="{x:Type local:Tag}">
-
-							<Button
-								Height="20"
-								Margin="1">
-								<Button.Style>
-									<Style TargetType="{x:Type Button}">
-										<Setter Property="Template">
-											<Setter.Value>
-												<ControlTemplate TargetType="{x:Type Button}">
-													<Grid>
-														<Grid.ColumnDefinitions>
-															<ColumnDefinition Width="Auto" />
-															<ColumnDefinition />
-														</Grid.ColumnDefinitions>
-
-														<Border
-															Grid.ColumnSpan="2"
-															Background="{StaticResource MaterialDesignPaper}"
-															CornerRadius="10" />
-
-														<XivToolsWpf:IconBlock
-															x:Name="TagIcon"
-															Margin="4,1,0,0"
-															FontSize="11"
-															Foreground="{DynamicResource MaterialDesignBodyLight}"
-															Icon="Tag"
-															Opacity="0.5" />
-
-														<XivToolsWpf:IconBlock
-															x:Name="CloseIcon"
-															Margin="4,0,0,0"
-															FontSize="13"
-															Foreground="{DynamicResource MaterialDesignBodyLight}"
-															Icon="TimesCircle"
-															Opacity="0" />
-
-														<TextBlock
-															Grid.Column="1"
-															Margin="3,0,6,0"
-															VerticalAlignment="Center"
-															FontSize="11"
-															Foreground="{DynamicResource MaterialDesignBodyLight}"
-															Text="{Binding Name}"
-															TextTrimming="CharacterEllipsis" />
-													</Grid>
-													<ControlTemplate.Triggers>
-														<Trigger Property="IsMouseOver" Value="True">
-
-															<Trigger.EnterActions>
-																<BeginStoryboard>
-																	<Storyboard>
-																		<DoubleAnimation
-																			EasingFunction="{StaticResource SinEaseIn}"
-																			Storyboard.TargetName="TagIcon"
-																			Storyboard.TargetProperty="Opacity"
-																			To="0"
-																			Duration="0:0:0.150" />
-
-																		<DoubleAnimation
-																			EasingFunction="{StaticResource SinEaseIn}"
-																			Storyboard.TargetName="CloseIcon"
-																			Storyboard.TargetProperty="Opacity"
-																			To="1"
-																			Duration="0:0:0.150" />
-																	</Storyboard>
-																</BeginStoryboard>
-															</Trigger.EnterActions>
-
-															<Trigger.ExitActions>
-																<BeginStoryboard>
-																	<Storyboard>
-																		<DoubleAnimation
-																			EasingFunction="{StaticResource SinEaseOut}"
-																			Storyboard.TargetName="TagIcon"
-																			Storyboard.TargetProperty="Opacity"
-																			To="0.5"
-																			Duration="0:0:0.200" />
-
-																		<DoubleAnimation
-																			EasingFunction="{StaticResource SinEaseOut}"
-																			Storyboard.TargetName="CloseIcon"
-																			Storyboard.TargetProperty="Opacity"
-																			To="0"
-																			Duration="0:0:0.200" />
-																	</Storyboard>
-																</BeginStoryboard>
-															</Trigger.ExitActions>
-
-														</Trigger>
-													</ControlTemplate.Triggers>
-
-												</ControlTemplate>
-											</Setter.Value>
-										</Setter>
-									</Style>
-								</Button.Style>
-							</Button>
-
-						</DataTemplate>
-					</Setter.Value>
-				</Setter>
 			</Style.Setters>
 		</Style>
-
-
 	</UserControl.Resources>
 
 	<Grid x:Name="ContentArea">
@@ -143,24 +34,252 @@
 			<RowDefinition />
 		</Grid.RowDefinitions>
 
-		<Grid Margin="1">
+		<Grid
+			x:Name="TagList"
+			Margin="1">
 
 			<Border Style="{StaticResource XivToolsControlBorder}" />
 
 			<ItemsControl
-				Margin="6"
+				Margin="2"
 				ItemsSource="{Binding FilterByTags}"
-				Style="{StaticResource TagControl}" />
+				Style="{StaticResource TagControl}">
+
+				<ItemsControl.Resources>
+					<DataTemplate DataType="{x:Type local:AddTag}">
+
+						<Button
+							Height="20"
+							MinWidth="75"
+							Margin="1"
+							Cursor="Hand">
+							<Button.Style>
+								<Style TargetType="{x:Type Button}">
+									<Setter Property="Template">
+										<Setter.Value>
+											<ControlTemplate TargetType="{x:Type Button}">
+												<Grid Background="Transparent">
+													<Grid HorizontalAlignment="Left">
+														<Border
+															Background="{StaticResource MaterialDesignPaper}"
+															CornerRadius="10"
+															Opacity="0.5" />
+
+														<XivToolsWpf:IconBlock
+															x:Name="AddIcon"
+															Margin="4,0"
+															HorizontalAlignment="Left"
+															FontSize="13"
+															Foreground="{DynamicResource MaterialDesignBodyLight}"
+															Icon="PlusCircle"
+															Opacity="0.5" />
+
+														<TextBox
+															x:Name="InputBox"
+															Grid.Column="1"
+															Margin="3,1,6,-2"
+															Padding="0,0,0,0"
+															Background="Transparent"
+															GotKeyboardFocus="OnTagSearchGotKeyboardFocus"
+															LostKeyboardFocus="OnTagSearchLostKeyboardFocus" />
+													</Grid>
+												</Grid>
+												<ControlTemplate.Triggers>
+													<DataTrigger Value="True">
+
+														<DataTrigger.Binding>
+															<MultiBinding Converter="{StaticResource MultiBoolOr}">
+																<Binding
+																	Path="IsMouseOver"
+																	RelativeSource="{RelativeSource Self}" />
+																<Binding
+																	ElementName="InputBox"
+																	Path="IsKeyboardFocused" />
+																<Binding
+																	Path="IsPopupOpen"
+																	RelativeSource="{RelativeSource AncestorType={x:Type local:TagFilter}}" />
+															</MultiBinding>
+														</DataTrigger.Binding>
+
+														<DataTrigger.EnterActions>
+															<BeginStoryboard>
+																<Storyboard>
+																	<DoubleAnimation
+																		EasingFunction="{StaticResource SinEaseIn}"
+																		Storyboard.TargetName="AddIcon"
+																		Storyboard.TargetProperty="Opacity"
+																		To="1"
+																		Duration="0:0:0.150" />
+																	<DoubleAnimation
+																		EasingFunction="{StaticResource SinEaseIn}"
+																		Storyboard.TargetName="InputBox"
+																		Storyboard.TargetProperty="MinWidth"
+																		To="75"
+																		Duration="0:0:0.150" />
+																	<ThicknessAnimation
+																		EasingFunction="{StaticResource SinEaseIn}"
+																		Storyboard.TargetName="InputBox"
+																		Storyboard.TargetProperty="Padding"
+																		To="8,0,0,0"
+																		Duration="0:0:0.150" />
+
+																</Storyboard>
+															</BeginStoryboard>
+														</DataTrigger.EnterActions>
+
+														<DataTrigger.ExitActions>
+															<BeginStoryboard>
+																<Storyboard>
+																	<DoubleAnimation
+																		EasingFunction="{StaticResource SinEaseOut}"
+																		Storyboard.TargetName="AddIcon"
+																		Storyboard.TargetProperty="Opacity"
+																		To="0.5"
+																		Duration="0:0:0.200" />
+																	<DoubleAnimation
+																		EasingFunction="{StaticResource SinEaseIn}"
+																		Storyboard.TargetName="InputBox"
+																		Storyboard.TargetProperty="MinWidth"
+																		To="0"
+																		Duration="0:0:0.150" />
+																	<ThicknessAnimation
+																		EasingFunction="{StaticResource SinEaseIn}"
+																		Storyboard.TargetName="InputBox"
+																		Storyboard.TargetProperty="Padding"
+																		To="0,0,0,0"
+																		Duration="0:0:0.150" />
+																</Storyboard>
+															</BeginStoryboard>
+														</DataTrigger.ExitActions>
+
+													</DataTrigger>
+
+												</ControlTemplate.Triggers>
+
+											</ControlTemplate>
+										</Setter.Value>
+									</Setter>
+								</Style>
+							</Button.Style>
+						</Button>
+
+					</DataTemplate>
+
+					<DataTemplate DataType="{x:Type local:Tag}">
+						<Button
+							Height="20"
+							Margin="1"
+							Click="OnRemoveTagButtonClicked"
+							Cursor="Hand">
+							<Button.Style>
+								<Style TargetType="{x:Type Button}">
+									<Setter Property="Template">
+										<Setter.Value>
+											<ControlTemplate TargetType="{x:Type Button}">
+												<Grid>
+													<Grid.ColumnDefinitions>
+														<ColumnDefinition Width="Auto" />
+														<ColumnDefinition />
+													</Grid.ColumnDefinitions>
+
+													<Border
+														Grid.ColumnSpan="2"
+														Background="{StaticResource MaterialDesignPaper}"
+														CornerRadius="10"
+														Opacity="0.5" />
+
+													<XivToolsWpf:IconBlock
+														x:Name="TagIcon"
+														Margin="4,1,0,0"
+														FontSize="11"
+														Foreground="{DynamicResource MaterialDesignBodyLight}"
+														Icon="Tag"
+														Opacity="0.5" />
+
+													<XivToolsWpf:IconBlock
+														x:Name="CloseIcon"
+														Margin="4,0,0,0"
+														FontSize="13"
+														Foreground="{DynamicResource MaterialDesignBodyLight}"
+														Icon="TimesCircle"
+														Opacity="0" />
+
+													<TextBlock
+														Grid.Column="1"
+														Margin="3,0,6,0"
+														VerticalAlignment="Center"
+														FontSize="11"
+														Foreground="{DynamicResource MaterialDesignBodyLight}"
+														Text="{Binding Name}"
+														TextTrimming="CharacterEllipsis" />
+												</Grid>
+												<ControlTemplate.Triggers>
+													<Trigger Property="IsMouseOver" Value="True">
+
+														<Trigger.EnterActions>
+															<BeginStoryboard>
+																<Storyboard>
+																	<DoubleAnimation
+																		EasingFunction="{StaticResource SinEaseIn}"
+																		Storyboard.TargetName="TagIcon"
+																		Storyboard.TargetProperty="Opacity"
+																		To="0"
+																		Duration="0:0:0.150" />
+
+																	<DoubleAnimation
+																		EasingFunction="{StaticResource SinEaseIn}"
+																		Storyboard.TargetName="CloseIcon"
+																		Storyboard.TargetProperty="Opacity"
+																		To="1"
+																		Duration="0:0:0.150" />
+																</Storyboard>
+															</BeginStoryboard>
+														</Trigger.EnterActions>
+
+														<Trigger.ExitActions>
+															<BeginStoryboard>
+																<Storyboard>
+																	<DoubleAnimation
+																		EasingFunction="{StaticResource SinEaseOut}"
+																		Storyboard.TargetName="TagIcon"
+																		Storyboard.TargetProperty="Opacity"
+																		To="0.5"
+																		Duration="0:0:0.200" />
+
+																	<DoubleAnimation
+																		EasingFunction="{StaticResource SinEaseOut}"
+																		Storyboard.TargetName="CloseIcon"
+																		Storyboard.TargetProperty="Opacity"
+																		To="0"
+																		Duration="0:0:0.200" />
+																</Storyboard>
+															</BeginStoryboard>
+														</Trigger.ExitActions>
+
+													</Trigger>
+												</ControlTemplate.Triggers>
+
+											</ControlTemplate>
+										</Setter.Value>
+									</Setter>
+								</Style>
+							</Button.Style>
+						</Button>
+
+					</DataTemplate>
+				</ItemsControl.Resources>
+
+			</ItemsControl>
 		</Grid>
 
-
 		<Popup
-			Width="{Binding ActualWidth, ElementName=TagSearchToggle}"
+			x:Name="AddTagPopup"
+			Width="{Binding ActualWidth, ElementName=TagList}"
 			MaxHeight="256"
 			AllowsTransparency="True"
-			IsOpen="{Binding IsChecked, ElementName=TagSearchToggle}"
-			PlacementTarget="{Binding ElementName=SearchBox}"
-			StaysOpen="False">
+			IsOpen="{Binding IsPopupOpen}"
+			PlacementTarget="{Binding ElementName=TagList}"
+			StaysOpen="True">
 
 			<Grid>
 
@@ -168,13 +287,115 @@
 
 				<ScrollViewer Margin="12">
 					<ItemsControl
-						ItemsSource="{Binding AllTags}"
-						Style="{StaticResource TagControl}" />
+						ItemsSource="{Binding AvailableTags}"
+						Style="{StaticResource TagControl}">
+						<ItemsControl.Resources>
+
+							<DataTemplate DataType="{x:Type local:Tag}">
+								<Button
+									Height="20"
+									Margin="1"
+									Click="OnAddTagButtonClicked"
+									Cursor="Hand">
+									<Button.Style>
+										<Style TargetType="{x:Type Button}">
+											<Setter Property="Template">
+												<Setter.Value>
+													<ControlTemplate TargetType="{x:Type Button}">
+														<Grid>
+															<Grid.ColumnDefinitions>
+																<ColumnDefinition Width="Auto" />
+																<ColumnDefinition />
+															</Grid.ColumnDefinitions>
+
+															<Border
+																Grid.ColumnSpan="2"
+																Background="{StaticResource MaterialDesignPaper}"
+																CornerRadius="10"
+																Opacity="0.5" />
+
+															<XivToolsWpf:IconBlock
+																x:Name="TagIcon"
+																Margin="4,1,0,0"
+																FontSize="11"
+																Foreground="{DynamicResource MaterialDesignBodyLight}"
+																Icon="Tag"
+																Opacity="0.5" />
+
+															<XivToolsWpf:IconBlock
+																x:Name="CloseIcon"
+																Margin="4,0,0,0"
+																FontSize="13"
+																Foreground="{DynamicResource MaterialDesignBodyLight}"
+																Icon="PlusCircle"
+																Opacity="0" />
+
+															<TextBlock
+																Grid.Column="1"
+																Margin="3,0,6,0"
+																VerticalAlignment="Center"
+																FontSize="11"
+																Foreground="{DynamicResource MaterialDesignBodyLight}"
+																Text="{Binding Name}"
+																TextTrimming="CharacterEllipsis" />
+														</Grid>
+														<ControlTemplate.Triggers>
+															<Trigger Property="IsMouseOver" Value="True">
+
+																<Trigger.EnterActions>
+																	<BeginStoryboard>
+																		<Storyboard>
+																			<DoubleAnimation
+																				EasingFunction="{StaticResource SinEaseIn}"
+																				Storyboard.TargetName="TagIcon"
+																				Storyboard.TargetProperty="Opacity"
+																				To="0"
+																				Duration="0:0:0.150" />
+
+																			<DoubleAnimation
+																				EasingFunction="{StaticResource SinEaseIn}"
+																				Storyboard.TargetName="CloseIcon"
+																				Storyboard.TargetProperty="Opacity"
+																				To="1"
+																				Duration="0:0:0.150" />
+																		</Storyboard>
+																	</BeginStoryboard>
+																</Trigger.EnterActions>
+
+																<Trigger.ExitActions>
+																	<BeginStoryboard>
+																		<Storyboard>
+																			<DoubleAnimation
+																				EasingFunction="{StaticResource SinEaseOut}"
+																				Storyboard.TargetName="TagIcon"
+																				Storyboard.TargetProperty="Opacity"
+																				To="0.5"
+																				Duration="0:0:0.200" />
+
+																			<DoubleAnimation
+																				EasingFunction="{StaticResource SinEaseOut}"
+																				Storyboard.TargetName="CloseIcon"
+																				Storyboard.TargetProperty="Opacity"
+																				To="0"
+																				Duration="0:0:0.200" />
+																		</Storyboard>
+																	</BeginStoryboard>
+																</Trigger.ExitActions>
+
+															</Trigger>
+														</ControlTemplate.Triggers>
+
+													</ControlTemplate>
+												</Setter.Value>
+											</Setter>
+										</Style>
+									</Button.Style>
+								</Button>
+							</DataTemplate>
+						</ItemsControl.Resources>
+					</ItemsControl>
 				</ScrollViewer>
 			</Grid>
-
 		</Popup>
-
-
 	</Grid>
 </UserControl>
