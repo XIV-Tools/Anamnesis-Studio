@@ -84,28 +84,28 @@ public class EquipRaceCategory : ExcelRow
 		if (this.Female)
 			tags.Add("Feminine");
 
-		if (!this.Hyur)
+		if (this.Hyur)
 			tags.Add("Hyur");
 
-		if (!this.Elezen)
+		if (this.Elezen)
 			tags.Add("Elezen");
 
-		if (!this.Lalafell)
+		if (this.Lalafell)
 			tags.Add("Lalafell");
 
-		if (!this.Miqote)
+		if (this.Miqote)
 			tags.Add("Miqote");
 
-		if (!this.Roegadyn)
+		if (this.Roegadyn)
 			tags.Add("Roegadyn");
 
-		if (!this.AuRa)
+		if (this.AuRa)
 			tags.Add("Au Ra");
 
-		if (!this.Hrothgar)
+		if (this.Hrothgar)
 			tags.Add("Hrothgar");
 
-		if (!this.Viera)
+		if (this.Viera)
 			tags.Add("Vierra");
 
 		return tags;
