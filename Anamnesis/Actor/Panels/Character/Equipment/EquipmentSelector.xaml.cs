@@ -9,13 +9,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System;
 using System.Windows.Controls;
-using XivToolsWpf;
 using Anamnesis.GameData.Excel;
 using Anamnesis.Memory;
-using XivToolsWpf.Selectors;
-using System.Collections.Generic;
 using Anamnesis.Tags;
-using Serilog;
+using Anamnesis.Actor.Items;
 
 public partial class EquipmentSelector : UserControl
 {
@@ -28,8 +25,11 @@ public partial class EquipmentSelector : UserControl
 	public enum SortModes
 	{
 		Name,
+		NameInv,
 		Row,
+		RowInv,
 		Level,
+		LevelInv,
 	}
 
 	public EquipmentFilter Filter { get; init; } = new();
@@ -37,26 +37,24 @@ public partial class EquipmentSelector : UserControl
 
 	protected Task LoadItems()
 	{
-		/*if (this.actor?.IsChocobo == true)
+		// Chocobo Items
+		this.Selector.AddItem(ItemUtility.NoneItem);
+		this.Selector.AddItem(ItemUtility.YellowChocoboSkin);
+		this.Selector.AddItem(ItemUtility.BlackChocoboSkin);
+
+		foreach (BuddyEquip buddyEquip in App.Services.GameData.BuddyEquips)
 		{
-			this.Selector.AddItem(ItemUtility.NoneItem);
-			this.Selector.AddItem(ItemUtility.YellowChocoboSkin);
-			this.Selector.AddItem(ItemUtility.BlackChocoboSkin);
+			if (buddyEquip.Head != null)
+				this.Selector.AddItem(buddyEquip.Head);
 
-			foreach (BuddyEquip buddyEquip in App.Services.GameData.BuddyEquips)
-			{
-				if (buddyEquip.Head != null)
-					this.Selector.AddItem(buddyEquip.Head);
+			if (buddyEquip.Body != null)
+				this.Selector.AddItem(buddyEquip.Body);
 
-				if (buddyEquip.Body != null)
-					this.Selector.AddItem(buddyEquip.Body);
-
-				if (buddyEquip.Feet != null)
-					this.Selector.AddItem(buddyEquip.Feet);
-			}
+			if (buddyEquip.Feet != null)
+				this.Selector.AddItem(buddyEquip.Feet);
 		}
-		else
-		{*/
+
+		// Player / NPC Items
 		this.Selector.AddItem(ItemUtility.NoneItem);
 		this.Selector.AddItem(ItemUtility.NpcBodyItem);
 		this.Selector.AddItem(ItemUtility.InvisibileBodyItem);
@@ -64,7 +62,6 @@ public partial class EquipmentSelector : UserControl
 		this.Selector.AddItems(App.Services.GameData.Equipment);
 		this.Selector.AddItems(App.Services.GameData.Items);
 		this.Selector.AddItems(App.Services.GameData.Perform);
-		////}
 
 		this.AllTags.Clear();
 		foreach (IItem item in this.Selector.Entries)
@@ -108,15 +105,11 @@ public partial class EquipmentSelector : UserControl
 		this.RaiseSelectionChanged();*/
 	}
 
-	public class EquipmentFilter : Selector.FilterBase<IItem>
+	public class EquipmentFilter : TagFilterBase<IItem>
 	{
-		public bool ShowLocked { get; set; } = true;
-		public bool AutoOffhand { get; set; } = true;
-		public bool ForceMainModel { get; set; } = false;
-		public bool ForceOffModel { get; set; } = false;
+		public bool IncludeUnequipableItems { get; set; } = true;
 		public SortModes SortMode { get; set; } = SortModes.Row;
-
-		public ItemSlots Slot { get; set; }
+		public ItemSlots? Slot { get; set; }
 		public ActorMemory? Actor { get; set; }
 
 		public override int CompareItems(IItem itemA, IItem itemB)
@@ -146,48 +139,40 @@ public partial class EquipmentSelector : UserControl
 			switch (this.SortMode)
 			{
 				case SortModes.Name: return itemA.Name.CompareTo(itemB.Name);
+				case SortModes.NameInv: return -itemA.Name.CompareTo(itemB.Name);
 				case SortModes.Row: return itemA.RowId.CompareTo(itemB.RowId);
+				case SortModes.RowInv: return -itemA.RowId.CompareTo(itemB.RowId);
 				case SortModes.Level: return itemA.EquipLevel.CompareTo(itemB.EquipLevel);
+				case SortModes.LevelInv: return -itemA.EquipLevel.CompareTo(itemB.EquipLevel);
 			}
 
 			throw new NotImplementedException($"Sort mode {this.SortMode} not implemented");
 		}
 
-		public override bool FilterItem(IItem item, string[]? search)
+		public override bool FilterItem(IItem item)
 		{
+			bool actorIsChocobo = this.Actor != null && this.Actor.IsChocobo;
+
+			bool itemIsForChocobo = item is ChocoboSkinItem
+				|| item is BuddyEquip.BuddyItem
+				|| item is BuddyEquip
+				|| item is DummyNoneItem
+				|| (item is DummyItem di && di.IsChocoboItem);
+
+			if (actorIsChocobo != itemIsForChocobo)
+				return false;
+
 			// skip items without names
 			if (string.IsNullOrEmpty(item.Name))
 				return false;
 
-			if (!item.FitsInSlot(this.Slot))
+			if (this.Slot != null && !item.FitsInSlot((ItemSlots)this.Slot))
 				return false;
 
-			if (!this.ShowLocked && item is Item ivm && !this.CanEquip(ivm))
+			if (!this.IncludeUnequipableItems && item is Item ivm && !this.CanEquip(ivm))
 				return false;
 
-			return this.MatchesSearch(item, search);
-		}
-
-		private bool MatchesSearch(IItem item, string[]? search = null)
-		{
-			bool matches = false;
-
-			matches |= SearchUtility.Matches(item.Name, search);
-			matches |= SearchUtility.Matches(item.Description, search);
-			matches |= SearchUtility.Matches(item.ModelSet.ToString(), search);
-			matches |= SearchUtility.Matches(item.ModelBase.ToString(), search);
-			matches |= SearchUtility.Matches(item.ModelVariant.ToString(), search);
-
-			if (item.HasSubModel)
-			{
-				matches |= SearchUtility.Matches(item.SubModelSet.ToString(), search);
-				matches |= SearchUtility.Matches(item.SubModelBase.ToString(), search);
-				matches |= SearchUtility.Matches(item.SubModelVariant.ToString(), search);
-			}
-
-			matches |= SearchUtility.Matches(item.RowId.ToString(), search);
-
-			return matches;
+			return true;
 		}
 
 		private bool CanEquip(Item item)

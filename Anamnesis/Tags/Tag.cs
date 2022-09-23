@@ -4,10 +4,12 @@
 namespace Anamnesis.Tags;
 
 using Anamnesis.Actor;
+using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using XivToolsWpf;
 
+[AddINotifyPropertyChangedInterface]
 public class Tag : IEquatable<Tag?>
 {
 	public Tag(string name)
@@ -16,6 +18,8 @@ public class Tag : IEquatable<Tag?>
 	}
 
 	public string? Name { get; init; }
+
+	public virtual bool CanCompare => true;
 
 	public static implicit operator Tag(string name)
 	{
@@ -32,7 +36,7 @@ public class Tag : IEquatable<Tag?>
 		return !(left == right);
 	}
 
-	public bool Search(string[]? querry)
+	public virtual bool Search(string[]? querry)
 	{
 		if (SearchUtility.Matches(this.Name, querry))
 			return true;
@@ -53,29 +57,5 @@ public class Tag : IEquatable<Tag?>
 	public override int GetHashCode()
 	{
 		return HashCode.Combine(this.Name);
-	}
-}
-
-public class TagCollection : HashSet<Tag>
-{
-	public void Add(string name)
-	{
-		base.Add(new(name));
-	}
-
-	public void AddRange(IEnumerable<string> names)
-	{
-		foreach (string name in names)
-		{
-			this.Add(name);
-		}
-	}
-
-	public void AddRange(IEnumerable<Tag> tags)
-	{
-		foreach (Tag tag in tags)
-		{
-			this.Add(tag);
-		}
 	}
 }

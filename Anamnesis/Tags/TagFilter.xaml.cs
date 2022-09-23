@@ -4,10 +4,8 @@
 namespace Anamnesis.Tags;
 
 using Anamnesis.Utils;
-using Octokit;
 using PropertyChanged;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,13 +14,13 @@ using System.Windows.Input;
 using XivToolsWpf;
 using XivToolsWpf.DependencyProperties;
 using XivToolsWpf.Extensions;
-using static Anamnesis.Libraries.Panels.LibraryPanel;
-using static Anamnesis.Updater.UpdateService.Release;
 
 [AddINotifyPropertyChangedInterface]
 public partial class TagFilter : UserControl, IComparer<Tag>
 {
 	public static readonly IBind<TagCollection> AllTagsDp = Binder.Register<TagCollection, TagFilter>(nameof(AllTags), BindMode.OneWay);
+	public static readonly IBind<TagFilterBase> FilterDp = Binder.Register<TagFilterBase, TagFilter>(nameof(Filter), BindMode.OneWay);
+	public static readonly IBind<bool> IsPopupOpenDp = Binder.Register<bool, TagFilter>(nameof(IsPopupOpen));
 
 	private readonly AddTag addTagItem = new();
 	private readonly FuncQueue tagSearchQueue;
@@ -36,7 +34,6 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 
 	public FastObservableCollection<Tag> AvailableTags { get; init; } = new();
 	public FastObservableCollection<Tag> FilterByTags { get; init; } = new();
-	public bool IsPopupOpen { get; set; }
 
 	public string? TagSearchText { get; set; }
 
@@ -44,6 +41,18 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 	{
 		get => AllTagsDp.Get(this);
 		set => AllTagsDp.Set(this, value);
+	}
+
+	public TagFilterBase Filter
+	{
+		get => FilterDp.Get(this);
+		set => FilterDp.Set(this, value);
+	}
+
+	public bool IsPopupOpen
+	{
+		get => IsPopupOpenDp.Get(this);
+		set => IsPopupOpenDp.Set(this, value);
 	}
 
 	public int Compare(Tag? x, Tag? y) => string.Compare(x?.Name, y?.Name);
@@ -63,13 +72,23 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 		this.FilterByTags.Remove(tag);
 		this.AvailableTags.Add(tag);
 		this.AvailableTags.Sort(this);
+
+		this.Filter?.Tags.Replace(this.FilterByTags);
+		this.Filter?.OnTagsChanged();
+
+		this.addTagItem.ShowHint = this.FilterByTags.Count <= 1;
 	}
 
 	private void AddTag(Tag tag)
 	{
+		this.addTagItem.ShowHint = false;
+
 		this.FilterByTags.Insert(this.FilterByTags.Count - 1, tag);
 		this.AvailableTags.Remove(tag);
 		this.AvailableTags.Sort(this);
+
+		this.Filter?.Tags.Replace(this.FilterByTags);
+		this.Filter?.OnTagsChanged();
 	}
 
 	private void OnRemoveTagButtonClicked(object sender, RoutedEventArgs e)
@@ -92,7 +111,7 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 	{
 		this.IsPopupOpen = true;
 		this.AddTagPopup.StaysOpen = true;
-		this.tagSearchQueue.InvokeImmediate();
+		////this.tagSearchQueue.InvokeImmediate();
 	}
 
 	private void OnTagSearchLostKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
@@ -166,18 +185,15 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 	}
 }
 
-public class SearchTag : Tag
-{
-	public SearchTag(string search)
-		: base(search)
-	{
-	}
-}
-
 public class AddTag : Tag
 {
 	public AddTag()
 		: base("New Tag")
 	{
 	}
+
+	public bool ShowHint { get; set; } = true;
+
+	public override bool CanCompare => false;
+	public override bool Search(string[]? querry) => throw new NotSupportedException();
 }

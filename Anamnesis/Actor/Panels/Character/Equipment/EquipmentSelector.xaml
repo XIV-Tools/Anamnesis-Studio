@@ -16,15 +16,15 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
 			<RowDefinition />
 		</Grid.RowDefinitions>
 
 		<tags:TagFilter
+			x:Name="TagFilter"
 			Grid.Row="0"
-			Margin="6"
-			AllTags="{Binding AllTags}" />
+			Margin="6,6,6,3"
+			AllTags="{Binding AllTags}"
+			Filter="{Binding Filter}" />
 
 		<!--<StackPanel Grid.Row="0">
 			<GroupBox Style="{StaticResource Cm3GroupBox}">
@@ -82,29 +82,25 @@
 
 		<StackPanel
 			Grid.Row="1"
+			Margin="6,0"
 			Orientation="Horizontal">
 
 			<Button
+				Width="32"
+				Height="32"
 				Click="OnNpcSmallclothesClicked"
-				Style="{StaticResource TransparentIconButton}"
+				ToolTip="[Character_Equipment_NpcSmallclothes]"
 				Visibility="{Binding IsSmallclothesSlot, Converter={StaticResource B2V}}">
-
-				<Button.ToolTip>
-					<TextBlock Text="[Character_Equipment_NpcSmallclothes" />
-				</Button.ToolTip>
-
 				<XivToolsWpf:IconBlock
 					Foreground="{DynamicResource MaterialDesignBodyLight}"
 					Icon="UserShield" />
 			</Button>
 
 			<Button
+				Width="32"
+				Height="32"
 				Click="OnClearClicked"
-				Style="{StaticResource TransparentIconButton}">
-				<Button.ToolTip>
-					<TextBlock Text="[Character_Equipment_ClearSlot" />
-				</Button.ToolTip>
-
+				ToolTip="[Character_Equipment_ClearSlot]">
 				<XivToolsWpf:IconBlock
 					Foreground="{DynamicResource MaterialDesignBodyLight}"
 					Icon="Eraser" />
@@ -112,91 +108,142 @@
 		</StackPanel>
 
 		<ComboBox
-			Grid.Row="2"
-			Height="22"
-			Margin="6,3,6,0"
+			Grid.Row="1"
+			Width="225"
+			Height="32"
+			Margin="0,0,6,0"
 			HorizontalAlignment="Right"
-			SelectedIndex="{Binding SortModeInt, Mode=TwoWay}"
-			Style="{StaticResource MaterialDesignDataGridComboBox}">
+			Style="{StaticResource XivToolsComboBox}">
 
 			<ComboBox.ToolTip>
 				<TextBlock Text="[FileBrowser_Sort" />
 			</ComboBox.ToolTip>
 
-			<ComboBoxItem>
-				<ComboBoxItem.ToolTip>
-					<TextBlock Text="[EquipmentSelector_SortAlpha" />
-				</ComboBoxItem.ToolTip>
+			<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=Name}">
 
-				<XivToolsWpf:IconBlock
-					FontSize="16"
-					Icon="SortAlphaDown" />
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="32" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+
+					<XivToolsWpf:IconBlock
+						Grid.Column="0"
+						FontSize="16"
+						Icon="SortAlphaDown" />
+
+					<TextBlock
+						Grid.Column="1"
+						Text="[EquipmentSelector_SortAlpha]" />
+				</Grid>
 			</ComboBoxItem>
 
-			<ComboBoxItem>
-				<ComboBoxItem.ToolTip>
-					<TextBlock Text="[EquipmentSelector_SortRow" />
-				</ComboBoxItem.ToolTip>
+			<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=NameInv}">
 
-				<XivToolsWpf:IconBlock
-					FontSize="16"
-					Icon="CalendarAlt" />
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="32" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+
+					<XivToolsWpf:IconBlock
+						Grid.Column="0"
+						FontSize="16"
+						Icon="SortAlphaUp" />
+
+					<TextBlock
+						Grid.Column="1"
+						Text="[EquipmentSelector_SortAlphaInv]" />
+				</Grid>
 			</ComboBoxItem>
 
-			<ComboBoxItem>
-				<ComboBoxItem.ToolTip>
-					<TextBlock Text="[EquipmentSelector_SortLevel" />
-				</ComboBoxItem.ToolTip>
+			<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=Row}">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="32" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
 
-				<XivToolsWpf:IconBlock
-					FontSize="16"
-					Icon="SortAmountDown" />
+					<XivToolsWpf:IconBlock
+						Grid.Column="0"
+						FontSize="16"
+						Icon="CalendarAlt" />
+
+					<TextBlock
+						Grid.Column="1"
+						Text="[EquipmentSelector_SortRow]" />
+				</Grid>
+			</ComboBoxItem>
+
+			<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=RowInv}">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="32" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+
+					<XivToolsWpf:IconBlock
+						Grid.Column="0"
+						FontSize="16"
+						Icon="CalendarAlt" />
+
+					<TextBlock
+						Grid.Column="1"
+						Text="[EquipmentSelector_SortRowInv]" />
+				</Grid>
+			</ComboBoxItem>
+
+			<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=Level}">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="32" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+
+					<XivToolsWpf:IconBlock
+						Grid.Column="0"
+						FontSize="16"
+						Icon="SortAmountDown" />
+
+					<TextBlock
+						Grid.Column="1"
+						Text="[EquipmentSelector_SortLevel]" />
+				</Grid>
+			</ComboBoxItem>
+
+			<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=LevelInv}">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="32" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+
+					<XivToolsWpf:IconBlock
+						Grid.Column="0"
+						FontSize="16"
+						Icon="SortAmountUp" />
+
+					<TextBlock
+						Grid.Column="1"
+						Text="[EquipmentSelector_SortLevelInv]" />
+				</Grid>
 			</ComboBoxItem>
 
 		</ComboBox>
 
-
-		<StackPanel
-			Grid.Row="3"
-			Margin="6,0,0,0"
-			Visibility="{Binding IsWeaponSlot, Converter={StaticResource B2V}}">
-
-			<CheckBox
-				Padding="3"
-				IsChecked="{Binding AutoOffhand}"
-				Visibility="{Binding IsMainHandSlot, Converter={StaticResource B2V}}">
-				<CheckBox.ToolTip>
-					<TextBlock Text="[EquipmentSelector_AutoOffhandTip" />
-				</CheckBox.ToolTip>
-				<TextBlock Text="[EquipmentSelector_AutoOffhand" />
-			</CheckBox>
-
-			<CheckBox
-				Padding="3"
-				IsChecked="{Binding ForceMainModel}"
-				Visibility="{Binding IsOffHandSlot, Converter={StaticResource B2V}}">
-				<CheckBox.ToolTip>
-					<TextBlock Text="[EquipmentSelector_ForceMainModelTooltip" />
-				</CheckBox.ToolTip>
-				<TextBlock Text="[EquipmentSelector_ForceMainModel" />
-			</CheckBox>
-
-			<CheckBox
-				Padding="3"
-				IsChecked="{Binding ForceOffModel}"
-				Visibility="{Binding IsMainHandSlot, Converter={StaticResource B2V}}">
-				<CheckBox.ToolTip>
-					<TextBlock Text="[EquipmentSelector_ForceOffModelTooltip" />
-				</CheckBox.ToolTip>
-				<TextBlock Text="[EquipmentSelector_ForceOffModel" />
-			</CheckBox>
-		</StackPanel>
+		<Border
+			Grid.Row="2"
+			Margin="6,1,6,6"
+			Style="{StaticResource XivToolsControlBorder}" />
 
 		<XivToolsWpfSelectors:Selector
 			x:Name="Selector"
-			Grid.Row="4"
+			Grid.Row="2"
+			Margin="6,4,6,6"
 			Filter="{Binding Filter}"
-			LoadItems="LoadItems">
+			IsEnabled="{Binding IsPopupOpen, ElementName=TagFilter, Converter={StaticResource !B}}"
+			LoadItems="LoadItems"
+			SearchEnabled="False">
 
 			<XivToolsWpfSelectors:Selector.ItemTemplate>
 				<DataTemplate>
@@ -215,30 +262,31 @@
 							<RowDefinition Height="Auto" />
 						</Grid.RowDefinitions>
 
-						<Border
+						<Grid
 							Grid.RowSpan="3"
 							Width="38"
 							Height="38"
 							Margin="0,-4"
-							Background="#444444"
-							CornerRadius="3"
 							Visibility="{Binding Icon, Converter={StaticResource NotNullToVisibilityConverter}}">
-							<Grid>
-								<Image
-									Margin="1"
-									Source="{Binding Icon, Converter={StaticResource Img}}" />
-								<Image
-									Margin="-2,0,-2,-4"
-									Source="/Assets/IconBorderSmall.png" />
-							</Grid>
-						</Border>
+
+							<Border CornerRadius="6">
+								<Border.Background>
+									<ImageBrush ImageSource="{Binding Icon, Converter={StaticResource Img}}" />
+								</Border.Background>
+							</Border>
+
+							<Border CornerRadius="6">
+								<Border.Background>
+									<ImageBrush ImageSource="/Assets/IconOverlay.png" />
+								</Border.Background>
+							</Border>
+						</Grid>
 
 						<TextBlock
 							Grid.Row="0"
 							Grid.Column="1"
 							Margin="6,0,0,0"
 							VerticalAlignment="Center"
-							FontWeight="DemiBold"
 							Foreground="{DynamicResource MaterialDesignBody}"
 							Text="{Binding Name}"
 							TextTrimming="CharacterEllipsis"
@@ -249,7 +297,6 @@
 							Grid.Row="0"
 							Grid.Column="1"
 							Margin="6,0,0,0"
-							FontWeight="DemiBold"
 							Foreground="{DynamicResource MaterialDesignBody}"
 							Text="{Binding Name}"
 							TextTrimming="CharacterEllipsis"
@@ -269,6 +316,7 @@
 							<TextBlock
 								Grid.Column="0"
 								Margin="6,0,0,0"
+								Foreground="{DynamicResource MaterialDesignBodyLight}"
 								Text="{Binding EquipLevel, StringFormat=Lv.{0:D}}"
 								TextAlignment="Left"
 								TextTrimming="CharacterEllipsis"
@@ -277,6 +325,7 @@
 							<TextBlock
 								Grid.Column="1"
 								Margin="6,0,0,0"
+								Foreground="{DynamicResource MaterialDesignBodyLight}"
 								Text="{Binding Description}"
 								TextAlignment="Left"
 								TextTrimming="CharacterEllipsis"
@@ -321,7 +370,7 @@
 											Grid.Column="0"
 											Margin="0,0,6,0"
 											HorizontalAlignment="Right"
-											Text="[EquipmentSelector_ItemId"
+											Text="[EquipmentSelector_ItemId]"
 											Visibility="{Binding RowId, Converter={StaticResource NotZeroToVisibility}}" />
 										<TextBlock
 											Grid.Row="0"
@@ -380,10 +429,8 @@
 								Margin="6,0,0,0"
 								Padding="0"
 								IsChecked="{Binding IsFavorite}"
-								Style="{StaticResource InvisibleToggleButton}">
-								<ToggleButton.ToolTip>
-									<TextBlock Text="[EquipmentSelector_FavoriteToggleTip" />
-								</ToggleButton.ToolTip>
+								Style="{StaticResource InvisibleToggleButton}"
+								ToolTip="[EquipmentSelector_FavoriteToggleTip]">
 
 								<Grid>
 									<XivToolsWpf:IconBlock

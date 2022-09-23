@@ -5,8 +5,10 @@ namespace Anamnesis.GameData;
 
 using Anamnesis.GameData.Sheets;
 using Anamnesis.Tags;
+using XivToolsWpf;
+using XivToolsWpf.Selectors;
 
-public interface IItem
+public interface IItem : ITagged
 {
 	uint RowId { get; }
 
@@ -27,7 +29,27 @@ public interface IItem
 
 	bool IsFavorite { get; set; }
 
-	TagCollection Tags { get; }
-
 	bool FitsInSlot(ItemSlots slot);
+
+	bool ISearchable.Search(string[] query)
+	{
+		bool matches = false;
+
+		matches |= SearchUtility.Matches(this.Name, query);
+		matches |= SearchUtility.Matches(this.Description, query);
+		matches |= SearchUtility.Matches(this.ModelSet.ToString(), query);
+		matches |= SearchUtility.Matches(this.ModelBase.ToString(), query);
+		matches |= SearchUtility.Matches(this.ModelVariant.ToString(), query);
+
+		if (this.HasSubModel)
+		{
+			matches |= SearchUtility.Matches(this.SubModelSet.ToString(), query);
+			matches |= SearchUtility.Matches(this.SubModelBase.ToString(), query);
+			matches |= SearchUtility.Matches(this.SubModelVariant.ToString(), query);
+		}
+
+		matches |= SearchUtility.Matches(this.RowId.ToString(), query);
+
+		return matches;
+	}
 }

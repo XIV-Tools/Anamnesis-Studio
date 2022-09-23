@@ -226,7 +226,9 @@
 			StaysOpen="True">
 			<Grid>
 				<controls:PopupBackground />
-				<equipment:EquipmentSelector Margin="6" />
+				<equipment:EquipmentSelector
+					x:Name="EquipmentSelector"
+					Margin="6" />
 			</Grid>
 		</Popup>
 	</Grid>

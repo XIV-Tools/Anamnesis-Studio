@@ -104,9 +104,13 @@
 	"EquipmentSelector_OwnedTip": "Premium or Limited Items marked as owned",
 	"EquipmentSelector_OwnedToggleTip": "Mark this premium or limited item as owned",
 	"EquipmentSelector_ItemId": "Item Id:",
+
 	"EquipmentSelector_SortAlpha": "By Name (A to Z)",
+	"EquipmentSelector_SortAlphaInv": "By Name (Z to A)",
 	"EquipmentSelector_SortRow": "By Row (Oldest to Newest)",
+	"EquipmentSelector_SortRowInv": "By Row (Newest to Oldest)",
 	"EquipmentSelector_SortLevel": "By Level (Lowest to Highest)",
+	"EquipmentSelector_SortLevelInv": "By Level (Highest to Lowest)",
 
 	"Home_Art": "Gallery",
 	"Home_Wiki": "Help",

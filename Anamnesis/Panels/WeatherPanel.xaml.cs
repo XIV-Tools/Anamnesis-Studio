@@ -51,7 +51,7 @@ public partial class WeatherPanel : PanelBase
 			return a.RowId.CompareTo(b.RowId);
 		}
 
-		public override bool FilterItem(Weather weather, string[]? search)
+		public override bool FilterItem(Weather weather)
 		{
 			if (weather.RowId == 0)
 				return false;
@@ -66,9 +66,9 @@ public partial class WeatherPanel : PanelBase
 				}
 			}
 
-			bool matches = SearchUtility.Matches(weather.Name, search);
-			matches |= SearchUtility.Matches(weather.Description, search);
-			matches |= SearchUtility.Matches(weather.WeatherId.ToString(), search);
+			bool matches = SearchUtility.Matches(weather.Name, this.SearchQuery);
+			matches |= SearchUtility.Matches(weather.Description, this.SearchQuery);
+			matches |= SearchUtility.Matches(weather.WeatherId.ToString(), this.SearchQuery);
 
 			if (!matches)
 				return false;

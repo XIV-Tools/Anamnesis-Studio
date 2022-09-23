@@ -49,6 +49,9 @@ public partial class CharacterEquipment : UserControl
 
 		if (this.editingSlotView != null)
 		{
+			this.EquipmentSelector.Filter.Actor = this.Actor;
+			this.EquipmentSelector.Filter.Slot = this.editingSlotView.Slot;
+
 			this.editingSlotView.IsPopupOpen = true;
 			this.SlotEditorPopup.IsOpen = true;
 		}

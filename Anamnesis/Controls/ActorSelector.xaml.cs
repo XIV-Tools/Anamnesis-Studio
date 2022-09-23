@@ -131,12 +131,12 @@ public partial class ActorSelector : UserControl
 			return actorA.DistanceFromPlayer.CompareTo(actorB.DistanceFromPlayer);
 		}
 
-		public override bool FilterItem(ActorBasicMemory actor, string[]? search)
+		public override bool FilterItem(ActorBasicMemory actor)
 		{
 			////if (GposeService.Instance.IsGpose != actor.IsGPoseActor)
 			////	return false;
 
-			if (!SearchUtility.Matches(actor.Names.FullName, search) && !SearchUtility.Matches(actor.Names.Nickname, search))
+			if (!SearchUtility.Matches(actor.Names.FullName, this.SearchQuery) && !SearchUtility.Matches(actor.Names.Nickname, this.SearchQuery))
 				return false;
 
 			if (!this.IncludeHidden && actor.IsHidden)

@@ -16,6 +16,7 @@ public class DummyItem : IItem
 		this.ModelVariant = modelVariant;
 	}
 
+	public bool IsChocoboItem { get; init; }
 	public uint RowId => 0;
 	public bool HasSubModel => false;
 	public string Name => LocalizationService.GetString("Item_Unknown");
