@@ -86,6 +86,11 @@ public class Item : ExcelRow, IItem
 
 		if (this.ClassJobs != null)
 			this.Tags.AddRange(this.ClassJobs.ToTags());
+
+		if (string.IsNullOrEmpty(this.Name))
+		{
+			this.Tags.Add("Unnamed");
+		}
 	}
 
 	public bool FitsInSlot(ItemSlots slot)

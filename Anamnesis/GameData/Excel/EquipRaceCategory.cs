@@ -94,7 +94,7 @@ public class EquipRaceCategory : ExcelRow
 			tags.Add("Lalafell");
 
 		if (this.Miqote)
-			tags.Add("Miqote");
+			tags.Add("Miqo'te");
 
 		if (this.Roegadyn)
 			tags.Add("Roegadyn");
@@ -106,7 +106,7 @@ public class EquipRaceCategory : ExcelRow
 			tags.Add("Hrothgar");
 
 		if (this.Viera)
-			tags.Add("Vierra");
+			tags.Add("Viera");
 
 		return tags;
 	}

@@ -20,6 +20,8 @@ public partial class EquipmentSelector : UserControl
 	{
 		this.InitializeComponent();
 		this.ContentArea.DataContext = this;
+
+		this.SlotSelector.ItemsSource = Enum.GetValues<ItemSlots>();
 	}
 
 	public enum SortModes
@@ -163,8 +165,8 @@ public partial class EquipmentSelector : UserControl
 				return false;
 
 			// skip items without names
-			if (string.IsNullOrEmpty(item.Name))
-				return false;
+			////if (string.IsNullOrEmpty(item.Name))
+			////	return false;
 
 			if (this.Slot != null && !item.FitsInSlot((ItemSlots)this.Slot))
 				return false;

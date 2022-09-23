@@ -16,13 +16,32 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
 			<RowDefinition />
 		</Grid.RowDefinitions>
 
+		<ComboBox
+			x:Name="SlotSelector"
+			Grid.Row="0"
+			Margin="6,6,6,0"
+			SelectedValue="{Binding Filter.Slot}">
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<Grid>
+						<TextBlock
+							Grid.Column="1"
+							VerticalAlignment="Center"
+							Foreground="{DynamicResource MaterialDesignBody}"
+							Text="{Binding}" />
+					</Grid>
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
+
 		<tags:TagFilter
 			x:Name="TagFilter"
-			Grid.Row="0"
-			Margin="6,6,6,3"
+			Grid.Row="1"
+			Margin="6,0,6,0"
 			AllTags="{Binding AllTags}"
 			Filter="{Binding Filter}" />
 
@@ -81,7 +100,7 @@
 		</StackPanel>-->
 
 		<StackPanel
-			Grid.Row="1"
+			Grid.Row="2"
 			Margin="6,0"
 			Orientation="Horizontal">
 
@@ -108,7 +127,7 @@
 		</StackPanel>
 
 		<ComboBox
-			Grid.Row="1"
+			Grid.Row="2"
 			Width="225"
 			Height="32"
 			Margin="0,0,6,0"
@@ -232,13 +251,13 @@
 		</ComboBox>
 
 		<Border
-			Grid.Row="2"
+			Grid.Row="3"
 			Margin="6,1,6,6"
 			Style="{StaticResource XivToolsControlBorder}" />
 
 		<XivToolsWpfSelectors:Selector
 			x:Name="Selector"
-			Grid.Row="2"
+			Grid.Row="3"
 			Margin="6,4,6,6"
 			Filter="{Binding Filter}"
 			IsEnabled="{Binding IsPopupOpen, ElementName=TagFilter, Converter={StaticResource !B}}"
