@@ -9,16 +9,14 @@ using Anamnesis.Actor.Utilities;
 using Anamnesis.GameData;
 using Anamnesis.Services;
 using XivToolsWpf;
+using XivToolsWpf.Selectors;
 
-/// <summary>
-/// Interaction logic for EquipmentSelector.xaml.
-/// </summary>
 public partial class DyeSelector : UserControl
 {
 	public DyeSelector()
 	{
 		this.InitializeComponent();
-		this.DataContext = this;
+		this.Selector.DataContext = this;
 	}
 
 	protected Task LoadItems()
@@ -31,32 +29,35 @@ public partial class DyeSelector : UserControl
 		return Task.CompletedTask;
 	}
 
-	protected bool Filter(IDye dye, string[]? search)
+	public class DyeFilter : Selector.FilterBase<IDye>
 	{
-		// skip items without names
-		if (string.IsNullOrEmpty(dye.Name))
-			return false;
+		public override bool FilterItem(IDye dye)
+		{
+			// skip items without names
+			if (string.IsNullOrEmpty(dye.Name))
+				return false;
 
-		if (!SearchUtility.Matches(dye.Name, search))
-			return false;
+			if (!SearchUtility.Matches(dye.Name, this.SearchQuery))
+				return false;
 
-		return true;
-	}
+			return true;
+		}
 
-	protected int Compare(IDye dyeA, IDye dyeB)
-	{
-		if (dyeA == DyeUtility.NoneDye && dyeB != DyeUtility.NoneDye)
-			return -1;
+		public override int CompareItems(IDye dyeA, IDye dyeB)
+		{
+			if (dyeA == DyeUtility.NoneDye && dyeB != DyeUtility.NoneDye)
+				return -1;
 
-		if (dyeA != DyeUtility.NoneDye && dyeB == DyeUtility.NoneDye)
-			return 1;
+			if (dyeA != DyeUtility.NoneDye && dyeB == DyeUtility.NoneDye)
+				return 1;
 
-		if (dyeA.IsFavorite && !dyeB.IsFavorite)
-			return -1;
+			if (dyeA.IsFavorite && !dyeB.IsFavorite)
+				return -1;
 
-		if (!dyeA.IsFavorite && dyeB.IsFavorite)
-			return 1;
+			if (!dyeA.IsFavorite && dyeB.IsFavorite)
+				return 1;
 
-		return -dyeB.RowId.CompareTo(dyeA.RowId);
+			return -dyeB.RowId.CompareTo(dyeA.RowId);
+		}
 	}
 }

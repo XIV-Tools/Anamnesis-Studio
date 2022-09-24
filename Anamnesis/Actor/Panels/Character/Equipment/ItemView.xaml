@@ -9,6 +9,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:views="clr-namespace:Anamnesis.Actor.Views"
 	mc:Ignorable="d">
 
 	<Grid
@@ -182,6 +183,7 @@
 
 			<!--  Dye  -->
 			<ToggleButton
+				x:Name="DyeToggle"
 				Grid.Row="1"
 				Grid.Column="1"
 				HorizontalAlignment="Stretch"
@@ -233,6 +235,19 @@
 
 				</Grid>
 			</ToggleButton>
+
+			<Popup
+				Height="512"
+				AllowsTransparency="True"
+				IsOpen="{Binding IsChecked, ElementName=DyeToggle}"
+				PlacementTarget="{Binding ElementName=DyeToggle}"
+				PopupAnimation="Fade"
+				StaysOpen="False">
+				<Grid>
+					<controls:PopupBackground />
+					<views:DyeSelector Margin="6" />
+				</Grid>
+			</Popup>
 
 			<!--<Grid
 				Grid.Row="2"

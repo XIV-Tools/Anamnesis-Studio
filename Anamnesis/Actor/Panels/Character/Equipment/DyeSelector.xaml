@@ -13,7 +13,10 @@
 	d:DesignHeight="450"
 	mc:Ignorable="d">
 
-	<xivToolsWpfSelectors:Selector x:Name="Selector">
+	<xivToolsWpfSelectors:Selector
+		x:Name="Selector"
+		Filter="{Binding Filter}"
+		LoadItems="LoadItems">
 
 		<xivToolsWpfSelectors:Selector.ItemTemplate>
 			<DataTemplate>
