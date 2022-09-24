@@ -24,14 +24,15 @@ public class Race : ExcelRow
 
 	public string Feminine { get; private set; } = string.Empty;
 	public string Masculine { get; private set; } = string.Empty;
-	public int RSEMBody { get; private set; } = 0;
-	public int RSEMHands { get; private set; } = 0;
-	public int RSEMLegs { get; private set; } = 0;
-	public int RSEMFeet { get; private set; } = 0;
-	public int RSEFBody { get; private set; } = 0;
-	public int RSEFHands { get; private set; } = 0;
-	public int RSEFLegs { get; private set; } = 0;
-	public int RSEFFeet { get; private set; } = 0;
+
+	public IItem RacialGearMasculineBody { get; private set; } = null!;
+	public IItem RacialGearMasculineHands { get; private set; } = null!;
+	public IItem RacialGearMasculineLegs { get; private set; } = null!;
+	public IItem RacialGearMasculineFeet { get; private set; } = null!;
+	public IItem RacialGearFeminineBody { get; private set; } = null!;
+	public IItem RacialGearFeminineHands { get; private set; } = null!;
+	public IItem RacialGearFeminineLegs { get; private set; } = null!;
+	public IItem RacialGearFeminineFeet { get; private set; } = null!;
 
 	// Customize options
 	public List<Tribe> Tribes { get; private set; } = new();
@@ -44,69 +45,69 @@ public class Race : ExcelRow
 		this.Masculine = parser.ReadColumn<SeString>(0) ?? string.Empty;
 		this.Feminine = parser.ReadColumn<SeString>(1) ?? string.Empty;
 
-		this.RSEMBody = parser.ReadColumn<int>(2);
-		this.RSEMHands = parser.ReadColumn<int>(3);
-		this.RSEMLegs = parser.ReadColumn<int>(4);
-		this.RSEMFeet = parser.ReadColumn<int>(5);
-		this.RSEFBody = parser.ReadColumn<int>(6);
-		this.RSEFHands = parser.ReadColumn<int>(7);
-		this.RSEFLegs = parser.ReadColumn<int>(8);
-		this.RSEFFeet = parser.ReadColumn<int>(9);
+		this.RacialGearMasculineBody = GameData.Items.Get(parser.ReadColumn<int>(2));
+		this.RacialGearMasculineHands = GameData.Items.Get(parser.ReadColumn<int>(3));
+		this.RacialGearMasculineLegs = GameData.Items.Get(parser.ReadColumn<int>(4));
+		this.RacialGearMasculineFeet = GameData.Items.Get(parser.ReadColumn<int>(5));
+		this.RacialGearFeminineBody = GameData.Items.Get(parser.ReadColumn<int>(6));
+		this.RacialGearFeminineHands = GameData.Items.Get(parser.ReadColumn<int>(7));
+		this.RacialGearFeminineLegs = GameData.Items.Get(parser.ReadColumn<int>(8));
+		this.RacialGearFeminineFeet = GameData.Items.Get(parser.ReadColumn<int>(9));
 
 		if (!Enum.IsDefined<ActorCustomizeMemory.Races>(this.RaceId))
 			return;
 
-		if (GameDataService.Instance.Tribes == null)
+		if (GameData.Tribes == null)
 			throw new Exception("No Tribes list in game data service");
 
 		this.Tribes = this.RaceId switch
 		{
 			ActorCustomizeMemory.Races.Hyur => new()
 			{
-				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Midlander),
-				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Highlander),
+				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Midlander),
+				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Highlander),
 			},
 
 			ActorCustomizeMemory.Races.Elezen => new()
 			{
-				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Wildwood),
-				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Duskwight),
+				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Wildwood),
+				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Duskwight),
 			},
 
 			ActorCustomizeMemory.Races.Lalafel => new()
 			{
-				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Plainsfolk),
-				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Dunesfolk),
+				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Plainsfolk),
+				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Dunesfolk),
 			},
 
 			ActorCustomizeMemory.Races.Miqote => new()
 			{
-				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.SeekerOfTheSun),
-				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.KeeperOfTheMoon),
+				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.SeekerOfTheSun),
+				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.KeeperOfTheMoon),
 			},
 
 			ActorCustomizeMemory.Races.Roegadyn => new()
 			{
-				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.SeaWolf),
-				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Hellsguard),
+				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.SeaWolf),
+				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Hellsguard),
 			},
 
 			ActorCustomizeMemory.Races.AuRa => new()
 			{
-				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Raen),
-				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Xaela),
+				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Raen),
+				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Xaela),
 			},
 
 			ActorCustomizeMemory.Races.Hrothgar => new()
 			{
-				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Helions),
-				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.TheLost),
+				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Helions),
+				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.TheLost),
 			},
 
 			ActorCustomizeMemory.Races.Viera => new()
 			{
-				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Rava),
-				GameDataService.Instance.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Veena),
+				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Rava),
+				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Veena),
 			},
 
 			_ => throw new Exception($"Unrecognized race Id: {this.RaceId}"),
@@ -122,5 +123,18 @@ public class Race : ExcelRow
 			this.Genders.Add(CustomizeGenders.Masculine);
 			this.Genders.Add(CustomizeGenders.Feminine);
 		}
+	}
+
+	public IItem? GetRacialGear(CustomizeGenders gender, ItemSlots slot)
+	{
+		switch (slot)
+		{
+			case ItemSlots.Body: return gender == CustomizeGenders.Masculine ? this.RacialGearMasculineBody : this.RacialGearFeminineBody;
+			case ItemSlots.Hands: return gender == CustomizeGenders.Masculine ? this.RacialGearMasculineHands : this.RacialGearFeminineHands;
+			case ItemSlots.Legs: return gender == CustomizeGenders.Masculine ? this.RacialGearMasculineLegs : this.RacialGearFeminineLegs;
+			case ItemSlots.Feet: return gender == CustomizeGenders.Masculine ? this.RacialGearMasculineFeet : this.RacialGearFeminineFeet;
+		}
+
+		return null;
 	}
 }

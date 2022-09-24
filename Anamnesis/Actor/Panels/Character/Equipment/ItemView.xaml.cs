@@ -140,7 +140,9 @@ public partial class ItemView : UserControl
 	{
 		if (e.ChangedButton == MouseButton.Middle && e.ButtonState == MouseButtonState.Released)
 		{
-			this.ItemModel?.Clear(this.Actor?.IsHuman ?? false);
+			if (this.Actor != null)
+				ItemUtility.Clear(this.Actor, this.Slot);
+
 			e.Handled = true;
 		}
 	}

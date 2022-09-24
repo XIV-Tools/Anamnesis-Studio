@@ -7,6 +7,7 @@ using System.Collections.Concurrent;
 using Anamnesis.Actor.Items;
 using Anamnesis.GameData;
 using Anamnesis.GameData.Excel;
+using Anamnesis.Memory;
 using Anamnesis.Services;
 
 public static class ItemUtility
@@ -75,6 +76,69 @@ public static class ItemUtility
 			return InvisibileHeadItem;
 
 		return new DummyItem(modelSet, modelBase, modelVariant);
+	}
+
+	public static void EquipRacialGear(ActorMemory actor, ItemSlots slot)
+	{
+		ItemMemory? memory = actor.Equipment?.GetSlot(slot);
+		IItem? item = actor.Customize?.Race?.GetRacialGear(actor.Customize.Gender, slot);
+
+		if (memory != null && item != null)
+		{
+			memory.Equip(item);
+		}
+	}
+
+	public static void EquipNpcSmallclothes(ActorMemory actor, ItemSlots slot)
+	{
+		ItemMemory? memory = actor.Equipment?.GetSlot(slot);
+
+		if (memory == null)
+			return;
+
+		if (slot >= ItemSlots.Head && slot <= ItemSlots.Feet)
+		{
+			memory.Equip(ItemUtility.NpcBodyItem);
+		}
+		else
+		{
+			memory.Equip(ItemUtility.NoneItem);
+		}
+	}
+
+	public static void Clear(ActorMemory actor, ItemSlots slot)
+	{
+		if (slot == ItemSlots.MainHand)
+		{
+			WeaponMemory? memory = actor.MainHand;
+
+			if (memory != null)
+			{
+				memory.Equip(ItemUtility.EmperorsNewFists);
+				memory.Dye = 0;
+			}
+		}
+		else if (slot == ItemSlots.OffHand)
+		{
+			WeaponMemory? memory = actor.OffHand;
+
+			if (memory != null)
+			{
+				memory.Equip(ItemUtility.NoneItem);
+				memory.Dye = 0;
+			}
+		}
+		else
+		{
+			ItemMemory? memory = actor.Equipment?.GetSlot(slot);
+
+			if (memory != null)
+			{
+				memory.Base = (ushort)(actor.IsPlayer ? 0 : 1);
+				memory.Variant = 0;
+				memory.Dye = 0;
+			}
+		}
 	}
 
 	public static bool IsModel(this IItem item, ushort modelSet, ushort modelBase, ushort modelVariant)

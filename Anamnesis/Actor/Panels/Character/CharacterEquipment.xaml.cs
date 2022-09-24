@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Anamnesis.Actor.Panels.Character.Equipment;
 using Anamnesis.Actor.Utilities;
+using Anamnesis.GameData;
 using Anamnesis.GameData.Excel;
 using Anamnesis.Memory;
 using Anamnesis.Services;
@@ -67,18 +68,17 @@ public partial class CharacterEquipment : UserControl
 		if (this.Actor == null)
 			return;
 
-		this.Actor.MainHand?.Clear(this.Actor.IsHuman);
-		this.Actor.OffHand?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.Arms?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.Chest?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.Ear?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.Feet?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.Head?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.Legs?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.LFinger?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.Neck?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.RFinger?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.Wrist?.Clear(this.Actor.IsHuman);
+		ItemUtility.Clear(this.Actor, ItemSlots.MainHand);
+		ItemUtility.Clear(this.Actor, ItemSlots.Head);
+		ItemUtility.Clear(this.Actor, ItemSlots.Body);
+		ItemUtility.Clear(this.Actor, ItemSlots.Hands);
+		ItemUtility.Clear(this.Actor, ItemSlots.Legs);
+		ItemUtility.Clear(this.Actor, ItemSlots.Feet);
+		ItemUtility.Clear(this.Actor, ItemSlots.OffHand);
+		ItemUtility.Clear(this.Actor, ItemSlots.Neck);
+		ItemUtility.Clear(this.Actor, ItemSlots.Wrists);
+		ItemUtility.Clear(this.Actor, ItemSlots.RightRing);
+		ItemUtility.Clear(this.Actor, ItemSlots.LeftRing);
 
 		this.Actor?.ModelObject?.Weapons?.Hide();
 		this.Actor?.ModelObject?.Weapons?.SubModel?.Hide();
@@ -95,16 +95,17 @@ public partial class CharacterEquipment : UserControl
 			return;
 		}
 
-		this.Actor.Equipment?.Ear?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.Head?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.LFinger?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.Neck?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.RFinger?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.Wrist?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.Arms?.Equip(ItemUtility.NpcBodyItem);
-		this.Actor.Equipment?.Chest?.Equip(ItemUtility.NpcBodyItem);
+		this.Actor.Equipment?.Hands?.Equip(ItemUtility.NpcBodyItem);
+		this.Actor.Equipment?.Body?.Equip(ItemUtility.NpcBodyItem);
 		this.Actor.Equipment?.Legs?.Equip(ItemUtility.NpcBodyItem);
 		this.Actor.Equipment?.Feet?.Equip(ItemUtility.NpcBodyItem);
+
+		ItemUtility.Clear(this.Actor, ItemSlots.Ears);
+		ItemUtility.Clear(this.Actor, ItemSlots.Head);
+		ItemUtility.Clear(this.Actor, ItemSlots.LeftRing);
+		ItemUtility.Clear(this.Actor, ItemSlots.RightRing);
+		ItemUtility.Clear(this.Actor, ItemSlots.Neck);
+		ItemUtility.Clear(this.Actor, ItemSlots.Wrists);
 	}
 
 	private void OnRaceGearClicked(object sender, RoutedEventArgs e)
@@ -112,44 +113,16 @@ public partial class CharacterEquipment : UserControl
 		if (this.Actor == null)
 			return;
 
-		if (this.Actor.Customize?.Race == null)
-			return;
+		ItemUtility.EquipRacialGear(this.Actor, ItemSlots.Body);
+		ItemUtility.EquipRacialGear(this.Actor, ItemSlots.Hands);
+		ItemUtility.EquipRacialGear(this.Actor, ItemSlots.Legs);
+		ItemUtility.EquipRacialGear(this.Actor, ItemSlots.Feet);
 
-		Race? race = this.Actor.Customize.Race;
-
-		if (race == null)
-			return;
-
-		if (this.Actor.Customize.Gender == ActorCustomizeMemory.Genders.Masculine)
-		{
-			var body = App.Services.GameData.Items.Get((uint)race.RSEMBody);
-			var hands = App.Services.GameData.Items.Get((uint)race.RSEMHands);
-			var legs = App.Services.GameData.Items.Get((uint)race.RSEMLegs);
-			var feet = App.Services.GameData.Items.Get((uint)race.RSEMFeet);
-
-			this.Actor.Equipment?.Chest?.Equip(body);
-			this.Actor.Equipment?.Arms?.Equip(hands);
-			this.Actor.Equipment?.Legs?.Equip(legs);
-			this.Actor.Equipment?.Feet?.Equip(feet);
-		}
-		else
-		{
-			var body = App.Services.GameData.Items.Get((uint)race.RSEFBody);
-			var hands = App.Services.GameData.Items.Get((uint)race.RSEFHands);
-			var legs = App.Services.GameData.Items.Get((uint)race.RSEFLegs);
-			var feet = App.Services.GameData.Items.Get((uint)race.RSEFFeet);
-
-			this.Actor.Equipment?.Chest?.Equip(body);
-			this.Actor.Equipment?.Arms?.Equip(hands);
-			this.Actor.Equipment?.Legs?.Equip(legs);
-			this.Actor.Equipment?.Feet?.Equip(feet);
-		}
-
-		this.Actor.Equipment?.Ear?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.Head?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.LFinger?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.Neck?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.RFinger?.Clear(this.Actor.IsHuman);
-		this.Actor.Equipment?.Wrist?.Clear(this.Actor.IsHuman);
+		ItemUtility.Clear(this.Actor, ItemSlots.Ears);
+		ItemUtility.Clear(this.Actor, ItemSlots.Head);
+		ItemUtility.Clear(this.Actor, ItemSlots.LeftRing);
+		ItemUtility.Clear(this.Actor, ItemSlots.RightRing);
+		ItemUtility.Clear(this.Actor, ItemSlots.Neck);
+		ItemUtility.Clear(this.Actor, ItemSlots.Wrists);
 	}
 }

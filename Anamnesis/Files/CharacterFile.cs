@@ -130,11 +130,11 @@ public class CharacterFile : JsonFileBase
 			if (actor.Equipment?.Head != null)
 				this.HeadGear = new ItemSave(actor.Equipment.Head);
 
-			if (actor.Equipment?.Chest != null)
-				this.Body = new ItemSave(actor.Equipment.Chest);
+			if (actor.Equipment?.Body != null)
+				this.Body = new ItemSave(actor.Equipment.Body);
 
-			if (actor.Equipment?.Arms != null)
-				this.Hands = new ItemSave(actor.Equipment.Arms);
+			if (actor.Equipment?.Hands != null)
+				this.Hands = new ItemSave(actor.Equipment.Hands);
 
 			if (actor.Equipment?.Legs != null)
 				this.Legs = new ItemSave(actor.Equipment.Legs);
@@ -145,20 +145,20 @@ public class CharacterFile : JsonFileBase
 
 		if (this.IncludeSection(SaveModes.EquipmentAccessories, mode))
 		{
-			if (actor.Equipment?.Ear != null)
-				this.Ears = new ItemSave(actor.Equipment.Ear);
+			if (actor.Equipment?.Ears != null)
+				this.Ears = new ItemSave(actor.Equipment.Ears);
 
 			if (actor.Equipment?.Neck != null)
 				this.Neck = new ItemSave(actor.Equipment.Neck);
 
-			if (actor.Equipment?.Wrist != null)
-				this.Wrists = new ItemSave(actor.Equipment.Wrist);
+			if (actor.Equipment?.Wrists != null)
+				this.Wrists = new ItemSave(actor.Equipment.Wrists);
 
-			if (actor.Equipment?.LFinger != null)
-				this.LeftRing = new ItemSave(actor.Equipment.LFinger);
+			if (actor.Equipment?.LeftRing != null)
+				this.LeftRing = new ItemSave(actor.Equipment.LeftRing);
 
-			if (actor.Equipment?.RFinger != null)
-				this.RightRing = new ItemSave(actor.Equipment.RFinger);
+			if (actor.Equipment?.RightRing != null)
+				this.RightRing = new ItemSave(actor.Equipment.RightRing);
 		}
 
 		if (this.IncludeSection(SaveModes.AppearanceHair, mode))
@@ -258,19 +258,19 @@ public class CharacterFile : JsonFileBase
 			if (this.IncludeSection(SaveModes.EquipmentGear, mode))
 			{
 				this.HeadGear?.Write(actor.Equipment?.Head);
-				this.Body?.Write(actor.Equipment?.Chest);
-				this.Hands?.Write(actor.Equipment?.Arms);
+				this.Body?.Write(actor.Equipment?.Body);
+				this.Hands?.Write(actor.Equipment?.Hands);
 				this.Legs?.Write(actor.Equipment?.Legs);
 				this.Feet?.Write(actor.Equipment?.Feet);
 			}
 
 			if (this.IncludeSection(SaveModes.EquipmentAccessories, mode))
 			{
-				this.Ears?.Write(actor.Equipment?.Ear);
+				this.Ears?.Write(actor.Equipment?.Ears);
 				this.Neck?.Write(actor.Equipment?.Neck);
-				this.Wrists?.Write(actor.Equipment?.Wrist);
-				this.RightRing?.Write(actor.Equipment?.RFinger);
-				this.LeftRing?.Write(actor.Equipment?.LFinger);
+				this.Wrists?.Write(actor.Equipment?.Wrists);
+				this.RightRing?.Write(actor.Equipment?.RightRing);
+				this.LeftRing?.Write(actor.Equipment?.LeftRing);
 			}
 
 			if (this.IncludeSection(SaveModes.AppearanceHair, mode))

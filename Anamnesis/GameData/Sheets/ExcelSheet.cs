@@ -54,6 +54,11 @@ public class ExcelSheet<T> : Lumina.Excel.ExcelSheet<T>, IEnumerable<T>, IEnumer
 		return this.Get((uint)row);
 	}
 
+	public T Get(int row)
+	{
+		return this.Get((uint)row);
+	}
+
 	public T Get(uint row, uint subRow = uint.MaxValue)
 	{
 		T? value = this.GetRowInternal(row, subRow);

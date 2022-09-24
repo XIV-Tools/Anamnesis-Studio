@@ -5,6 +5,7 @@ namespace Anamnesis.GameData;
 public enum ItemSlots
 {
 	MainHand,
+	OffHand,
 
 	Head,
 	Body,
@@ -13,7 +14,6 @@ public enum ItemSlots
 	Legs,
 	Feet,
 
-	OffHand,
 	Ears,
 	Neck,
 	Wrists,

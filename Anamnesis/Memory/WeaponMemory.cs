@@ -4,7 +4,6 @@
 namespace Anamnesis.Memory;
 
 using System;
-using Anamnesis.Actor.Utilities;
 using Anamnesis.GameData;
 using PropertyChanged;
 
@@ -57,11 +56,20 @@ public class WeaponMemory : MemoryBase, IEquipmentItemMemory
 		}
 	}
 
-	public void Clear(bool isPlayer)
+	public void Equip(IItem item)
 	{
-		this.Set = ItemUtility.EmperorsNewFists.ModelSet;
-		this.Base = ItemUtility.EmperorsNewFists.ModelBase;
-		this.Variant = ItemUtility.EmperorsNewFists.ModelVariant;
-		this.Dye = 0;
+		this.Set = item.ModelSet;
+		this.Base = item.ModelBase;
+		this.Variant = item.ModelVariant;
+	}
+
+	public bool Is(IItem? item)
+	{
+		if (item == null)
+			return this.Set == 0 && this.Base == 0 && this.Variant == 0;
+
+		return this.Set == item.ModelSet
+			&& this.Base == item.ModelBase
+			&& this.Variant == item.ModelVariant;
 	}
 }

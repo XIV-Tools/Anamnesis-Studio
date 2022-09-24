@@ -13,9 +13,12 @@ using Anamnesis.GameData.Excel;
 using Anamnesis.Memory;
 using Anamnesis.Tags;
 using Anamnesis.Actor.Items;
+using XivToolsWpf.DependencyProperties;
 
 public partial class EquipmentSelector : UserControl
 {
+	public static readonly IBind<IItem?> ValueDp = Binder.Register<IItem?, EquipmentSelector>(nameof(Value), BindMode.TwoWay);
+
 	public EquipmentSelector()
 	{
 		this.InitializeComponent();
@@ -36,6 +39,12 @@ public partial class EquipmentSelector : UserControl
 
 	public EquipmentFilter Filter { get; init; } = new();
 	public TagCollection AllTags { get; init; } = new();
+
+	public IItem? Value
+	{
+		get => ValueDp.Get(this);
+		set => ValueDp.Set(this, value);
+	}
 
 	protected Task LoadItems()
 	{
@@ -74,37 +83,70 @@ public partial class EquipmentSelector : UserControl
 		return Task.CompletedTask;
 	}
 
-	private void ClearSlot()
+	private void OnRaceGearClicked(object sender, RoutedEventArgs e)
 	{
-		this.OnClearClicked();
-	}
+		if (this.Filter.Slot == null || this.Filter.Actor == null)
+			return;
 
-	private void OnClearClicked(object? sender = null, RoutedEventArgs? e = null)
-	{
-		/*if (this.IsMainHandSlot)
-		{
-			this.Value = ItemUtility.EmperorsNewFists;
-		}
-		else
-		{
-			this.Value = ItemUtility.NoneItem;
-		}
-
-		this.RaiseSelectionChanged();*/
+		ItemUtility.EquipRacialGear(this.Filter.Actor, this.Filter.Slot.Value);
 	}
 
 	private void OnNpcSmallclothesClicked(object sender, RoutedEventArgs e)
 	{
-		/*if (this.IsSmallclothesSlot)
+		if (this.Filter.Slot == null || this.Filter.Actor == null)
+			return;
+
+		ItemUtility.EquipNpcSmallclothes(this.Filter.Actor, this.Filter.Slot.Value);
+	}
+
+	private void OnClearClicked(object? sender = null, RoutedEventArgs? e = null)
+	{
+		if (this.Filter.Slot == null || this.Filter.Actor == null)
+			return;
+
+		ItemUtility.Clear(this.Filter.Actor, this.Filter.Slot.Value);
+	}
+
+	private void OnSelectionChanged(bool close)
+	{
+		if (this.Filter.Actor == null || this.Filter.Slot == null)
+			return;
+
+		IItem? item = this.Selector.Value as IItem;
+		this.Equip(item);
+	}
+
+	private void Equip(IItem? item)
+	{
+		IEquipmentItemMemory? memory;
+
+		if (this.Filter.Slot == null || this.Filter.Actor == null)
+			return;
+
+		if (this.Filter.Slot == ItemSlots.MainHand)
 		{
-			this.Value = ItemUtility.NpcBodyItem;
+			memory = this.Filter.Actor.MainHand;
+		}
+		else if (this.Filter.Slot == ItemSlots.OffHand)
+		{
+			memory = this.Filter.Actor.OffHand;
 		}
 		else
 		{
-			this.Value = ItemUtility.NoneItem;
+			memory = this.Filter.Actor.Equipment?.GetSlot(this.Filter.Slot.Value);
 		}
 
-		this.RaiseSelectionChanged();*/
+		if (memory != null)
+		{
+			if (item == null)
+			{
+				ItemUtility.Clear(this.Filter.Actor, this.Filter.Slot.Value);
+			}
+			else
+			{
+				memory.Equip(item);
+			}
+		}
 	}
 
 	public class EquipmentFilter : TagFilterBase<IItem>

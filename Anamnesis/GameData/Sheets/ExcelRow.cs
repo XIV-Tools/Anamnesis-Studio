@@ -3,19 +3,22 @@
 
 namespace Anamnesis.GameData.Sheets;
 
+using Anamnesis.Services;
 using System;
 
 public class ExcelRow : Lumina.Excel.ExcelRow, IEquatable<ExcelRow>
 {
+	public static GameDataService GameData => App.Services.GameData;
+
 	public static bool operator ==(ExcelRow? lhs, ExcelRow? rhs)
 	{
 		if (ReferenceEquals(lhs, rhs))
 			return true;
 
-		if (ReferenceEquals(lhs, null))
+		if (lhs is null)
 			return false;
 
-		if (ReferenceEquals(rhs, null))
+		if (rhs is null)
 			return false;
 
 		return lhs.Equals(rhs);
@@ -28,7 +31,7 @@ public class ExcelRow : Lumina.Excel.ExcelRow, IEquatable<ExcelRow>
 
 	public bool Equals(ExcelRow? other)
 	{
-		if (ReferenceEquals(other, null))
+		if (other is null)
 			return false;
 
 		if (ReferenceEquals(this, other))

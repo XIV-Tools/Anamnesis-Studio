@@ -162,12 +162,12 @@
 					<equipment:ItemView
 						Actor="{Binding Actor}"
 						IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
-						ItemModel="{Binding Actor.Equipment.Ear}"
+						ItemModel="{Binding Actor.Equipment.Ears}"
 						Slot="Ears" />
 
 					<equipment:ItemView
 						Actor="{Binding Actor}"
-						ItemModel="{Binding Actor.Equipment.Chest}"
+						ItemModel="{Binding Actor.Equipment.Body}"
 						Slot="Body" />
 
 					<equipment:ItemView
@@ -179,13 +179,13 @@
 					<equipment:ItemView
 						Actor="{Binding Actor}"
 						IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
-						ItemModel="{Binding Actor.Equipment.Arms}"
+						ItemModel="{Binding Actor.Equipment.Hands}"
 						Slot="Hands" />
 
 					<equipment:ItemView
 						Actor="{Binding Actor}"
 						IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
-						ItemModel="{Binding Actor.Equipment.Wrist}"
+						ItemModel="{Binding Actor.Equipment.Wrists}"
 						Slot="Wrists" />
 
 					<equipment:ItemView
@@ -196,7 +196,7 @@
 					<equipment:ItemView
 						Actor="{Binding Actor}"
 						IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
-						ItemModel="{Binding Actor.Equipment.RFinger}"
+						ItemModel="{Binding Actor.Equipment.RightRing}"
 						Slot="RightRing" />
 
 					<equipment:ItemView
@@ -207,7 +207,7 @@
 					<equipment:ItemView
 						Actor="{Binding Actor}"
 						IsEnabled="{Binding Actor.IsChocobo, Converter={StaticResource !B}}"
-						ItemModel="{Binding Actor.Equipment.LFinger}"
+						ItemModel="{Binding Actor.Equipment.LeftRing}"
 						Slot="LeftRing" />
 
 				</UniformGrid>

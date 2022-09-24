@@ -3,13 +3,14 @@
 
 namespace Anamnesis.Memory;
 
+using Anamnesis.GameData;
 using System.ComponentModel;
 
 public interface IEquipmentItemMemory : INotifyPropertyChanged
 {
-	ushort Base { get; set; }
-	byte Dye { get; set; }
 	ushort Set { get; set; }
+	byte Dye { get; set; }
 
-	public void Clear(bool isPlayer);
+	void Equip(IItem item);
+	bool Is(IItem? item);
 }

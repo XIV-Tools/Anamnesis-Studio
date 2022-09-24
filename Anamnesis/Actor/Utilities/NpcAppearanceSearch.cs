@@ -179,7 +179,7 @@ public static class NpcAppearanceSearch
 		if (equipment.Head?.Is(appearance.Head) == false)
 			return false;
 
-		if (equipment.Chest?.Is(appearance.Body) == false)
+		if (equipment.Body?.Is(appearance.Body) == false)
 			return false;
 
 		if (equipment.Legs?.Is(appearance.Legs) == false)
@@ -188,22 +188,22 @@ public static class NpcAppearanceSearch
 		if (equipment.Feet?.Is(appearance.Feet) == false)
 			return false;
 
-		if (equipment.Arms?.Is(appearance.Hands) == false)
+		if (equipment.Hands?.Is(appearance.Hands) == false)
 			return false;
 
-		if (equipment.LFinger?.Is(appearance.LeftRing) == false)
+		if (equipment.LeftRing?.Is(appearance.LeftRing) == false)
 			return false;
 
-		if (equipment.RFinger?.Is(appearance.RightRing) == false)
+		if (equipment.RightRing?.Is(appearance.RightRing) == false)
 			return false;
 
-		if (equipment.Wrist?.Is(appearance.Wrists) == false)
+		if (equipment.Wrists?.Is(appearance.Wrists) == false)
 			return false;
 
 		if (equipment.Neck?.Is(appearance.Neck) == false)
 			return false;
 
-		if (equipment.Ear?.Is(appearance.Ears) == false)
+		if (equipment.Ears?.Is(appearance.Ears) == false)
 			return false;
 
 		return true;

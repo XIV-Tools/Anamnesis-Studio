@@ -107,22 +107,30 @@
 			<Button
 				Width="32"
 				Height="32"
+				Click="OnRaceGearClicked"
+				Style="{StaticResource TransparentIconButton}"
+				ToolTip="[Character_Equipment_RaceGear]"
+				Visibility="{Binding Actor.IsHuman, Converter={StaticResource B2V}}">
+				<XivToolsWpf:IconBlock Icon="UserAstronaut" />
+			</Button>
+
+			<Button
+				Width="32"
+				Height="32"
 				Click="OnNpcSmallclothesClicked"
+				Style="{StaticResource TransparentIconButton}"
 				ToolTip="[Character_Equipment_NpcSmallclothes]"
-				Visibility="{Binding IsSmallclothesSlot, Converter={StaticResource B2V}}">
-				<XivToolsWpf:IconBlock
-					Foreground="{DynamicResource MaterialDesignBodyLight}"
-					Icon="UserShield" />
+				Visibility="{Binding Actor.IsHuman, Converter={StaticResource B2V}}">
+				<XivToolsWpf:IconBlock Icon="UserShield" />
 			</Button>
 
 			<Button
 				Width="32"
 				Height="32"
 				Click="OnClearClicked"
-				ToolTip="[Character_Equipment_ClearSlot]">
-				<XivToolsWpf:IconBlock
-					Foreground="{DynamicResource MaterialDesignBodyLight}"
-					Icon="Eraser" />
+				Style="{StaticResource TransparentIconButton}"
+				ToolTip="[Character_Equipment_Clear]">
+				<XivToolsWpf:IconBlock Icon="Eraser" />
 			</Button>
 		</StackPanel>
 
@@ -262,7 +270,9 @@
 			Filter="{Binding Filter}"
 			IsEnabled="{Binding IsPopupOpen, ElementName=TagFilter, Converter={StaticResource !B}}"
 			LoadItems="LoadItems"
-			SearchEnabled="False">
+			SearchEnabled="False"
+			SelectionChanged="OnSelectionChanged"
+			Value="{Binding Value}">
 
 			<XivToolsWpfSelectors:Selector.ItemTemplate>
 				<DataTemplate>
