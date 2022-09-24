@@ -16,7 +16,8 @@
 	<xivToolsWpfSelectors:Selector
 		x:Name="Selector"
 		Filter="{Binding Filter}"
-		LoadItems="LoadItems">
+		LoadItems="LoadItems"
+		SelectionChanged="OnSelectionChanged">
 
 		<xivToolsWpfSelectors:Selector.ItemTemplate>
 			<DataTemplate>
@@ -32,19 +33,21 @@
 						<RowDefinition />
 					</Grid.RowDefinitions>
 
-					<Border
+					<Grid
 						Grid.RowSpan="2"
-						Background="#444444"
-						CornerRadius="3">
-						<Grid>
-							<Image
-								Margin="1"
-								Source="{Binding Icon, Converter={StaticResource Img}}" />
-							<Image
-								Margin="-2,0,-2,-4"
-								Source="/Assets/IconBorderSmall.png" />
-						</Grid>
-					</Border>
+						Visibility="{Binding Icon, Converter={StaticResource NotNullToVisibilityConverter}}">
+						<Border CornerRadius="6">
+							<Border.Background>
+								<ImageBrush ImageSource="{Binding Icon, Converter={StaticResource Img}}" />
+							</Border.Background>
+						</Border>
+
+						<Border CornerRadius="6">
+							<Border.Background>
+								<ImageBrush ImageSource="/Assets/IconOverlay.png" />
+							</Border.Background>
+						</Border>
+					</Grid>
 
 					<TextBlock
 						Grid.Row="0"

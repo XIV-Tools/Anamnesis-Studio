@@ -209,21 +209,33 @@
 						<ColumnDefinition />
 					</Grid.ColumnDefinitions>
 
-					<Border
+					<Grid
 						Width="24"
 						Height="24"
 						Margin="-9,-4,0,-4"
-						BorderBrush="Transparent"
-						BorderThickness="2"
-						CornerRadius="6, 0, 0, 6"
-						SnapsToDevicePixels="True"
 						Visibility="{Binding Dye.Icon, Converter={StaticResource NotNullToVisibilityConverter}}">
-						<Border.Background>
-							<ImageBrush
-								ImageSource="{Binding Dye.Icon, Converter={StaticResource Img}}"
-								Stretch="Uniform" />
-						</Border.Background>
-					</Border>
+						<Border
+							BorderBrush="Transparent"
+							BorderThickness="2"
+							CornerRadius="6, 0, 0, 6">
+							<Border.Background>
+								<ImageBrush
+									ImageSource="{Binding Dye.Icon, Converter={StaticResource Img}}"
+									Stretch="Uniform" />
+							</Border.Background>
+						</Border>
+
+						<Border
+							BorderBrush="Transparent"
+							BorderThickness="2"
+							CornerRadius="6, 0, 0, 6">
+							<Border.Background>
+								<ImageBrush
+									ImageSource="/Assets/IconOverlay.png"
+									Stretch="Uniform" />
+							</Border.Background>
+						</Border>
+					</Grid>
 
 					<TextBlock
 						Grid.Column="1"
@@ -245,7 +257,12 @@
 				StaysOpen="False">
 				<Grid>
 					<controls:PopupBackground />
-					<views:DyeSelector Margin="6" />
+					<Border
+						Margin="12"
+						Style="{StaticResource XivToolsControlBorder}" />
+					<views:DyeSelector
+						Margin="12"
+						ItemModel="{Binding ItemModel}" />
 				</Grid>
 			</Popup>
 

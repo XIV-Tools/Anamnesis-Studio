@@ -7,16 +7,28 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using Anamnesis.Actor.Utilities;
 using Anamnesis.GameData;
+using Anamnesis.Memory;
 using Anamnesis.Services;
 using XivToolsWpf;
+using XivToolsWpf.DependencyProperties;
 using XivToolsWpf.Selectors;
 
 public partial class DyeSelector : UserControl
 {
+	public static readonly IBind<IEquipmentItemMemory?> ItemModelDp = Binder.Register<IEquipmentItemMemory?, DyeSelector>(nameof(ItemModel), BindMode.TwoWay);
+
 	public DyeSelector()
 	{
 		this.InitializeComponent();
 		this.Selector.DataContext = this;
+	}
+
+	public DyeFilter Filter { get; init; } = new();
+
+	public IEquipmentItemMemory? ItemModel
+	{
+		get => ItemModelDp.Get(this);
+		set => ItemModelDp.Set(this, value);
 	}
 
 	protected Task LoadItems()
@@ -27,6 +39,16 @@ public partial class DyeSelector : UserControl
 			this.Selector.AddItems(GameDataService.Instance.Dyes);
 
 		return Task.CompletedTask;
+	}
+
+	private void OnSelectionChanged(bool close)
+	{
+		IDye? dye = this.Selector.Value as IDye;
+
+		if (dye == null || this.ItemModel == null)
+			return;
+
+		this.ItemModel.Dye = dye.Id;
 	}
 
 	public class DyeFilter : Selector.FilterBase<IDye>
