@@ -24,7 +24,9 @@
 			x:Name="SlotSelector"
 			Grid.Row="0"
 			Margin="6,6,6,0"
-			SelectedValue="{Binding Filter.Slot}">
+			ItemsSource="{Binding Slots}"
+			SelectedValue="{Binding Filter.Slot}"
+			SelectionChanged="OnSlotChanged">
 			<ComboBox.ItemTemplate>
 				<DataTemplate>
 					<Grid>
@@ -99,14 +101,21 @@
 			</GroupBox>
 		</StackPanel>-->
 
-		<StackPanel
+		<Grid
 			Grid.Row="2"
-			Margin="6,0"
-			Orientation="Horizontal">
+			Height="32"
+			Margin="6,0">
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
 
 			<Button
+				Grid.Column="0"
 				Width="32"
-				Height="32"
 				Click="OnRaceGearClicked"
 				Style="{StaticResource TransparentIconButton}"
 				ToolTip="[Character_Equipment_RaceGear]"
@@ -115,8 +124,8 @@
 			</Button>
 
 			<Button
+				Grid.Column="1"
 				Width="32"
-				Height="32"
 				Click="OnNpcSmallclothesClicked"
 				Style="{StaticResource TransparentIconButton}"
 				ToolTip="[Character_Equipment_NpcSmallclothes]"
@@ -125,138 +134,136 @@
 			</Button>
 
 			<Button
+				Grid.Column="2"
 				Width="32"
-				Height="32"
 				Click="OnClearClicked"
 				Style="{StaticResource TransparentIconButton}"
 				ToolTip="[Character_Equipment_Clear]">
 				<XivToolsWpf:IconBlock Icon="Eraser" />
 			</Button>
-		</StackPanel>
 
-		<ComboBox
-			Grid.Row="2"
-			Width="225"
-			Height="32"
-			Margin="0,0,6,0"
-			HorizontalAlignment="Right"
-			Style="{StaticResource XivToolsComboBox}">
 
-			<ComboBox.ToolTip>
-				<TextBlock Text="[FileBrowser_Sort" />
-			</ComboBox.ToolTip>
+			<ComboBox
+				Grid.Column="3"
+				Height="33"
+				Style="{StaticResource XivToolsComboBox}">
 
-			<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=Name}">
+				<ComboBox.ToolTip>
+					<TextBlock Text="[FileBrowser_Sort" />
+				</ComboBox.ToolTip>
 
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="32" />
-						<ColumnDefinition />
-					</Grid.ColumnDefinitions>
+				<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=Name}">
 
-					<XivToolsWpf:IconBlock
-						Grid.Column="0"
-						FontSize="16"
-						Icon="SortAlphaDown" />
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="32" />
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
 
-					<TextBlock
-						Grid.Column="1"
-						Text="[EquipmentSelector_SortAlpha]" />
-				</Grid>
-			</ComboBoxItem>
+						<XivToolsWpf:IconBlock
+							Grid.Column="0"
+							FontSize="16"
+							Icon="SortAlphaDown" />
 
-			<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=NameInv}">
+						<TextBlock
+							Grid.Column="1"
+							Text="[EquipmentSelector_SortAlpha]" />
+					</Grid>
+				</ComboBoxItem>
 
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="32" />
-						<ColumnDefinition />
-					</Grid.ColumnDefinitions>
+				<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=NameInv}">
 
-					<XivToolsWpf:IconBlock
-						Grid.Column="0"
-						FontSize="16"
-						Icon="SortAlphaUp" />
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="32" />
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
 
-					<TextBlock
-						Grid.Column="1"
-						Text="[EquipmentSelector_SortAlphaInv]" />
-				</Grid>
-			</ComboBoxItem>
+						<XivToolsWpf:IconBlock
+							Grid.Column="0"
+							FontSize="16"
+							Icon="SortAlphaUp" />
 
-			<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=Row}">
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="32" />
-						<ColumnDefinition />
-					</Grid.ColumnDefinitions>
+						<TextBlock
+							Grid.Column="1"
+							Text="[EquipmentSelector_SortAlphaInv]" />
+					</Grid>
+				</ComboBoxItem>
 
-					<XivToolsWpf:IconBlock
-						Grid.Column="0"
-						FontSize="16"
-						Icon="CalendarAlt" />
+				<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=Row}">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="32" />
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
 
-					<TextBlock
-						Grid.Column="1"
-						Text="[EquipmentSelector_SortRow]" />
-				</Grid>
-			</ComboBoxItem>
+						<XivToolsWpf:IconBlock
+							Grid.Column="0"
+							FontSize="16"
+							Icon="CalendarAlt" />
 
-			<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=RowInv}">
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="32" />
-						<ColumnDefinition />
-					</Grid.ColumnDefinitions>
+						<TextBlock
+							Grid.Column="1"
+							Text="[EquipmentSelector_SortRow]" />
+					</Grid>
+				</ComboBoxItem>
 
-					<XivToolsWpf:IconBlock
-						Grid.Column="0"
-						FontSize="16"
-						Icon="CalendarAlt" />
+				<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=RowInv}">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="32" />
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
 
-					<TextBlock
-						Grid.Column="1"
-						Text="[EquipmentSelector_SortRowInv]" />
-				</Grid>
-			</ComboBoxItem>
+						<XivToolsWpf:IconBlock
+							Grid.Column="0"
+							FontSize="16"
+							Icon="CalendarAlt" />
 
-			<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=Level}">
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="32" />
-						<ColumnDefinition />
-					</Grid.ColumnDefinitions>
+						<TextBlock
+							Grid.Column="1"
+							Text="[EquipmentSelector_SortRowInv]" />
+					</Grid>
+				</ComboBoxItem>
 
-					<XivToolsWpf:IconBlock
-						Grid.Column="0"
-						FontSize="16"
-						Icon="SortAmountDown" />
+				<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=Level}">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="32" />
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
 
-					<TextBlock
-						Grid.Column="1"
-						Text="[EquipmentSelector_SortLevel]" />
-				</Grid>
-			</ComboBoxItem>
+						<XivToolsWpf:IconBlock
+							Grid.Column="0"
+							FontSize="16"
+							Icon="SortAmountDown" />
 
-			<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=LevelInv}">
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="32" />
-						<ColumnDefinition />
-					</Grid.ColumnDefinitions>
+						<TextBlock
+							Grid.Column="1"
+							Text="[EquipmentSelector_SortLevel]" />
+					</Grid>
+				</ComboBoxItem>
 
-					<XivToolsWpf:IconBlock
-						Grid.Column="0"
-						FontSize="16"
-						Icon="SortAmountUp" />
+				<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=LevelInv}">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="32" />
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
 
-					<TextBlock
-						Grid.Column="1"
-						Text="[EquipmentSelector_SortLevelInv]" />
-				</Grid>
-			</ComboBoxItem>
+						<XivToolsWpf:IconBlock
+							Grid.Column="0"
+							FontSize="16"
+							Icon="SortAmountUp" />
 
-		</ComboBox>
+						<TextBlock
+							Grid.Column="1"
+							Text="[EquipmentSelector_SortLevelInv]" />
+					</Grid>
+				</ComboBoxItem>
+
+			</ComboBox>
+		</Grid>
 
 		<Border
 			Grid.Row="3"

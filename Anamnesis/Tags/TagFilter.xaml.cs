@@ -119,10 +119,13 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 		this.AddTagPopup.StaysOpen = false;
 	}
 
-	private void OnTagSearchPreviewKeyDown(object sender, KeyEventArgs e)
+	private async void OnTagSearchPreviewKeyDown(object sender, KeyEventArgs e)
 	{
 		if (e.Key == Key.Return)
 		{
+			this.tagSearchQueue.InvokeImmediate();
+			await this.tagSearchQueue.WaitForPendingExecute();
+
 			if (this.AvailableTags.Count > 0)
 			{
 				this.AddTag(this.AvailableTags[0]);
@@ -132,14 +135,16 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 				this.AddTag(new SearchTag(this.TagSearchText));
 			}
 
+			// clear the serach and run it again so the next time we open we have blank results.
 			this.TagSearchText = null;
 			this.tagSearchQueue.InvokeImmediate();
-		}
-		else if (e.Key == Key.Escape)
-		{
-			this.IsPopupOpen = false;
-			this.TagSearchText = null;
-			Keyboard.ClearFocus();
+
+			// IF we are not holidn shift, close the popup
+			if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
+			{
+				this.IsPopupOpen = false;
+				Keyboard.ClearFocus();
+			}
 		}
 		else
 		{

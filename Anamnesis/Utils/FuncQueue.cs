@@ -21,6 +21,17 @@ public class FuncQueue
 	}
 
 	public bool Pending { get; private set; }
+	public bool Executing { get; private set; }
+
+	public async Task WaitForPendingExecute()
+	{
+		this.ClearDelay();
+
+		while (this.Pending || this.Executing)
+		{
+			await Task.Delay(1);
+		}
+	}
 
 	public void Invoke()
 	{
@@ -32,10 +43,15 @@ public class FuncQueue
 		}
 	}
 
+	public void ClearDelay()
+	{
+		this.delay = 0;
+	}
+
 	public void InvokeImmediate()
 	{
 		this.Invoke();
-		this.delay = 0;
+		this.ClearDelay();
 	}
 
 	private async Task RunTask()
@@ -54,10 +70,18 @@ public class FuncQueue
 			}
 
 			lock (this)
+			{
+				this.Executing = true;
 				this.Pending = false;
+			}
 
 			await this.func.Invoke();
 			this.delay -= 1;
+
+			lock (this)
+			{
+				this.Executing = false;
+			}
 		}
 	}
 }

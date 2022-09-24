@@ -4,6 +4,7 @@
 namespace Anamnesis.Actor.Panels.Character;
 
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using Anamnesis.Actor.Panels.Character.Equipment;
@@ -35,6 +36,15 @@ public partial class CharacterEquipment : UserControl
 		}
 	}
 
+	public void EditSlot(ItemSlots slot)
+	{
+		List<ItemView> itemViews = this.FindChildren<ItemView>();
+		foreach (ItemView view in itemViews)
+		{
+			view.IsPopupOpen = view.Slot == slot;
+		}
+	}
+
 	public void EditSlot(ItemView? view)
 	{
 		if (this.editingSlotView == view)
@@ -43,18 +53,18 @@ public partial class CharacterEquipment : UserControl
 		if (this.editingSlotView != null)
 		{
 			this.editingSlotView.IsPopupOpen = false;
-			this.SlotEditorPopup.IsOpen = false;
 		}
 
 		this.editingSlotView = view;
+		this.SlotEditorPopup.IsOpen = view != null;
 
 		if (this.editingSlotView != null)
 		{
+			this.EquipmentSelector.EquipmentEditor = this;
 			this.EquipmentSelector.Filter.Actor = this.Actor;
 			this.EquipmentSelector.Filter.Slot = this.editingSlotView.Slot;
 
 			this.editingSlotView.IsPopupOpen = true;
-			this.SlotEditorPopup.IsOpen = true;
 		}
 	}
 

@@ -14,6 +14,7 @@ using Anamnesis.Memory;
 using Anamnesis.Tags;
 using Anamnesis.Actor.Items;
 using XivToolsWpf.DependencyProperties;
+using System.Collections.Generic;
 
 public partial class EquipmentSelector : UserControl
 {
@@ -23,8 +24,6 @@ public partial class EquipmentSelector : UserControl
 	{
 		this.InitializeComponent();
 		this.ContentArea.DataContext = this;
-
-		this.SlotSelector.ItemsSource = Enum.GetValues<ItemSlots>();
 	}
 
 	public enum SortModes
@@ -37,8 +36,27 @@ public partial class EquipmentSelector : UserControl
 		LevelInv,
 	}
 
+	public CharacterEquipment? EquipmentEditor { get; set; }
 	public EquipmentFilter Filter { get; init; } = new();
 	public TagCollection AllTags { get; init; } = new();
+
+	public List<ItemSlots> Slots { get; set; } = new()
+	{
+		ItemSlots.MainHand,
+		ItemSlots.OffHand,
+
+		ItemSlots.Head,
+		ItemSlots.Body,
+		ItemSlots.Hands,
+		ItemSlots.Legs,
+		ItemSlots.Feet,
+
+		ItemSlots.Ears,
+		ItemSlots.Neck,
+		ItemSlots.Wrists,
+		ItemSlots.RightRing,
+		ItemSlots.LeftRing,
+	};
 
 	public IItem? Value
 	{
@@ -83,33 +101,40 @@ public partial class EquipmentSelector : UserControl
 		return Task.CompletedTask;
 	}
 
+	private void OnSlotChanged(object sender, SelectionChangedEventArgs e)
+	{
+		// Bit of a hack, but we need to have the selection in the
+		// equiopment panel reflect the new slot selection, so just force it!
+		this.EquipmentEditor?.EditSlot(this.Filter.Slot);
+	}
+
 	private void OnRaceGearClicked(object sender, RoutedEventArgs e)
 	{
-		if (this.Filter.Slot == null || this.Filter.Actor == null)
+		if (this.Filter.Actor == null)
 			return;
 
-		ItemUtility.EquipRacialGear(this.Filter.Actor, this.Filter.Slot.Value);
+		ItemUtility.EquipRacialGear(this.Filter.Actor, this.Filter.Slot);
 	}
 
 	private void OnNpcSmallclothesClicked(object sender, RoutedEventArgs e)
 	{
-		if (this.Filter.Slot == null || this.Filter.Actor == null)
+		if (this.Filter.Actor == null)
 			return;
 
-		ItemUtility.EquipNpcSmallclothes(this.Filter.Actor, this.Filter.Slot.Value);
+		ItemUtility.EquipNpcSmallclothes(this.Filter.Actor, this.Filter.Slot);
 	}
 
 	private void OnClearClicked(object? sender = null, RoutedEventArgs? e = null)
 	{
-		if (this.Filter.Slot == null || this.Filter.Actor == null)
+		if (this.Filter.Actor == null)
 			return;
 
-		ItemUtility.Clear(this.Filter.Actor, this.Filter.Slot.Value);
+		ItemUtility.Clear(this.Filter.Actor, this.Filter.Slot);
 	}
 
 	private void OnSelectionChanged(bool close)
 	{
-		if (this.Filter.Actor == null || this.Filter.Slot == null)
+		if (this.Filter.Actor == null)
 			return;
 
 		IItem? item = this.Selector.Value as IItem;
@@ -120,7 +145,7 @@ public partial class EquipmentSelector : UserControl
 	{
 		IEquipmentItemMemory? memory;
 
-		if (this.Filter.Slot == null || this.Filter.Actor == null)
+		if (this.Filter.Actor == null)
 			return;
 
 		if (this.Filter.Slot == ItemSlots.MainHand)
@@ -133,14 +158,14 @@ public partial class EquipmentSelector : UserControl
 		}
 		else
 		{
-			memory = this.Filter.Actor.Equipment?.GetSlot(this.Filter.Slot.Value);
+			memory = this.Filter.Actor.Equipment?.GetSlot(this.Filter.Slot);
 		}
 
 		if (memory != null)
 		{
 			if (item == null)
 			{
-				ItemUtility.Clear(this.Filter.Actor, this.Filter.Slot.Value);
+				ItemUtility.Clear(this.Filter.Actor, this.Filter.Slot);
 			}
 			else
 			{
@@ -153,7 +178,7 @@ public partial class EquipmentSelector : UserControl
 	{
 		public bool IncludeUnequipableItems { get; set; } = true;
 		public SortModes SortMode { get; set; } = SortModes.Row;
-		public ItemSlots? Slot { get; set; }
+		public ItemSlots Slot { get; set; }
 		public ActorMemory? Actor { get; set; }
 
 		public override int CompareItems(IItem itemA, IItem itemB)
@@ -210,7 +235,7 @@ public partial class EquipmentSelector : UserControl
 			////if (string.IsNullOrEmpty(item.Name))
 			////	return false;
 
-			if (this.Slot != null && !item.FitsInSlot((ItemSlots)this.Slot))
+			if (!item.FitsInSlot(this.Slot))
 				return false;
 
 			if (!this.IncludeUnequipableItems && item is Item ivm && !this.CanEquip(ivm))

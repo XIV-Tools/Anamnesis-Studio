@@ -223,6 +223,7 @@
 			Closed="OnSlotEditorPopupClosed"
 			Placement="Left"
 			PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType={x:Type panels:CharacterPanel}}}"
+			PopupAnimation="Fade"
 			StaysOpen="False">
 			<Grid>
 				<controls:PopupBackground />
