@@ -118,7 +118,7 @@
 			<Border
 				Grid.Row="1"
 				Margin="0,3,0,0"
-				Style="{StaticResource InsetPanel}">
+				Style="{StaticResource XivToolsControlBorder}">
 
 				<Grid
 					Margin="6"
@@ -409,6 +409,7 @@
 							Width="24"
 							Padding="0"
 							HorizontalAlignment="Left"
+							Background="Transparent"
 							Click="OnClearSearchClicked"
 							Style="{StaticResource TransparentIconButton}"
 							Visibility="{Binding Search, Converter={StaticResource NotEmptyToVisibilityConverter}}">
@@ -500,7 +501,7 @@
 			<!--  Icon Grid  -->
 			<ListBox
 				Grid.Row="1"
-				Margin="1"
+				Margin="-7,1,1,1"
 				ana:Behaviours.SmoothScroll="True"
 				Background="Transparent"
 				ItemsSource="{Binding Entries, IsAsync=True}"
@@ -585,13 +586,6 @@
 				VerticalAlignment="Top"
 				IsIndeterminate="True"
 				Visibility="{Binding Filter.IsFiltering, Converter={StaticResource B2V}}" />
-
-			<TextBlock
-				Grid.Row="2"
-				Margin="3,3,20,3"
-				HorizontalAlignment="Right"
-				Style="{StaticResource Label}"
-				Text="{Binding Entries.Count, StringFormat='[Library_ItemCount]'}" />
 		</Grid>
 	</Grid>
 </panels:PanelBase>
