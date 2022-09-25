@@ -6,9 +6,6 @@ namespace Anamnesis.Libraries.Items;
 using Anamnesis.Libraries.Sources;
 using FontAwesome.Sharp;
 using PropertyChanged;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using XivToolsWpf.Extensions;
 
 [AddINotifyPropertyChangedInterface]
 public class Pack : DirectoryEntry
