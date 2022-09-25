@@ -8,6 +8,7 @@ using Anamnesis.GameData.Excel;
 using Anamnesis.Libraries.Items;
 using Anamnesis.Serialization;
 using Anamnesis.Services;
+using Anamnesis.Tags;
 using FontAwesome.Sharp;
 using Lumina.Excel.GeneratedSheets;
 using Octokit;
@@ -254,7 +255,7 @@ internal class GitHubSource : FileSource
 				pack.Thumbnail = cache.Definition?.GetImage();
 				pack.IsUpdateAvailable = cache.HasUpdate || cache.HasDefinitionUpdate;
 
-				List<string> tags = new();
+				TagCollection tags = new();
 
 				DirectoryInfo dir = source.GetDirectory(cache.Definition?.Directory);
 				if (dir.Exists)

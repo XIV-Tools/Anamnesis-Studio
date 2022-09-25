@@ -3,6 +3,7 @@
 
 namespace Anamnesis.Libraries.Items;
 
+using Anamnesis.Tags;
 using FontAwesome.Sharp;
 using PropertyChanged;
 using Serilog;
@@ -23,7 +24,7 @@ public abstract class EntryBase : INotifyPropertyChanged
 
 	public string? Name { get; set; }
 	public string? Description { get; set; } = null;
-	public ObservableCollection<string> Tags { get; init; } = new();
+	public TagCollection Tags { get; init; } = new();
 	public List<EntryAction> Actions { get; init; } = new();
 	public virtual ImageSource? Thumbnail { get; set; }
 
@@ -42,32 +43,6 @@ public abstract class EntryBase : INotifyPropertyChanged
 	}
 
 	public abstract bool IsType(LibraryFilter.Types type);
-
-	public bool HasTag(string tag)
-	{
-		// possibly hashset this.
-		foreach (string availableTag in this.Tags)
-		{
-			if (availableTag == tag)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public bool HasAllTags(IEnumerable<string> required)
-	{
-		bool allRequiredTagsFound = true;
-
-		foreach (string requiredTag in required)
-		{
-			allRequiredTagsFound &= this.HasTag(requiredTag);
-		}
-
-		return allRequiredTagsFound;
-	}
 
 	protected void RaisePropertyChanged(string propertyName)
 	{

@@ -6,6 +6,7 @@ using Anamnesis.Files;
 using Anamnesis.Libraries.Items;
 using Anamnesis.Serialization;
 using Anamnesis.Services;
+using Anamnesis.Tags;
 using FontAwesome.Sharp;
 using System;
 using System.Collections.Generic;
@@ -75,17 +76,15 @@ internal class FileSource : LibrarySourceBase
 			if (!info.Exists)
 				continue;
 
-			List<string> tags = new();
-
 			Pack pack = new(info.FullName, this);
 			pack.Name = info.Name;
 			pack.Description = info.FullName;
 			await this.AddPack(pack);
-			this.Populate(pack, info, tags);
+			this.Populate(pack, info, new());
 		}
 	}
 
-	protected DirectoryEntry AddDirectory(DirectoryEntry directory, DirectoryInfo info, List<string> tags)
+	protected DirectoryEntry AddDirectory(DirectoryEntry directory, DirectoryInfo info, TagCollection tags)
 	{
 		DirectoryEntry entry = new();
 		entry.Parent = directory;
@@ -97,28 +96,19 @@ internal class FileSource : LibrarySourceBase
 
 		this.Populate(entry, info, tags);
 
-		HashSet<string> childrenTags = new();
 		foreach (EntryBase entryBase in entry.Entries)
 		{
-			foreach (string tag in entryBase.Tags)
-			{
-				childrenTags.Add(tag);
-			}
-		}
-
-		foreach (string tag in childrenTags)
-		{
-			entry.Tags.Add(tag);
+			entry.Tags.AddRange(entryBase.Tags);
 		}
 
 		return entry;
 	}
 
-	protected void Populate(DirectoryEntry entry, DirectoryInfo info, List<string> tags)
+	protected void Populate(DirectoryEntry entry, DirectoryInfo info, TagCollection tags)
 	{
 		foreach (DirectoryInfo directoryInfo in info.GetDirectories())
 		{
-			this.AddDirectory(entry, directoryInfo, new List<string>(tags));
+			this.AddDirectory(entry, directoryInfo, new TagCollection(tags));
 		}
 
 		foreach (FileInfo file in info.GetFiles("*.*", SearchOption.TopDirectoryOnly))
@@ -128,7 +118,7 @@ internal class FileSource : LibrarySourceBase
 
 			try
 			{
-				entry.AddEntry(new FileItem(file, tags.ToArray()));
+				entry.AddEntry(new FileItem(file, tags));
 			}
 			catch (Exception ex)
 			{
@@ -143,7 +133,7 @@ internal class FileSource : LibrarySourceBase
 		private readonly bool hasThumbnail;
 		private readonly IconChar icon;
 
-		public FileItem(FileInfo info, params string[] tags)
+		public FileItem(FileInfo info, TagCollection tags)
 		{
 			this.Info = info;
 
@@ -158,10 +148,7 @@ internal class FileSource : LibrarySourceBase
 			this.Type = fileBase.GetType();
 			this.hasThumbnail = !string.IsNullOrEmpty(fileBase.Base64Image);
 
-			foreach (string tag in tags)
-			{
-				this.Tags.Add(tag);
-			}
+			this.Tags.AddRange(tags);
 
 			if (this.Type == typeof(CharacterFile))
 			{

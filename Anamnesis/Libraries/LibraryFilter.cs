@@ -33,7 +33,6 @@ public class LibraryFilter : IComparer<EntryBase>, INotifyPropertyChanged
 	public bool RestartRequeted { get; private set; } = false;
 
 	// Actual filter params
-	public HashSet<string> Tags { get; init; } = new();
 	public Types Type { get; set; } = Types.All;
 	public bool Flatten { get; set; } = true;
 	public bool Favorites { get; set; } = true;
@@ -245,37 +244,10 @@ public class LibraryFilter : IComparer<EntryBase>, INotifyPropertyChanged
 
 	private bool Filter(EntryBase entry, string[]? searchQuerry)
 	{
-		bool anyTagMatch = false;
-
 		if (!entry.IsDirectory && !entry.IsType(this.Type))
 			return false;
 
-		if (entry is ItemEntry item)
-		{
-			// Check if any tags match the search
-			if (searchQuerry != null)
-			{
-				foreach (string tag in item.Tags)
-				{
-					if (SearchUtility.Matches(tag, searchQuerry))
-					{
-						anyTagMatch = true;
-						break;
-					}
-				}
-			}
-
-			if (this.Tags.Count > 0)
-			{
-				if (!item.HasAllTags(this.Tags))
-				{
-					return false;
-				}
-			}
-		}
-
-		if (SearchUtility.Matches(entry.Name, searchQuerry) ||
-			anyTagMatch)
+		if (SearchUtility.Matches(entry.Name, searchQuerry))
 			return true;
 
 		return false;

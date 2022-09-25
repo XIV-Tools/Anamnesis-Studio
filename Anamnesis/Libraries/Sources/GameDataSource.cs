@@ -43,6 +43,7 @@ public class GameDataSource : LibrarySourceBase
 		bi.BeginInit();
 		bi.UriSource = new Uri("pack://application:,,,/Assets/ffxiv.png");
 		bi.EndInit();
+		bi.Freeze();
 
 		pack.Thumbnail = bi;
 

@@ -6,6 +6,15 @@ using System.Collections.Generic;
 
 public class TagCollection : HashSet<Tag>
 {
+	public TagCollection()
+	{
+	}
+
+	public TagCollection(TagCollection other)
+	{
+		this.AddRange(other);
+	}
+
 	public void Add(string name)
 	{
 		base.Add(new(name));
