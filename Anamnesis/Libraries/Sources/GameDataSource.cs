@@ -112,12 +112,15 @@ public class GameDataSource : LibrarySourceBase
 			}
 		}
 
-		public override bool CanLoad => true;
-
 		public override ImageSource? Thumbnail => this.npc.Icon?.GetImageSource();
 		public override IconChar Icon => IconChar.User;
 		public override IconChar IconBack => IconChar.File;
 		public override bool CanOpen => true;
 		public override bool IsType(LibraryFilter.Types type) => type == LibraryFilter.Types.Characters;
+
+		public override Task Open()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

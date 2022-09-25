@@ -3,6 +3,7 @@
 
 namespace Anamnesis.Libraries.Panels;
 
+using Anamnesis.Files;
 using Anamnesis.Libraries.Items;
 using Anamnesis.Panels;
 using System;
@@ -141,7 +142,7 @@ public partial class LibraryPanel : PanelBase
 		this.FilterItems();
 	}
 
-	private void OnItemDoubleClicked(object sender, MouseButtonEventArgs e)
+	private async void OnItemDoubleClicked(object sender, MouseButtonEventArgs e)
 	{
 		if (this.SelectedEntry?.CanOpen != true)
 			return;
@@ -153,7 +154,7 @@ public partial class LibraryPanel : PanelBase
 		}
 		else if (this.SelectedEntry is ItemEntry item)
 		{
-			// TODO...
+			await item.Open();
 		}
 	}
 

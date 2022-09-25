@@ -43,6 +43,7 @@ public abstract class EntryBase : INotifyPropertyChanged
 	}
 
 	public abstract bool IsType(LibraryFilter.Types type);
+	public abstract Task Open();
 
 	protected void RaisePropertyChanged(string propertyName)
 	{

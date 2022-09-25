@@ -172,7 +172,6 @@ internal class FileSource : LibrarySourceBase
 			}
 		}
 
-		public override bool CanLoad => true;
 		public FileInfo Info { get; init; }
 		public Type Type { get; init; }
 		public override IconChar Icon => this.icon;
@@ -208,6 +207,12 @@ internal class FileSource : LibrarySourceBase
 
 			return false;
 		}
+
+		public override Task Open()
+		{
+			FileBase fileBase = FileService.Load(this.Info, SupportedFiles);
+			return FileService.Import(fileBase);
+		}
 	}
 
 	public class BrokenFileItem : ItemEntry
@@ -223,7 +228,6 @@ internal class FileSource : LibrarySourceBase
 			}
 		}
 
-		public override bool CanLoad => false;
 		public override IconChar Icon => IconChar.Warning;
 		public override IconChar IconBack => IconChar.File;
 		public override bool CanOpen => false;
@@ -231,6 +235,11 @@ internal class FileSource : LibrarySourceBase
 		public override bool IsType(LibraryFilter.Types type)
 		{
 			return true;
+		}
+
+		public override Task Open()
+		{
+			throw new NotSupportedException();
 		}
 	}
 }

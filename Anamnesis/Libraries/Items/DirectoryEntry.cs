@@ -5,7 +5,9 @@ namespace Anamnesis.Libraries.Items;
 
 using FontAwesome.Sharp;
 using PropertyChanged;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 [AddINotifyPropertyChangedInterface]
 public class DirectoryEntry : EntryBase
@@ -32,4 +34,6 @@ public class DirectoryEntry : EntryBase
 	{
 		return false;
 	}
+
+	public override Task Open() => throw new NotSupportedException();
 }

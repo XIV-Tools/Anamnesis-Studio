@@ -102,21 +102,24 @@ public class FileService : ServiceBase<FileService>
 
 		if (result.File != null)
 		{
-			if (result.File is IUpgradeCharacterFile upgradeFile)
-				result.File = upgradeFile.Upgrade();
+			await Import(result.File);
+		}
+	}
 
-			if (result.File is CharacterFile characterFile)
-			{
-				await Services.Navigation.Navigate(new("ImportCharacter", result));
-				return;
-			}
-			else if (result.File is PoseFile poseFile)
-			{
-				await Services.Navigation.Navigate(new("ImportPose", result));
-				return;
-			}
+	public static async Task Import(FileBase file)
+	{
+		if (file is IUpgradeCharacterFile upgradeFile)
+			file = upgradeFile.Upgrade();
 
-			throw new NotImplementedException();
+		if (file is CharacterFile characterFile)
+		{
+			await Services.Navigation.Navigate(new("ImportCharacter", file));
+			return;
+		}
+		else if (file is PoseFile poseFile)
+		{
+			await Services.Navigation.Navigate(new("ImportPose", file));
+			return;
 		}
 	}
 

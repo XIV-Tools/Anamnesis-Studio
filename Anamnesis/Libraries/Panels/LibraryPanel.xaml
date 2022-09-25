@@ -548,6 +548,8 @@
 			<ListBox
 				Grid.Row="1"
 				ana:Behaviours.SmoothScroll="True"
+				VirtualizingPanel.ScrollUnit="Pixel"
+				VirtualizingPanel.VirtualizationMode="Recycling"
 				Background="Transparent"
 				ItemsSource="{Binding Entries, IsAsync=True}"
 				MouseDoubleClick="OnItemDoubleClicked"

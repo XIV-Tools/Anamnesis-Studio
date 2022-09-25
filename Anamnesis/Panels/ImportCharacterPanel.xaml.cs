@@ -20,13 +20,13 @@ public partial class ImportCharacterPanel : PanelBase
 	{
 		base.SetContext(host, context);
 
-		if (context is not OpenResult openFile)
+		if (context is not FileBase file)
 			return;
 
-		if (openFile.File is not CharacterFile characterFile)
+		if (file is not CharacterFile characterFile)
 			throw new Exception("Import file was not a character file");
 
-		this.Title = openFile.Path?.Name;
+		////this.Title = file.
 		this.CharacterFile = characterFile;
 	}
 
