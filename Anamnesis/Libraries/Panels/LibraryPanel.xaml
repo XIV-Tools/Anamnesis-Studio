@@ -11,6 +11,7 @@
 	xmlns:local="clr-namespace:Anamnesis.Libraries.Panels"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:panels="clr-namespace:Anamnesis.Panels"
+	xmlns:tags="clr-namespace:Anamnesis.Tags"
 	xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
 	Title="[Naviagation_Library]"
 	Width="800"
@@ -346,10 +347,10 @@
 			Grid.Row="2"
 			Grid.Column="1"
 			Margin="3,3,0,0">
+
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
 				<RowDefinition />
-				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 
 			<!--  Toolbar  -->
@@ -360,77 +361,56 @@
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition />
-					<ColumnDefinition Width="200" />
+					<ColumnDefinition />
 					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
 
+				<Border
+					Grid.Column="0"
+					Margin="1,1,2,1"
+					CornerRadius="6,0,0,6"
+					Style="{StaticResource XivToolsControlBorder}" />
+
+				<Border
+					Grid.Column="1"
+					Margin="1,1,3,1"
+					CornerRadius="0,6,6,0"
+					Style="{StaticResource XivToolsControlBorder}" />
+
 				<Button
+					Grid.Column="0"
+					Width="28"
+					Height="28"
+					Margin="1"
+					VerticalAlignment="Top"
+					Background="Transparent"
 					Click="OnBackClicked"
-					IsEnabled="{Binding CurrentDirectory, Converter={StaticResource NotNullToBoolConverter}}"
-					Style="{StaticResource TransparentIconButton}">
-					<StackPanel Orientation="Horizontal">
-						<XivToolsWpf:IconBlock Icon="ChevronLeft" />
-						<TextBlock
-							Margin="6,0,6,0"
-							Text="Back" />
-					</StackPanel>
+					IsEnabled="{Binding Filter.CurrentDirectory, Converter={StaticResource NotNullToBoolConverter}}"
+					Style="{StaticResource TransparentIconButton}"
+					ToolTip="[Library_GoUp]">
+
+					<XivToolsWpf:IconBlock Icon="LevelUp" />
+
 				</Button>
 
 				<TextBlock
 					Grid.Column="1"
 					HorizontalAlignment="Center"
 					VerticalAlignment="Center"
-					Text="{Binding CurrentDirectory.Name}" />
+					Text="{Binding Filter.CurrentDirectory.Name}" />
 
-				<Border
+				<tags:TagFilter
 					Grid.Column="2"
-					Background="#33000000"
-					CornerRadius="6">
-					<Grid>
-						<XivToolsWpf:IconBlock
-							Margin="6,0,6,1"
-							HorizontalAlignment="Left"
-							VerticalAlignment="Center"
-							FontSize="12"
-							Icon="Search"
-							Visibility="{Binding Search, Converter={StaticResource IsEmptyToVisibilityConverter}}" />
-
-						<TextBox
-							x:Name="SearchBox"
-							Margin="4,0,4,2"
-							Padding="12,0,0,0"
-							VerticalContentAlignment="Center"
-							BorderThickness="0"
-							Style="{StaticResource MaterialDesignTextBox}"
-							Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" />
-
-						<Button
-							Width="24"
-							Padding="0"
-							HorizontalAlignment="Left"
-							Background="Transparent"
-							Click="OnClearSearchClicked"
-							Style="{StaticResource TransparentIconButton}"
-							Visibility="{Binding Search, Converter={StaticResource NotEmptyToVisibilityConverter}}">
-							<XivToolsWpf:IconBlock
-								Margin="6,0,6,1"
-								HorizontalAlignment="Left"
-								VerticalAlignment="Center"
-								FontSize="12"
-								Icon="Times" />
-						</Button>
-
-					</Grid>
-
-				</Border>
+					Filter="{Binding Filter}" />
 
 				<Border
 					Grid.Column="3"
 					Width="64"
 					Height="28"
-					Margin="3,0,0,0"
+					Margin="3,1,0,0"
 					HorizontalAlignment="Right"
+					VerticalAlignment="Top"
 					Background="#33000000"
 					CornerRadius="6">
 
@@ -444,7 +424,8 @@
 							Grid.Column="0"
 							Background="Transparent"
 							IsChecked="{Binding ViewList, Converter={StaticResource !B}}"
-							Style="{StaticResource TransparentIconToggleButton}">
+							Style="{StaticResource TransparentIconToggleButton}"
+							ToolTip="[Library_IconView]">
 							<XivToolsWpf:IconBlock Icon="BorderAll" />
 						</RadioButton>
 
@@ -452,7 +433,8 @@
 							Grid.Column="1"
 							Background="Transparent"
 							IsChecked="{Binding ViewList}"
-							Style="{StaticResource TransparentIconToggleButton}">
+							Style="{StaticResource TransparentIconToggleButton}"
+							ToolTip="[Library_ListView]">
 							<XivToolsWpf:IconBlock Icon="List" />
 						</RadioButton>
 					</Grid>
@@ -462,8 +444,9 @@
 					Grid.Column="4"
 					Width="64"
 					Height="28"
-					Margin="3,0,0,0"
+					Margin="3,1,0,0"
 					HorizontalAlignment="Right"
+					VerticalAlignment="Top"
 					Background="#33000000"
 					CornerRadius="6">
 
@@ -476,18 +459,18 @@
 						<RadioButton
 							Grid.Column="0"
 							Background="Transparent"
-							Checked="OnFlattenChanged"
 							IsChecked="{Binding Filter.Flatten, Converter={StaticResource !B}}"
-							Style="{StaticResource TransparentIconToggleButton}">
+							Style="{StaticResource TransparentIconToggleButton}"
+							ToolTip="[Library_DirectoryView]">
 							<XivToolsWpf:IconBlock Icon="Folder" />
 						</RadioButton>
 
 						<RadioButton
 							Grid.Column="1"
 							Background="Transparent"
-							Checked="OnFlattenChanged"
 							IsChecked="{Binding Filter.Flatten}"
-							Style="{StaticResource TransparentIconToggleButton}">
+							Style="{StaticResource TransparentIconToggleButton}"
+							ToolTip="[Library_FlattenView]">
 							<XivToolsWpf:IconBlock Icon="FileLines" />
 						</RadioButton>
 					</Grid>
@@ -548,12 +531,12 @@
 			<ListBox
 				Grid.Row="1"
 				ana:Behaviours.SmoothScroll="True"
-				VirtualizingPanel.ScrollUnit="Pixel"
-				VirtualizingPanel.VirtualizationMode="Recycling"
 				Background="Transparent"
 				ItemsSource="{Binding Entries, IsAsync=True}"
 				MouseDoubleClick="OnItemDoubleClicked"
 				SelectedItem="{Binding SelectedEntry}"
+				VirtualizingPanel.ScrollUnit="Pixel"
+				VirtualizingPanel.VirtualizationMode="Recycling"
 				Visibility="{Binding ViewList, Converter={StaticResource B2V}}">
 
 				<ListBox.ItemTemplate>

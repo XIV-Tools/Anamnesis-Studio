@@ -51,7 +51,7 @@ public partial class DyeSelector : UserControl
 		this.ItemModel.Dye = dye.Id;
 	}
 
-	public class DyeFilter : Selector.FilterBase<IDye>
+	public class DyeFilter : FilterBase<IDye>
 	{
 		public override bool FilterItem(IDye dye)
 		{

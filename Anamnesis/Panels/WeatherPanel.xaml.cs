@@ -42,7 +42,7 @@ public partial class WeatherPanel : PanelBase
 		}
 	}
 
-	public class WeatherFilter : Selector.FilterBase<Weather>
+	public class WeatherFilter : FilterBase<Weather>
 	{
 		public bool NaturalWeathers { get; set; } = true;
 

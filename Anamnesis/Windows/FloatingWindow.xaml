@@ -141,6 +141,7 @@
 
 					<Button
 						Width="22"
+						Height="22"
 						Background="Transparent"
 						Click="OnTitlebarCloseButtonClicked"
 						Style="{StaticResource TransparentIconButton}"
@@ -152,6 +153,7 @@
 
 					<Button
 						Width="22"
+						Height="22"
 						Background="Transparent"
 						Click="OnTitlebarContextButtonClicked"
 						Style="{StaticResource TransparentIconButton}">

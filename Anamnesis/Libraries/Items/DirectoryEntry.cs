@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 [AddINotifyPropertyChangedInterface]
 public class DirectoryEntry : EntryBase
 {
-	public DirectoryEntry? Parent { get; set; }
 	public List<EntryBase> Entries { get; init; } = new();
 	public override bool IsDirectory => true;
 	public override IconChar Icon => IconChar.None;
@@ -23,6 +22,7 @@ public class DirectoryEntry : EntryBase
 	public virtual void AddEntry(EntryBase entry)
 	{
 		this.Entries.Add(entry);
+		entry.Parent = this;
 	}
 
 	public virtual void ClearItems()

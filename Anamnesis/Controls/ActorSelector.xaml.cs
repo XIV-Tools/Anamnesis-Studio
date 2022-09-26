@@ -110,7 +110,7 @@ public partial class ActorSelector : UserControl
 		this.Select(this.Selector.Value as ActorBasicMemory);
 	}
 
-	public class ActorFilter : Selector.FilterBase<ActorBasicMemory>
+	public class ActorFilter : FilterBase<ActorBasicMemory>
 	{
 		public bool IncludePlayers { get; set; } = true;
 		public bool IncludeCompanions { get; set; } = true;

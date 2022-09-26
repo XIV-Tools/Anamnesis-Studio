@@ -41,7 +41,8 @@
 			<Border Style="{StaticResource XivToolsControlBorder}" />
 
 			<ItemsControl
-				Margin="2"
+				MinHeight="24"
+				Margin="2,3,2,1"
 				ItemsSource="{Binding FilterByTags}"
 				Style="{StaticResource TagControl}">
 

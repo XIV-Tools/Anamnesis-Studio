@@ -18,8 +18,8 @@ using XivToolsWpf.Extensions;
 [AddINotifyPropertyChangedInterface]
 public partial class TagFilter : UserControl, IComparer<Tag>
 {
-	public static readonly IBind<TagCollection> AllTagsDp = Binder.Register<TagCollection, TagFilter>(nameof(AllTags), BindMode.OneWay);
-	public static readonly IBind<TagFilterBase> FilterDp = Binder.Register<TagFilterBase, TagFilter>(nameof(Filter), BindMode.OneWay);
+	public static readonly IBind<TagCollection?> AllTagsDp = Binder.Register<TagCollection?, TagFilter>(nameof(AllTags), BindMode.OneWay);
+	public static readonly IBind<TagFilterBase?> FilterDp = Binder.Register<TagFilterBase?, TagFilter>(nameof(Filter), BindMode.OneWay);
 	public static readonly IBind<bool> IsPopupOpenDp = Binder.Register<bool, TagFilter>(nameof(IsPopupOpen));
 
 	private readonly AddTag addTagItem = new();
@@ -37,13 +37,13 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 
 	public string? TagSearchText { get; set; }
 
-	public TagCollection AllTags
+	public TagCollection? AllTags
 	{
 		get => AllTagsDp.Get(this);
 		set => AllTagsDp.Set(this, value);
 	}
 
-	public TagFilterBase Filter
+	public TagFilterBase? Filter
 	{
 		get => FilterDp.Get(this);
 		set => FilterDp.Set(this, value);
@@ -64,7 +64,10 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 			this.FilterByTags.Add(this.addTagItem);
 		}
 
-		this.AvailableTags.SortAndReplace(this.AllTags, this);
+		if (this.AllTags != null)
+		{
+			this.AvailableTags.SortAndReplace(this.AllTags, this);
+		}
 	}
 
 	private void RemoveTag(Tag tag)
@@ -161,7 +164,7 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 	{
 		await this.Dispatcher.MainThread();
 		string? str = this.TagSearchText;
-		HashSet<Tag> allTags = new(this.AllTags);
+		HashSet<Tag>? allTags = this.AllTags != null ? new(this.AllTags) : null;
 		HashSet<Tag> filterByTags = new(this.FilterByTags);
 		await Dispatch.NonUiThread();
 
@@ -173,15 +176,18 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 		}
 
 		List<Tag> tags = new List<Tag>();
-		foreach (Tag tag in allTags)
+		if (allTags != null)
 		{
-			if (filterByTags.Contains(tag))
-				continue;
+			foreach (Tag tag in allTags)
+			{
+				if (filterByTags.Contains(tag))
+					continue;
 
-			if (!tag.Search(querry))
-				continue;
+				if (!tag.Search(querry))
+					continue;
 
-			tags.Add(tag);
+				tags.Add(tag);
+			}
 		}
 
 		await this.Dispatcher.MainThread();

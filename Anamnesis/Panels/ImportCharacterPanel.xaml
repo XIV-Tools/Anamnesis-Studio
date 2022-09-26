@@ -198,6 +198,7 @@
 		<Button
 			Grid.Row="3"
 			Grid.Column="1"
+			MinWidth="75"
 			Margin="6"
 			HorizontalAlignment="Right"
 			Click="OnImportClicked"

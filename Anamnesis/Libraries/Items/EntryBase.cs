@@ -14,11 +14,12 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
+using XivToolsWpf;
 using XivToolsWpf.Commands;
 using XivToolsWpf.Extensions;
 
 [AddINotifyPropertyChangedInterface]
-public abstract class EntryBase : INotifyPropertyChanged
+public abstract class EntryBase : ITagged, INotifyPropertyChanged
 {
 	public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -27,6 +28,7 @@ public abstract class EntryBase : INotifyPropertyChanged
 	public TagCollection Tags { get; init; } = new();
 	public List<EntryAction> Actions { get; init; } = new();
 	public virtual ImageSource? Thumbnail { get; set; }
+	public DirectoryEntry? Parent { get; set; }
 
 	public abstract bool IsDirectory { get; }
 	public abstract IconChar Icon { get; }
@@ -44,6 +46,17 @@ public abstract class EntryBase : INotifyPropertyChanged
 
 	public abstract bool IsType(LibraryFilter.Types type);
 	public abstract Task Open();
+
+	public virtual bool Search(string[] query)
+	{
+		if (SearchUtility.Matches(this.Name, query))
+			return true;
+
+		if (SearchUtility.Matches(this.Description, query))
+			return true;
+
+		return false;
+	}
 
 	protected void RaisePropertyChanged(string propertyName)
 	{

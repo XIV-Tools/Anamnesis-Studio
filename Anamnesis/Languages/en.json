@@ -10,6 +10,7 @@
 	"Common_OpenDir": "Open",
 	"Common_Enable": "Enable",
 	"Common_Disable": "Disable",
+	"Common_Back": "Back",
 	"Common_None": "None",
 	"Common_All": "All",
 	"Common_Scale": "Scale",
@@ -156,6 +157,12 @@
 	"Library_ItemCount": "{0:n0} Items",
 	"Library_Items": "Items:",
 	"Library_LooseFiles": "Loose Files",
+	"Library_GoUp": "Go up a directory",
+	"Library_IconView": "Show entries as a grid",
+	"Library_ListView": "Show entries as a list",
+	"Library_DirectoryView": "Show directories",
+	"Library_FlattenView": "Show all items in all subdirectories",
+
 
 	"Library_GameData_Author": "Square Enix - FFXIV",
 	"Library_GameData_Named": "Named",

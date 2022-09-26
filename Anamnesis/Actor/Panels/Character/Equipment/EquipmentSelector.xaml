@@ -149,7 +149,7 @@
 				Style="{StaticResource XivToolsComboBox}">
 
 				<ComboBox.ToolTip>
-					<TextBlock Text="[FileBrowser_Sort" />
+					<TextBlock Text="[Library_Sort" />
 				</ComboBox.ToolTip>
 
 				<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=Name}">

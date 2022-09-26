@@ -333,7 +333,7 @@ public class FileService : ServiceBase<FileService>
 			if (result.Path.Exists)
 			{
 				string fileName = Path.GetFileNameWithoutExtension(result.Path.FullName);
-				bool? overwrite = await GenericDialog.ShowAsync($"[FileBrowser_ReplaceMessage] {fileName}", "[FileBrowser_ReplaceTitle]", MessageBoxButton.YesNo);
+				bool? overwrite = await GenericDialog.ShowAsync($"[Library_ReplaceMessage] {fileName}", "[Library_ReplaceTitle]", MessageBoxButton.YesNo);
 				if (overwrite != true)
 				{
 					return await Save<T>(defaultDirectory, directories);

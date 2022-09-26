@@ -6,14 +6,14 @@ namespace Anamnesis.Tags;
 using System.Collections.Generic;
 using XivToolsWpf.Selectors;
 
-public abstract class TagFilterBase : Selector.FilterBase
+public abstract class TagFilterBase : MultiThreadedFilterBase
 {
 	public string[]? SearchTags { get; private set; }
 	public TagCollection Tags { get; init; } = new();
 
 	public virtual void OnTagsChanged()
 	{
-		this.NotifyChanged(nameof(this.Tags));
+		this.OnPropertyChanged(nameof(this.Tags));
 
 		List<string> searchTags = new();
 		foreach(Tag tag in this.Tags)
