@@ -141,7 +141,7 @@ internal class FileSource : LibrarySourceBase
 			// loaded.
 			FileBase fileBase = FileService.Load(info, SupportedFiles);
 
-			this.Name = this.Info.Name;
+			this.Name = Path.GetFileNameWithoutExtension(info.Name);
 			this.Author = fileBase.Author;
 			this.Description = fileBase.Description;
 			this.Version = fileBase.Version;
@@ -220,7 +220,7 @@ internal class FileSource : LibrarySourceBase
 		public BrokenFileItem(FileInfo info, params string[] tags)
 		{
 			this.Description = $"Failed to load file: {info.FullName}";
-			this.Name = info.Name;
+			this.Name = Path.GetFileNameWithoutExtension(info.Name);
 
 			foreach (string tag in tags)
 			{
