@@ -44,7 +44,6 @@
 			x:Name="TagFilter"
 			Grid.Row="1"
 			Margin="6,0,6,0"
-			AllTags="{Binding AllTags}"
 			Filter="{Binding Filter}" />
 
 		<!--<StackPanel Grid.Row="0">

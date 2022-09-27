@@ -18,7 +18,6 @@ using XivToolsWpf.Extensions;
 [AddINotifyPropertyChangedInterface]
 public partial class TagFilter : UserControl, IComparer<Tag>
 {
-	public static readonly IBind<TagCollection?> AllTagsDp = Binder.Register<TagCollection?, TagFilter>(nameof(AllTags), BindMode.OneWay);
 	public static readonly IBind<TagFilterBase?> FilterDp = Binder.Register<TagFilterBase?, TagFilter>(nameof(Filter), BindMode.OneWay);
 	public static readonly IBind<bool> IsPopupOpenDp = Binder.Register<bool, TagFilter>(nameof(IsPopupOpen));
 
@@ -36,12 +35,6 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 	public FastObservableCollection<Tag> FilterByTags { get; init; } = new();
 
 	public string? TagSearchText { get; set; }
-
-	public TagCollection? AllTags
-	{
-		get => AllTagsDp.Get(this);
-		set => AllTagsDp.Set(this, value);
-	}
 
 	public TagFilterBase? Filter
 	{
@@ -64,9 +57,9 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 			this.FilterByTags.Add(this.addTagItem);
 		}
 
-		if (this.AllTags != null)
+		if (this.Filter?.AvailableTags != null)
 		{
-			this.AvailableTags.SortAndReplace(this.AllTags, this);
+			this.AvailableTags.SortAndReplace(this.Filter.AvailableTags, this);
 		}
 	}
 
@@ -155,6 +148,14 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 		}
 	}
 
+	private void OnPopupOpened(object sender, EventArgs e)
+	{
+		if (this.Filter?.AvailableTags != null)
+		{
+			this.AvailableTags.SortAndReplace(this.Filter.AvailableTags, this);
+		}
+	}
+
 	private void OnPopupClosed(object sender, EventArgs e)
 	{
 		this.TagSearchText = null;
@@ -164,7 +165,7 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 	{
 		await this.Dispatcher.MainThread();
 		string? str = this.TagSearchText;
-		HashSet<Tag>? allTags = this.AllTags != null ? new(this.AllTags) : null;
+		HashSet<Tag>? allTags = this.Filter?.AvailableTags != null ? new(this.Filter.AvailableTags) : null;
 		HashSet<Tag> filterByTags = new(this.FilterByTags);
 		await Dispatch.NonUiThread();
 

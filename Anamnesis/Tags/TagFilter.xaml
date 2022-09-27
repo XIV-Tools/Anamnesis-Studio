@@ -447,6 +447,7 @@
 			AllowsTransparency="True"
 			Closed="OnPopupClosed"
 			IsOpen="{Binding IsPopupOpen}"
+			Opened="OnPopupOpened"
 			PlacementTarget="{Binding ElementName=TagList}"
 			StaysOpen="True">
 
@@ -454,7 +455,20 @@
 
 				<controls:PopupBackground />
 
-				<ScrollViewer Margin="12">
+				<StackPanel
+					Margin="12"
+					Orientation="Horizontal"
+					Visibility="{Binding AvailableTags.Count, Converter={StaticResource IsZeroToVisibility}}">
+
+					<XivToolsWpf:IconBlock
+						Margin="3,3,6,3"
+						Icon="Search" />
+					<TextBlock Text="{Binding TagSearchText}" />
+				</StackPanel>
+
+				<ScrollViewer
+					Margin="12"
+					Visibility="{Binding AvailableTags.Count, Converter={StaticResource NotZeroToVisibility}}">
 					<ItemsControl
 						ItemsSource="{Binding AvailableTags}"
 						Style="{StaticResource TagControl}">

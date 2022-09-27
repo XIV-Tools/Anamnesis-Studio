@@ -4,6 +4,7 @@
 namespace Anamnesis.Tags;
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using XivToolsWpf.Selectors;
 
 public abstract class TagFilterBase : MultiThreadedFilterBase
@@ -11,9 +12,11 @@ public abstract class TagFilterBase : MultiThreadedFilterBase
 	public string[]? SearchTags { get; private set; }
 	public TagCollection Tags { get; init; } = new();
 
+	public TagCollection AvailableTags { get; init; } = new();
+
 	public virtual void OnTagsChanged()
 	{
-		this.OnPropertyChanged(nameof(this.Tags));
+		this.OnPropertyChanged(new(nameof(this.Tags)));
 
 		List<string> searchTags = new();
 		foreach(Tag tag in this.Tags)
@@ -25,6 +28,27 @@ public abstract class TagFilterBase : MultiThreadedFilterBase
 		}
 
 		this.SearchTags = searchTags.ToArray();
+	}
+
+	protected override async Task<IEnumerable<object>?> Filter()
+	{
+		IEnumerable<object>? results = await base.Filter();
+
+		// Get all tags from the results and put them in the available tags
+		// list.
+		if (results != null)
+		{
+			this.AvailableTags.Clear();
+			foreach (object obj in results)
+			{
+				if (obj is ITagged tagged)
+				{
+					this.AvailableTags.AddRange(tagged.Tags);
+				}
+			}
+		}
+
+		return results;
 	}
 }
 
