@@ -14,6 +14,7 @@ using System.Windows.Input;
 using XivToolsWpf;
 using XivToolsWpf.Extensions;
 using XivToolsWpf.Selectors;
+using static Anamnesis.Libraries.Sources.GameDataSource;
 
 public partial class LibraryPanel : PanelBase, IFilterable
 {

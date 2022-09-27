@@ -5,9 +5,14 @@ namespace Anamnesis.Libraries;
 
 using Anamnesis.Libraries.Items;
 using Anamnesis.Tags;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class LibraryFilter : TagFilterBase<EntryBase>
 {
+	public readonly ConcurrentDictionary<DirectoryEntry, bool> UsedDirectories = new();
+
 	public enum Types
 	{
 		All,
@@ -22,7 +27,7 @@ public class LibraryFilter : TagFilterBase<EntryBase>
 	public bool Favorites { get; set; } = true;
 	public DirectoryEntry? CurrentDirectory { get; set; }
 
-	public bool HasSearchOrTags => this.Tags.Count > 1;
+	public bool HasSearchOrTags => this.Tags.Count > 1 || !string.IsNullOrEmpty(this.Search);
 
 	public override int CompareItems(EntryBase a, EntryBase b)
 	{
@@ -50,12 +55,50 @@ public class LibraryFilter : TagFilterBase<EntryBase>
 		}
 		else
 		{
-			if (entry.Parent != this.CurrentDirectory)
+			if (!entry.IsDirectory)
 			{
-				return false;
+				DirectoryEntry? parent = entry.Parent;
+				while (parent != this.CurrentDirectory && parent != null)
+				{
+					this.UsedDirectories.TryAdd(parent, true);
+					parent = parent.Parent;
+				}
+
+				if (parent != this.CurrentDirectory)
+				{
+					return false;
+				}
 			}
 		}
 
 		return true;
+	}
+
+	protected override async Task<IEnumerable<object>?> Filter()
+	{
+		this.UsedDirectories.Clear();
+		IEnumerable<object>? results = await base.Filter();
+
+		if (results == null)
+			return results;
+
+		if (this.Flatten || this.HasSearchOrTags)
+			return results;
+
+		List<object> finalFilteredResults = new();
+		foreach (EntryBase entry in results)
+		{
+			// skip unused directories.
+			if (entry is DirectoryEntry dir && !this.UsedDirectories.ContainsKey(dir))
+				continue;
+
+			// Is this item _in_ the current directory
+			if (entry.Parent == this.CurrentDirectory)
+			{
+				finalFilteredResults.Add(entry);
+			}
+		}
+
+		return finalFilteredResults;
 	}
 }
