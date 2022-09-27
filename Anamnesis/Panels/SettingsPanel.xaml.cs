@@ -46,40 +46,12 @@ public partial class SettingsPanel : PanelBase
 		}
 
 		this.Languages = languages;
-
-		List<HotkeyOption> hotkeys = new();
-		foreach ((string function, KeyCombination keys) in SettingsService.Current.KeyboardBindings.GetBinds())
-		{
-			hotkeys.Add(new HotkeyOption(function, keys));
-		}
-
-		this.Hotkeys = hotkeys;
-
-		ICollectionView view = CollectionViewSource.GetDefaultView(this.Hotkeys);
-		view.GroupDescriptions.Add(new PropertyGroupDescription("Category"));
-		view.SortDescriptions.Add(new SortDescription("Category", ListSortDirection.Ascending));
-		view.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
-		this.HotkeyList.ItemsSource = view;
-
-		if (!SettingsService.Current.ShowGallery)
-		{
-			this.GalleryCombobox.SelectedIndex = 0;
-		}
-		else if (string.IsNullOrEmpty(SettingsService.Current.GalleryDirectory))
-		{
-			this.GalleryCombobox.SelectedIndex = 1;
-		}
-		else
-		{
-			this.GalleryCombobox.SelectedIndex = 2;
-		}
 	}
 
 	public SettingsService SettingsService => SettingsService.Instance;
 
 	public IEnumerable<FontOption> Fonts { get; }
 	public IEnumerable<LanguageOption> Languages { get; }
-	public IEnumerable<HotkeyOption> Hotkeys { get; }
 
 	public FontOption SelectedFont
 	{
@@ -185,17 +157,6 @@ public partial class SettingsPanel : PanelBase
 			return;
 
 		SettingsService.Current.GalleryDirectory = FileService.ParseFromFilePath(dlg.SelectedPath);
-	}
-
-	private void OnGalleryChanged(object sender, SelectionChangedEventArgs e)
-	{
-		// 0 - none
-		// 1 - Curated
-		// 2 - Local
-		if (this.GalleryCombobox.SelectedIndex != 2)
-			SettingsService.Current.GalleryDirectory = null;
-
-		SettingsService.Current.ShowGallery = this.GalleryCombobox.SelectedIndex != 0;
 	}
 
 	public class FontOption

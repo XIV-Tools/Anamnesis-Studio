@@ -63,7 +63,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Include="$(AppData)\Anamnesis\Settings.json" Link="Settings.json" />
+	  <Content Include="$(AppData)\AnamnesisStudio\Settings.json" Link="Settings.json" />
 	</ItemGroup>
 
 	<ItemGroup>

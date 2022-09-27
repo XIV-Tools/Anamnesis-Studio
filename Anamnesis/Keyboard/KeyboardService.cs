@@ -13,6 +13,7 @@ using Anamnesis.Memory;
 using static Lumina.Data.Parsing.Layer.LayerCommon;
 using System.Reflection.Emit;
 using Anamnesis.Panels;
+using System.Diagnostics;
 
 // © Anamnesis.
 // Licensed under the MIT license.
@@ -40,13 +41,19 @@ public class KeyboardService : ServiceBase<KeyboardService>
 
 	private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
-	public override Task Start()
+	public override async Task Start()
 	{
+		await base.Start();
+
+		// Since the Xaml hot reload breaks window focus state managment while using child windows,
+		// Just don't run they keyboard hooks, since th e'IsActive' result becomes wrong, resulting
+		// in ana capturing keyboard events while not in focus. (thanks microsoft!)
+		if (Debugger.IsAttached)
+			return;
+
 		var userLibrary = LoadLibrary("User32");
 		hook = this.HookCallback;
 		hookId = SetWindowsHookEx(WhKeyboardLl, hook, userLibrary, 0);
-
-		return base.Start();
 	}
 
 	public override Task Shutdown()

@@ -9,7 +9,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
 	Title="[Navigation_Settings"
-	Width="800"
+	Width="600"
 	Height="512"
 	Icon="Cogs"
 	mc:Ignorable="d">
@@ -17,7 +17,6 @@
 	<Grid x:Name="ContentArea">
 
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*" />
 			<ColumnDefinition Width="*" />
 			<ColumnDefinition Width="*" />
 		</Grid.ColumnDefinitions>
@@ -240,72 +239,6 @@
 
 					</Grid>
 				</GroupBox>
-
-				<!--  Gallery options  -->
-				<GroupBox
-					Grid.Row="10"
-					Grid.ColumnSpan="2">
-					<GroupBox.Header>
-						<TextBlock Text="[Settings_GalleryHeader" />
-					</GroupBox.Header>
-
-					<Grid
-						Grid.Row="7"
-						Grid.ColumnSpan="2"
-						Margin="0,0,4,0">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition />
-							<ColumnDefinition Width="Auto" />
-						</Grid.ColumnDefinitions>
-
-						<Grid.RowDefinitions>
-							<RowDefinition />
-							<RowDefinition />
-						</Grid.RowDefinitions>
-
-						<TextBlock
-							Grid.Row="0"
-							Grid.Column="0"
-							Style="{StaticResource Label}"
-							Text="[Settings_Gallery" />
-						<ComboBox
-							x:Name="GalleryCombobox"
-							Grid.Row="0"
-							Grid.Column="1"
-							Grid.ColumnSpan="2"
-							Width="200"
-							Margin="1"
-							HorizontalAlignment="Left"
-							SelectionChanged="OnGalleryChanged">
-							<ComboBoxItem>
-								<TextBlock Text="[Settings_Gallery_None" />
-							</ComboBoxItem>
-							<ComboBoxItem>
-								<TextBlock Text="[Settings_Gallery_Curated" />
-							</ComboBoxItem>
-							<ComboBoxItem>
-								<TextBlock Text="[Settings_Gallery_Local" />
-							</ComboBoxItem>
-						</ComboBox>
-
-						<TextBox
-							Grid.Row="1"
-							Grid.Column="1"
-							Margin="3,0,0,0"
-							IsEnabled="False"
-							Style="{StaticResource MaterialDesignTextBox}"
-							Text="{Binding SettingsService.Settings.GalleryDirectory}" />
-						<Button
-							Grid.Row="1"
-							Grid.Column="2"
-							Margin="6,3,0,0"
-							Click="OnBrowseGallery"
-							Content="..."
-							Style="{StaticResource TransparentButton}" />
-					</Grid>
-				</GroupBox>
-
 			</Grid>
 		</GroupBox>
 
@@ -457,169 +390,7 @@
 				</Grid>
 			</GroupBox>
 
-			<GroupBox Style="{StaticResource PanelGroupBox}">
-				<GroupBox.Header>
-					<XivToolsWPF:Header
-						Icon="Question"
-						Text="[Settings_PenumbraHeader" />
-				</GroupBox.Header>
-
-				<Grid Grid.Column="2">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition />
-					</Grid.ColumnDefinitions>
-
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-					</Grid.RowDefinitions>
-
-					<TextBlock
-						Grid.Row="0"
-						Grid.Column="0"
-						Style="{StaticResource Label}"
-						Text="[Settings_UseExternalRefresh" />
-					<CheckBox
-						Grid.Row="0"
-						Grid.Column="1"
-						Margin="6"
-						IsChecked="{Binding SettingsService.Settings.UseExternalRefresh}" />
-
-					<XivToolsWPF:InfoControl
-						Grid.Row="1"
-						Grid.ColumnSpan="2"
-						Width="237"
-						Text="[Settings_UseExternalRefreshWarning" />
-				</Grid>
-			</GroupBox>
-
 		</StackPanel>
-
-		<GroupBox
-			Grid.Column="2"
-			Style="{StaticResource PanelGroupBox}">
-			<GroupBox.Header>
-				<XivToolsWPF:Header
-					Icon="Keyboard"
-					Text="[Settings_KeysHeader" />
-			</GroupBox.Header>
-
-			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition
-						Height="Auto"
-						ana:Behaviours.Tooltip="Settings_EnableHotkeys_Tooltip" />
-					<RowDefinition
-						Height="Auto"
-						ana:Behaviours.Tooltip="Settings_EnableGameHotkeys_Tooltip" />
-					<RowDefinition
-						Height="Auto"
-						ana:Behaviours.Tooltip="Settings_EnableForwardKeys_Tooltip" />
-					<RowDefinition />
-				</Grid.RowDefinitions>
-
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition />
-				</Grid.ColumnDefinitions>
-
-				<TextBlock
-					Grid.Row="0"
-					Grid.Column="0"
-					Style="{StaticResource Label}"
-					Text="[Settings_EnableHotkeys" />
-				<CheckBox
-					Grid.Row="0"
-					Grid.Column="1"
-					Margin="6"
-					IsChecked="{Binding SettingsService.Settings.EnableHotkeys}" />
-
-				<TextBlock
-					Grid.Row="1"
-					Grid.Column="0"
-					Style="{StaticResource Label}"
-					Text="[Settings_EnableGameHotkeys" />
-				<CheckBox
-					Grid.Row="1"
-					Grid.Column="1"
-					Margin="6"
-					IsChecked="{Binding SettingsService.Settings.EnableGameHotkeyHooks}" />
-
-				<TextBlock
-					Grid.Row="2"
-					Grid.Column="0"
-					Style="{StaticResource Label}"
-					Text="[Settings_EnableForwardKeys" />
-				<CheckBox
-					Grid.Row="2"
-					Grid.Column="1"
-					Margin="6"
-					IsChecked="{Binding SettingsService.Settings.ForwardKeys}" />
-
-				<ListBox
-					x:Name="HotkeyList"
-					Grid.Row="3"
-					Grid.ColumnSpan="2">
-
-					<ListBox.ItemContainerStyle>
-						<Style
-							BasedOn="{StaticResource MaterialDesignListBoxItem}"
-							TargetType="ListBoxItem">
-							<Setter Property="HorizontalContentAlignment" Value="Stretch" />
-						</Style>
-					</ListBox.ItemContainerStyle>
-
-					<ListBox.GroupStyle>
-						<GroupStyle>
-							<GroupStyle.ContainerStyle>
-								<Style TargetType="{x:Type GroupItem}">
-									<Setter Property="Template">
-										<Setter.Value>
-											<ControlTemplate>
-												<GroupBox
-													Margin="3,6,3,0"
-													Header="{Binding Name}">
-													<ItemsPresenter Margin="6,0,0,0" />
-												</GroupBox>
-											</ControlTemplate>
-										</Setter.Value>
-									</Setter>
-								</Style>
-							</GroupStyle.ContainerStyle>
-						</GroupStyle>
-					</ListBox.GroupStyle>
-
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition />
-									<ColumnDefinition Width="75" />
-								</Grid.ColumnDefinitions>
-
-								<TextBlock
-									Grid.Column="0"
-									Text="{Binding Name}" />
-
-								<StackPanel
-									Grid.Column="1"
-									Orientation="Horizontal">
-									<StackPanel
-										Orientation="Horizontal"
-										Visibility="{Binding ModifierName, Converter={StaticResource NotNullToVisibilityConverter}}">
-										<TextBlock Text="{Binding ModifierName}" />
-										<TextBlock Text=", " />
-									</StackPanel>
-									<TextBlock Text="{Binding KeyName}" />
-								</StackPanel>
-
-							</Grid>
-						</DataTemplate>
-					</ListBox.ItemTemplate>
-				</ListBox>
-			</Grid>
-		</GroupBox>
 
 	</Grid>
 </local:PanelBase>

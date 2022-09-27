@@ -38,9 +38,6 @@ public partial class Gallery : UserControl
 	{
 		this.InitializeComponent();
 		this.ContentArea.DataContext = this;
-
-		SettingsService.SettingsChanged += this.OnSettingsChanged;
-		this.OnSettingsChanged(null, null);
 	}
 
 	public bool CanSkip { get; set; } = false;
@@ -49,22 +46,9 @@ public partial class Gallery : UserControl
 	public string? Image2Path { get; set; } = null;
 	public string Image2Author { get; set; } = string.Empty;
 
-	private void OnSettingsChanged(object? sender, PropertyChangedEventArgs? e)
-	{
-		this.Visibility = SettingsService.Current.ShowGallery ? Visibility.Visible : Visibility.Hidden;
-
-		if (SettingsService.Current.ShowGallery && !this.isRunning)
-		{
-			Task.Run(this.Run);
-		}
-	}
-
 	private async Task Run()
 	{
 		if (this.isRunning)
-			return;
-
-		if (!SettingsService.Current.ShowGallery)
 			return;
 
 		this.isRunning = true;
@@ -76,7 +60,7 @@ public partial class Gallery : UserControl
 
 		this.forceUpdate = true;
 
-		while (Application.Current != null && SettingsService.Current.ShowGallery)
+		while (Application.Current != null)
 		{
 			List<Entry> entries;
 
@@ -119,12 +103,6 @@ public partial class Gallery : UserControl
 			{
 				while (!this.IsVisible)
 					await Task.Delay(5000);
-
-				if (!SettingsService.Current.ShowGallery)
-				{
-					this.isRunning = false;
-					return;
-				}
 
 				int delay = 0;
 				while (!this.forceUpdate && delay < ImageDelay)

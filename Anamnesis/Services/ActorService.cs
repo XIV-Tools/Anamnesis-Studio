@@ -28,7 +28,6 @@ public class ActorService : ServiceBase<ActorService>
 
 	private readonly List<IActorRefresher> actorRefreshers = new()
 	{
-		new PenumbraActorRefresher(),
 		new AnamnesisActorRefresher(),
 	};
 
@@ -68,7 +67,9 @@ public class ActorService : ServiceBase<ActorService>
 		foreach (IActorRefresher actorRefresher in this.actorRefreshers)
 		{
 			if (actorRefresher.CanRefresh(actor))
+			{
 				return true;
+			}
 		}
 
 		return false;

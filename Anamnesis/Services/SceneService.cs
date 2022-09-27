@@ -53,17 +53,7 @@ public class SceneService : ServiceBase<SceneService>
 	{
 		try
 		{
-			Shortcut[]? shortcuts = new[]
-			{
-				FileService.DefaultSceneDirectory,
-			};
-
-			Type[] types = new[]
-			{
-				typeof(SceneFile),
-			};
-
-			OpenResult result = await FileService.Open(null, shortcuts, types);
+			OpenResult result = await FileService.Open(null, FileService.DefaultSceneDirectory, typeof(SceneFile));
 
 			if (result.File == null)
 				return;

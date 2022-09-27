@@ -201,6 +201,7 @@ internal class GitHubSource : FileSource
 			this.RefreshAction.CanExecute = false;
 			await this.Source.Refresh();
 			this.RefreshAction.CanExecute = true;
+			this.UpdateAction.CanExecute = this.IsUpdateAvailable;
 		}
 
 		private async Task OnUpdate()

@@ -24,17 +24,7 @@ public partial class CameraPanel : PanelBase
 
 		try
 		{
-			Shortcut[]? shortcuts = new[]
-			{
-				FileService.DefaultCameraDirectory,
-			};
-
-			Type[] types = new[]
-			{
-				typeof(CameraShotFile),
-			};
-
-			OpenResult result = await FileService.Open(lastLoadDir, shortcuts, types);
+			OpenResult result = await FileService.Open(lastLoadDir, FileService.DefaultCameraDirectory, typeof(CameraShotFile));
 
 			if (result.File == null)
 				return;

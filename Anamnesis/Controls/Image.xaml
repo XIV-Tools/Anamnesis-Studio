@@ -15,7 +15,7 @@
 			Background="#33000000"
 			BorderBrush="{Binding BorderBrush}"
 			BorderThickness="{Binding BorderThickness}"
-			CornerRadius="6,6,0,0" />
+			CornerRadius="{Binding CornerRadius}" />
 
 		<Grid>
 

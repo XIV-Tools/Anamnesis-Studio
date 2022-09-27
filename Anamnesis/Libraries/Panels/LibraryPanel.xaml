@@ -111,240 +111,186 @@
 			Grid.Row="2"
 			Grid.Column="0"
 			Margin="1,1,4,0">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-				<RowDefinition />
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-			</Grid.RowDefinitions>
 
-			<Border
-				Grid.Row="1"
-				Margin="0"
-				Style="{StaticResource XivToolsControlBorder}">
+			<Border Style="{StaticResource XivToolsControlBorder}" />
+
+			<Grid
+				x:Name="SidebarBorder"
+				Margin="1"
+				Opacity="0.25">
+
+				<Grid.OpacityMask>
+					<VisualBrush
+						AlignmentX="Left"
+						AlignmentY="Top"
+						Stretch="None"
+						TileMode="None"
+						ViewboxUnits="Absolute">
+						<VisualBrush.Visual>
+							<Border
+								Width="{Binding ActualWidth, ElementName=SidebarBorder}"
+								Height="{Binding ActualHeight, ElementName=SidebarBorder}"
+								Margin="25"
+								Background="Black"
+								BorderBrush="Transparent"
+								BorderThickness="0"
+								CornerRadius="6" />
+						</VisualBrush.Visual>
+					</VisualBrush>
+				</Grid.OpacityMask>
+
+				<Image
+					Margin="-25"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center"
+					Source="{Binding SelectedEntry.Thumbnail}"
+					Stretch="UniformToFill">
+					<Image.Effect>
+						<BlurEffect Radius="30" />
+					</Image.Effect>
+				</Image>
+
+			</Grid>
+
+			<Grid
+				Margin="6,4,6,3"
+				VerticalAlignment="Top">
+
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
 
 				<Grid
-					Margin="6"
-					VerticalAlignment="Top">
+					x:Name="ImageBorder"
+					Grid.Row="0"
+					Grid.ColumnSpan="2"
+					Margin="-4,-3,-4,6">
 
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-					</Grid.RowDefinitions>
+					<Grid.OpacityMask>
+						<VisualBrush
+							AlignmentX="Left"
+							AlignmentY="Top"
+							Stretch="None"
+							TileMode="None"
+							ViewboxUnits="Absolute">
+							<VisualBrush.Visual>
+								<Border
+									Width="{Binding ActualWidth, ElementName=ImageBorder}"
+									Height="{Binding ActualHeight, ElementName=ImageBorder}"
+									Background="Black"
+									BorderBrush="Transparent"
+									BorderThickness="0"
+									CornerRadius="6, 6, 0, 0" />
+							</VisualBrush.Visual>
+						</VisualBrush>
+					</Grid.OpacityMask>
 
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition />
-					</Grid.ColumnDefinitions>
+					<Image
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						Source="{Binding SelectedEntry.Thumbnail}"
+						Stretch="Uniform" />
 
-					<controls:Image
-						Grid.Row="0"
-						Grid.ColumnSpan="2"
-						Height="200"
-						Margin="-8,-8,-8,0"
-						BorderBrush="Transparent"
-						BorderThickness="1"
-						CornerRadius="6,6,0,0"
-						Source="{Binding SelectedEntry.Thumbnail}" />
-
-					<ProgressBar
-						Grid.Row="0"
-						Grid.ColumnSpan="2"
-						Height="2"
-						Margin="-6,0"
-						VerticalAlignment="Bottom"
-						IsIndeterminate="True"
-						Visibility="{Binding SelectedEntry.Source.IsLoading, Converter={StaticResource B2V}, FallbackValue=Collapsed}" />
-
-					<TextBlock
-						Grid.Row="1"
-						Grid.ColumnSpan="3"
-						Margin="0,6,0,0"
-						Style="{StaticResource Header}"
-						Text="{Binding SelectedEntry.Name}" />
-
-					<TextBlock
-						Grid.Row="2"
-						Grid.ColumnSpan="2"
-						Margin="10,0,0,12"
-						Text="{Binding SelectedEntry.Description}"
-						TextWrapping="Wrap"
-						Visibility="{Binding SelectedEntry.Description, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
-
-
-					<TextBlock
-						Grid.Row="3"
-						Grid.Column="0"
-						Margin="0,0,6,0"
-						Style="{StaticResource Label}"
-						Text="[FileMeta_Author"
-						Visibility="{Binding SelectedEntry.Author, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
-					<TextBlock
-						Grid.Row="3"
-						Grid.Column="1"
-						Text="{Binding SelectedEntry.Author}"
-						Visibility="{Binding SelectedEntry.Author, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
-
-					<TextBlock
-						Grid.Row="4"
-						Grid.Column="0"
-						Margin="0,0,6,0"
-						Style="{StaticResource Label}"
-						Text="[FileMeta_Version"
-						Visibility="{Binding SelectedEntry.Version, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
-					<TextBlock
-						Grid.Row="4"
-						Grid.Column="1"
-						Text="{Binding SelectedEntry.Version}"
-						Visibility="{Binding SelectedEntry.Version, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
-
-					<ItemsControl
-						Grid.Row="5"
-						Grid.ColumnSpan="2"
-						Margin="-3,6,-3,-3"
-						ItemsSource="{Binding SelectedEntry.Actions}">
-						<ItemsControl.ItemsPanel>
-							<ItemsPanelTemplate>
-								<WrapPanel Orientation="Horizontal" />
-							</ItemsPanelTemplate>
-						</ItemsControl.ItemsPanel>
-						<ItemsControl.ItemTemplate>
-							<DataTemplate>
-								<Button
-									Command="{Binding Command}"
-									IsEnabled="{Binding CanExecute}"
-									Style="{StaticResource TransparentButton}">
-									<StackPanel
-										Margin="6"
-										Orientation="Horizontal">
-										<XivToolsWpf:IconBlock
-											Margin="3,0"
-											Icon="{Binding DisplayIcon}" />
-										<TextBlock
-											Margin="3,0"
-											Text="{Binding Display}" />
-									</StackPanel>
-								</Button>
-							</DataTemplate>
-						</ItemsControl.ItemTemplate>
-					</ItemsControl>
 				</Grid>
-			</Border>
 
-			<ScrollViewer
-				Grid.Row="2"
-				VerticalAlignment="Bottom">
-				<Grid>
+				<ProgressBar
+					Grid.Row="0"
+					Grid.ColumnSpan="2"
+					Height="2"
+					Margin="-6,0"
+					VerticalAlignment="Bottom"
+					IsIndeterminate="True"
+					Visibility="{Binding SelectedEntry.Source.IsLoading, Converter={StaticResource B2V}, FallbackValue=Collapsed}" />
 
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition />
-					</Grid.RowDefinitions>
+				<TextBlock
+					Grid.Row="1"
+					Grid.ColumnSpan="2"
+					Margin="0,-2,0,4"
+					Style="{StaticResource Header}"
+					Text="{Binding SelectedEntry.Name}" />
 
-					<ItemsControl
-						Grid.Row="1"
-						ItemsSource="{Binding FilterByTags}">
-						<ItemsControl.ItemsPanel>
-							<ItemsPanelTemplate>
-								<WrapPanel />
-							</ItemsPanelTemplate>
-						</ItemsControl.ItemsPanel>
-						<ItemsControl.ItemTemplate>
-							<DataTemplate>
-								<ToggleButton
-									Margin="3"
-									IsChecked="{Binding IsEnabled}"
-									IsEnabled="{Binding IsAvailable}">
-									<ToggleButton.Style>
-										<Style TargetType="{x:Type ToggleButton}">
-											<Setter Property="Foreground" Value="{StaticResource MaterialDesignBody}" />
+				<Separator
+					Grid.Row="1"
+					Grid.ColumnSpan="2"
+					Margin="0,0,0,2"
+					VerticalAlignment="Bottom" />
 
-											<Setter Property="Template">
-												<Setter.Value>
-													<ControlTemplate TargetType="{x:Type ToggleButton}">
-														<Grid>
-															<Border
-																x:Name="Border"
-																Background="{StaticResource MaterialDesignPaper}"
-																CornerRadius="10" />
+				<TextBlock
+					Grid.Row="2"
+					Grid.ColumnSpan="2"
+					Margin="0,0,0,12"
+					Text="{Binding SelectedEntry.Description}"
+					TextWrapping="Wrap"
+					Visibility="{Binding SelectedEntry.Description, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
 
-															<Grid
-																x:Name="ContentGrid"
-																Margin="3,-2">
-																<Grid.ColumnDefinitions>
-																	<ColumnDefinition Width="Auto" />
-																	<ColumnDefinition />
-																</Grid.ColumnDefinitions>
 
-																<XivToolsWpf:IconBlock
-																	x:Name="TagIcon"
-																	Grid.Column="0"
-																	Margin="2,2,2,0"
-																	Foreground="{StaticResource MaterialDesignBodyLight}"
-																	Icon="Tag"
-																	Opacity="0.5" />
+				<TextBlock
+					Grid.Row="3"
+					Grid.Column="0"
+					Margin="0,0,6,0"
+					Style="{StaticResource Label}"
+					Text="[FileMeta_Author"
+					Visibility="{Binding SelectedEntry.Author, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
+				<TextBlock
+					Grid.Row="3"
+					Grid.Column="1"
+					Text="{Binding SelectedEntry.Author}"
+					Visibility="{Binding SelectedEntry.Author, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
 
-																<ContentPresenter
-																	Grid.Column="1"
-																	Content="{TemplateBinding Content}" />
+				<TextBlock
+					Grid.Row="4"
+					Grid.Column="0"
+					Margin="0,0,6,0"
+					Style="{StaticResource Label}"
+					Text="[FileMeta_Version"
+					Visibility="{Binding SelectedEntry.Version, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
+				<TextBlock
+					Grid.Row="4"
+					Grid.Column="1"
+					Text="{Binding SelectedEntry.Version}"
+					Visibility="{Binding SelectedEntry.Version, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
 
-															</Grid>
-														</Grid>
-
-														<ControlTemplate.Triggers>
-															<Trigger Property="IsChecked" Value="False">
-																<Setter TargetName="TagIcon" Property="Foreground" Value="{StaticResource MaterialDesignBody}" />
-																<Setter TargetName="ContentGrid" Property="Opacity" Value="0.5" />
-																<Setter TargetName="Border" Property="Background" Value="Black" />
-																<Setter TargetName="Border" Property="Opacity" Value="0.25" />
-															</Trigger>
-															<Trigger Property="IsEnabled" Value="False">
-																<Setter TargetName="TagIcon" Property="Foreground" Value="{StaticResource MaterialDesignTextFieldBoxDisabledBackground}" />
-																<Setter Property="Foreground" Value="{StaticResource MaterialDesignTextFieldBoxDisabledBackground}" />
-																<Setter TargetName="Border" Property="Opacity" Value="0" />
-															</Trigger>
-															<DataTrigger
-																Binding="{Binding IsCurrent}"
-																Value="False">
-																<Setter TargetName="TagIcon" Property="Opacity" Value="0" />
-															</DataTrigger>
-															<DataTrigger
-																Binding="{Binding IsCurrent}"
-																Value="True">
-																<Setter TargetName="TagIcon" Property="Opacity" Value="1" />
-															</DataTrigger>
-														</ControlTemplate.Triggers>
-													</ControlTemplate>
-												</Setter.Value>
-											</Setter>
-										</Style>
-									</ToggleButton.Style>
-
+				<ItemsControl
+					Grid.Row="5"
+					Grid.ColumnSpan="2"
+					Margin="-3,6,-3,-3"
+					ItemsSource="{Binding SelectedEntry.Actions}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel Orientation="Horizontal" />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Button
+								Command="{Binding Command}"
+								IsEnabled="{Binding CanExecute}"
+								Style="{StaticResource TransparentButton}">
+								<StackPanel
+									Margin="6"
+									Orientation="Horizontal">
+									<XivToolsWpf:IconBlock
+										Margin="3,0"
+										Icon="{Binding DisplayIcon}" />
 									<TextBlock
-										MaxWidth="60"
-										Margin="4"
-										FontSize="11"
-										Text="{Binding Name}"
-										TextTrimming="CharacterEllipsis" />
-								</ToggleButton>
-							</DataTemplate>
-						</ItemsControl.ItemTemplate>
-					</ItemsControl>
-				</Grid>
-			</ScrollViewer>
-
-			<CheckBox
-				Grid.Row="3"
-				Margin="6,3,6,6">
-				<TextBlock Text="Live Preview" />
-			</CheckBox>
+										Margin="3,0"
+										Text="{Binding Display}" />
+								</StackPanel>
+							</Button>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</Grid>
 		</Grid>
 
 

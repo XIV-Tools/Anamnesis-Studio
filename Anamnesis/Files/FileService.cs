@@ -11,64 +11,27 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Anamnesis;
-using Anamnesis.GUI.Views;
-using Anamnesis.Navigation;
 using Anamnesis.Services;
 using Anamnesis.Utils;
 using Anamnesis.Windows;
 using Microsoft.Win32;
-using Serilog;
 
 public class FileService : ServiceBase<FileService>
 {
-	public static readonly string StoreDirectory = "%AppData%/Anamnesis/";
-	public static readonly string CacheDirectory = "%AppData%/Anamnesis/RemoteCache/";
-
 	private static readonly Dictionary<Type, string> TypeNameLookup = new Dictionary<Type, string>();
 	private static readonly Dictionary<Type, FileFilter> FileTypeFilterLookup = new Dictionary<Type, FileFilter>();
 
-	public static Shortcut Desktop => new Shortcut(
-		new DirectoryInfo(ParseToFilePath("%Desktop%")),
-		"Shortcuts/Desktop.png",
-		"Shortcut_Desktop");
-
-	public static Shortcut DefaultPoseDirectory => new Shortcut(
-		new DirectoryInfo(ParseToFilePath(SettingsService.Current.DefaultPoseDirectory)),
-		"Shortcuts/Anamnesis.png",
-		"Shortcut_AnamnesisPose");
-
-	public static Shortcut DefaultCharacterDirectory => new Shortcut(
-		new DirectoryInfo(ParseToFilePath(SettingsService.Current.DefaultCharacterDirectory)),
-		"Shortcuts/Anamnesis.png",
-		"Shortcut_AnamnesisCharacter");
-
-	public static Shortcut DefaultCameraDirectory => new Shortcut(
-		new DirectoryInfo(ParseToFilePath(SettingsService.Current.DefaultCameraShotDirectory)),
-		"Shortcuts/Anamnesis.png",
-		"Shortcut_AnamnesisScenes");
-
-	public static Shortcut DefaultSceneDirectory => new Shortcut(
-		new DirectoryInfo(ParseToFilePath(SettingsService.Current.DefaultSceneDirectory)),
-		"Shortcuts/Anamnesis.png",
-		"Shortcut_AnamnesisScenes");
-
-	public static Shortcut CMToolPoseSaveDir => new Shortcut(
-		new DirectoryInfo(ParseToFilePath("%MyDocuments%/CMTool/Matrix Saves/")),
-		"Shortcuts/cmtool.png",
-		"Shortcut_CMToolPose");
-
-	public static Shortcut CMToolAppearanceSaveDir => new Shortcut(
-		new DirectoryInfo(ParseToFilePath("%MyDocuments%/CMTool/")),
-		"Shortcuts/cmtool.png",
-		"Shortcut_CMToolPose");
-
-	public static Shortcut FFxivDatCharacterDirectory => new Shortcut(
-		new DirectoryInfo(ParseToFilePath("%MyDocuments%/My Games/FINAL FANTASY XIV - A Realm Reborn/")),
-		"Shortcuts/ffxiv.png",
-		"Shortcut_FfxivAppearance");
+	public static DirectoryInfo StoreDirectory => new DirectoryInfo(ParseToFilePath("%AppData%/AnamnesisStudio/"));
+	public static DirectoryInfo CacheDirectory => new DirectoryInfo(ParseToFilePath("%AppData%/AnamnesisStudio/RemoteCache/"));
+	public static DirectoryInfo Desktop => new DirectoryInfo(ParseToFilePath("%Desktop%"));
+	public static DirectoryInfo DefaultPoseDirectory => new DirectoryInfo(ParseToFilePath(SettingsService.Current.DefaultPoseDirectory));
+	public static DirectoryInfo DefaultCharacterDirectory => new DirectoryInfo(ParseToFilePath(SettingsService.Current.DefaultCharacterDirectory));
+	public static DirectoryInfo DefaultCameraDirectory => new DirectoryInfo(ParseToFilePath(SettingsService.Current.DefaultCameraShotDirectory));
+	public static DirectoryInfo DefaultSceneDirectory => new DirectoryInfo(ParseToFilePath(SettingsService.Current.DefaultSceneDirectory));
+	public static DirectoryInfo CMToolPoseSaveDir => new DirectoryInfo(ParseToFilePath("%MyDocuments%/CMTool/Matrix Saves/"));
+	public static DirectoryInfo CMToolAppearanceSaveDir => new DirectoryInfo(ParseToFilePath("%MyDocuments%/CMTool/"));
+	public static DirectoryInfo FFxivDatCharacterDirectory => new DirectoryInfo(ParseToFilePath("%MyDocuments%/My Games/FINAL FANTASY XIV - A Realm Reborn/"));
 
 	public static async Task Import()
 	{
@@ -179,7 +142,17 @@ public class FileService : ServiceBase<FileService>
 		Process.Start(Environment.GetEnvironmentVariable("WINDIR") + @"\explorer.exe", $"\"{dir}\"");
 	}
 
-	public static async Task<OpenResult> Open(DirectoryInfo? defaultDirectory, Shortcut[] shortcuts, Type[] fileTypes)
+	public static void OpenDirectory(DirectoryInfo directory)
+	{
+		Process.Start(Environment.GetEnvironmentVariable("WINDIR") + @"\explorer.exe", $"\"{directory.FullName}\"");
+	}
+
+	public static Task<OpenResult> Open(DirectoryInfo? defaultDirectory, DirectoryInfo shortcut, Type fileType)
+	{
+		return Open(defaultDirectory, new[] { shortcut }, new[] { fileType });
+	}
+
+	public static async Task<OpenResult> Open(DirectoryInfo? defaultDirectory, DirectoryInfo[] shortcuts, Type[] fileTypes)
 	{
 		OpenResult result = default;
 
@@ -191,12 +164,12 @@ public class FileService : ServiceBase<FileService>
 
 				if (defaultDirectory == null)
 				{
-					Shortcut? defaultShortcut = null;
-					foreach (Shortcut shortcut in shortcuts)
+					DirectoryInfo? defaultShortcut = null;
+					foreach (DirectoryInfo shortcut in shortcuts)
 					{
-						if (defaultDirectory == null && shortcut.Directory.Exists && defaultShortcut == null)
+						if (defaultDirectory == null && shortcut.Exists && defaultShortcut == null)
 						{
-							defaultDirectory = shortcut.Directory;
+							defaultDirectory = shortcut;
 						}
 					}
 				}
@@ -210,9 +183,9 @@ public class FileService : ServiceBase<FileService>
 					dlg.InitialDirectory = null;
 				}
 
-				foreach (Shortcut? shortcut in shortcuts)
+				foreach (DirectoryInfo? shortcut in shortcuts)
 				{
-					dlg.CustomPlaces.Add(new FileDialogCustomPlace(ParseToFilePath(shortcut.Path)));
+					dlg.CustomPlaces.Add(new FileDialogCustomPlace(shortcut.FullName));
 				}
 
 				dlg.Filter = ToAnyFilter(fileTypes);
@@ -295,7 +268,7 @@ public class FileService : ServiceBase<FileService>
 		throw new Exception($"Unrecognised file: {info}");
 	}
 
-	public static async Task<SaveResult> Save<T>(DirectoryInfo? defaultDirectory, params Shortcut[] directories)
+	public static async Task<SaveResult> Save<T>(DirectoryInfo? defaultDirectory, params DirectoryInfo[] directories)
 		where T : FileBase
 	{
 		SaveResult result = default;
@@ -362,12 +335,8 @@ public class FileService : ServiceBase<FileService>
 	/// </summary>
 	public static async Task<string> CacheRemoteFile(string url, string? filePath)
 	{
-		string cacheDir = ParseToFilePath(CacheDirectory);
-
-		if (!Directory.Exists(cacheDir))
-		{
-			Directory.CreateDirectory(cacheDir);
-		}
+		if (!CacheDirectory.Exists)
+			CacheDirectory.Create();
 
 		Uri uri = new Uri(url);
 
@@ -375,7 +344,7 @@ public class FileService : ServiceBase<FileService>
 
 		if (filePath != null)
 		{
-			localFile = cacheDir + filePath;
+			localFile = CacheDirectory.FullName + filePath;
 
 			string? directoryName = Path.GetDirectoryName(localFile);
 			if (directoryName != null && !Directory.Exists(directoryName))
@@ -385,7 +354,7 @@ public class FileService : ServiceBase<FileService>
 		}
 		else
 		{
-			localFile = cacheDir + uri.Segments[uri.Segments.Length - 1];
+			localFile = CacheDirectory.FullName + uri.Segments[uri.Segments.Length - 1];
 		}
 
 		if (!File.Exists(localFile))
@@ -509,33 +478,4 @@ public struct SaveResult
 	public FileInfo? Path;
 
 	public DirectoryInfo? Directory => this.Path?.Directory;
-}
-
-public class Shortcut
-{
-	public DirectoryInfo Directory { get; private set; }
-	public ImageSource? Icon { get; private set; }
-	public string LabelKey { get; private set; }
-
-	public string Path => FileService.ParseFromFilePath(this.Directory.FullName);
-
-	public Shortcut(DirectoryInfo dir, string icon, string key)
-	{
-		this.Directory = dir;
-		this.LabelKey = key;
-
-		if (!string.IsNullOrEmpty(icon))
-		{
-			try
-			{
-				BitmapImage newIcon = new BitmapImage(new Uri($"pack://application:,,,/Anamnesis;component/Assets/{icon}"));
-				newIcon.Freeze();
-				this.Icon = newIcon;
-			}
-			catch (Exception ex)
-			{
-				Log.Error(ex, $"Failed to load icon for shortcut: {icon}");
-			}
-		}
-	}
 }

@@ -88,6 +88,14 @@ public class LibraryFilter : TagFilterBase<EntryBase>
 		List<object> finalFilteredResults = new();
 		foreach (EntryBase entry in results)
 		{
+			// TODO: this should be handled through a "all packs" list, or an update flyout or something.
+			// but for now, just show any packs that need an update in all categories.
+			if (entry is Pack pack && pack.IsUpdateAvailable)
+			{
+				finalFilteredResults.Add(entry);
+				continue;
+			}
+
 			// skip unused directories.
 			if (entry is DirectoryEntry dir && !this.UsedDirectories.ContainsKey(dir))
 				continue;
