@@ -11,7 +11,7 @@
 	xmlns:local="clr-namespace:Anamnesis.Actor.Panels"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:panels="clr-namespace:Anamnesis.Panels"
-	Title="[Naviagation_Actor_Character]"
+	Title="[Navigation_Actor_Character]"
 	MinWidth="300"
 	ana:Behaviours.DesignerLocalization="True"
 	d:DataContext="{Binding RelativeSource={RelativeSource Self}}"

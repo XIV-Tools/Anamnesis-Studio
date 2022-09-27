@@ -10,7 +10,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:panels="clr-namespace:Anamnesis.Panels"
 	xmlns:views="clr-namespace:Anamnesis.Actor.Views"
-	Title="[Naviagation_Actor_Bones"
+	Title="[Navigation_Actor_Bones"
 	Width="650"
 	Height="512"
 	CanResize="False"

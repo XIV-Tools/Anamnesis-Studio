@@ -263,71 +263,71 @@
 				<Button
 					ana:Behaviours.Navigation="Settings"
 					Background="Transparent"
-					ToolTip="[Naviagation_Settings_Tip]">
+					ToolTip="[Navigation_Settings_Tip]">
 					<XivToolsWpf:Header
 						Icon="Cogs"
-						Text="[Naviagation_Settings]" />
+						Text="[Navigation_Settings]" />
 				</Button>
 
 				<Button
 					ana:Behaviours.Navigation="Library"
 					Background="Transparent"
-					ToolTip="[Naviagation_Library_Tip]">
+					ToolTip="[Navigation_Library_Tip]">
 					<XivToolsWpf:Header
 						Icon="Book"
-						Text="[Naviagation_Library]" />
+						Text="[Navigation_Library]" />
 				</Button>
 
 				<Button
 					ana:Behaviours.Navigation="Weather"
 					Background="Transparent"
-					ToolTip="[Naviagation_Weather_Tip]">
+					ToolTip="[Navigation_Weather_Tip]">
 					<XivToolsWpf:Header
 						Icon="CloudMoonRain"
-						Text="[Naviagation_Weather]" />
+						Text="[Navigation_Weather]" />
 				</Button>
 
 				<Button
 					ana:Behaviours.Navigation="Camera"
 					Background="Transparent"
-					ToolTip="[Naviagation_Camera_Tip]">
+					ToolTip="[Navigation_Camera_Tip]">
 					<XivToolsWpf:Header
 						Icon="Camera"
-						Text="[Naviagation_Camera]" />
+						Text="[Navigation_Camera]" />
 				</Button>
 
 				<Button
 					ana:Behaviours.Navigation="Character"
 					Background="Transparent"
-					ToolTip="[Naviagation_Actor_Character_Tip]">
+					ToolTip="[Navigation_Actor_Character_Tip]">
 					<XivToolsWpf:Header
 						Icon="User"
-						Text="[Naviagation_Actor_Character]" />
+						Text="[Navigation_Actor_Character]" />
 				</Button>
 
 				<!--<local:Shortcut
 					Destination="Action"
 					Icon="Biking"
-					Label="[Naviagation_Actor_Action"
+					Label="[Navigation_Actor_Action"
 					ShowText="{Binding ShowText}"
-					ToolTip="[Naviagation_Actor_Action_Tip" />-->
+					ToolTip="[Navigation_Actor_Action_Tip" />-->
 
 				<StackPanel Visibility="{Binding Services.Pose.IsEnabled, Converter={StaticResource B2V}}">
 
 					<Button
 						ana:Behaviours.Navigation="Bones"
-						ToolTip="[Naviagation_Actor_Bones_Tip]">
+						ToolTip="[Navigation_Actor_Bones_Tip]">
 						<XivToolsWpf:Header
 							Icon="Bone"
-							Text="[Naviagation_Actor_Bones]" />
+							Text="[Navigation_Actor_Bones]" />
 					</Button>
 
 					<Button
 						ana:Behaviours.Navigation="Transform"
-						ToolTip="[Naviagation_Actor_Transform_Tip]">
+						ToolTip="[Navigation_Actor_Transform_Tip]">
 						<XivToolsWpf:Header
 							Icon="Circle"
-							Text="[Naviagation_Actor_Transform]" />
+							Text="[Navigation_Actor_Transform]" />
 					</Button>
 				</StackPanel>
 

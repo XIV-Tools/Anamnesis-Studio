@@ -9,7 +9,7 @@
 	xmlns:local="clr-namespace:Anamnesis.Actor.Panels"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:panels="clr-namespace:Anamnesis.Panels"
-	Title="[Naviagation_Actor_Transform"
+	Title="[Navigation_Actor_Transform"
 	Width="250"
 	Height="512"
 	CanResize="False"
