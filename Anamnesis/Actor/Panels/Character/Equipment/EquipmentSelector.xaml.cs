@@ -38,7 +38,6 @@ public partial class EquipmentSelector : UserControl
 
 	public CharacterEquipment? EquipmentEditor { get; set; }
 	public EquipmentFilter Filter { get; init; } = new();
-	public TagCollection AllTags { get; init; } = new();
 
 	public List<ItemSlots> Slots { get; set; } = new()
 	{
@@ -91,12 +90,6 @@ public partial class EquipmentSelector : UserControl
 		this.Selector.AddItems(App.Services.GameData.Equipment);
 		this.Selector.AddItems(App.Services.GameData.Items);
 		this.Selector.AddItems(App.Services.GameData.Perform);
-
-		this.AllTags.Clear();
-		foreach (IItem item in this.Selector.Entries)
-		{
-			this.AllTags.AddRange(item.Tags);
-		}
 
 		return Task.CompletedTask;
 	}
