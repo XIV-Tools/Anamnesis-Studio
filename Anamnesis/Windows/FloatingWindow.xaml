@@ -122,12 +122,12 @@
 						x:Name="TitleIcon"
 						Margin="0,0,6,0"
 						VerticalAlignment="Center"
-						Foreground="{Binding TitleColor, Converter={StaticResource ColorToBrush}}" />
+						Foreground="{DynamicResource ForegroundLightBrush}" />
 
 					<TextBlock
 						x:Name="TitleText"
 						VerticalAlignment="Center"
-						Foreground="{DynamicResource MaterialDesignToolForeground}" />
+						Foreground="{DynamicResource ForegroundLightBrush}" />
 				</StackPanel>
 
 				<Rectangle
@@ -147,7 +147,7 @@
 						Style="{StaticResource TransparentIconButton}"
 						Visibility="{Binding CanManualyClose, Converter={StaticResource B2V}}">
 						<XivToolsWpf:IconBlock
-							Foreground="{DynamicResource MaterialDesignToolForeground}"
+							Foreground="{DynamicResource ForegroundLightBrush}"
 							Icon="Times" />
 					</Button>
 
@@ -158,7 +158,7 @@
 						Click="OnTitlebarContextButtonClicked"
 						Style="{StaticResource TransparentIconButton}">
 						<XivToolsWpf:IconBlock
-							Foreground="{DynamicResource MaterialDesignToolForeground}"
+							Foreground="{DynamicResource ForegroundLightBrush}"
 							Icon="AngleDown" />
 					</Button>
 				</StackPanel>
