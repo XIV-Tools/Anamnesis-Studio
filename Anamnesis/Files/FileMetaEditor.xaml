@@ -89,7 +89,6 @@
 				Grid.Row="0"
 				Grid.Column="1"
 				MaxLines="1"
-				Style="{DynamicResource MaterialDesignTextBox}"
 				Text="{Binding File.Author}" />
 
 			<TextBlock
@@ -101,7 +100,6 @@
 				Grid.Row="1"
 				Grid.Column="1"
 				MaxLines="1"
-				Style="{DynamicResource MaterialDesignTextBox}"
 				Text="{Binding File.Version}" />
 
 			<TextBlock
@@ -117,7 +115,6 @@
 				Margin="0,12,0,0"
 				AcceptsReturn="True"
 				MaxLines="8"
-				Style="{DynamicResource MaterialDesignTextBox}"
 				Text="{Binding File.Description}" />
 
 			<Button

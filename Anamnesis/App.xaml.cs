@@ -112,7 +112,6 @@ public partial class App : Application
 			this.CheckForProcesses();
 
 			await Services.InitializeCriticalServices();
-			SettingsService.ApplyTheme();
 			await this.Dispatcher.MainThread();
 
 			Window oldwindow = this.MainWindow;

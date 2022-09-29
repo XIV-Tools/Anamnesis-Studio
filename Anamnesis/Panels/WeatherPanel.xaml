@@ -54,18 +54,12 @@
 				Margin="0,3,6,0"
 				Padding="0"
 				VerticalAlignment="Center"
-				IsChecked="{Binding Services.Time.Freeze}"
-				Style="{DynamicResource MaterialDesignActionToggleButton}">
+				IsChecked="{Binding Services.Time.Freeze}">
 				<ToggleButton.Content>
 					<XivToolsWpf:IconBlock
 						FontSize="12"
 						Icon="LockOpen" />
 				</ToggleButton.Content>
-				<materialdesign:ToggleButtonAssist.OnContent>
-					<XivToolsWpf:IconBlock
-						FontSize="12"
-						Icon="Lock" />
-				</materialdesign:ToggleButtonAssist.OnContent>
 			</ToggleButton>
 
 			<TextBlock
@@ -213,7 +207,7 @@
 									Grid.Column="1"
 									Margin="3,0,0,0"
 									VerticalAlignment="Center"
-									Foreground="{DynamicResource MaterialDesignBody}"
+									Foreground="{DynamicResource ForegroundBrush}"
 									Text="{Binding Name}" />
 								<TextBlock
 									Grid.Row="1"
@@ -221,7 +215,7 @@
 									Margin="3,0,0,0"
 									VerticalAlignment="Center"
 									FontSize="12"
-									Foreground="{DynamicResource MaterialDesignBodyLight}"
+									Foreground="{DynamicResource ForegroundLightBrush}"
 									Text="{Binding WeatherId}" />
 
 							</Grid>
@@ -242,7 +236,7 @@
 						</Grid.ColumnDefinitions>
 
 						<Image Grid.Column="0" Source="{Binding Icon, Converter={StaticResource Img}}" Width="22" Height="22"/>
-						<TextBlock Grid.Column="1" Text="{Binding Name}" Foreground="{DynamicResource MaterialDesignBody}" VerticalAlignment="Center"/>
+						<TextBlock Grid.Column="1" Text="{Binding Name}" Foreground="{DynamicResource ForegroundBrush}" VerticalAlignment="Center"/>
 
 					</Grid>
 				</DataTemplate>

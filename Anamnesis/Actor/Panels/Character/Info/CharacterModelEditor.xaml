@@ -75,8 +75,7 @@
 				Grid.Column="0"
 				Width="22"
 				Height="22"
-				Click="OnModeToggleClicked"
-				Style="{DynamicResource MaterialDesignActionToggleButton}">
+				Click="OnModeToggleClicked">
 
 				<ToggleButton.Content>
 					<fa:IconBlock
@@ -84,12 +83,6 @@
 						FontSize="12"
 						Icon="TintSlash" />
 				</ToggleButton.Content>
-
-				<materialdesign:ToggleButtonAssist.OnContent>
-					<fa:IconBlock
-						FontSize="12"
-						Icon="Tint" />
-				</materialdesign:ToggleButtonAssist.OnContent>
 
 				<ToggleButton.ToolTip>
 					<TextBlock

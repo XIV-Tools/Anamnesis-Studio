@@ -54,12 +54,12 @@
 					IsHitTestVisible="False">
 					<Border
 						x:Name="DragSelectionBorder"
-						BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+						BorderBrush="{DynamicResource TrimBrush}"
 						BorderThickness="1"
 						CornerRadius="3"
 						Visibility="Collapsed">
 						<Border
-							Background="{DynamicResource MaterialDesignBackground}"
+							Background="{DynamicResource BackgroundBrush}"
 							Opacity="0.1" />
 					</Border>
 				</Canvas>

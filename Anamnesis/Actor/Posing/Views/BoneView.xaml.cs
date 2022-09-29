@@ -12,7 +12,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Anamnesis.Actor.Panels;
-using MaterialDesignThemes.Wpf;
 using Serilog;
 using XivToolsWpf.DependencyProperties;
 
@@ -269,9 +268,6 @@ public partial class BoneView : UserControl, IBone
 		this.ErrorEllipse.Visibility = Visibility.Collapsed;
 		this.BackgroundElipse.Visibility = Visibility.Visible;
 
-		PaletteHelper ph = new PaletteHelper();
-		ITheme theme = ph.GetTheme();
-
 		if (!this.IsEnabled || this.skeleton == null)
 		{
 			this.SetState(new SolidColorBrush(Colors.Transparent), 1);
@@ -288,11 +284,11 @@ public partial class BoneView : UserControl, IBone
 		bool parentSelected = this.skeleton.GetIsBoneParentsSelected(this.Bone);
 		bool parentHovered = this.skeleton.GetIsBoneParentsHovered(this.Bone);
 
-		Color color = parentHovered ? theme.PrimaryMid.Color : theme.BodyLight;
+		Color color = parentHovered ? Colors.Green : Colors.Yellow;
 		int thickenss = parentSelected || selected || parentHovered ? 2 : 1;
 
 		this.ForegroundElipse.Visibility = (selected || hovered) ? Visibility.Visible : Visibility.Hidden;
-		this.BackgroundElipse.Stroke = new SolidColorBrush(theme.PrimaryMid.Color);
+		this.BackgroundElipse.Stroke = new SolidColorBrush(Colors.Green);
 		this.SetState(new SolidColorBrush(color), thickenss);
 	}
 

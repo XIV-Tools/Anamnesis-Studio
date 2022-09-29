@@ -10,7 +10,6 @@ using Anamnesis.Memory;
 using Anamnesis.Actor.Extensions;
 using Anamnesis.Posing.Visuals;
 using Anamnesis.Services;
-using MaterialDesignThemes.Wpf;
 using PropertyChanged;
 using XivToolsWpf.Meida3D;
 
@@ -46,9 +45,6 @@ public class BoneVisual3d : ModelVisual3D, ITransform, IBone, IDisposable
 		transformGroup.Children.Add(this.position);
 
 		this.Transform = transformGroup;
-
-		PaletteHelper ph = new PaletteHelper();
-		ITheme t = ph.GetTheme();
 
 		this.target = new BoneTargetVisual3d(this);
 		this.Children.Add(this.target);

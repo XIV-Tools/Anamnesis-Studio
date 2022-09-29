@@ -33,7 +33,7 @@
 						<TextBlock
 							Grid.Column="1"
 							VerticalAlignment="Center"
-							Foreground="{DynamicResource MaterialDesignBody}"
+							Foreground="{DynamicResource ForegroundBrush}"
 							Text="{Binding}" />
 					</Grid>
 				</DataTemplate>
@@ -51,18 +51,18 @@
 				<GroupBox.Header>
 					<StackPanel>
 						<TextBlock
-							Foreground="{DynamicResource MaterialDesignBody}"
+							Foreground="{DynamicResource ForegroundBrush}"
 							Text="[EquipmentSelector_Classes]" />
 						<TextBlock
 							x:Name="JobFilterText"
 							FontSize="10"
-							Foreground="{DynamicResource MaterialDesignBodyLight}"
+							Foreground="{DynamicResource ForegroundLightBrush}"
 							Text="All" />
 					</StackPanel>
 				</GroupBox.Header>
 
 				<Border
-					Background="{StaticResource MaterialDesignPaper}"
+					Background="{StaticResource BackgroundLightBrush}"
 					CornerRadius="3">
 					<controls:ClassFilter
 						HorizontalAlignment="Center"
@@ -73,11 +73,11 @@
 			<GroupBox Style="{StaticResource Cm3GroupBox}">
 				<GroupBox.Header>
 					<TextBlock
-						Foreground="{DynamicResource MaterialDesignBody}"
+						Foreground="{DynamicResource ForegroundBrush}"
 						Text="[EquipmentSelector_Categories" />
 				</GroupBox.Header>
 				<Border
-					Background="{StaticResource MaterialDesignPaper}"
+					Background="{StaticResource BackgroundLightBrush}"
 					CornerRadius="3">
 					<controls:ItemCategoryFilter
 						IsWeaponSlot="{Binding IsWeaponSlot, Mode=OneWay}"
@@ -88,7 +88,7 @@
 			<GroupBox Style="{StaticResource Cm3GroupBox}">
 				<GroupBox.Header>
 					<TextBlock
-						Foreground="{DynamicResource MaterialDesignBody}"
+						Foreground="{DynamicResource ForegroundBrush}"
 						Text="[EquipmentSelector_FilterOther" />
 				</GroupBox.Header>
 
@@ -322,7 +322,7 @@
 							Grid.Column="1"
 							Margin="6,0,0,0"
 							VerticalAlignment="Center"
-							Foreground="{DynamicResource MaterialDesignBody}"
+							Foreground="{DynamicResource ForegroundBrush}"
 							Text="{Binding Name}"
 							TextTrimming="CharacterEllipsis"
 							TextWrapping="NoWrap"
@@ -332,7 +332,7 @@
 							Grid.Row="0"
 							Grid.Column="1"
 							Margin="6,0,0,0"
-							Foreground="{DynamicResource MaterialDesignBody}"
+							Foreground="{DynamicResource ForegroundBrush}"
 							Text="{Binding Name}"
 							TextTrimming="CharacterEllipsis"
 							TextWrapping="NoWrap"
@@ -351,16 +351,16 @@
 							<TextBlock
 								Grid.Column="0"
 								Margin="6,0,0,0"
-								Foreground="{DynamicResource MaterialDesignBodyLight}"
+								Foreground="{DynamicResource ForegroundLightBrush}"
 								Text="{Binding EquipLevel, StringFormat=Lv.{0:D}}"
 								TextAlignment="Left"
 								TextTrimming="CharacterEllipsis"
-								Visibility="{Binding EquipLevel, Converter={StaticResource NotZeroToVisibilityConverter}}" />
+								Visibility="{Binding EquipLevel, Converter={StaticResource NotZeroToVisibility}}" />
 
 							<TextBlock
 								Grid.Column="1"
 								Margin="6,0,0,0"
-								Foreground="{DynamicResource MaterialDesignBodyLight}"
+								Foreground="{DynamicResource ForegroundLightBrush}"
 								Text="{Binding Description}"
 								TextAlignment="Left"
 								TextTrimming="CharacterEllipsis"

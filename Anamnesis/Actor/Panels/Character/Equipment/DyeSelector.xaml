@@ -54,7 +54,7 @@
 						Grid.Column="1"
 						Margin="6,0,0,0"
 						FontWeight="DemiBold"
-						Foreground="{DynamicResource MaterialDesignBody}"
+						Foreground="{DynamicResource ForegroundBrush}"
 						Text="{Binding Name}" />
 
 					<TextBlock
@@ -62,7 +62,7 @@
 						Grid.Column="1"
 						Margin="6,0,0,0"
 						FontWeight="Light"
-						Foreground="{DynamicResource MaterialDesignBody}"
+						Foreground="{DynamicResource ForegroundBrush}"
 						Text="{Binding RowId}" />
 
 					<Rectangle

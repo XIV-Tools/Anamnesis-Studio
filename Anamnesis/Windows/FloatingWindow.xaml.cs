@@ -7,7 +7,6 @@ using Anamnesis.Extensions;
 using Anamnesis.Panels;
 using Anamnesis.Services;
 using FontAwesome.Sharp;
-using MaterialDesignThemes.Wpf;
 using PropertyChanged;
 using Serilog;
 using System;
@@ -43,8 +42,6 @@ public partial class FloatingWindow : Window
 		this.ContentArea.DataContext = this;
 		this.WindowContextMenu.DataContext = this;
 		base.Topmost = false;
-
-		this.TitleColor = Application.Current.Resources.GetTheme().ToolForeground;
 	}
 
 	public ServiceManager Services => App.Services;
@@ -113,7 +110,6 @@ public partial class FloatingWindow : Window
 		}
 	}
 
-	public MediaColor? TitleColor { get; set; }
 	public virtual bool CanPopOut => false;
 	public virtual bool CanPopIn => true;
 	public bool AutoClose { get; set; } = false;
@@ -345,7 +341,6 @@ public partial class FloatingWindow : Window
 			this.CanResize = this.panels[0].CanResize;
 			this.CanScroll = this.panels[0].CanScroll;
 			this.TitleIcon.Icon = this.panels[0].Icon;
-			this.TitleColor = this.panels[0].TitleColor;
 
 			if (!string.IsNullOrEmpty(this.panels[0].Title))
 				this.Title = this.panels[0].Title;
@@ -358,7 +353,6 @@ public partial class FloatingWindow : Window
 			this.CanResize = true;
 			this.CanScroll = true;
 			this.TitleIcon.Icon = IconChar.None;
-			this.TitleColor = Colors.White;
 			this.Title = string.Empty;
 			this.TitleText.Text = string.Empty;
 		}

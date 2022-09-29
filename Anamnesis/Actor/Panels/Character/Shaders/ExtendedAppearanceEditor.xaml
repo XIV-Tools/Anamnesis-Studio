@@ -27,19 +27,13 @@
 			Padding="0"
 			VerticalAlignment="Center"
 			anaUtils:Behaviours.Tooltip="Character_ExAppearance_Freeze_Tooltip"
-			IsChecked="{Binding Freeze}"
-			Style="{DynamicResource MaterialDesignActionToggleButton}">
+			IsChecked="{Binding Freeze}">
 
 			<ToggleButton.Content>
 				<fa:IconBlock
 					FontSize="12"
 					Icon="LockOpen" />
 			</ToggleButton.Content>
-			<materialdesign:ToggleButtonAssist.OnContent>
-				<fa:IconBlock
-					FontSize="12"
-					Icon="Lock" />
-			</materialdesign:ToggleButtonAssist.OnContent>
 		</ToggleButton>
 
 		<Grid Grid.Column="1">
@@ -89,10 +83,10 @@
 				Value="{Binding MouthColor}" />
 
 			<TextBlock
-				Text="[Character_ExAppearance_Eyes"
 				Grid.Row="2"
 				Grid.Column="1"
-				Style="{StaticResource Label}" />
+				Style="{StaticResource Label}"
+				Text="[Character_ExAppearance_Eyes" />
 			<ana:RgbColorControl
 				Grid.Row="2"
 				Grid.Column="2"
@@ -110,10 +104,10 @@
 				Value="{Binding LimbalRingColor}" />
 
 			<TextBlock
-				Text="[Character_ExAppearance_Hair"
 				Grid.Row="3"
 				Grid.Column="1"
-				Style="{StaticResource Label}" />
+				Style="{StaticResource Label}"
+				Text="[Character_ExAppearance_Hair" />
 			<ana:RgbColorControl
 				Grid.Row="3"
 				Grid.Column="2"
@@ -131,10 +125,10 @@
 				Value="{Binding HairHighlight}" />
 
 			<TextBlock
-				Text="[Character_ExAppearance_Muscle"
 				Grid.Row="4"
 				Grid.Column="1"
-				Style="{StaticResource Label}" />
+				Style="{StaticResource Label}"
+				Text="[Character_ExAppearance_Muscle" />
 			<XivToolsWpf:NumberBox
 				Grid.Row="4"
 				Grid.Column="2"

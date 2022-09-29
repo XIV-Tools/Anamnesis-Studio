@@ -25,7 +25,7 @@
 	ResizeMode="CanResizeWithGrip"
 	SizeToContent="WidthAndHeight"
 	TextBlock.FontSize="12"
-	TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
+	TextBlock.Foreground="{DynamicResource ForegroundBrush}"
 	WindowStyle="None"
 	mc:Ignorable="d">
 
@@ -76,7 +76,7 @@
 			Visibility="{Binding ShowBackground, Converter={StaticResource B2V}}">
 
 			<Border
-				Background="{DynamicResource MaterialDesignBackground}"
+				Background="{DynamicResource BackgroundBrush}"
 				CornerRadius="6"
 				Opacity="1">
 				<Border.BitmapEffect>
@@ -86,14 +86,14 @@
 
 			<Border
 				Background="Transparent"
-				BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+				BorderBrush="{DynamicResource TrimBrush}"
 				BorderThickness="1"
 				CornerRadius="6"
 				Visibility="{Binding IsActive, Converter={StaticResource B2V}}" />
 
 			<Border
 				Background="Transparent"
-				BorderBrush="{DynamicResource MaterialDesignBackground}"
+				BorderBrush="{DynamicResource BackgroundBrush}"
 				BorderThickness="1"
 				CornerRadius="6"
 				Visibility="{Binding IsActive, Converter={StaticResource !B2V}}" />

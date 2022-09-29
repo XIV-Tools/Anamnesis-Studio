@@ -151,7 +151,7 @@
 							Grid.Column="1"
 							Margin="6,0,0,0"
 							FontWeight="DemiBold"
-							Foreground="{DynamicResource MaterialDesignBody}"
+							Foreground="{DynamicResource ForegroundBrush}"
 							Text="{Binding Name}" />
 
 						<StackPanel

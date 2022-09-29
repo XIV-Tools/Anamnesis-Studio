@@ -187,14 +187,14 @@
 										<TextBlock
 											Margin="6,0,0,0"
 											FontWeight="DemiBold"
-											Foreground="{DynamicResource MaterialDesignBody}"
+											Foreground="{DynamicResource ForegroundBrush}"
 											Text="{Binding Names.Text}" />
 
 										<TextBlock
 											Text="[Target_Gpose"
 											Margin="6,0,0,0"
 											FontWeight="Light"
-											Foreground="{DynamicResource MaterialDesignBody}"
+											Foreground="{DynamicResource ForegroundBrush}"
 											Visibility="{Binding IsGPoseActor, Converter={StaticResource B2V}}" />
 									</StackPanel>
 
@@ -203,7 +203,7 @@
 										Margin="6,0,0,0"
 										HorizontalAlignment="Right"
 										FontWeight="Light"
-										Foreground="{DynamicResource MaterialDesignBody}"
+										Foreground="{DynamicResource ForegroundBrush}"
 										Text="{Binding DistanceFromPlayer, StringFormat={}{0:#0} ym}" />
 
 									<Grid.ToolTip>

@@ -12,7 +12,7 @@
 	<Grid Margin="6">
 
 		<Border
-			Background="{DynamicResource MaterialDesignBackground}"
+			Background="{DynamicResource BackgroundBrush}"
 			CornerRadius="6">
 			<Border.BitmapEffect>
 				<DropShadowBitmapEffect ShadowDepth="0" />
@@ -20,8 +20,8 @@
 		</Border>
 
 		<Border
-			Background="{DynamicResource MaterialDesignBackground}"
-			BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+			Background="{DynamicResource BackgroundBrush}"
+			BorderBrush="{DynamicResource TrimBrush}"
 			BorderThickness="1"
 			CornerRadius="6" />
 

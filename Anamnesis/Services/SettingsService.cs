@@ -38,18 +38,6 @@ public class SettingsService : ServiceBase<SettingsService>
 		File.WriteAllText(SettingsPath, json);
 	}
 
-	public static void ApplyTheme()
-	{
-		if (Current.OverrideSystemTheme)
-		{
-			Themes.ApplyCustomTheme(Current.ThemeLight, Current.ThemeTrimColor);
-		}
-		else
-		{
-			Themes.ApplySystemTheme();
-		}
-	}
-
 	public override async Task Initialize()
 	{
 		await base.Initialize();
@@ -103,7 +91,6 @@ public class SettingsService : ServiceBase<SettingsService>
 			Save();
 		}
 
-		ApplyTheme();
 		SettingsChanged?.Invoke(sender, e);
 	}
 }

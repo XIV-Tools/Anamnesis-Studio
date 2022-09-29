@@ -231,11 +231,11 @@
 							IsEnabled="{Binding SettingsService.Current.OverrideSystemTheme}"
 							Style="{StaticResource Label}"
 							Text="[Settings_Theme_Color" />
-						<wpf:ColorPicker
+						<!--<wpf:ColorPicker
 							Grid.Row="2"
 							Grid.Column="1"
 							IsEnabled="{Binding SettingsService.Current.OverrideSystemTheme}"
-							Color="{Binding SettingsService.Settings.ThemeTrimColor}" />
+							Color="{Binding SettingsService.Settings.ThemeTrimColor}" />-->
 
 					</Grid>
 				</GroupBox>
@@ -272,7 +272,6 @@
 						Grid.Row="0"
 						Grid.Column="1"
 						Margin="6"
-						Style="{StaticResource MaterialDesignTextBox}"
 						Text="{Binding SettingsService.Settings.DefaultAuthor}" />
 
 					<TextBlock
@@ -329,7 +328,6 @@
 								Grid.Column="1"
 								Margin="3,0,0,0"
 								IsEnabled="False"
-								Style="{StaticResource MaterialDesignTextBox}"
 								Text="{Binding SettingsService.Settings.DefaultCharacterDirectory}" />
 							<Button
 								Grid.Row="0"
@@ -349,7 +347,6 @@
 								Grid.Column="1"
 								Margin="3,0,0,0"
 								IsEnabled="False"
-								Style="{StaticResource MaterialDesignTextBox}"
 								Text="{Binding SettingsService.Settings.DefaultPoseDirectory}" />
 							<Button
 								Grid.Row="1"
@@ -369,7 +366,6 @@
 								Grid.Column="1"
 								Margin="3,0,0,0"
 								IsEnabled="False"
-								Style="{StaticResource MaterialDesignTextBox}"
 								Text="{Binding SettingsService.Settings.DefaultCameraShotDirectory}" />
 							<Button
 								Grid.Row="2"
@@ -381,7 +377,7 @@
 
 							<!--
 							<ana:TextBlock Grid.Row="2" Grid.Column="0" Text="[Settings_Dir_Scenes" Style="{StaticResource Label}"/>
-							<TextBox Grid.Row="2" Grid.Column="1" Margin="3, 0, 0, 0" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding SettingsService.Settings.DefaultSceneDirectory}" IsEnabled="False"/>
+							<TextBox Grid.Row="2" Grid.Column="1" Margin="3, 0, 0, 0" Text="{Binding SettingsService.Settings.DefaultSceneDirectory}" IsEnabled="False"/>
 							<Button Grid.Row="2" Grid.Column="2" Margin="6, 3, 0, 0" Style="{StaticResource TransparentButton}" Content="..." Click="OnBrowseScene"/>
 							-->
 

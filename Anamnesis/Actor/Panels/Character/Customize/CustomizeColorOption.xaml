@@ -66,7 +66,7 @@
 						<Popup
 							Name="PART_Popup"
 							Grid.Column="0"
-							MinWidth="{Binding ElementName=toggleButton, Path=ActualWidth, Converter={StaticResource MathAddConverter}, ConverterParameter=32}"
+							MinWidth="{Binding ElementName=toggleButton, Path=ActualWidth}"
 							Margin="-16"
 							AllowsTransparency="True"
 							Focusable="False"
@@ -89,7 +89,7 @@
 								</Border>
 
 								<Border
-									Background="{DynamicResource MaterialDesignBackground}"
+									Background="{DynamicResource BackgroundBrush}"
 									CornerRadius="6">
 									<ScrollViewer
 										MinHeight="1"

@@ -32,19 +32,19 @@
 
 		<Ellipse
 			x:Name="BackgroundElipse"
-			Fill="{DynamicResource MaterialDesignPaper}"
-			Stroke="{DynamicResource PrimaryHueMidBrush}"
+			Fill="{DynamicResource BackgroundLightBrush}"
+			Stroke="{DynamicResource TrimBrush}"
 			StrokeThickness="1" />
 		<Ellipse
 			x:Name="ForegroundElipse"
 			Margin="4"
-			Fill="{DynamicResource PrimaryHueMidBrush}"
+			Fill="{DynamicResource TrimBrush}"
 			Visibility="Hidden" />
 		<Ellipse
 			x:Name="ErrorEllipse"
 			Fill="Transparent"
 			Opacity="0.5"
-			Stroke="{DynamicResource MaterialDesignPaper}"
+			Stroke="{DynamicResource BackgroundLightBrush}"
 			StrokeThickness="1"
 			Visibility="Collapsed" />
 

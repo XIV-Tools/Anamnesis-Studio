@@ -169,7 +169,7 @@
 				Grid.Row="0"
 				Grid.RowSpan="2"
 				IsIndeterminate="True"
-				Style="{StaticResource MaterialDesignCircularProgressBar}"
+				Style="{StaticResource XivToolsWaiter}"
 				Visibility="{Binding IsLoading, Converter={StaticResource B2V}}" />
 
 			<XivToolsWpf:MultiNumberBox

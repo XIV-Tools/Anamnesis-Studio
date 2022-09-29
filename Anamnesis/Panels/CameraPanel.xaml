@@ -84,20 +84,13 @@
 				Height="22"
 				Margin="0"
 				Padding="0"
-				IsChecked="{Binding Services.Camera.Camera.FreezeAngle}"
-				Style="{DynamicResource MaterialDesignActionToggleButton}">
+				IsChecked="{Binding Services.Camera.Camera.FreezeAngle}">
 
 				<ToggleButton.Content>
 					<XivToolsWpf:IconBlock
 						FontSize="12"
 						Icon="LockOpen" />
 				</ToggleButton.Content>
-
-				<materialdesign:ToggleButtonAssist.OnContent>
-					<XivToolsWpf:IconBlock
-						FontSize="12"
-						Icon="Lock" />
-				</materialdesign:ToggleButtonAssist.OnContent>
 			</ToggleButton>
 
 			<controls:Vector2DEditor

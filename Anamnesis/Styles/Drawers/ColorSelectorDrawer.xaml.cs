@@ -270,7 +270,7 @@ public partial class ColorSelectorDrawer : UserControl, INotifyPropertyChanged
 		if (!this.draggingPicker)
 			return;
 
-		this.propertyLock = true;
+		/*this.propertyLock = true;
 		Color4 val = ToCmColor(this.Picker.Color);
 		val.A = this.Value.A;
 		this.Value = val;
@@ -278,7 +278,7 @@ public partial class ColorSelectorDrawer : UserControl, INotifyPropertyChanged
 		this.G = this.Value.G;
 		this.B = this.Value.B;
 		this.A = this.Value.A;
-		this.propertyLock = false;
+		this.propertyLock = false;*/
 	}
 
 	private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)

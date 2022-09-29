@@ -61,14 +61,14 @@
 					Grid.Column="1"
 					Margin="0,32,0,6"
 					FontSize="52"
-					Foreground="{StaticResource MaterialDesignPaper}"
+					Foreground="{StaticResource BackgroundLightBrush}"
 					Icon="{Binding Icon}" />
 
 				<XivToolsWpf:IconBlock
 					Grid.Column="0"
 					Margin="6,40,-4,6"
 					FontSize="25"
-					Foreground="{StaticResource MaterialDesignPaper}"
+					Foreground="{StaticResource BackgroundLightBrush}"
 					Icon="Download"
 					Visibility="{Binding IsUpdateAvailable, Converter={StaticResource B2V}, FallbackValue=Collapsed}" />
 			</Grid>

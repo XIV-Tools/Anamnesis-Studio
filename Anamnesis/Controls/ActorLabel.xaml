@@ -105,7 +105,7 @@
 			Grid.Column="3"
 			Margin="3,0,0,0"
 			FontSize="8"
-			Foreground="{StaticResource PrimaryHueMidBrush}"
+			Foreground="{StaticResource TrimBrush}"
 			Icon="MousePointer"
 			Visibility="{Binding IsTargeted, Converter={StaticResource B2V}, FallbackValue=Collapsed}" />
 

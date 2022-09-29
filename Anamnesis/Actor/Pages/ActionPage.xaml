@@ -93,10 +93,10 @@
 						</Grid>
 
 						<TextBlock
-							Text="[Character_Action_AnimationInterrupt"
 							Grid.Row="2"
 							Grid.Column="0"
-							Style="{StaticResource Label}" />
+							Style="{StaticResource Label}"
+							Text="[Character_Action_AnimationInterrupt" />
 
 
 						<CheckBox
@@ -158,9 +158,9 @@
 						</Grid>
 
 						<XivToolsWpf:InfoControl
-							Text="[Character_Action_AnimationOverrideBlocked"
 							Grid.RowSpan="4"
 							Grid.ColumnSpan="2"
+							Text="[Character_Action_AnimationOverrideBlocked"
 							Visibility="{Binding Actor.CanAnimate, Converter={StaticResource !B2V}}" />
 					</Grid>
 				</GroupBox>
@@ -172,8 +172,8 @@
 				<GroupBox Style="{StaticResource PanelGroupBox}">
 					<GroupBox.Header>
 						<XivToolsWpf:Header
-							Text="[Character_Action_AnimationBlending"
-							Icon="RulerCombined" />
+							Icon="RulerCombined"
+							Text="[Character_Action_AnimationBlending" />
 					</GroupBox.Header>
 
 					<Grid>
@@ -188,10 +188,10 @@
 						</Grid.RowDefinitions>
 
 						<TextBlock
-							Text="[Character_Action_AnimationId"
 							Grid.Row="0"
 							Grid.Column="0"
-							Style="{StaticResource Label}" />
+							Style="{StaticResource Label}"
+							Text="[Character_Action_AnimationId" />
 
 
 						<Grid
@@ -233,9 +233,9 @@
 						</Button>
 
 						<XivToolsWpf:InfoControl
-							Text="[Character_Action_AnimationOverrideBlendBlocked"
 							Grid.RowSpan="2"
 							Grid.ColumnSpan="2"
+							Text="[Character_Action_AnimationOverrideBlendBlocked"
 							Visibility="{Binding Actor.IsAnimationOverridden, Converter={StaticResource !B2V}}" />
 					</Grid>
 				</GroupBox>
@@ -247,9 +247,9 @@
 				<GroupBox Style="{StaticResource PanelGroupBox}">
 					<GroupBox.Header>
 						<XivToolsWpf:Header
-							Text="[Character_Action_AnimationSpeedControl"
 							Grid.Column="0"
-							Icon="Stopwatch" />
+							Icon="Stopwatch"
+							Text="[Character_Action_AnimationSpeedControl" />
 					</GroupBox.Header>
 
 					<Grid IsEnabled="{Binding AnimationService.SpeedControlEnabled}">
@@ -315,14 +315,14 @@
 							Speed="{Binding Actor.Animation.Speeds[7].Value}" />
 
 						<XivToolsWpf:InfoControl
-							Text="[Character_Action_AnimationOverrideSpeedControlDisable"
 							Grid.RowSpan="6"
 							Grid.ColumnSpan="2"
+							Text="[Character_Action_AnimationOverrideSpeedControlDisable"
 							Visibility="{Binding AnimationService.SpeedControlEnabled, Converter={StaticResource !B2V}}" />
 						<XivToolsWpf:InfoControl
-							Text="[Character_Action_AnimationOverrideSpeedBlocked"
 							Grid.RowSpan="6"
 							Grid.ColumnSpan="2"
+							Text="[Character_Action_AnimationOverrideSpeedBlocked"
 							Visibility="{Binding GposeService.IsGpose, Converter={StaticResource !B2V}}" />
 					</Grid>
 				</GroupBox>
@@ -339,8 +339,8 @@
 				<GroupBox Style="{StaticResource PanelGroupBox}">
 					<GroupBox.Header>
 						<XivToolsWpf:Header
-							Text="[Character_Action_AnimationData"
-							Icon="Skating" />
+							Icon="Skating"
+							Text="[Character_Action_AnimationData" />
 					</GroupBox.Header>
 
 					<Grid>
@@ -357,10 +357,10 @@
 						</Grid.RowDefinitions>
 
 						<TextBlock
-							Text="[Character_Actor_EntityType"
 							Grid.Row="0"
 							Grid.Column="0"
-							Style="{StaticResource Label}" />
+							Style="{StaticResource Label}"
+							Text="[Character_Actor_EntityType" />
 
 						<ComboBox
 							Grid.Row="0"
@@ -381,10 +381,10 @@
 						</ComboBox>
 
 						<TextBlock
-							Text="[Character_Actor_DataPath"
 							Grid.Row="1"
 							Grid.Column="0"
-							Style="{StaticResource Label}" />
+							Style="{StaticResource Label}"
+							Text="[Character_Actor_DataPath" />
 
 						<views:DataPathSelector
 							Grid.Row="1"
@@ -395,10 +395,10 @@
 							Tribe="{Binding Actor.Customize.Tribe}" />
 
 						<TextBlock
-							Text="[Character_Action_ModelRow"
 							Grid.Row="2"
 							Grid.Column="0"
-							Style="{StaticResource Label}" />
+							Style="{StaticResource Label}"
+							Text="[Character_Action_ModelRow" />
 
 						<XivToolsWpf:NumberBox
 							Grid.Row="2"
@@ -409,10 +409,10 @@
 							Value="{Binding Actor.ModelType}" />
 
 						<TextBlock
-							Text="[Character_Action_LipAnimation"
 							Grid.Row="3"
 							Grid.Column="0"
-							Style="{StaticResource Label}" />
+							Style="{StaticResource Label}"
+							Text="[Character_Action_LipAnimation" />
 
 						<ComboBox
 							Grid.Row="3"
@@ -429,8 +429,8 @@
 				<GroupBox Style="{StaticResource PanelGroupBox}">
 					<GroupBox.Header>
 						<XivToolsWpf:Header
-							Text="[Character_Action_AnimationStatus"
-							Icon="Male" />
+							Icon="Male"
+							Text="[Character_Action_AnimationStatus" />
 					</GroupBox.Header>
 
 					<Grid>
@@ -456,18 +456,17 @@
 							</Grid.ColumnDefinitions>
 
 							<TextBlock
-								Text="[Character_Action_Mode"
 								Grid.Row="0"
 								Grid.Column="0"
 								HorizontalAlignment="Left"
-								Style="{StaticResource Label}" />
+								Style="{StaticResource Label}"
+								Text="[Character_Action_Mode" />
 
 							<TextBox
 								Grid.Row="0"
 								Grid.Column="1"
 								Grid.ColumnSpan="2"
 								IsReadOnly="True"
-								Style="{StaticResource MaterialDesignTextBox}"
 								Text="{Binding Path=Actor.CharacterMode, FallbackValue='?'}">
 								<TextBox.ToolTip>
 									<TextBlock Text="[Character_Action_ModeName" />
@@ -478,7 +477,6 @@
 								Grid.Row="1"
 								Grid.Column="1"
 								IsReadOnly="True"
-								Style="{StaticResource MaterialDesignTextBox}"
 								Text="{Binding Path=Actor.CharacterModeRaw}">
 								<TextBox.ToolTip>
 									<TextBlock Text="[Character_Action_ModeId" />
@@ -489,7 +487,6 @@
 								Grid.Row="1"
 								Grid.Column="2"
 								IsReadOnly="True"
-								Style="{StaticResource MaterialDesignTextBox}"
 								Text="{Binding Path=Actor.CharacterModeInput}">
 								<TextBox.ToolTip>
 									<TextBlock Text="[Character_Action_ModeInput" />
@@ -538,8 +535,8 @@
 				Style="{StaticResource PanelGroupBox}">
 				<GroupBox.Header>
 					<XivToolsWpf:Header
-						Text="[Character_Action_GlobalSettings"
-						Icon="Globe" />
+						Icon="Globe"
+						Text="[Character_Action_GlobalSettings" />
 				</GroupBox.Header>
 
 				<Grid>
@@ -554,10 +551,10 @@
 					</Grid.RowDefinitions>
 
 					<TextBlock
-						Text="[Character_Action_GlobalFreezeWorldPositions"
 						Grid.Row="0"
 						Grid.Column="0"
-						Style="{StaticResource Label}" />
+						Style="{StaticResource Label}"
+						Text="[Character_Action_GlobalFreezeWorldPositions" />
 
 					<ToggleButton
 						Grid.Row="0"
@@ -581,10 +578,10 @@
 					</ToggleButton>
 
 					<TextBlock
-						Text="[Character_Action_GlobalSpeedControl"
 						Grid.Row="1"
 						Grid.Column="0"
-						Style="{StaticResource Label}" />
+						Style="{StaticResource Label}"
+						Text="[Character_Action_GlobalSpeedControl" />
 
 					<ToggleButton
 						Grid.Row="1"
@@ -612,8 +609,8 @@
 
 				<GroupBox.Header>
 					<XivToolsWpf:Header
-						Text="[Scene_Transform_Header"
-						Icon="User" />
+						Icon="User"
+						Text="[Scene_Transform_Header" />
 				</GroupBox.Header>
 
 				<controls:TransformEditor Value="{Binding Actor.ModelObject.Transform}">

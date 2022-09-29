@@ -83,7 +83,7 @@
 			<Border
 				Grid.Row="0"
 				Grid.RowSpan="3"
-				Background="{DynamicResource MaterialDesignBackground}"
+				Background="{DynamicResource BackgroundBrush}"
 				CornerRadius="6">
 
 				<Border.BitmapEffect>
@@ -94,7 +94,7 @@
 			<Border
 				Grid.Row="0"
 				Grid.RowSpan="3"
-				BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+				BorderBrush="{DynamicResource TrimBrush}"
 				BorderThickness="1"
 				CornerRadius="6"
 				Visibility="{Binding IsActive, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Converter={StaticResource B2V}}" />
@@ -369,7 +369,7 @@
 
 			<Border
 				Grid.ColumnSpan="2"
-				Background="{DynamicResource MaterialDesignBackground}"
+				Background="{DynamicResource BackgroundBrush}"
 				CornerRadius="6"
 				IsHitTestVisible="False">
 				<Border.BitmapEffect>
@@ -586,7 +586,7 @@
 
 										<Ellipse
 											x:Name="Background"
-											Fill="{StaticResource MaterialDesignBackground}"
+											Fill="{StaticResource BackgroundBrush}"
 											Opacity="0">
 											<Ellipse.BitmapEffect>
 												<DropShadowBitmapEffect ShadowDepth="0" />

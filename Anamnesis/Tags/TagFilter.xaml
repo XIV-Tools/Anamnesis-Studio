@@ -68,7 +68,7 @@
 
 														<Border
 															Grid.Column="0"
-															Background="{StaticResource MaterialDesignPaper}"
+															Background="{StaticResource BackgroundLightBrush}"
 															CornerRadius="10"
 															Opacity="0.5" />
 
@@ -77,7 +77,7 @@
 															Grid.Column="1"
 															Margin="6,0"
 															VerticalAlignment="Center"
-															Foreground="{DynamicResource MaterialDesignBodyLight}"
+															Foreground="{DynamicResource ForegroundLightBrush}"
 															Opacity="0.5"
 															Text="Search or filter by tags..."
 															Visibility="{Binding ShowHint, Converter={StaticResource B2V}}" />
@@ -88,7 +88,7 @@
 															Margin="4,0"
 															HorizontalAlignment="Left"
 															FontSize="13"
-															Foreground="{DynamicResource MaterialDesignBodyLight}"
+															Foreground="{DynamicResource ForegroundLightBrush}"
 															Icon="PlusCircle"
 															Opacity="0.5" />
 
@@ -249,7 +249,7 @@
 
 													<Border
 														Grid.ColumnSpan="2"
-														Background="{StaticResource MaterialDesignPaper}"
+														Background="{StaticResource BackgroundLightBrush}"
 														CornerRadius="10"
 														Opacity="0.5" />
 
@@ -257,7 +257,7 @@
 														x:Name="TagIcon"
 														Margin="4,1,0,0"
 														FontSize="11"
-														Foreground="{DynamicResource MaterialDesignBodyLight}"
+														Foreground="{DynamicResource ForegroundLightBrush}"
 														Icon="Search"
 														Opacity="0.5" />
 
@@ -265,7 +265,7 @@
 														x:Name="CloseIcon"
 														Margin="4,0,0,0"
 														FontSize="13"
-														Foreground="{DynamicResource MaterialDesignBodyLight}"
+														Foreground="{DynamicResource ForegroundLightBrush}"
 														Icon="TimesCircle"
 														Opacity="0" />
 
@@ -274,7 +274,7 @@
 														Margin="3,0,6,0"
 														VerticalAlignment="Center"
 														FontSize="11"
-														Foreground="{DynamicResource MaterialDesignBodyLight}"
+														Foreground="{DynamicResource ForegroundLightBrush}"
 														Text="{Binding Name}"
 														TextTrimming="CharacterEllipsis" />
 												</Grid>
@@ -352,7 +352,7 @@
 
 													<Border
 														Grid.ColumnSpan="2"
-														Background="{StaticResource MaterialDesignPaper}"
+														Background="{StaticResource BackgroundLightBrush}"
 														CornerRadius="10"
 														Opacity="0.5" />
 
@@ -360,7 +360,7 @@
 														x:Name="TagIcon"
 														Margin="4,1,0,0"
 														FontSize="11"
-														Foreground="{DynamicResource MaterialDesignBodyLight}"
+														Foreground="{DynamicResource ForegroundLightBrush}"
 														Icon="Tag"
 														Opacity="0.5" />
 
@@ -368,7 +368,7 @@
 														x:Name="CloseIcon"
 														Margin="4,0,0,0"
 														FontSize="13"
-														Foreground="{DynamicResource MaterialDesignBodyLight}"
+														Foreground="{DynamicResource ForegroundLightBrush}"
 														Icon="TimesCircle"
 														Opacity="0" />
 
@@ -377,7 +377,7 @@
 														Margin="3,0,6,0"
 														VerticalAlignment="Center"
 														FontSize="11"
-														Foreground="{DynamicResource MaterialDesignBodyLight}"
+														Foreground="{DynamicResource ForegroundLightBrush}"
 														Text="{Binding Name}"
 														TextTrimming="CharacterEllipsis" />
 												</Grid>
@@ -493,7 +493,7 @@
 
 															<Border
 																Grid.ColumnSpan="2"
-																Background="{StaticResource MaterialDesignPaper}"
+																Background="{StaticResource BackgroundLightBrush}"
 																CornerRadius="10"
 																Opacity="0.5" />
 
@@ -501,7 +501,7 @@
 																x:Name="TagIcon"
 																Margin="4,1,0,0"
 																FontSize="11"
-																Foreground="{DynamicResource MaterialDesignBodyLight}"
+																Foreground="{DynamicResource ForegroundLightBrush}"
 																Icon="Tag"
 																Opacity="0.5" />
 
@@ -509,7 +509,7 @@
 																x:Name="CloseIcon"
 																Margin="4,0,0,0"
 																FontSize="13"
-																Foreground="{DynamicResource MaterialDesignBodyLight}"
+																Foreground="{DynamicResource ForegroundLightBrush}"
 																Icon="PlusCircle"
 																Opacity="0" />
 
@@ -518,7 +518,7 @@
 																Margin="3,0,6,0"
 																VerticalAlignment="Center"
 																FontSize="11"
-																Foreground="{DynamicResource MaterialDesignBodyLight}"
+																Foreground="{DynamicResource ForegroundLightBrush}"
 																Text="{Binding Name}"
 																TextTrimming="CharacterEllipsis" />
 														</Grid>
