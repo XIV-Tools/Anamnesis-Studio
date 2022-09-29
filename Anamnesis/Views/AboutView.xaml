@@ -1,127 +1,231 @@
-﻿<UserControl x:Class="Anamnesis.GUI.Views.AboutView"
-			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-			 xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-			 xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-			 xmlns:ana="clr-namespace:Anamnesis.Styles.Controls"
-			 xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
-			 mc:Ignorable="d" 
-			 d:DesignHeight="600"
-			 Width="310">
+﻿<UserControl
+	x:Class="Anamnesis.GUI.Views.AboutView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
+	xmlns:ana="clr-namespace:Anamnesis.Styles.Controls"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	Width="310"
+	d:DesignHeight="600"
+	mc:Ignorable="d">
 
-	<Grid Margin="6, 0, 0, 3">
+	<Grid Margin="6,0,0,3">
 
 		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition/>
-			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
 		<GroupBox Grid.Row="0">
 			<GroupBox.Header>
-				<TextBlock Text="[About_Version_Header"/>
+				<TextBlock Text="[About_Version_Header" />
 			</GroupBox.Header>
 
 			<Grid>
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition/>
+					<ColumnDefinition />
 					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
-				
-				<TextBlock x:Name="VersionLabel" Grid.Column="0" FontSize="22" Margin="6,0,0,0"/>
-				<Button Grid.Column="1" Width="28" Style="{StaticResource TransparentButton}" Click="OnCheckForUpdatesClicked">
+
+				<TextBlock
+					x:Name="VersionLabel"
+					Grid.Column="0"
+					Margin="6,0,0,0"
+					FontSize="22" />
+				<Button
+					Grid.Column="1"
+					Width="28"
+					Click="OnCheckForUpdatesClicked"
+					Style="{StaticResource TransparentButton}">
 					<Button.ToolTip>
-						<TextBlock Text="[About_CheckForUpdates"/>
+						<TextBlock Text="[About_CheckForUpdates" />
 					</Button.ToolTip>
-					
-					<fa:IconBlock Icon="Redo"/>
+
+					<fa:IconBlock Icon="Redo" />
 				</Button>
 			</Grid>
-			
+
 
 		</GroupBox>
-		
+
 		<GroupBox Grid.Row="1">
 			<GroupBox.Header>
-				<TextBlock Text="[About_OpenSource_Header"/>
+				<TextBlock Text="[About_OpenSource_Header" />
 			</GroupBox.Header>
 
-			<TextBlock TextWrapping="Wrap" Margin="6,0,0,10" Style="{StaticResource Body}">Anamnesis is proudly Free and Open Source Software. Please feel free to leave the team a Star on 
-				<fa:IconBlock Icon="Github"/> <Hyperlink RequestNavigate="OnNavigate" NavigateUri="https://github.com/imchillin/Anamnesis" FontSize="12">GitHub</Hyperlink>.
-					<LineBreak />
-					Anamnesis is built with the following projects:
-					<LineBreak />
-					<Hyperlink RequestNavigate="OnNavigate" NavigateUri="https://github.com/NotAdam/Lumina" FontSize="12" >Lumina</Hyperlink>
-					<LineBreak />
-					<Hyperlink RequestNavigate="OnNavigate" NavigateUri="http://materialdesigninxaml.net/" FontSize="12">Material Design In XAML</Hyperlink>
-					<LineBreak />
-					<Hyperlink RequestNavigate="OnNavigate" NavigateUri="https://github.com/Fody/Fody" FontSize="12">Fody</Hyperlink>
-					<LineBreak />
-					<Hyperlink RequestNavigate="OnNavigate" NavigateUri="https://github.com/Fody/PropertyChanged" FontSize="12">Fody.PropertyChanged</Hyperlink>
-					<LineBreak />
-					<Hyperlink RequestNavigate="OnNavigate" NavigateUri="https://fontawesome.com/" FontSize="12">FontAwesome</Hyperlink>
-					<LineBreak />
-					<Hyperlink RequestNavigate="OnNavigate" NavigateUri="https://github.com/awesome-inc/FontAwesome.Sharp" FontSize="12">FontAwesome Sharp</Hyperlink>
-					<LineBreak />
-					<Hyperlink RequestNavigate="OnNavigate" NavigateUri="https://github.com/DotNetAnalyzers/StyleCopAnalyzers" FontSize="12">StyleCop Analyzers</Hyperlink>
-					<LineBreak />
-					<Hyperlink RequestNavigate="OnNavigate" NavigateUri="https://github.com/Kryptos-FR/markdig.wpf" FontSize="12">Markdig.WPF</Hyperlink>
-					<LineBreak />
-					<Hyperlink RequestNavigate="OnNavigate" NavigateUri="https://brailleinstitute.org/freefont" FontSize="12" >Atkinson Hyperlegible Font</Hyperlink>
+			<TextBlock
+				Margin="6,0,0,10"
+				Style="{StaticResource Body}"
+				TextWrapping="Wrap">
+				Anamnesis is proudly Free and Open Source Software. Please feel free to leave the team a Star on
+				<fa:IconBlock Icon="Github" /> <Hyperlink
+					FontSize="12"
+					NavigateUri="https://github.com/imchillin/Anamnesis"
+					RequestNavigate="OnNavigate">
+					GitHub
+				</Hyperlink>
+				.<LineBreak />
+				Anamnesis is built with the following projects:<LineBreak />
+				<Hyperlink
+					FontSize="12"
+					NavigateUri="https://github.com/NotAdam/Lumina"
+					RequestNavigate="OnNavigate">
+					Lumina
+				</Hyperlink>
+				<LineBreak />
+				<Hyperlink
+					FontSize="12"
+					NavigateUri="https://github.com/Fody/Fody"
+					RequestNavigate="OnNavigate">
+					Fody
+				</Hyperlink>
+				<LineBreak />
+				<Hyperlink
+					FontSize="12"
+					NavigateUri="https://github.com/Fody/PropertyChanged"
+					RequestNavigate="OnNavigate">
+					Fody.PropertyChanged
+				</Hyperlink>
+				<LineBreak />
+				<Hyperlink
+					FontSize="12"
+					NavigateUri="https://fontawesome.com/"
+					RequestNavigate="OnNavigate">
+					FontAwesome
+				</Hyperlink>
+				<LineBreak />
+				<Hyperlink
+					FontSize="12"
+					NavigateUri="https://github.com/awesome-inc/FontAwesome.Sharp"
+					RequestNavigate="OnNavigate">
+					FontAwesome Sharp
+				</Hyperlink>
+				<LineBreak />
+				<Hyperlink
+					FontSize="12"
+					NavigateUri="https://github.com/DotNetAnalyzers/StyleCopAnalyzers"
+					RequestNavigate="OnNavigate">
+					StyleCop Analyzers
+				</Hyperlink>
+				<LineBreak />
+				<Hyperlink
+					FontSize="12"
+					NavigateUri="https://github.com/Kryptos-FR/markdig.wpf"
+					RequestNavigate="OnNavigate">
+					Markdig.WPF
+				</Hyperlink>
+				<LineBreak />
+				<Hyperlink
+					FontSize="12"
+					NavigateUri="https://brailleinstitute.org/freefont"
+					RequestNavigate="OnNavigate">
+					Atkinson Hyperlegible Font
+				</Hyperlink>
 			</TextBlock>
 
-			
+
 		</GroupBox>
 		<GroupBox Grid.Row="2">
 			<GroupBox.Header>
-				<TextBlock Text="[About_Contact_Header"/>
+				<TextBlock Text="[About_Contact_Header" />
 			</GroupBox.Header>
 
-			<TextBlock TextWrapping="Wrap" Margin="6,0,0,10" Style="{StaticResource Body}">Want to follow development, ask a question, look for help, raise a bug, or just say hi? Visit us on
-				<fa:IconBlock Icon="Discord"/> <Hyperlink RequestNavigate="OnNavigate" NavigateUri="https://discord.gg/KvGJCCnG8t" FontSize="12">Discord</Hyperlink>, or follow the XIV Tools 
-				<fa:IconBlock Icon="Twitter"/> <Hyperlink RequestNavigate="OnNavigate" NavigateUri="https://twitter.com/XIV_Tools" FontSize="12">Twitter</Hyperlink>!</TextBlock>
+			<TextBlock
+				Margin="6,0,0,10"
+				Style="{StaticResource Body}"
+				TextWrapping="Wrap">
+				Want to follow development, ask a question, look for help, raise a bug, or just say hi? Visit us on
+				<fa:IconBlock Icon="Discord" /> <Hyperlink
+					FontSize="12"
+					NavigateUri="https://discord.gg/KvGJCCnG8t"
+					RequestNavigate="OnNavigate">
+					Discord
+				</Hyperlink>
+				, or follow the XIV Tools
+				<fa:IconBlock Icon="Twitter" /> <Hyperlink
+					FontSize="12"
+					NavigateUri="https://twitter.com/XIV_Tools"
+					RequestNavigate="OnNavigate">
+					Twitter
+				</Hyperlink>
+				!</TextBlock>
 		</GroupBox>
-		
+
 		<GroupBox Grid.Row="3">
 			<GroupBox.Header>
-				<TextBlock Text="[About_Donate_Header"/>
+				<TextBlock Text="[About_Donate_Header" />
 			</GroupBox.Header>
 
-			<TextBlock TextWrapping="Wrap" Margin="6,0,0,7" Style="{StaticResource Body}">This project is a labor of love. Please consider donating to the members of the dev team to say thank you!<LineBreak />
-				<fa:IconBlock Icon="Coffee"/> <Hyperlink RequestNavigate="OnNavigate" NavigateUri="https://ko-fi.com/xivtools" FontSize="12">XIV Tools Ko-fi (Yuki)</Hyperlink>
-                <LineBreak />
-                <fa:IconBlock Icon="Coffee"/> <Hyperlink RequestNavigate="OnNavigate" NavigateUri="https://ko-fi.com/Asgard" FontSize="12">Asgard's Ko-fi</Hyperlink>
-                <LineBreak />
-                <fa:IconBlock Icon="Coffee"/> <Hyperlink RequestNavigate="OnNavigate" NavigateUri="https://ko-fi.com/peebsmiqo" FontSize="12">Peebs' Ko-fi</Hyperlink>
-            </TextBlock>
+			<TextBlock
+				Margin="6,0,0,7"
+				Style="{StaticResource Body}"
+				TextWrapping="Wrap">
+				This project is a labor of love. Please consider donating to the members of the dev team to say thank you!<LineBreak />
+				<fa:IconBlock Icon="Coffee" /> <Hyperlink
+					FontSize="12"
+					NavigateUri="https://ko-fi.com/xivtools"
+					RequestNavigate="OnNavigate">
+					XIV Tools Ko-fi (Yuki)
+				</Hyperlink>
+				<LineBreak />
+				<fa:IconBlock Icon="Coffee" /> <Hyperlink
+					FontSize="12"
+					NavigateUri="https://ko-fi.com/Asgard"
+					RequestNavigate="OnNavigate">
+					Asgard's Ko-fi
+				</Hyperlink>
+				<LineBreak />
+				<fa:IconBlock Icon="Coffee" /> <Hyperlink
+					FontSize="12"
+					NavigateUri="https://ko-fi.com/peebsmiqo"
+					RequestNavigate="OnNavigate">
+					Peebs' Ko-fi
+				</Hyperlink>
+			</TextBlock>
 		</GroupBox>
 
 		<GroupBox Grid.Row="4">
 			<GroupBox.Header>
-				<TextBlock Text="[About_Debug_Header"/>
+				<TextBlock Text="[About_Debug_Header" />
 			</GroupBox.Header>
 
 			<Grid>
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition/>
-					<ColumnDefinition/>
+					<ColumnDefinition />
+					<ColumnDefinition />
 				</Grid.ColumnDefinitions>
 
 				<Grid.RowDefinitions>
-					<RowDefinition/>
-					<RowDefinition/>
+					<RowDefinition />
+					<RowDefinition />
 				</Grid.RowDefinitions>
 
-				<Button Margin="3" Click="OnLogsClicked" Grid.Column="0" Grid.Row="0" Style="{StaticResource TransparentButton}">
-					<TextBlock Text="[About_Debug_OpenLogs" Margin="3"/>
+				<Button
+					Grid.Row="0"
+					Grid.Column="0"
+					Margin="3"
+					Click="OnLogsClicked"
+					Style="{StaticResource TransparentButton}">
+					<TextBlock
+						Margin="3"
+						Text="[About_Debug_OpenLogs" />
 				</Button>
 
-				<Button Margin="3" Click="OnSetingsClicked" Grid.Column="1" Grid.Row="0" Style="{StaticResource TransparentButton}">
-					<TextBlock Text="[About_Debug_OpenSettings" Margin="3"/>
+				<Button
+					Grid.Row="0"
+					Grid.Column="1"
+					Margin="3"
+					Click="OnSetingsClicked"
+					Style="{StaticResource TransparentButton}">
+					<TextBlock
+						Margin="3"
+						Text="[About_Debug_OpenSettings" />
 				</Button>
 			</Grid>
 		</GroupBox>
