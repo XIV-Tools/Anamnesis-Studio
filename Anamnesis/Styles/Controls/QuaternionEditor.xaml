@@ -40,12 +40,11 @@
 				Height="22"
 				Background="Transparent"
 				IsEnabled="False"
-				Style="{StaticResource MaterialDesignActionToggleButton}"
 				Unchecked="LockedIndicator_Unchecked">
 
 				<fa:IconImage
 					Margin="3"
-					Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+					Foreground="{DynamicResource TrimBrush}"
 					Icon="LockOpen" />
 
 			</ToggleButton>
@@ -55,7 +54,7 @@
 				Margin="3"
 				VerticalAlignment="Center"
 				FontWeight="Bold"
-				Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+				Foreground="{DynamicResource TrimBrush}"
 				Opacity="0.75"
 				Text="" />
 

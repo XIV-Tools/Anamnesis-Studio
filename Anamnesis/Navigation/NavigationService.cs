@@ -4,6 +4,7 @@
 namespace Anamnesis.Navigation;
 
 using Anamnesis.Actor.Panels;
+using Anamnesis.Actor.Posing.Panels;
 using Anamnesis.Libraries.Panels;
 using Anamnesis.Panels;
 using System;
@@ -21,6 +22,7 @@ public class NavigationService : ServiceBase<NavigationService>
 		{ "Weather", typeof(WeatherPanel) },
 		{ "Character", typeof(CharacterPanel) },
 		{ "Camera", typeof(CameraPanel) },
+		{ "Posing", typeof(PosingPanel) },
 		{ "Bones", typeof(BonesPanel) },
 		{ "Transform", typeof(TransformPanel) },
 		{ "ImportCharacter", typeof(ImportCharacterPanel) },

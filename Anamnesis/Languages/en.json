@@ -150,7 +150,7 @@
 	"Scene_Export": "Export a pose, character, or camera shot",
 	"Scene_Unsaved": "There are unsaved changes to this scene",
 
-	"Library_Root":  "Library",
+	"Library_Root": "Library",
 	"Library_Source": "Source:",
 	"Library_FileSource": "Local File",
 	"Library_GitHubSource": "GitHub: {0}",
@@ -195,7 +195,8 @@
 	"Navigation_Camera_Tip": "Change camera position and settings",
 	"Navigation_Actor_Character": "Character",
 	"Navigation_Actor_Character_Tip": "Change appearance, gear and other character settings",
-
+	"Navigation_Actor_Pose": "Pose",
+	"Navigation_Actor_Pose_Tip": "Pose actors into new and exciting shapes!",
 	"Navigation_Actor_Action": "Action",
 	"Navigation_Actor_Action_Tip": "Play animations",
 	"Navigation_Actor_Transform": "Transform",

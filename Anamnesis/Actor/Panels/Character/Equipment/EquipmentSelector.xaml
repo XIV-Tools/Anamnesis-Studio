@@ -147,10 +147,6 @@
 				Height="33"
 				Style="{StaticResource XivToolsComboBox}">
 
-				<ComboBox.ToolTip>
-					<TextBlock Text="[Library_Sort" />
-				</ComboBox.ToolTip>
-
 				<ComboBoxItem IsSelected="{Binding Filter.SortMode, Converter={StaticResource EnumToBool}, ConverterParameter=Name}">
 
 					<Grid>

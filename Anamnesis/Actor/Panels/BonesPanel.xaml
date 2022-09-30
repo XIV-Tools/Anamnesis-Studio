@@ -71,9 +71,10 @@
 				VerticalAlignment="Top">
 				<ListBox
 					x:Name="ViewSelector"
+					Width="128"
 					SelectedIndex="0"
 					SelectionChanged="OnViewChanged"
-					Style="{StaticResource MaterialDesignToolToggleListBox}">
+					Style="{StaticResource XivToolsSwitchSelector}">
 					<ListBoxItem
 						Margin="1"
 						Padding="8,5"

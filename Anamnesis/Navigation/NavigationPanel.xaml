@@ -305,17 +305,20 @@
 						Text="[Navigation_Actor_Character]" />
 				</Button>
 
-				<!--<local:Shortcut
-					Destination="Action"
-					Icon="Biking"
-					Label="[Navigation_Actor_Action"
-					ShowText="{Binding ShowText}"
-					ToolTip="[Navigation_Actor_Action_Tip" />-->
+				<Button
+					ana:Behaviours.Navigation="Posing"
+					Background="Transparent"
+					ToolTip="[Navigation_Actor_Pose_Tip]">
+					<XivToolsWpf:Header
+						Icon="Running"
+						Text="[Navigation_Actor_Pose]" />
+				</Button>
 
 				<StackPanel Visibility="{Binding Services.Pose.IsEnabled, Converter={StaticResource B2V}}">
 
 					<Button
 						ana:Behaviours.Navigation="Bones"
+						Background="Transparent"
 						ToolTip="[Navigation_Actor_Bones_Tip]">
 						<XivToolsWpf:Header
 							Icon="Bone"
@@ -324,6 +327,7 @@
 
 					<Button
 						ana:Behaviours.Navigation="Transform"
+						Background="Transparent"
 						ToolTip="[Navigation_Actor_Transform_Tip]">
 						<XivToolsWpf:Header
 							Icon="Circle"
@@ -337,223 +341,6 @@
 				Grid.Row="0"
 				Fill="Transparent"
 				MouseDown="OnIconMouseDown" />
-		</Grid>
-
-
-		<Grid
-			x:Name="PoseBar"
-			Grid.Row="0"
-			Margin="20,0,0,0"
-			HorizontalAlignment="Center"
-			VerticalAlignment="Top"
-			Opacity="0">
-
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto" />
-				<ColumnDefinition />
-			</Grid.ColumnDefinitions>
-
-			<Grid.ToolTip>
-				<StackPanel Orientation="Vertical">
-					<TextBlock
-						Margin="0"
-						Padding="0"
-						Text="[Pose_Toggle" />
-					<TextBlock
-						Margin="0"
-						Padding="0"
-						Text="[Pose_WarningNotGPose"
-						Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource !B2V}}" />
-				</StackPanel>
-			</Grid.ToolTip>
-
-			<Border
-				Grid.ColumnSpan="2"
-				Background="{DynamicResource BackgroundBrush}"
-				CornerRadius="6"
-				IsHitTestVisible="False">
-				<Border.BitmapEffect>
-					<DropShadowBitmapEffect ShadowDepth="0" />
-				</Border.BitmapEffect>
-			</Border>
-
-			<ToggleButton
-				Grid.Column="0"
-				Margin="3"
-				IsChecked="{Binding Services.Pose.IsEnabled}"
-				IsEnabled="{Binding Services.Gpose.IsGpose}"
-				Style="{DynamicResource OutlineToggleButton}">
-
-				<Grid
-					Margin="6"
-					VerticalAlignment="Center">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition />
-						<ColumnDefinition />
-					</Grid.ColumnDefinitions>
-
-					<XivToolsWpf:IconBlock
-						Margin="6,0"
-						FontSize="18"
-						Icon="Running" />
-
-					<TextBlock
-						Grid.Column="1"
-						Margin="6,2,6,0"
-						Text="Pose" />
-				</Grid>
-
-
-			</ToggleButton>
-
-			<StackPanel
-				Grid.Column="1"
-				VerticalAlignment="Center"
-				Orientation="Horizontal">
-
-				<StackPanel.Style>
-					<Style TargetType="{x:Type StackPanel}">
-
-						<Setter Property="LayoutTransform">
-							<Setter.Value>
-								<ScaleTransform ScaleX="0" />
-							</Setter.Value>
-						</Setter>
-
-						<Style.Triggers>
-							<DataTrigger
-								Binding="{Binding Services.Pose.IsEnabled}"
-								Value="True">
-								<DataTrigger.EnterActions>
-									<StopStoryboard BeginStoryboardName="CloseStoryboard" />
-									<BeginStoryboard x:Name="OpenStoryboard">
-										<Storyboard>
-											<DoubleAnimation
-												EasingFunction="{StaticResource SinEaseOut}"
-												Storyboard.TargetProperty="Opacity"
-												To="1"
-												Duration="0:0:0.200" />
-											<DoubleAnimation
-												EasingFunction="{StaticResource SinEaseOut}"
-												Storyboard.TargetProperty="LayoutTransform.(ScaleTransform.ScaleX)"
-												To="1"
-												Duration="0:0:0.200" />
-										</Storyboard>
-									</BeginStoryboard>
-								</DataTrigger.EnterActions>
-								<DataTrigger.ExitActions>
-									<StopStoryboard BeginStoryboardName="OpenStoryboard" />
-									<BeginStoryboard x:Name="CloseStoryboard">
-										<Storyboard>
-											<DoubleAnimation
-												EasingFunction="{StaticResource SinEaseIn}"
-												Storyboard.TargetProperty="Opacity"
-												To="0"
-												Duration="0:0:0.200" />
-											<DoubleAnimation
-												EasingFunction="{StaticResource SinEaseIn}"
-												Storyboard.TargetProperty="LayoutTransform.(ScaleTransform.ScaleX)"
-												To="0"
-												Duration="0:0:0.200" />
-										</Storyboard>
-									</BeginStoryboard>
-								</DataTrigger.ExitActions>
-							</DataTrigger>
-						</Style.Triggers>
-					</Style>
-				</StackPanel.Style>
-
-				<CheckBox
-					Margin="3,0,6,0"
-					VerticalContentAlignment="Center"
-					IsChecked="{Binding Services.Pose.FreezePhysics}"
-					IsEnabled="{Binding Services.Pose.IsEnabled}">
-					<TextBlock Text="[Pose_FreezePhysics" />
-				</CheckBox>
-
-				<CheckBox
-					Margin="3,0,6,0"
-					VerticalContentAlignment="Center"
-					IsChecked="{Binding Services.Pose.EnableParenting}"
-					IsEnabled="{Binding Services.Pose.IsEnabled}">
-					<TextBlock Text="[Pose_Parenting" />
-				</CheckBox>
-
-				<Border
-					Margin="2,2,5,2"
-					Padding="3"
-					HorizontalAlignment="Right"
-					Background="{DynamicResource AttentionToActionBrush}"
-					CornerRadius="6">
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition />
-							<ColumnDefinition />
-							<ColumnDefinition />
-						</Grid.ColumnDefinitions>
-
-						<Grid.RowDefinitions>
-							<RowDefinition />
-							<RowDefinition Height="Auto" />
-						</Grid.RowDefinitions>
-
-						<TextBlock
-							Grid.ColumnSpan="3"
-							Margin="2,0,0,0"
-							FontSize="10"
-							Text="Edit Mode:" />
-
-						<CheckBox
-							Grid.Row="1"
-							Grid.Column="0"
-							Margin="3,0"
-							VerticalContentAlignment="Center"
-							IsChecked="{Binding Services.Pose.FreezeRotation}"
-							IsEnabled="{Binding Services.Pose.IsEnabled}">
-							<TextBlock
-								Margin="0,-2,0,2"
-								Text="[Pose_EnableRotation" />
-
-							<CheckBox.ToolTip>
-								<TextBlock Text="[Pose_EnableRotationTooltip" />
-							</CheckBox.ToolTip>
-						</CheckBox>
-
-						<CheckBox
-							Grid.Row="1"
-							Grid.Column="1"
-							Margin="3,0"
-							VerticalContentAlignment="Center"
-							IsChecked="{Binding Services.Pose.FreezePositions}"
-							IsEnabled="{Binding Services.Pose.IsEnabled}">
-							<TextBlock
-								Margin="0,-2,0,2"
-								Text="[Pose_EnablePosition" />
-
-							<CheckBox.ToolTip>
-								<TextBlock Text="[Pose_EnablePositionTooltip" />
-							</CheckBox.ToolTip>
-						</CheckBox>
-
-						<CheckBox
-							Grid.Row="1"
-							Grid.Column="2"
-							Margin="3,0"
-							VerticalContentAlignment="Center"
-							IsChecked="{Binding Services.Pose.FreezeScale}"
-							IsEnabled="{Binding Services.Pose.IsEnabled}">
-							<TextBlock
-								Margin="0,-2,0,2"
-								Text="[Pose_EnableScale" />
-
-							<CheckBox.ToolTip>
-								<TextBlock Text="[Pose_EnableScaleTooltip" />
-							</CheckBox.ToolTip>
-						</CheckBox>
-					</Grid>
-				</Border>
-			</StackPanel>
-
 		</Grid>
 
 		<ToggleButton

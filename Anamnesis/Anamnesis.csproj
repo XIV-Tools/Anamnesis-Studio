@@ -74,7 +74,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Actor\Posing\Templates\" />
 		<Folder Include="Properties\" />
 	</ItemGroup>
 
