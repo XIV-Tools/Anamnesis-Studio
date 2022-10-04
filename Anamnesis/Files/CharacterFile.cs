@@ -239,7 +239,7 @@ public class CharacterFile : JsonFileBase
 
 		actor.AutomaticRefreshEnabled = false;
 
-		if (actor.CanRefresh)
+		////if (actor.CanRefresh)
 		{
 			actor.EnableReading = false;
 

@@ -82,9 +82,6 @@ public class ActorMemory : ActorBasicMemory
 	public bool IsRefreshing { get; set; } = false;
 	public bool PendingRefresh => this.refreshQueue.Pending;
 
-	[DependsOn(nameof(IsValid), nameof(IsOverworldActor), nameof(Names), nameof(RenderMode))]
-	public bool CanRefresh => ActorService.Instance.CanRefreshActor(this);
-
 	public bool IsHuman => this.ModelObject != null && this.ModelObject.IsHuman;
 
 	[DependsOn(nameof(ModelType))]
@@ -163,9 +160,6 @@ public class ActorMemory : ActorBasicMemory
 		if (this.IsRefreshing)
 			return;
 
-		if (!this.CanRefresh)
-			return;
-
 		if (this.Address == IntPtr.Zero)
 			return;
 
@@ -205,11 +199,6 @@ public class ActorMemory : ActorBasicMemory
 			await Task.Delay(10);
 
 		this.CreateCharacterBackup(BackupModes.Gpose);
-	}
-
-	public void RaiseRefreshChanged()
-	{
-		this.RaisePropertyChanged(nameof(this.CanRefresh));
 	}
 
 	protected override void HandlePropertyChanged(PropertyChange change)

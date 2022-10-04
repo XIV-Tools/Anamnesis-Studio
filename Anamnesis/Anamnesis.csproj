@@ -27,6 +27,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="EasyTcp" Version="4.0.2" />
 		<PackageReference Include="Fody" Version="6.6.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -78,6 +79,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Anamnesis.Dalamud.Common\Anamnesis.Dalamud.Common.csproj" />
 	  <ProjectReference Include="..\Lib\XivToolsWpf\XivToolsWpf.csproj" />
 	</ItemGroup>
 

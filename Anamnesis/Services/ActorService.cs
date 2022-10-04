@@ -6,13 +6,12 @@ namespace Anamnesis;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Anamnesis.Actor;
-using Anamnesis.Actor.Refresh;
 using Anamnesis.Core.Memory;
 using Anamnesis.Memory;
 using PropertyChanged;
+using static Anamnesis.Memory.ActorBasicMemory;
 
 [AddINotifyPropertyChangedInterface]
 public class ActorService : ServiceBase<ActorService>
@@ -25,11 +24,6 @@ public class ActorService : ServiceBase<ActorService>
 	private const int GPosePlayerIndex = 201;
 
 	private readonly IntPtr[] actorTable = new IntPtr[ActorTableSize];
-
-	private readonly List<IActorRefresher> actorRefreshers = new()
-	{
-		new AnamnesisActorRefresher(),
-	};
 
 	public ReadOnlyCollection<IntPtr> ActorTable => Array.AsReadOnly(this.actorTable);
 
@@ -53,44 +47,48 @@ public class ActorService : ServiceBase<ActorService>
 		return null;
 	}
 
-	public bool CanRefreshActor(ActorMemory actor)
-	{
-		if (PoseService.Instance.IsEnabled)
-			return false;
-
-		if (PoseService.Instance.FreezeWorldPosition)
-			return false;
-
-		if (!actor.IsValid)
-			return false;
-
-		foreach (IActorRefresher actorRefresher in this.actorRefreshers)
-		{
-			if (actorRefresher.CanRefresh(actor))
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	public async Task<bool> RefreshActor(ActorMemory actor)
 	{
-		if(this.CanRefreshActor(actor))
+		if (Services.DalamudIpc.IsConnected)
 		{
-			foreach (IActorRefresher actorRefresher in this.actorRefreshers)
-			{
-				if (actorRefresher.CanRefresh(actor))
-				{
-					Log.Information($"Executing {actorRefresher.GetType().Name} refresh for actor address: {actor.Address}");
-					await actorRefresher.RefreshActor(actor);
-					return true;
-				}
-			}
+			return await Services.DalamudIpc.RefreshActor(actor.Address);
 		}
+		else
+		{
+			if (PoseService.Instance.IsEnabled)
+				return false;
 
-		return false;
+			if (PoseService.Instance.FreezeWorldPosition)
+				return false;
+
+			if (!actor.IsValid)
+				return false;
+
+			if (actor.IsGPoseActor)
+				return false;
+
+			await Task.Delay(16);
+
+			if (actor.ObjectKind == ActorTypes.Player)
+			{
+				actor.ObjectKind = ActorTypes.BattleNpc;
+				actor.RenderMode = RenderModes.Unload;
+				await Task.Delay(75);
+				actor.RenderMode = RenderModes.Draw;
+				await Task.Delay(75);
+				actor.ObjectKind = ActorTypes.Player;
+				actor.RenderMode = RenderModes.Draw;
+			}
+			else
+			{
+				actor.RenderMode = RenderModes.Unload;
+				await Task.Delay(75);
+				actor.RenderMode = RenderModes.Draw;
+			}
+
+			await Task.Delay(150);
+			return true;
+		}
 	}
 
 	public int GetActorTableIndex(IntPtr pointer, bool refresh = false)

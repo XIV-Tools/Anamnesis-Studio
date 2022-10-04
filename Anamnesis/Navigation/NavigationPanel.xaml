@@ -260,14 +260,7 @@
 					</Style>
 				</StackPanel.Resources>
 
-				<Button
-					ana:Behaviours.Navigation="Settings"
-					Background="Transparent"
-					ToolTip="[Navigation_Settings_Tip]">
-					<XivToolsWpf:Header
-						Icon="Cogs"
-						Text="[Navigation_Settings]" />
-				</Button>
+
 
 				<Button
 					ana:Behaviours.Navigation="Library"
@@ -334,6 +327,15 @@
 							Text="[Navigation_Actor_Transform]" />
 					</Button>
 				</StackPanel>
+
+				<Button
+					ana:Behaviours.Navigation="Settings"
+					Background="Transparent"
+					ToolTip="[Navigation_Settings_Tip]">
+					<XivToolsWpf:Header
+						Icon="Cogs"
+						Text="[Navigation_Settings]" />
+				</Button>
 
 			</StackPanel>
 

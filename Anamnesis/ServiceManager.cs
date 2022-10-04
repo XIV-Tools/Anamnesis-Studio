@@ -48,6 +48,7 @@ public class ServiceManager
 	public SceneService Scene { get; } = new();
 	public PanelService Panels { get; } = new();
 	public LibraryService Library { get; } = new();
+	public DalamudIpcService DalamudIpc { get; } = new();
 
 #if DEBUG
 	public bool IsDebug => true;
@@ -65,6 +66,7 @@ public class ServiceManager
 
 	public async Task InitializeServices()
 	{
+		await this.InitializeService(this.DalamudIpc);
 		await this.InitializeService(this.Panels);
 		await this.InitializeService(this.Scene);
 		await this.InitializeService(this.Navigation);
