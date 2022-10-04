@@ -2,6 +2,15 @@
 
   <PropertyGroup>
 	  <TargetFramework>net6.0-windows</TargetFramework>
+	  <Nullable>enable</Nullable>
+	  <LangVersion>latest</LangVersion>
+	  <RootNamespace>Anamnesis.Dalamud</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="EasyTcp4">
+      <HintPath>..\Anamnesis-Dalamud\Lib\EasyTcp4.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
 </Project>

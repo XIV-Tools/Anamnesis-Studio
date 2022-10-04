@@ -3,8 +3,7 @@
 
 namespace Anamnesis.Dalamud;
 
-using AnamneisisDalamud;
-using global::Dalamud.Logging;
+using Anamneisis.Dalamud;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -18,18 +17,36 @@ public class ActorRefresh : IDisposable
 	internal delegate IntPtr ChangeEquipDelegate(IntPtr writeTo, EquipIndex index, EquipItem item);
 	internal static ChangeEquipDelegate? ChangeEquip;
 
-	public enum EquipIndex : uint
+	public ActorRefresh()
 	{
-		Head,
-		Chest,
-		Hands,
-		Legs,
-		Feet,
-		Earring,
-		Necklace,
-		Bracelet,
-		RingRight,
-		RingLeft
+		IntPtr changeEquip = Plugin.SigScanner.ScanText("E8 ?? ?? ?? ?? 41 B5 01 FF C3");
+		ChangeEquip = Marshal.GetDelegateForFunctionPointer<ChangeEquipDelegate>(changeEquip);
+
+		Plugin.IPC.RegisterIpcMethod(MessageTypes.ChangeGear, this.ChangeGear);
+	}
+
+	public void Dispose()
+	{
+		ChangeEquip = null;
+	}
+
+	/// <summary>
+	/// Change an actors equipment in the given slot.
+	/// </summary>
+	public Task<bool> ChangeGear(IntPtr address, EquipIndex equip, ushort itemId, byte variant, byte dye)
+	{
+		if (ChangeEquip != null)
+		{
+			EquipItem item = new();
+			item.Id = itemId;
+			item.Variant = variant;
+			item.Dye = dye;
+
+			ChangeEquip(address + 0x6D0, equip, item);
+			return Task.FromResult(true);
+		}
+
+		return Task.FromResult(false);
 	}
 
 	[StructLayout(LayoutKind.Explicit, Size = 0x4)]
@@ -38,35 +55,5 @@ public class ActorRefresh : IDisposable
 		[FieldOffset(0)] public ushort Id;
 		[FieldOffset(2)] public byte Variant;
 		[FieldOffset(3)] public byte Dye;
-	}
-
-	public ActorRefresh()
-	{
-		MessageHandler.Register(MessageTypes.ActorRefresh, this.Refresh);
-
-		var changeEquip = Plugin.SigScanner.ScanText("E8 ?? ?? ?? ?? 41 B5 01 FF C3");
-		ChangeEquip = Marshal.GetDelegateForFunctionPointer<ChangeEquipDelegate>(changeEquip);
-	}
-
-	public void Dispose()
-	{
-		ChangeEquip = null;
-	}
-
-	private Task Refresh(IntPtr address)
-	{
-		PluginLog.Information($"Refresh actor: {address}");
-
-		if (ChangeEquip == null)
-			return Task.CompletedTask;
-
-		EquipItem item = new();
-		item.Id = 9903;
-		item.Variant = 0;
-		item.Dye = 0;
-
-		ChangeEquip(address + 0x6D0, EquipIndex.Chest, item);
-
-		return Task.CompletedTask;
 	}
 }

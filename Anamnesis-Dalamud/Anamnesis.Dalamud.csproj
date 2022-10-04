@@ -38,9 +38,6 @@
   <ItemGroup>
     <PackageReference Include="DalamudPackager" Version="2.1.8" />
 	  <ProjectReference Include="..\Anamnesis.Dalamud.Common\Anamnesis.Dalamud.Common.csproj" />
-	  <Reference Include="EasyTcp4">
-	    <HintPath>Lib\EasyTcp4.dll</HintPath>
-	  </Reference>
     <Reference Include="FFXIVClientStructs">
       <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
       <Private>false</Private>

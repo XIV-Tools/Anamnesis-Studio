@@ -51,7 +51,19 @@ public class ActorService : ServiceBase<ActorService>
 	{
 		if (Services.DalamudIpc.IsConnected)
 		{
-			return await Services.DalamudIpc.RefreshActor(actor.Address);
+			// TODO: either batch this together into one request, or only send values that have _actually_ changed.
+			bool result = true;
+			result &= await Services.DalamudIpc.ChangeGear(actor.Address, Dalamud.EquipIndex.Head, actor.Equipment?.Head);
+			result &= await Services.DalamudIpc.ChangeGear(actor.Address, Dalamud.EquipIndex.Chest, actor.Equipment?.Body);
+			result &= await Services.DalamudIpc.ChangeGear(actor.Address, Dalamud.EquipIndex.Hands, actor.Equipment?.Hands);
+			result &= await Services.DalamudIpc.ChangeGear(actor.Address, Dalamud.EquipIndex.Legs, actor.Equipment?.Legs);
+			result &= await Services.DalamudIpc.ChangeGear(actor.Address, Dalamud.EquipIndex.Feet, actor.Equipment?.Feet);
+			result &= await Services.DalamudIpc.ChangeGear(actor.Address, Dalamud.EquipIndex.Earring, actor.Equipment?.Ears);
+			result &= await Services.DalamudIpc.ChangeGear(actor.Address, Dalamud.EquipIndex.Necklace, actor.Equipment?.Neck);
+			result &= await Services.DalamudIpc.ChangeGear(actor.Address, Dalamud.EquipIndex.Bracelet, actor.Equipment?.Neck);
+			result &= await Services.DalamudIpc.ChangeGear(actor.Address, Dalamud.EquipIndex.RingRight, actor.Equipment?.RightRing);
+			result &= await Services.DalamudIpc.ChangeGear(actor.Address, Dalamud.EquipIndex.RingLeft, actor.Equipment?.LeftRing);
+			return result;
 		}
 		else
 		{

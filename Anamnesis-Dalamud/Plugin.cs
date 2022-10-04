@@ -7,20 +7,15 @@ using Dalamud.Plugin;
 using Dalamud.Game.Gui;
 using Dalamud.Game;
 using Anamnesis.Dalamud;
-using EasyTcp4;
-using EasyTcp4.ServerUtils;
-using System.Text;
 using Dalamud.Logging;
-using Newtonsoft.Json;
-using System.Threading.Tasks;
 
-namespace AnamneisisDalamud;
+namespace Anamneisis.Dalamud;
+
 public sealed class Plugin : IDalamudPlugin
 {
-	private readonly EasyTcpServer server = new();
-
 	public string Name => "Anamnesis Dalamud";
-	
+
+	public static AnamesisDalamudIPC IPC { get; private set; } = null!;
 	[PluginService][RequiredVersion("1.0")] public static DalamudPluginInterface PluginInterface { get; private set; } = null!;
 	[PluginService][RequiredVersion("1.0")] public static CommandManager CommandManager { get; private set; } = null!;
 	[PluginService][RequiredVersion("1.0")] public static ChatGui ChatGui { get; private set; } = null!;
@@ -30,37 +25,18 @@ public sealed class Plugin : IDalamudPlugin
 
 	public Plugin()
     {
-		this.server.EnableServerKeepAlive();
-		this.server = this.server.Start(DalamudIpcConfig.Port);
-		this.server.OnDataReceiveAsync += OnDataReceive;
-		this.server.OnError += (s, e) => PluginLog.Error(e, "IPC error");
-		this.server.OnConnect += (s, e) => PluginLog.Information("IPC client connected");
+		IPC = new();
+		IPC.LogMessage = (msg) => PluginLog.Information(msg);
+		IPC.LogError = (e, msg) => PluginLog.Error(e, msg);
+		IPC.StartServer();
 
 		this.refresh = new();
 
-		PluginLog.Information($"Anamnesis Dalamud started on port: {DalamudIpcConfig.Port}");
+		PluginLog.Information($"Anamnesis Dalamud started");
 	}
 
 	public void Dispose()
 	{
 		this.refresh.Dispose();
-		this.server.Dispose();
-	}
-
-	private async Task OnDataReceive(object? sender, Message e)
-	{
-		string json = Encoding.UTF8.GetString(e.Data);
-		IpcMessage? msg = JsonConvert.DeserializeObject<IpcMessage>(json);
-
-		if (msg == null)
-			return;
-
-		IpcMessage response = await MessageHandler.Invoke(msg);
-
-		if (response == null)
-			return;
-
-		string responseJson = JsonConvert.SerializeObject(response);
-		this.server.SendAll(responseJson);
 	}
 }

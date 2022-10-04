@@ -21,7 +21,7 @@ public class ActorMemory : ActorBasicMemory
 
 	public ActorMemory()
 	{
-		this.refreshQueue = new(this.RefreshAsync, 250);
+		this.refreshQueue = new(this.RefreshAsync, 50);
 		this.backupQueue = new(this.BackupAsync, 250);
 	}
 

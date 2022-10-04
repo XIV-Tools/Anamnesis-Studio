@@ -4,20 +4,13 @@
 namespace Anamnesis.Services;
 
 using Anamnesis.Dalamud;
-using EasyTcp4;
-using EasyTcp4.ClientUtils;
-using EasyTcp4.ClientUtils.Async;
+using Anamnesis.Memory;
 using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 public class DalamudIpcService : ServiceBase<DalamudIpcService>
 {
-	private readonly EasyTcpClient client = new();
-	private readonly Dictionary<string, IpcMessage> responses = new();
+	private readonly AnamesisDalamudIPC ipc = new();
 
 	public bool IsConnected { get; private set; } = false;
 
@@ -25,52 +18,27 @@ public class DalamudIpcService : ServiceBase<DalamudIpcService>
 	{
 		await base.Initialize();
 
-		this.client.OnError += (s, e) => Log.Error(e, "IPC Error");
-		this.client.OnDataReceiveAsync += this.OnDataReceive;
-
-		if (!await this.client.ConnectAsync(IPAddress.Loopback, DalamudIpcConfig.Port))
-		{
-			Log.Warning("Could not connect to IPC server");
-			return;
-		}
-
-		this.IsConnected = true;
+		this.ipc.LogMessage = (msg) => Log.Information(msg);
+		this.ipc.LogError = (e, msg) => Log.Error(e, msg);
+		this.IsConnected = await this.ipc.StartClient();
 	}
 
 	public override Task Shutdown()
 	{
-		this.client.Dispose();
+		this.ipc.Dispose();
 		return base.Shutdown();
 	}
 
-	public async Task<bool> RefreshActor(IntPtr address)
+	public async Task<bool> ChangeGear(IntPtr address, EquipIndex equip, ItemMemory? item)
 	{
-		await this.Send(new(MessageTypes.ActorRefresh, address));
-		return true;
+		if (item == null)
+			return false;
+
+		return await this.ipc.Invoke<bool>(MessageTypes.ChangeGear, address, equip, item.Base, item.Variant, item.Dye);
 	}
 
-	private Task OnDataReceive(object sender, Message message)
+	public Task<bool> ChangeGear(IntPtr address, EquipIndex equip, ushort itemId, byte variant, byte dye)
 	{
-		string json = Encoding.UTF8.GetString(message.Data);
-		IpcMessage? msg = JsonSerializer.Deserialize<IpcMessage>(json);
-
-		if (msg != null && msg.Type == MessageTypes.Response)
-			this.responses.Add(msg.Id, msg);
-
-		return Task.CompletedTask;
-	}
-
-	private async Task Send(IpcMessage msg)
-	{
-		string json = JsonSerializer.Serialize(msg);
-		this.client.Send(json);
-
-		while (!this.responses.ContainsKey(msg.Id))
-			await Task.Delay(50);
-
-		IpcMessage response = this.responses[msg.Id];
-		this.responses.Remove(msg.Id);
-
-		// TODO: return value
+		return this.ipc.Invoke<bool>(MessageTypes.ChangeGear, address, equip, itemId, variant, dye);
 	}
 }

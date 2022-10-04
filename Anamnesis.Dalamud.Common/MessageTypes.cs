@@ -7,5 +7,5 @@ public enum MessageTypes
 {
 	Response,
 
-	ActorRefresh,
+	ChangeGear,
 }
