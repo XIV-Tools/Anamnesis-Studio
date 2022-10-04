@@ -7,11 +7,11 @@ using Anamnesis.Dalamud;
 using EasyTcp4;
 using EasyTcp4.ClientUtils;
 using EasyTcp4.ClientUtils.Async;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 public class DalamudIpcService : ServiceBase<DalamudIpcService>
@@ -52,7 +52,7 @@ public class DalamudIpcService : ServiceBase<DalamudIpcService>
 	private Task OnDataReceive(object sender, Message message)
 	{
 		string json = Encoding.UTF8.GetString(message.Data);
-		IpcMessage? msg = JsonConvert.DeserializeObject<IpcMessage>(json);
+		IpcMessage? msg = JsonSerializer.Deserialize<IpcMessage>(json);
 
 		if (msg != null && msg.Type == MessageTypes.Response)
 			this.responses.Add(msg.Id, msg);
@@ -62,7 +62,7 @@ public class DalamudIpcService : ServiceBase<DalamudIpcService>
 
 	private async Task Send(IpcMessage msg)
 	{
-		string json = JsonConvert.SerializeObject(msg);
+		string json = JsonSerializer.Serialize(msg);
 		this.client.Send(json);
 
 		while (!this.responses.ContainsKey(msg.Id))

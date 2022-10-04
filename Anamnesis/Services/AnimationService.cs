@@ -9,7 +9,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Anamnesis.Core.Memory;
 using Anamnesis.Memory;
-using Newtonsoft.Json.Linq;
 using PropertyChanged;
 
 [AddINotifyPropertyChangedInterface]
