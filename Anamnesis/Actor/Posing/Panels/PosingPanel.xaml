@@ -8,7 +8,9 @@
 	xmlns:local="clr-namespace:Anamnesis.Actor.Posing.Panels"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:panels="clr-namespace:Anamnesis.Panels"
+	Title="[Navigation_Actor_Pose]"
 	d:DesignWidth="800"
+	Icon="PersonRunning"
 	mc:Ignorable="d">
 
 	<Grid>
@@ -22,20 +24,6 @@
 			<RowDefinition />
 			<RowDefinition />
 		</Grid.RowDefinitions>
-
-		<Grid.ToolTip>
-			<StackPanel Orientation="Vertical">
-				<TextBlock
-					Margin="0"
-					Padding="0"
-					Text="[Pose_Toggle" />
-				<TextBlock
-					Margin="0"
-					Padding="0"
-					Text="[Pose_WarningNotGPose"
-					Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource !B2V}}" />
-			</StackPanel>
-		</Grid.ToolTip>
 
 		<ToggleButton
 			Grid.Column="0"
@@ -62,6 +50,20 @@
 					Margin="6,2,6,0"
 					Text="Pose" />
 			</Grid>
+
+			<ToggleButton.ToolTip>
+				<StackPanel Orientation="Vertical">
+					<TextBlock
+						Margin="0"
+						Padding="0"
+						Text="[Pose_Toggle]" />
+					<TextBlock
+						Margin="0"
+						Padding="0"
+						Text="[Pose_WarningNotGPose]"
+						Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource !B2V}}" />
+				</StackPanel>
+			</ToggleButton.ToolTip>
 		</ToggleButton>
 
 		<controls:ActorSelector Grid.Column="1" />
@@ -162,6 +164,13 @@
 				</Grid>
 			</Border>
 		</StackPanel>
+
+		<XivToolsWpf:InfoControl
+			Grid.Row="1"
+			Grid.ColumnSpan="3"
+			Background="{StaticResource BackgroundBrush}"
+			Text="[Pose_WarningNotGPose]"
+			Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource !B2V}}" />
 
 	</Grid>
 </panels:PanelBase>
