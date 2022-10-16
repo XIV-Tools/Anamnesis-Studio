@@ -17,7 +17,6 @@ public class NavigationService : ServiceBase<NavigationService>
 	private static readonly Dictionary<string, Type> Panels = new()
 	{
 		{ "GenericDialog", typeof(GenericDialogPanel) },
-		{ "Exception", typeof(ExceptionPanel) },
 		{ "Settings", typeof(SettingsPanel) },
 		{ "Weather", typeof(WeatherPanel) },
 		{ "Character", typeof(CharacterPanel) },

@@ -42,7 +42,6 @@ public abstract class PanelBase : UserControl, INotifyPropertyChanged
 	public bool ShowBackground { get; set; } = true;
 	public bool CanResize { get; set; }
 	public bool CanScroll { get; set; } = false;
-	public Color? TitleColor { get; set; } = Colors.Gray;
 
 	public bool IsActive
 	{

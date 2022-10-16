@@ -64,17 +64,6 @@ public class PanelService : ServiceBase<PanelService>
 		return tPanel;
 	}
 
-	public async Task<T> Show<T>(PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
-		where T : PanelBase
-	{
-		PanelBase panel = await this.Show(typeof(T), null, threadMode);
-
-		if (panel is not T tPanel)
-			throw new Exception("Panel was wrong type");
-
-		return tPanel;
-	}
-
 	public List<PanelBase> GetPanels(Type panelType)
 	{
 		List<PanelBase> results = new();

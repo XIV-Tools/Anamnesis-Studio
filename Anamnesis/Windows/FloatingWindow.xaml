@@ -141,8 +141,9 @@
 							Foreground="{DynamicResource ForegroundLightBrush}" />
 					</StackPanel>
 
-					<Rectangle
-						Fill="Transparent"
+					<Border
+						Background="{DynamicResource XivToolsControlBorderBackground}"
+						CornerRadius="6,6,0,0"
 						MouseDown="OnTitleMouseDown" />
 
 
