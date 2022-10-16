@@ -76,10 +76,11 @@ public partial class BonesPanel : ActorPanelBase
 		}
 	}
 
-	private void OnPoseServiceEnabledChanged(bool value)
+	private async void OnPoseServiceEnabledChanged(bool value)
 	{
 		if (!value)
 		{
+			await this.Dispatcher.MainThread();
 			this.Close();
 		}
 	}

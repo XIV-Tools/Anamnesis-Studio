@@ -34,8 +34,11 @@ public class SettingsService : ServiceBase<SettingsService>
 
 	public static void Save()
 	{
-		string json = SerializerService.Serialize(Instance.Settings!);
-		File.WriteAllText(SettingsPath, json);
+		lock (Instance)
+		{
+			string json = SerializerService.Serialize(Instance.Settings!);
+			File.WriteAllText(SettingsPath, json);
+		}
 	}
 
 	public override async Task Initialize()

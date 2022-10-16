@@ -267,7 +267,9 @@ public class PanelService : ServiceBase<PanelService>
 				{
 					if (panelId == "Anamnesis.Panels.GenericDialogPanel" ||
 						panelId == "Anamnesis.Panels.ExceptionPanel" ||
-						panelId == "Anamnesis.Navigation.NavigationPanel")
+						panelId == "Anamnesis.Navigation.NavigationPanel" ||
+						panelId == "Anamnesis.Actor.Panels.BonesPanel" ||
+						panelId == "Anamnesis.Actor.Panels.TransformPanel")
 						continue;
 
 					try
