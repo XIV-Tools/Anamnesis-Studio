@@ -15,6 +15,7 @@ using Anamnesis.Actor.Panels;
 using Anamnesis.Libraries.Panels;
 using XivToolsWpf;
 using XivToolsWpf.Extensions;
+using System.Collections.Concurrent;
 
 public class PanelService : ServiceBase<PanelService>
 {
@@ -39,7 +40,8 @@ public class PanelService : ServiceBase<PanelService>
 
 	public List<PanelBase> OpenPanels { get; init; } = new();
 	public List<PanelBase> ActivePanels { get; init; } = new();
-	private Dictionary<Type, PanelBase?> Panelcache { get; init; } = new();
+	private Dictionary<Type, PanelBase?> ClosedPanelCache { get; init; } = new();
+	private ConcurrentQueue<PanelBase> ThreadedPanelCreationQueue { get; init; } = new();
 
 	public async Task<PanelBase> Show(string panelId, object? context = null, PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
 	{
@@ -90,34 +92,53 @@ public class PanelService : ServiceBase<PanelService>
 
 	public async Task<PanelBase> Spawn(Type panelType, PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
 	{
-		if (!this.Panelcache.ContainsKey(panelType))
+		// Do we have a cached version of this panel?
+		if (this.ClosedPanelCache.TryGetValue(panelType, out PanelBase? cached))
 		{
-			this.Panelcache.Add(panelType, null);
+			this.ClosedPanelCache.Remove(panelType);
 
-			if (threadMode == PanelThreadingMode.CustomThread)
+			if (cached != null)
 			{
-				Thread panelMainThread = new Thread(this.PanelMainThread);
-				panelMainThread.SetApartmentState(ApartmentState.STA);
-				panelMainThread.Start(panelType);
-			}
-			else
-			{
-				PanelBase? newPanel = Activator.CreateInstance(panelType) as PanelBase;
-
-				if (newPanel == null)
-					throw new Exception($"Failed to create instance of panel: {panelType}");
-
-				this.Panelcache[panelType] = newPanel;
+				return cached;
 			}
 		}
 
-		while (this.Panelcache[panelType] == null)
-			await Task.Delay(1);
+		// Create a new panel;
+		if (threadMode == PanelThreadingMode.CustomThread)
+		{
+			Thread panelMainThread = new Thread(this.PanelMainThread);
+			panelMainThread.SetApartmentState(ApartmentState.STA);
+			panelMainThread.Start(panelType);
+		}
+		else
+		{
+			PanelBase? newPanel = Activator.CreateInstance(panelType) as PanelBase;
 
-		if (this.Panelcache[panelType] == null)
-			throw new Exception("Panel not loaded!");
+			if (newPanel == null)
+			{
+				throw new Exception($"Failed to create instance of panel: {panelType}");
+			}
+		}
 
-		PanelBase panel = this.Panelcache[panelType]!;
+		PanelBase? panel = null;
+		while (panel == null)
+		{
+			if (this.ThreadedPanelCreationQueue.TryPeek(out panel) && panel.GetType() == panelType)
+			{
+				this.ThreadedPanelCreationQueue.TryDequeue(out panel);
+				if (panel == null)
+					continue;
+
+				if (panel.GetType() != panelType)
+				{
+					Log.Error("Panel creation queue error: The retrieved panel was the wrong type");
+					this.ThreadedPanelCreationQueue.Enqueue(panel);
+				}
+			}
+
+			await Task.Delay(10);
+		}
+
 		return panel;
 	}
 
@@ -150,6 +171,13 @@ public class PanelService : ServiceBase<PanelService>
 	public void OnPanelClosed(PanelBase panel)
 	{
 		this.OpenPanels.Remove(panel);
+
+		Type panelType = panel.GetType();
+
+		if (!this.ClosedPanelCache.ContainsKey(panelType))
+		{
+			this.ClosedPanelCache.Add(panelType, panel);
+		}
 	}
 
 	public PanelsData GetData(FloatingWindow panelHost)
@@ -171,7 +199,15 @@ public class PanelService : ServiceBase<PanelService>
 
 	public override Task Shutdown()
 	{
-		foreach (PanelBase? panel in this.Panelcache.Values)
+		foreach (PanelBase? panel in this.OpenPanels)
+		{
+			if (panel?.Dispatcher != App.Current?.Dispatcher)
+			{
+				panel?.Dispatcher.BeginInvokeShutdown(DispatcherPriority.Normal);
+			}
+		}
+
+		foreach (PanelBase? panel in this.ClosedPanelCache.Values)
 		{
 			if (panel?.Dispatcher != App.Current?.Dispatcher)
 			{
@@ -209,7 +245,7 @@ public class PanelService : ServiceBase<PanelService>
 		if (newPanel == null)
 			throw new Exception($"Failed to create instance of panel: {panelType}");
 
-		this.Panelcache[panelType] = newPanel;
+		this.ThreadedPanelCreationQueue.Enqueue(newPanel);
 
 		Log.Information($"Panel: {panelType} has started");
 
@@ -229,7 +265,9 @@ public class PanelService : ServiceBase<PanelService>
 			{
 				foreach (string panelId in data.PanelIds.ToArray())
 				{
-					if (panelId == "Anamnesis.Panels.GenericDialogPanel" || panelId == "Anamnesis.Panels.ExceptionPanel")
+					if (panelId == "Anamnesis.Panels.GenericDialogPanel" ||
+						panelId == "Anamnesis.Panels.ExceptionPanel" ||
+						panelId == "Anamnesis.Navigation.NavigationPanel")
 						continue;
 
 					try
