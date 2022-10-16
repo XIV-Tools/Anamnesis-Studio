@@ -283,17 +283,17 @@ public partial class FloatingWindow : Window
 
 	private void OnMouseEnter(object sender, MouseEventArgs e)
 	{
-		if (this.Opacity == 1.0)
+		if (this.WindowContentArea.Opacity == 1.0)
 			return;
 
-		this.Animate(Window.OpacityProperty, 1.0, 100);
+		this.WindowContentArea.Animate(Grid.OpacityProperty, 1.0, 100);
 	}
 
 	private void OnMouseLeave(object sender, MouseEventArgs e)
 	{
 		if (SettingsService.Current.Opacity != 1.0)
 		{
-			this.Animate(Window.OpacityProperty, SettingsService.Current.Opacity, 250);
+			this.WindowContentArea.Animate(Grid.OpacityProperty, SettingsService.Current.Opacity, 250);
 		}
 	}
 

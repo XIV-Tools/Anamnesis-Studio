@@ -71,133 +71,144 @@
 
 	<Grid x:Name="ContentArea">
 
-		<Grid
+		<Border
 			Margin="6"
-			Visibility="{Binding ShowBackground, Converter={StaticResource B2V}}">
+			Background="Transparent"
+			BorderBrush="{DynamicResource ForegroundBrush}"
+			BorderThickness="1"
+			CornerRadius="6"
+			Opacity="0.5"
+			Visibility="{Binding Services.Settings.Current.Opacity, Converter={StaticResource LessThanToVisibility}, ConverterParameter=0.5}" />
 
-			<Border
-				Background="{DynamicResource BackgroundBrush}"
-				CornerRadius="6"
-				Opacity="1">
-				<Border.BitmapEffect>
-					<DropShadowBitmapEffect ShadowDepth="0" />
-				</Border.BitmapEffect>
-			</Border>
-
-			<Border
-				Background="Transparent"
-				BorderBrush="{DynamicResource TrimBrush}"
-				BorderThickness="1"
-				CornerRadius="6"
-				Visibility="{Binding IsActive, Converter={StaticResource B2V}}" />
-
-			<Border
-				Background="Transparent"
-				BorderBrush="{DynamicResource BackgroundBrush}"
-				BorderThickness="1"
-				CornerRadius="6"
-				Visibility="{Binding IsActive, Converter={StaticResource !B2V}}" />
-
-		</Grid>
-
-		<Grid
-			Grid.Row="1"
-			Margin="6">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" />
-				<RowDefinition />
-			</Grid.RowDefinitions>
+		<Grid x:Name="WindowContentArea">
 
 			<Grid
-				Grid.Row="0"
-				Height="22"
-				Margin="0,0,0,3"
+				Margin="6"
 				Visibility="{Binding ShowBackground, Converter={StaticResource B2V}}">
 
-				<StackPanel
-					Margin="6,0"
-					Orientation="Horizontal">
+				<Border
+					Background="{DynamicResource BackgroundBrush}"
+					CornerRadius="6"
+					Opacity="1">
+					<Border.BitmapEffect>
+						<DropShadowBitmapEffect ShadowDepth="0" />
+					</Border.BitmapEffect>
+				</Border>
 
-					<XivToolsWpf:IconBlock
-						x:Name="TitleIcon"
-						Margin="0,0,6,0"
-						VerticalAlignment="Center"
-						Foreground="{DynamicResource ForegroundLightBrush}" />
+				<Border
+					Background="Transparent"
+					BorderBrush="{DynamicResource TrimBrush}"
+					BorderThickness="1"
+					CornerRadius="6"
+					Visibility="{Binding IsActive, Converter={StaticResource B2V}}" />
 
-					<TextBlock
-						x:Name="TitleText"
-						VerticalAlignment="Center"
-						Foreground="{DynamicResource ForegroundLightBrush}" />
-				</StackPanel>
+				<Border
+					Background="Transparent"
+					BorderBrush="{DynamicResource BackgroundBrush}"
+					BorderThickness="1"
+					CornerRadius="6"
+					Visibility="{Binding IsActive, Converter={StaticResource !B2V}}" />
 
-				<Rectangle
-					Fill="Transparent"
-					MouseDown="OnTitleMouseDown" />
-
-
-				<StackPanel
-					HorizontalAlignment="Right"
-					Orientation="Horizontal">
-
-					<Button
-						Width="22"
-						Height="22"
-						Background="Transparent"
-						Click="OnTitlebarCloseButtonClicked"
-						Style="{StaticResource TransparentIconButton}"
-						Visibility="{Binding CanManualyClose, Converter={StaticResource B2V}}">
-						<XivToolsWpf:IconBlock
-							Foreground="{DynamicResource ForegroundLightBrush}"
-							Icon="Times" />
-					</Button>
-
-					<Button
-						Width="22"
-						Height="22"
-						Background="Transparent"
-						Click="OnTitlebarContextButtonClicked"
-						Style="{StaticResource TransparentIconButton}">
-						<XivToolsWpf:IconBlock
-							Foreground="{DynamicResource ForegroundLightBrush}"
-							Icon="AngleDown" />
-					</Button>
-				</StackPanel>
-
-				<Grid.ContextMenu>
-					<ContextMenu x:Name="WindowContextMenu">
-						<MenuItem
-							Header="OverlayWindow_AutoClose"
-							IsCheckable="True"
-							IsChecked="{Binding AutoClose}"
-							Style="{StaticResource AnaMenuItem}"
-							Visibility="{Binding CanChangeAutoClose, Converter={StaticResource B2V}}" />
-
-						<MenuItem
-							Click="OnPopOutClicked"
-							Header="OverlayWindow_PopOut"
-							Style="{StaticResource AnaMenuItem}"
-							Visibility="{Binding CanPopOut, Converter={StaticResource B2V}}" />
-
-						<MenuItem
-							Click="OnPopInClicked"
-							Header="OverlayWindow_PopIn"
-							Style="{StaticResource AnaMenuItem}"
-							Visibility="{Binding CanPopIn, Converter={StaticResource B2V}}" />
-
-					</ContextMenu>
-				</Grid.ContextMenu>
 			</Grid>
 
-			<ScrollViewer
-				x:Name="ScrollArea"
+			<Grid
 				Grid.Row="1"
-				Margin="1"
-				HorizontalScrollBarVisibility="Disabled"
-				VerticalScrollBarVisibility="Auto">
-				<ContentPresenter x:Name="ContentPresenter" />
-			</ScrollViewer>
+				Margin="6">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition />
+				</Grid.RowDefinitions>
 
+				<Grid
+					Grid.Row="0"
+					Height="22"
+					Margin="0,0,0,3"
+					Visibility="{Binding ShowBackground, Converter={StaticResource B2V}}">
+
+					<StackPanel
+						Margin="6,0"
+						Orientation="Horizontal">
+
+						<XivToolsWpf:IconBlock
+							x:Name="TitleIcon"
+							Margin="0,0,6,0"
+							VerticalAlignment="Center"
+							Foreground="{DynamicResource ForegroundLightBrush}" />
+
+						<TextBlock
+							x:Name="TitleText"
+							VerticalAlignment="Center"
+							Foreground="{DynamicResource ForegroundLightBrush}" />
+					</StackPanel>
+
+					<Rectangle
+						Fill="Transparent"
+						MouseDown="OnTitleMouseDown" />
+
+
+					<StackPanel
+						HorizontalAlignment="Right"
+						Orientation="Horizontal">
+
+						<Button
+							Width="22"
+							Height="22"
+							Background="Transparent"
+							Click="OnTitlebarCloseButtonClicked"
+							Style="{StaticResource TransparentIconButton}"
+							Visibility="{Binding CanManualyClose, Converter={StaticResource B2V}}">
+							<XivToolsWpf:IconBlock
+								Foreground="{DynamicResource ForegroundLightBrush}"
+								Icon="Times" />
+						</Button>
+
+						<Button
+							Width="22"
+							Height="22"
+							Background="Transparent"
+							Click="OnTitlebarContextButtonClicked"
+							Style="{StaticResource TransparentIconButton}">
+							<XivToolsWpf:IconBlock
+								Foreground="{DynamicResource ForegroundLightBrush}"
+								Icon="AngleDown" />
+						</Button>
+					</StackPanel>
+
+					<Grid.ContextMenu>
+						<ContextMenu x:Name="WindowContextMenu">
+							<MenuItem
+								Header="OverlayWindow_AutoClose"
+								IsCheckable="True"
+								IsChecked="{Binding AutoClose}"
+								Style="{StaticResource AnaMenuItem}"
+								Visibility="{Binding CanChangeAutoClose, Converter={StaticResource B2V}}" />
+
+							<MenuItem
+								Click="OnPopOutClicked"
+								Header="OverlayWindow_PopOut"
+								Style="{StaticResource AnaMenuItem}"
+								Visibility="{Binding CanPopOut, Converter={StaticResource B2V}}" />
+
+							<MenuItem
+								Click="OnPopInClicked"
+								Header="OverlayWindow_PopIn"
+								Style="{StaticResource AnaMenuItem}"
+								Visibility="{Binding CanPopIn, Converter={StaticResource B2V}}" />
+
+						</ContextMenu>
+					</Grid.ContextMenu>
+				</Grid>
+
+				<ScrollViewer
+					x:Name="ScrollArea"
+					Grid.Row="1"
+					Margin="1"
+					HorizontalScrollBarVisibility="Disabled"
+					VerticalScrollBarVisibility="Auto">
+					<ContentPresenter x:Name="ContentPresenter" />
+				</ScrollViewer>
+
+			</Grid>
 		</Grid>
 	</Grid>
-
 </Window>
