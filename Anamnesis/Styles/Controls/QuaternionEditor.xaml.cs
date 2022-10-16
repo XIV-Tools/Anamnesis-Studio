@@ -327,6 +327,20 @@ public partial class QuaternionEditor : UserControl
 		}
 	}
 
+	private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+	{
+		if (e.NewSize.Width > 300)
+		{
+			Grid.SetRow(this.VectorEditor, 0);
+			Grid.SetColumn(this.VectorEditor, 1);
+		}
+		else
+		{
+			Grid.SetRow(this.VectorEditor, 1);
+			Grid.SetColumn(this.VectorEditor, 0);
+		}
+	}
+
 	private class RotationGizmo : ModelVisual3D
 	{
 		private readonly QuaternionEditor target;

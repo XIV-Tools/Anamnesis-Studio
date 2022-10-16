@@ -9,6 +9,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	d:DesignWidth="250"
 	IsVisibleChanged="OnIsVisibleChanged"
+	SizeChanged="OnSizeChanged"
 	mc:Ignorable="d">
 
 	<Grid x:Name="ContentArea">
@@ -17,7 +18,16 @@
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+
 		<Grid
+			Grid.Row="0"
+			Grid.Column="0"
+			MinWidth="200"
+			MinHeight="175"
 			MouseDown="OnViewportMouseDown"
 			MouseLeave="OnViewportMouseLeave"
 			MouseMove="OnViewportMouseMove"
@@ -62,6 +72,7 @@
 
 		<ToggleButton
 			Grid.Row="0"
+			Grid.Column="0"
 			Width="22"
 			Height="22"
 			HorizontalAlignment="Right"
@@ -80,7 +91,10 @@
 		</ToggleButton>
 
 		<cm3:VectorEditor
+			x:Name="VectorEditor"
 			Grid.Row="1"
+			Grid.Column="0"
+			VerticalAlignment="Top"
 			Expanded="True"
 			Maximum="360"
 			Minimum="0"

@@ -26,13 +26,13 @@ public partial class PoseMatrixView : UserControl
 			if (groupBox == null)
 				return;
 
-			SkeletonVisual3d skeleton = (SkeletonVisual3d)this.DataContext;
+			/*SkeletonVisual3d skeleton = (SkeletonVisual3d)this.DataContext;
 
 			if (!Keyboard.IsKeyDown(Key.LeftCtrl))
 				skeleton.SelectedBones.Clear();
 
 			List<BoneView> bones = groupBox.FindChildren<BoneView>();
-			skeleton.Select(bones);
+			skeleton.Select(bones);*/
 		}
 	}
 }

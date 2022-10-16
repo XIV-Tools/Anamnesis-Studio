@@ -3,14 +3,12 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
-	xmlns:anaUtils="clr-namespace:Anamnesis"
-	xmlns:controls="clr-namespace:Anamnesis.Actor.Controls"
+	xmlns:controls="clr-namespace:Anamnesis.Controls"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:local="clr-namespace:Anamnesis.Actor.Panels"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:panels="clr-namespace:Anamnesis.Panels"
 	xmlns:views="clr-namespace:Anamnesis.Actor.Views"
-	Title="[Navigation_Actor_Bones"
+	Title="[Navigation_Actor_Bones]"
 	Width="650"
 	Height="512"
 	CanResize="False"
@@ -19,7 +17,30 @@
 
 	<Grid x:Name="ContentArea">
 
-		<Grid IsEnabled="{Binding Skeleton, Converter={StaticResource NotNullToBoolConverter}}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+
+		<controls:ActorSelector
+			Grid.Row="0"
+			Grid.Column="0"
+			Selection="{Binding Actor}" />
+
+		<TextBlock
+			Grid.Row="0"
+			Grid.Column="1"
+			Text="{Binding Actor.Names.Text}" />
+
+		<Grid
+			Grid.Row="1"
+			Grid.ColumnSpan="3"
+			IsEnabled="{Binding Skeleton, Converter={StaticResource NotNullToBoolConverter}}">
 
 			<!--  Content  -->
 			<Grid
@@ -112,7 +133,7 @@
 				Grid.Row="0"
 				Grid.RowSpan="2"
 				Margin="6,7"
-				Text="Pose_WarningNotGPose"
+				Text="[Pose_WarningNotGPose]"
 				Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource !B2V}}" />
 
 			<Grid
@@ -123,30 +144,25 @@
 					Margin="6,7"
 					VerticalAlignment="Bottom"
 					IsError="False"
-					Text="[Pose_NotEnabled"
+					Text="[Pose_NotEnabled]"
 					Visibility="{Binding Services.Pose.IsEnabled, Converter={StaticResource !B2V}}" />
 			</Grid>
-		</Grid>
 
-		<Grid Visibility="{Binding Actor, Converter={StaticResource NotNullToVisibilityConverter}}">
-			<Grid Visibility="{Binding Actor.ModelObject, Converter={StaticResource NotNullToVisibilityConverter}}">
-				<Grid Visibility="{Binding Skeleton, Converter={StaticResource NullToVisibilityConverter}}">
-					<XivToolsWpf:InfoControl
-						Margin="12"
-						VerticalAlignment="Bottom"
-						IsError="True"
-						Text="[Pose_NoSkeleton" />
+			<!--  Info popups  -->
+			<Grid Margin="12">
+				<Grid Visibility="{Binding Actor, Converter={StaticResource NotNullToVisibilityConverter}}">
+					<Grid Visibility="{Binding Actor.ModelObject, Converter={StaticResource NullToVisibilityConverter}}">
+						<XivToolsWpf:InfoControl
+							Margin="12"
+							VerticalAlignment="Bottom"
+							Background="{DynamicResource BackgroundBrush}"
+							IsError="True"
+							Text="[Pose_NoModel]" />
+					</Grid>
 				</Grid>
 			</Grid>
-
-			<Grid Visibility="{Binding Actor.ModelObject, Converter={StaticResource NullToVisibilityConverter}}">
-				<XivToolsWpf:InfoControl
-					Margin="12"
-					VerticalAlignment="Bottom"
-					IsError="True"
-					Text="[Pose_NoModel" />
-			</Grid>
 		</Grid>
+
 
 	</Grid>
 </local:ActorPanelBase>

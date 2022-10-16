@@ -9,18 +9,14 @@
 	Width="18"
 	Height="18"
 	Margin="2"
-	HorizontalAlignment="Left"
-	DataContextChanged="OnDataContextChanged"
 	Loaded="OnLoaded"
-	MouseEnter="OnMouseEnter"
-	MouseLeave="OnMouseLeave"
-	MouseUp="OnMouseUp"
 	Unloaded="OnUnloaded"
 	mc:Ignorable="d">
 
 	<Grid
 		x:Name="ContentArea"
 		Cursor="Hand">
+
 		<Grid.ToolTip>
 			<StackPanel>
 				<TextBlock
@@ -30,7 +26,13 @@
 			</StackPanel>
 		</Grid.ToolTip>
 
-		<Ellipse
+		<RadioButton
+			x:Name="Radio"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center"
+			Checked="OnChecked" />
+
+		<!--<Ellipse
 			x:Name="BackgroundElipse"
 			Fill="{DynamicResource BackgroundLightBrush}"
 			Stroke="{DynamicResource TrimBrush}"
@@ -54,6 +56,6 @@
 			VerticalAlignment="Center"
 			FontSize="8"
 			Style="{StaticResource Label}"
-			Text="{Binding Label}" />
+			Text="{Binding Label}" />-->
 	</Grid>
 </UserControl>

@@ -1,48 +1,73 @@
-﻿<UserControl x:Class="Anamnesis.Actor.Controls.TransformEditor"
-			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 xmlns:controls="clr-namespace:Anamnesis.Styles.Controls"
-			 xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
-			 mc:Ignorable="d" 
-			 d:DesignHeight="450" d:DesignWidth="200">
+﻿<UserControl
+	x:Class="Anamnesis.Actor.Controls.TransformEditor"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
+	xmlns:controls="clr-namespace:Anamnesis.Styles.Controls"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	d:DesignHeight="450"
+	d:DesignWidth="200"
+	mc:Ignorable="d">
 
-	<Grid x:Name="ContentArea" Margin="3" IsEnabled="{Binding Value, Converter={StaticResource NotNullToBoolConverter}}">
+	<Grid
+		x:Name="ContentArea"
+		Margin="3"
+		IsEnabled="{Binding Value, Converter={StaticResource NotNullToBoolConverter}}">
 		<Grid.RowDefinitions>
-			<RowDefinition/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
+			<RowDefinition />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
-		
-		<controls:QuaternionEditor Grid.Row="0" Margin="0,3,0,0" Value="{Binding Value.Rotation}" RootRotation="{Binding Value.RootRotation, Mode=OneWay}" IsEnabled="{Binding Value.CanRotate}"/>
+
+		<GroupBox Grid.Row="0">
+			<GroupBox.Header>
+				<TextBlock Text="[Pose_Rotation]" />
+			</GroupBox.Header>
+
+			<controls:QuaternionEditor
+				Grid.Row="0"
+				Margin="0,3,0,0"
+				IsEnabled="{Binding Value.CanRotate}"
+				RootRotation="{Binding Value.RootRotation, Mode=OneWay}"
+				Value="{Binding Value.Rotation}" />
+		</GroupBox>
 
 		<GroupBox Grid.Row="1">
 			<GroupBox.IsEnabled>
 				<MultiBinding Converter="{StaticResource MultiBoolAnd}">
-					<Binding Path="Value.CanTranslate"/>
-					<Binding Path="CanTranslate"/>
+					<Binding Path="Value.CanTranslate" />
+					<Binding Path="CanTranslate" />
 				</MultiBinding>
 			</GroupBox.IsEnabled>
-				
+
 			<GroupBox.Header>
-				<TextBlock Text="[Pose_Position"/>
+				<TextBlock Text="[Pose_Position]" />
 			</GroupBox.Header>
-			<controls:VectorEditor Value="{Binding Value.Position}" Expanded="True" Minimum="-4096" Maximum="4096" Sliders="Relative" TickFrequency="0.01"/>
+			<controls:VectorEditor
+				Expanded="True"
+				Maximum="4096"
+				Minimum="-4096"
+				Sliders="Relative"
+				TickFrequency="0.01"
+				Value="{Binding Value.Position}" />
 		</GroupBox>
 
-		<GroupBox Grid.Row="2" IsEnabled="{Binding Value.CanScale}">
+		<GroupBox
+			Grid.Row="2"
+			IsEnabled="{Binding Value.CanScale}">
 			<GroupBox.Header>
-				<TextBlock Text="[Pose_Scale"/>
+				<TextBlock Text="[Pose_Scale]" />
 			</GroupBox.Header>
-			<controls:VectorEditor Value="{Binding Value.Scale}"
-								   Expanded="False"
-								   Minimum="-10"
-								   Maximum="10"
-								   TickFrequency="0.1"
-								   CanLink="{Binding Value.CanLinkScale}"
-								   Linked="{Binding Value.ScaleLinked}"
-								   UncapTextInput="True"/>
+			<controls:VectorEditor
+				CanLink="{Binding Value.CanLinkScale}"
+				Expanded="False"
+				Linked="{Binding Value.ScaleLinked}"
+				Maximum="10"
+				Minimum="-10"
+				TickFrequency="0.1"
+				UncapTextInput="True"
+				Value="{Binding Value.Scale}" />
 		</GroupBox>
 
 	</Grid>

@@ -171,8 +171,6 @@ public class SkeletonVisual3d : ModelVisual3D, INotifyPropertyChanged
 			this.SelectedBones.Add(bone.Visual);
 		}
 
-		PoseService.SelectedBoneName = this.CurrentBone?.Tooltip;
-
 		this.RaisePropertyChanged(nameof(SkeletonVisual3d.CurrentBone));
 		this.RaisePropertyChanged(nameof(SkeletonVisual3d.HasSelection));
 		this.RaisePropertyChanged(nameof(SkeletonVisual3d.SelectedCount));
@@ -213,8 +211,6 @@ public class SkeletonVisual3d : ModelVisual3D, INotifyPropertyChanged
 			}
 		}
 
-		PoseService.SelectedBoneName = this.CurrentBone?.Tooltip;
-
 		this.RaisePropertyChanged(nameof(SkeletonVisual3d.CurrentBone));
 		this.RaisePropertyChanged(nameof(SkeletonVisual3d.HasSelection));
 		this.RaisePropertyChanged(nameof(SkeletonVisual3d.SelectedCount));
@@ -241,8 +237,6 @@ public class SkeletonVisual3d : ModelVisual3D, INotifyPropertyChanged
 			}
 		}
 
-		PoseService.SelectedBoneName = this.CurrentBone?.Tooltip;
-
 		this.RaisePropertyChanged(nameof(SkeletonVisual3d.CurrentBone));
 		this.RaisePropertyChanged(nameof(SkeletonVisual3d.HasSelection));
 		this.RaisePropertyChanged(nameof(SkeletonVisual3d.SelectedCount));
@@ -255,8 +249,6 @@ public class SkeletonVisual3d : ModelVisual3D, INotifyPropertyChanged
 
 		Application.Current?.Dispatcher.Invoke(() =>
 		{
-			PoseService.SelectedBoneName = this.CurrentBone?.Tooltip;
-
 			this.RaisePropertyChanged(nameof(SkeletonVisual3d.CurrentBone));
 			this.RaisePropertyChanged(nameof(SkeletonVisual3d.HasSelection));
 			this.RaisePropertyChanged(nameof(SkeletonVisual3d.SelectedCount));

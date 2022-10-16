@@ -416,11 +416,12 @@
 	"Pose_Linked": "Linked Bones",
 	"Pose_Linked_Tooltip": "Linked bones will be moved in relation to the current bone",
 
-	"Pose_EnableRotation": "Rot",
+	"Pose_BoneEditModes": "Freeze Bone",
+	"Pose_EnableRotation": "Rotation",
 	"Pose_EnableRotationTooltip": "Enable editing rotation",
 	"Pose_EnableScale": "Scale",
 	"Pose_EnableScaleTooltip": "Enable editing scale",
-	"Pose_EnablePosition": "Pos",
+	"Pose_EnablePosition": "Position",
 	"Pose_EnablePositionTooltip": "Enable editing positions",
 
 	"Pose_Matrix_HeadCategory": "Head",

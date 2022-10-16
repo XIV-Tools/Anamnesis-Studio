@@ -36,44 +36,7 @@ public partial class BonesPanel : ActorPanelBase
 	public BonesPanel()
 		: base()
 	{
-		HistoryService.OnHistoryApplied += this.OnHistoryApplied;
 		PoseService.EnabledChanged += this.OnPoseServiceEnabledChanged;
-	}
-
-	public SkeletonVisual3d? Skeleton { get; private set; }
-
-	public List<BoneView> GetBoneViews(BoneVisual3d bone)
-	{
-		List<BoneView> results = new List<BoneView>();
-		foreach (BoneView boneView in this.BoneViews)
-		{
-			if (boneView.Bone == bone)
-			{
-				results.Add(boneView);
-			}
-		}
-
-		return results;
-	}
-
-	protected override async Task OnActorChanged()
-	{
-		await base.OnActorChanged();
-
-		this.BoneViews.Clear();
-
-		if (this.Actor == null || this.Actor.ModelObject == null)
-			return;
-
-		try
-		{
-			this.Skeleton = await this.Services.Pose.GetSkeleton(this.Actor);
-		}
-		catch (Exception ex)
-		{
-			this.Log.Error(ex, "Failed to set skeleton to pose panel");
-			this.Skeleton = null;
-		}
 	}
 
 	private async void OnPoseServiceEnabledChanged(bool value)
@@ -83,23 +46,6 @@ public partial class BonesPanel : ActorPanelBase
 			await this.Dispatcher.MainThread();
 			this.Close();
 		}
-	}
-
-	private void OnLoaded(object sender, RoutedEventArgs e)
-	{
-		this.Services.Pose.PropertyChanged += this.PoseService_PropertyChanged;
-	}
-
-	private void PoseService_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-	{
-		Application.Current?.Dispatcher.Invoke(() =>
-		{
-			////if (this.Skeleton != null && !this.PoseService.CanEdit)
-			////	this.Skeleton.CurrentBone = null;
-
-			this.Skeleton?.Reselect();
-			this.Skeleton?.ReadTranforms();
-		});
 	}
 
 	/*
@@ -151,9 +97,6 @@ public partial class BonesPanel : ActorPanelBase
 
 	private void OnCanvasMouseMove(object sender, MouseEventArgs e)
 	{
-		if (this.Skeleton == null)
-			return;
-
 		Point curMouseDownPoint = e.GetPosition(this.SelectionCanvas);
 
 		if (this.isDragging)
@@ -179,29 +122,24 @@ public partial class BonesPanel : ActorPanelBase
 
 			List<BoneView> bones = new List<BoneView>();
 
-			foreach (BoneView bone in this.BoneViews)
+			foreach (BoneView boneView in this.BoneViews)
 			{
-				if (bone.Bone == null)
+				if (!boneView.IsDescendantOf(this.MouseCanvas))
 					continue;
 
-				if (!bone.IsDescendantOf(this.MouseCanvas))
+				if (!boneView.IsVisible)
 					continue;
 
-				if (!bone.IsVisible)
-					continue;
-
-				Point relativePoint = bone.TransformToAncestor(this.MouseCanvas).Transform(new Point(0, 0));
+				Point relativePoint = boneView.TransformToAncestor(this.MouseCanvas).Transform(new Point(0, 0));
 				if (relativePoint.X > minx && relativePoint.X < maxx && relativePoint.Y > miny && relativePoint.Y < maxy)
 				{
-					this.Skeleton.Hover(bone.Bone, true, false);
+					boneView.Hover(true);
 				}
 				else
 				{
-					this.Skeleton.Hover(bone.Bone, false);
+					boneView.Hover(false);
 				}
 			}
-
-			this.Skeleton.NotifyHover();
 		}
 		else if (this.isLeftMouseButtonDownOnWindow)
 		{
@@ -226,33 +164,23 @@ public partial class BonesPanel : ActorPanelBase
 		{
 			this.isDragging = false;
 
-			if (this.Skeleton != null)
+			double minx = Canvas.GetLeft(this.DragSelectionBorder);
+			double miny = Canvas.GetTop(this.DragSelectionBorder);
+			double maxx = minx + this.DragSelectionBorder.Width;
+			double maxy = miny + this.DragSelectionBorder.Height;
+
+			foreach (BoneView boneView in this.BoneViews)
 			{
-				double minx = Canvas.GetLeft(this.DragSelectionBorder);
-				double miny = Canvas.GetTop(this.DragSelectionBorder);
-				double maxx = minx + this.DragSelectionBorder.Width;
-				double maxy = miny + this.DragSelectionBorder.Height;
+				if (!boneView.IsVisible)
+					continue;
 
-				List<BoneView> toSelect = new List<BoneView>();
+				boneView.Hover(false);
 
-				foreach (BoneView bone in this.BoneViews)
+				Point relativePoint = boneView.TransformToAncestor(this.MouseCanvas).Transform(new Point(0, 0));
+				if (relativePoint.X > minx && relativePoint.X < maxx && relativePoint.Y > miny && relativePoint.Y < maxy)
 				{
-					if (bone.Bone == null)
-						continue;
-
-					if (!bone.IsVisible)
-						continue;
-
-					this.Skeleton.Hover(bone.Bone, false);
-
-					Point relativePoint = bone.TransformToAncestor(this.MouseCanvas).Transform(new Point(0, 0));
-					if (relativePoint.X > minx && relativePoint.X < maxx && relativePoint.Y > miny && relativePoint.Y < maxy)
-					{
-						toSelect.Add(bone);
-					}
+					boneView.Select();
 				}
-
-				this.Skeleton.Select(toSelect);
 			}
 
 			this.DragSelectionBorder.Visibility = Visibility.Collapsed;
@@ -260,17 +188,9 @@ public partial class BonesPanel : ActorPanelBase
 		}
 		else
 		{
-			if (this.Skeleton != null && !this.Skeleton.HasHover)
-			{
-				this.Skeleton.Select(Enumerable.Empty<IBone>());
-			}
+			// TODO: clear selection
 		}
 
 		this.MouseCanvas.ReleaseMouseCapture();
-	}
-
-	private void OnHistoryApplied()
-	{
-		this.Skeleton?.CurrentBone?.ReadTransform();
 	}
 }

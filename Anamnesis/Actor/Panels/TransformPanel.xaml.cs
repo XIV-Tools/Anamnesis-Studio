@@ -3,14 +3,8 @@
 
 namespace Anamnesis.Actor.Panels;
 
-using Anamnesis.Memory;
-using Anamnesis.Panels;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media.Media3D;
 using XivToolsWpf;
-using CmQuaternion = Anamnesis.Memory.Quaternion;
 
 public partial class TransformPanel : ActorPanelBase
 {
@@ -21,17 +15,6 @@ public partial class TransformPanel : ActorPanelBase
 	}
 
 	public bool IsFlipping { get; private set; }
-	public SkeletonVisual3d? Skeleton { get; private set; }
-
-	protected override async Task OnActorChanged()
-	{
-		await base.OnActorChanged();
-
-		if (this.Actor == null)
-			return;
-
-		this.Skeleton = await this.Services.Pose.GetSkeleton(this.Actor);
-	}
 
 	private async void OnPoseServiceEnabledChanged(bool value)
 	{
@@ -44,34 +27,19 @@ public partial class TransformPanel : ActorPanelBase
 
 	private void OnParentClicked(object sender, RoutedEventArgs e)
 	{
-		if (this.Skeleton?.CurrentBone?.Parent == null)
-			return;
-
-		this.Skeleton.Select(this.Skeleton.CurrentBone.Parent);
 	}
 
 	private void OnSelectChildrenClicked(object sender, RoutedEventArgs e)
 	{
-		if (this.Skeleton == null)
-			return;
-
-		List<BoneVisual3d> bones = new List<BoneVisual3d>();
-		foreach (BoneVisual3d bone in this.Skeleton.SelectedBones)
-		{
-			bone.GetChildren(ref bones);
-		}
-
-		this.Skeleton.Select(bones, SkeletonVisual3d.SelectMode.Add);
 	}
 
 	private void OnClearClicked(object? sender, RoutedEventArgs? e)
 	{
-		this.Skeleton?.ClearSelection();
 	}
 
 	private void OnFlipClicked(object sender, RoutedEventArgs e)
 	{
-		if (this.Skeleton != null && !this.IsFlipping)
+		/*if (this.Skeleton != null && !this.IsFlipping)
 		{
 			// if no bone selected, flip both lumbar and waist bones
 			this.IsFlipping = true;
@@ -101,23 +69,10 @@ public partial class TransformPanel : ActorPanelBase
 			}
 
 			this.IsFlipping = false;
-		}
+		}*/
 	}
 
-	/* Basic Idea:
-		* get mirrored quat of targetBone
-		* check if its a 'left' bone
-		*- if it is:
-		*          - get the mirrored quat of the corresponding right bone
-		*          - store the first quat (from left bone) on the right bone
-		*          - store the second quat (from right bone) on the left bone
-		*      - if not:
-		*          - store the quat on the target bone
-		*  - recursively flip on all child bones
-		*/
-
-	// TODO: This doesn't seem to be working correctly after the skeleton upgrade. not sure why...
-	private void FlipBone(BoneVisual3d? targetBone, bool shouldFlip = true)
+	/*private void FlipBone(BoneVisual3d? targetBone, bool shouldFlip = true)
 	{
 		if (targetBone != null)
 		{
@@ -125,9 +80,6 @@ public partial class TransformPanel : ActorPanelBase
 			if (shouldFlip && targetBone.BoneName.EndsWith("_l"))
 			{
 				string rightBoneString = targetBone.BoneName.Substring(0, targetBone.BoneName.Length - 2) + "_r"; // removes the "_l" and replaces it with "_r"
-				/*	Useful debug lines to make sure the correct bones are grabbed...
-					*	Log.Information("flipping: " + targetBone.BoneName);
-					*	Log.Information("right flip target: " + rightBoneString); */
 				BoneVisual3d? rightBone = targetBone.Skeleton.GetBone(rightBoneString);
 				if (rightBone != null)
 				{
@@ -170,5 +122,5 @@ public partial class TransformPanel : ActorPanelBase
 				}
 			}
 		}
-	}
+	}*/
 }

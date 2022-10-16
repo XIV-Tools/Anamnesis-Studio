@@ -46,17 +46,12 @@ public partial class ImportPosePanel : PanelBase
 		this.Initialize().Run();
 	}
 
-	private async Task Initialize()
+	private Task Initialize()
 	{
 		if (this.Actor == null)
-			return;
+			return Task.CompletedTask;
 
-		this.Skeleton = await this.Services.Pose.GetSkeleton(this.Actor);
-
-		if (this.Skeleton == null)
-		{
-			this.Close();
-		}
+		return Task.CompletedTask;
 	}
 
 	private void OnImportClicked(object sender, RoutedEventArgs e)

@@ -6,6 +6,7 @@
 	xmlns:ana="clr-namespace:Anamnesis"
 	xmlns:character="clr-namespace:Anamnesis.Actor.Panels.Character"
 	xmlns:controls="clr-namespace:Anamnesis.Controls"
+	xmlns:controls1="clr-namespace:Anamnesis.Actor.Controls"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:designer="clr-namespace:XivToolsWpf.Designer;assembly=XivToolsWpf"
 	xmlns:local="clr-namespace:Anamnesis.Actor.Panels"
@@ -46,6 +47,10 @@
 			</TabItem>
 			<TabItem Header="[Character_Tab_Equipment]">
 				<character:CharacterEquipment />
+			</TabItem>
+
+			<TabItem Header="Transform">
+				<controls1:TransformEditor VerticalAlignment="Top" />
 			</TabItem>
 
 		</TabControl>

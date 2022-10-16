@@ -14,88 +14,75 @@
 	mc:Ignorable="d">
 
 	<Grid>
-
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition />
-		</Grid.ColumnDefinitions>
-
 		<Grid.RowDefinitions>
 			<RowDefinition />
 			<RowDefinition />
 		</Grid.RowDefinitions>
 
-		<ToggleButton
-			Grid.Column="0"
-			Margin="3"
-			IsChecked="{Binding Services.Pose.IsEnabled}"
-			IsEnabled="{Binding Services.Gpose.IsGpose}"
-			Style="{DynamicResource XivToolsToggleButton}">
-
-			<Grid
-				Margin="6"
-				VerticalAlignment="Center">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition />
-					<ColumnDefinition />
-				</Grid.ColumnDefinitions>
-
-				<XivToolsWpf:IconBlock
-					Margin="6,0"
-					FontSize="18"
-					Icon="Running" />
-
-				<TextBlock
-					Grid.Column="1"
-					Margin="6,2,6,0"
-					Text="Pose" />
-			</Grid>
-
-			<ToggleButton.ToolTip>
-				<StackPanel Orientation="Vertical">
-					<TextBlock
-						Margin="0"
-						Padding="0"
-						Text="[Pose_Toggle]" />
-					<TextBlock
-						Margin="0"
-						Padding="0"
-						Text="[Pose_WarningNotGPose]"
-						Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource !B2V}}" />
-				</StackPanel>
-			</ToggleButton.ToolTip>
-		</ToggleButton>
-
-		<controls:ActorSelector Grid.Column="1" />
-
-		<StackPanel
-			Grid.Row="1"
+		<Grid
+			Grid.Row="0"
 			Grid.ColumnSpan="2"
-			VerticalAlignment="Center"
-			Orientation="Horizontal">
+			VerticalAlignment="Center">
 
-			<CheckBox
-				Margin="3,0,6,0"
-				VerticalContentAlignment="Center"
-				IsChecked="{Binding Services.Pose.FreezePhysics}"
-				IsEnabled="{Binding Services.Pose.IsEnabled}">
-				<TextBlock Text="[Pose_FreezePhysics" />
-			</CheckBox>
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition />
+			</Grid.RowDefinitions>
 
-			<CheckBox
-				Margin="3,0,6,0"
-				VerticalContentAlignment="Center"
-				IsChecked="{Binding Services.Pose.EnableParenting}"
-				IsEnabled="{Binding Services.Pose.IsEnabled}">
-				<TextBlock Text="[Pose_Parenting" />
-			</CheckBox>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+
+			<ToggleButton
+				Grid.RowSpan="2"
+				Grid.Column="0"
+				Margin="3"
+				IsChecked="{Binding Services.Pose.IsEnabled}"
+				IsEnabled="{Binding Services.Gpose.IsGpose}"
+				Style="{DynamicResource XivToolsToggleButton}">
+
+				<Grid
+					Margin="6"
+					VerticalAlignment="Center">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+
+					<XivToolsWpf:IconBlock
+						Margin="6,0"
+						FontSize="18"
+						Icon="Running" />
+
+					<TextBlock
+						Grid.Column="1"
+						Margin="6,2,6,0"
+						Text="Pose" />
+				</Grid>
+
+				<ToggleButton.ToolTip>
+					<StackPanel Orientation="Vertical">
+						<TextBlock
+							Margin="0"
+							Padding="0"
+							Text="[Pose_Toggle]" />
+						<TextBlock
+							Margin="0"
+							Padding="0"
+							Text="[Pose_WarningNotGPose]"
+							Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource !B2V}}" />
+					</StackPanel>
+				</ToggleButton.ToolTip>
+			</ToggleButton>
 
 			<Border
-				Margin="2,2,5,2"
+				Grid.RowSpan="2"
+				Grid.Column="1"
+				Margin="0,0,0,3"
 				Padding="3"
-				HorizontalAlignment="Right"
-				Background="{DynamicResource AttentionToActionBrush}"
-				CornerRadius="6">
+				Style="{StaticResource XivToolsControlBorder}">
 				<Grid>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition />
@@ -110,64 +97,90 @@
 
 					<TextBlock
 						Grid.ColumnSpan="3"
-						Margin="2,0,0,0"
+						Margin="3,2,0,2"
 						FontSize="10"
-						Text="Edit Mode:" />
+						Text="[Pose_BoneEditModes]" />
 
 					<CheckBox
 						Grid.Row="1"
 						Grid.Column="0"
-						Margin="3,0"
+						Margin="0"
 						VerticalContentAlignment="Center"
+						Background="Transparent"
 						IsChecked="{Binding Services.Pose.FreezeRotation}"
 						IsEnabled="{Binding Services.Pose.IsEnabled}">
 						<TextBlock
 							Margin="0,-2,0,2"
-							Text="[Pose_EnableRotation" />
+							Text="[Pose_EnableRotation]" />
 
 						<CheckBox.ToolTip>
-							<TextBlock Text="[Pose_EnableRotationTooltip" />
+							<TextBlock Text="[Pose_EnableRotationTooltip]" />
 						</CheckBox.ToolTip>
 					</CheckBox>
 
 					<CheckBox
 						Grid.Row="1"
 						Grid.Column="1"
-						Margin="3,0"
+						Margin="6,0"
 						VerticalContentAlignment="Center"
+						Background="Transparent"
 						IsChecked="{Binding Services.Pose.FreezePositions}"
 						IsEnabled="{Binding Services.Pose.IsEnabled}">
 						<TextBlock
 							Margin="0,-2,0,2"
-							Text="[Pose_EnablePosition" />
+							Text="[Pose_EnablePosition]" />
 
 						<CheckBox.ToolTip>
-							<TextBlock Text="[Pose_EnablePositionTooltip" />
+							<TextBlock Text="[Pose_EnablePositionTooltip]" />
 						</CheckBox.ToolTip>
 					</CheckBox>
 
 					<CheckBox
 						Grid.Row="1"
 						Grid.Column="2"
-						Margin="3,0"
+						Margin="0"
 						VerticalContentAlignment="Center"
+						Background="Transparent"
 						IsChecked="{Binding Services.Pose.FreezeScale}"
 						IsEnabled="{Binding Services.Pose.IsEnabled}">
 						<TextBlock
 							Margin="0,-2,0,2"
-							Text="[Pose_EnableScale" />
+							Text="[Pose_EnableScale]" />
 
 						<CheckBox.ToolTip>
-							<TextBlock Text="[Pose_EnableScaleTooltip" />
+							<TextBlock Text="[Pose_EnableScaleTooltip]" />
 						</CheckBox.ToolTip>
 					</CheckBox>
 				</Grid>
 			</Border>
-		</StackPanel>
+
+			<CheckBox
+				Grid.Row="0"
+				Grid.Column="2"
+				Height="22"
+				Margin="3,0,3,3"
+				VerticalAlignment="Bottom"
+				IsChecked="{Binding Services.Pose.FreezePhysics}"
+				IsEnabled="{Binding Services.Pose.IsEnabled}">
+				<TextBlock Text="[Pose_FreezePhysics]" />
+			</CheckBox>
+
+			<CheckBox
+				Grid.Row="1"
+				Grid.Column="2"
+				Height="22"
+				Margin="3,0,3,3"
+				VerticalAlignment="Bottom"
+				IsChecked="{Binding Services.Pose.EnableParenting}"
+				IsEnabled="{Binding Services.Pose.IsEnabled}">
+				<TextBlock Text="[Pose_Parenting]" />
+			</CheckBox>
+		</Grid>
+
+		
 
 		<XivToolsWpf:InfoControl
-			Grid.Row="1"
-			Grid.ColumnSpan="3"
+			Grid.RowSpan="2"
 			Background="{StaticResource BackgroundBrush}"
 			Text="[Pose_WarningNotGPose]"
 			Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource !B2V}}" />

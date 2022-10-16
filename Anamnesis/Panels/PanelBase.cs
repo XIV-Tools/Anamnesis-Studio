@@ -81,7 +81,8 @@ public abstract class PanelBase : UserControl, INotifyPropertyChanged
 
 	public void Close()
 	{
-		this.Window.RemovePanel(this);
+		this.window?.RemovePanel(this);
+
 		this.IsOpen = false;
 		this.Services.Panels.OnPanelClosed(this);
 	}

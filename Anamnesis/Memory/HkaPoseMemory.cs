@@ -4,26 +4,37 @@
 namespace Anamnesis.Memory;
 
 using Anamnesis.Actor;
-using Anamnesis.Services;
+using Anamnesis.Posing;
 
 public class HkaPoseMemory : MemoryBase
 {
 	[Bind(0x000, BindFlags.Pointer)] public HkaSkeletonMemory? Skeleton { get; set; }
 	[Bind(0x010)] public TransformArrayMemory? Transforms { get; set; }
 
+	public TransformMemory? GetBone(string name)
+	{
+		if (this.Transforms == null || this.Skeleton == null || this.Skeleton.Bones == null)
+			return null;
+
+		for (int i = 0; i < this.Skeleton.Bones.Count; i++)
+		{
+			string boneName = this.Skeleton.Bones[i].Name.ToString();
+
+			if (boneName == name)
+			{
+				return this.Transforms[i];
+			}
+		}
+
+		return null;
+	}
+
 	protected override void HandlePropertyChanged(PropertyChange change)
 	{
 		// Big hack to keep bone change history names short.
 		if (change.Origin == PropertyChange.Origins.User && change.TopPropertyName == nameof(this.Transforms))
 		{
-			if (PoseService.SelectedBoneName == null)
-			{
-				change.Name = "[History_ChangeBone]";
-			}
-			else
-			{
-				change.Name = "[History_ChangeBone]" + PoseService.SelectedBoneName;
-			}
+			change.Name = "[History_ChangeBone]";
 		}
 
 		base.HandlePropertyChanged(change);
