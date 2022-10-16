@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Anamnesis.Actor.Items;
 using Anamnesis.Actor.Utilities;
 using Anamnesis.GameData;
 using Anamnesis.GameData.Excel;
@@ -271,7 +272,7 @@ public partial class ItemView : UserControl
 				if (valueVm is ItemMemory itemVm)
 				{
 					IItem? item = ItemUtility.GetItem(slots, 0, itemVm.Base, itemVm.Variant, actor.IsChocobo);
-					IDye? dye = GameDataService.Instance.Dyes.Get(itemVm.Dye);
+					IDye? dye = ItemUtility.GetDye(itemVm.Dye);
 
 					await this.Dispatcher.MainThread();
 
@@ -285,7 +286,7 @@ public partial class ItemView : UserControl
 					if (weaponVm.Set == 0)
 						weaponVm.Dye = 0;
 
-					IDye? dye = GameDataService.Instance.Dyes.Get(weaponVm.Dye);
+					IDye? dye = ItemUtility.GetDye(weaponVm.Dye);
 
 					await this.Dispatcher.MainThread();
 

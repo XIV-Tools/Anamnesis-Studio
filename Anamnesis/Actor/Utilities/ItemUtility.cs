@@ -61,6 +61,16 @@ public static class ItemUtility
 		}
 	}
 
+	public static IDye GetDye(byte id)
+	{
+		IDye? dye = GameDataService.Instance.Dyes.Find(id);
+
+		if (dye == null)
+			dye = new UnknownDye(id);
+
+		return dye;
+	}
+
 	public static IItem GetDummyItem(ushort modelSet, ushort modelBase, ushort modelVariant)
 	{
 		if (NoneItem.IsModel(modelSet, modelBase, modelVariant))
