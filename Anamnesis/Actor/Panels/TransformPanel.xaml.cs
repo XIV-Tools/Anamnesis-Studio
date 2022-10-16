@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Media3D;
-
+using XivToolsWpf;
 using CmQuaternion = Anamnesis.Memory.Quaternion;
 
 public partial class TransformPanel : ActorPanelBase
@@ -33,10 +33,11 @@ public partial class TransformPanel : ActorPanelBase
 		this.Skeleton = await this.Services.Pose.GetSkeleton(this.Actor);
 	}
 
-	private void OnPoseServiceEnabledChanged(bool value)
+	private async void OnPoseServiceEnabledChanged(bool value)
 	{
 		if (!value)
 		{
+			await this.Dispatcher.MainThread();
 			this.Close();
 		}
 	}
