@@ -12,7 +12,7 @@ public class HkaPoseMemory : MemoryBase
 	[Bind(0x000, BindFlags.Pointer)] public HkaSkeletonMemory? Skeleton { get; set; }
 	[Bind(0x010)] public TransformArrayMemory? Transforms { get; set; }
 
-	public BoneReference? GetBone(string name)
+	public BoneReference? FindBone(string name)
 	{
 		if (this.Transforms == null || this.Skeleton == null || this.Skeleton.Bones == null)
 			return null;

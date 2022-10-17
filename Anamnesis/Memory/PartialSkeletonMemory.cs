@@ -20,19 +20,19 @@ public class PartialSkeletonMemory : MemoryBase
 	{
 		List<BoneReference> bones = new();
 
-		BoneReference? poseBone = this.Pose1?.GetBone(name);
+		BoneReference? poseBone = this.Pose1?.FindBone(name);
 		if (poseBone != null)
 			bones.Add((BoneReference)poseBone);
 
-		poseBone = this.Pose2?.GetBone(name);
+		poseBone = this.Pose2?.FindBone(name);
 		if (poseBone != null)
 			bones.Add((BoneReference)poseBone);
 
-		poseBone = this.Pose3?.GetBone(name);
+		poseBone = this.Pose3?.FindBone(name);
 		if (poseBone != null)
 			bones.Add((BoneReference)poseBone);
 
-		poseBone = this.Pose4?.GetBone(name);
+		poseBone = this.Pose4?.FindBone(name);
 		if (poseBone != null)
 			bones.Add((BoneReference)poseBone);
 
