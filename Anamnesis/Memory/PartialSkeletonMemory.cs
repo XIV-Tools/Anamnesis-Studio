@@ -3,6 +3,7 @@
 
 namespace Anamnesis.Memory;
 
+using Anamnesis.Actor.Posing;
 using System.Collections.Generic;
 
 public class PartialSkeletonMemory : MemoryBase
@@ -15,26 +16,26 @@ public class PartialSkeletonMemory : MemoryBase
 	[Bind(0x150, BindFlags.Pointer)] public HkaPoseMemory? Pose3 { get; set; }
 	[Bind(0x158, BindFlags.Pointer)] public HkaPoseMemory? Pose4 { get; set; }
 
-	public List<TransformMemory> GetBone(string name)
+	public List<BoneReference> GetBone(string name)
 	{
-		List<TransformMemory> transforms = new();
+		List<BoneReference> bones = new();
 
-		TransformMemory? pose = this.Pose1?.GetBone(name);
-		if (pose != null)
-			transforms.Add(pose);
+		BoneReference? poseBone = this.Pose1?.GetBone(name);
+		if (poseBone != null)
+			bones.Add((BoneReference)poseBone);
 
-		pose = this.Pose2?.GetBone(name);
-		if (pose != null)
-			transforms.Add(pose);
+		poseBone = this.Pose2?.GetBone(name);
+		if (poseBone != null)
+			bones.Add((BoneReference)poseBone);
 
-		pose = this.Pose3?.GetBone(name);
-		if (pose != null)
-			transforms.Add(pose);
+		poseBone = this.Pose3?.GetBone(name);
+		if (poseBone != null)
+			bones.Add((BoneReference)poseBone);
 
-		pose = this.Pose4?.GetBone(name);
-		if (pose != null)
-			transforms.Add(pose);
+		poseBone = this.Pose4?.GetBone(name);
+		if (poseBone != null)
+			bones.Add((BoneReference)poseBone);
 
-		return transforms;
+		return bones;
 	}
 }

@@ -180,9 +180,9 @@ public class PoseService : ServiceBase<PoseService>
 		this.isEnabled = enabled;
 		this.FreezePhysics = enabled;
 		this.FreezeRotation = enabled;
-		this.FreezePositions = false;
-		this.FreezeScale = false;
-		this.EnableParenting = true;
+		this.FreezePositions = enabled;
+		this.FreezeScale = enabled;
+		this.EnableParenting = enabled;
 
 		this.FreezeWorldPosition = enabled;
 		AnimationService.Instance.SpeedControlEnabled = enabled;

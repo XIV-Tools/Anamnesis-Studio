@@ -5,17 +5,18 @@ namespace Anamnesis.Actor.Posing;
 
 using Anamnesis.Memory;
 using PropertyChanged;
+using System;
 using System.Collections.Generic;
 
 [AddINotifyPropertyChangedInterface]
 public class BoneViewModel : ITransform
 {
-	private readonly List<TransformMemory> transforms;
+	private readonly List<BoneReference> boneReferences;
 
-	public BoneViewModel(string name, List<TransformMemory> transforms)
+	public BoneViewModel(string name, List<BoneReference> bones)
 	{
 		this.Name = name;
-		this.transforms = transforms;
+		this.boneReferences = bones;
 	}
 
 	public string Name { get; init; }
@@ -30,59 +31,49 @@ public class BoneViewModel : ITransform
 
 	public bool CanEdit => this.CanTranslate || this.CanRotate || this.CanScale;
 
-	public Vector Position
+	public BoneReference PrimaryBone
 	{
 		get
 		{
-			if (this.transforms.Count <= 0)
-				return Vector.Zero;
+			if (this.boneReferences.Count <= 0)
+				throw new Exception("No bone references in bone view model");
 
-			return this.transforms[0].Position;
+			return this.boneReferences[0];
 		}
+	}
 
+	public Vector Position
+	{
+		get => this.PrimaryBone.Position;
 		set
 		{
-			foreach (TransformMemory transform in this.transforms)
+			foreach (BoneReference bone in this.boneReferences)
 			{
-				transform.Position = value;
+				bone.SetPosition(value);
 			}
 		}
 	}
 
 	public Quaternion Rotation
 	{
-		get
-		{
-			if (this.transforms.Count <= 0)
-				return Quaternion.Identity;
-
-			return this.transforms[0].Rotation;
-		}
-
+		get => this.PrimaryBone.Rotation;
 		set
 		{
-			foreach (TransformMemory transform in this.transforms)
+			foreach (BoneReference bone in this.boneReferences)
 			{
-				transform.Rotation = value;
+				bone.SetRotation(value);
 			}
 		}
 	}
 
 	public Vector Scale
 	{
-		get
-		{
-			if (this.transforms.Count <= 0)
-				return Vector.One;
-
-			return this.transforms[0].Scale;
-		}
-
+		get => this.PrimaryBone.Scale;
 		set
 		{
-			foreach (TransformMemory transform in this.transforms)
+			foreach (BoneReference bone in this.boneReferences)
 			{
-				transform.Scale = value;
+				bone.SetScale(value);
 			}
 		}
 	}

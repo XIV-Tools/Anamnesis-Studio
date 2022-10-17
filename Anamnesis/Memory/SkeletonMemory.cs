@@ -15,7 +15,7 @@ public class SkeletonMemory : ArrayMemory<PartialSkeletonMemory, short>
 
 	public BoneViewModel? GetBone(string boneName)
 	{
-		List<TransformMemory> transforms = new();
+		List<BoneReference> transforms = new();
 		foreach (PartialSkeletonMemory partialSkeleton in this)
 		{
 			transforms.AddRange(partialSkeleton.GetBone(boneName));
