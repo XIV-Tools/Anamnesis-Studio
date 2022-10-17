@@ -3,16 +3,14 @@
 
 namespace Anamnesis.Memory;
 
-using Anamnesis.Actor;
 using Anamnesis.Actor.Posing;
-using Anamnesis.Posing;
 
 public class HkaPoseMemory : MemoryBase
 {
 	[Bind(0x000, BindFlags.Pointer)] public HkaSkeletonMemory? Skeleton { get; set; }
 	[Bind(0x010)] public TransformArrayMemory? Transforms { get; set; }
 
-	public BoneReference? FindBone(string name)
+	public BoneReference? FindBone(string name, SkeletonMemory skeleton, int partialSkeletonIndex, int poseIndex)
 	{
 		if (this.Transforms == null || this.Skeleton == null || this.Skeleton.Bones == null)
 			return null;
@@ -23,7 +21,7 @@ public class HkaPoseMemory : MemoryBase
 
 			if (boneName == name)
 			{
-				return new BoneReference(this, i);
+				return new BoneReference(skeleton, partialSkeletonIndex, poseIndex, i);
 			}
 		}
 

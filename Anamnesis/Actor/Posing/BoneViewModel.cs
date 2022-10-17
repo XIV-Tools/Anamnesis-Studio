@@ -47,9 +47,10 @@ public class BoneViewModel : ITransform
 		get => this.PrimaryBone.Position;
 		set
 		{
+			HashSet<TransformMemory> writtenMemories = new();
 			foreach (BoneReference bone in this.boneReferences)
 			{
-				bone.SetPosition(value);
+				bone.SetPosition(value, ref writtenMemories);
 			}
 		}
 	}
@@ -59,9 +60,10 @@ public class BoneViewModel : ITransform
 		get => this.PrimaryBone.Rotation;
 		set
 		{
+			HashSet<TransformMemory> writtenMemories = new();
 			foreach (BoneReference bone in this.boneReferences)
 			{
-				bone.SetRotation(value);
+				bone.SetRotation(value, ref writtenMemories);
 			}
 		}
 	}
@@ -71,9 +73,10 @@ public class BoneViewModel : ITransform
 		get => this.PrimaryBone.Scale;
 		set
 		{
+			HashSet<TransformMemory> writtenMemories = new();
 			foreach (BoneReference bone in this.boneReferences)
 			{
-				bone.SetScale(value);
+				bone.SetScale(value, ref writtenMemories);
 			}
 		}
 	}

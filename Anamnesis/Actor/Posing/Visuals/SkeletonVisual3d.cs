@@ -549,7 +549,7 @@ public class SkeletonVisual3d : ModelVisual3D, INotifyPropertyChanged
 		{
 			PartialSkeletonMemory partialSkeleton = skeleton[partialSkeletonIndex];
 
-			HkaPoseMemory? bestHkaPose = partialSkeleton.Pose1;
+			HkaPoseMemory? bestHkaPose = partialSkeleton.Pose0;
 
 			if (bestHkaPose == null || bestHkaPose.Skeleton?.Bones == null || bestHkaPose.Skeleton?.ParentIndices == null || bestHkaPose.Transforms == null)
 			{

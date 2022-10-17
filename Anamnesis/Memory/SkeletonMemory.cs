@@ -5,7 +5,6 @@ namespace Anamnesis.Memory;
 
 using Anamnesis.Actor.Posing;
 using System.Collections.Generic;
-using System.Windows.Documents;
 
 public class SkeletonMemory : ArrayMemory<PartialSkeletonMemory, short>
 {
@@ -15,15 +14,22 @@ public class SkeletonMemory : ArrayMemory<PartialSkeletonMemory, short>
 
 	public BoneViewModel? GetBone(string boneName)
 	{
-		List<BoneReference> transforms = new();
-		foreach (PartialSkeletonMemory partialSkeleton in this)
-		{
-			transforms.AddRange(partialSkeleton.GetBone(boneName));
-		}
+		List<BoneReference> bones = this.FindBones(boneName);
 
-		if (transforms.Count <= 0)
+		if (bones.Count <= 0)
 			return null;
 
-		return new BoneViewModel(boneName, transforms);
+		return new BoneViewModel(boneName, bones);
+	}
+
+	public List<BoneReference> FindBones(string boneName)
+	{
+		List<BoneReference> bones = new();
+		for (int i = 0; i < this.Count; i++)
+		{
+			bones.AddRange(this[i].GetBone(boneName, this, i));
+		}
+
+		return bones;
 	}
 }
