@@ -179,7 +179,7 @@ public partial class BonesPanel : ActorPanelBase
 				Point relativePoint = boneView.TransformToAncestor(this.MouseCanvas).Transform(new Point(0, 0));
 				if (relativePoint.X > minx && relativePoint.X < maxx && relativePoint.Y > miny && relativePoint.Y < maxy)
 				{
-					boneView.Select();
+					boneView.Select(true);
 				}
 			}
 

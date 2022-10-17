@@ -22,6 +22,8 @@ public partial class BoneView : UserControl
 	public static readonly IBind<string> NameDp = Binder.Register<string, BoneView>(nameof(BoneName));
 	public static readonly IBind<string> FlippedNameDp = Binder.Register<string, BoneView>(nameof(FlippedBoneName));
 
+	private BoneViewModel? boneViewModel;
+
 	public BoneView()
 	{
 		this.InitializeComponent();
@@ -63,15 +65,26 @@ public partial class BoneView : UserControl
 		// TODO: it woudl be nice if we could get our control to act as though its hovered.
 	}
 
-	public void Select()
+	public void Select(bool select)
 	{
-		string boneName = LegacyBoneNameConverter.GetModernName(this.BoneName) ?? this.BoneName;
-		BoneViewModel? boneViewModel = this.FindParent<BonesPanel>()?.Actor?.ModelObject?.Skeleton?.GetBone(boneName);
+		if (select)
+		{
+			string boneName = LegacyBoneNameConverter.GetModernName(this.BoneName) ?? this.BoneName;
+			this.boneViewModel = this.FindParent<BonesPanel>()?.Actor?.ModelObject?.Skeleton?.GetBone(boneName);
 
-		if (boneViewModel == null)
-			return;
+			if (this.boneViewModel == null)
+				return;
 
-		PoseService.Instance.SelectedBones.Add(boneViewModel);
+			PoseService.Instance.SelectedBones.Add(this.boneViewModel);
+		}
+		else
+		{
+			if (this.boneViewModel == null)
+				return;
+
+			PoseService.Instance.SelectedBones.Remove(this.boneViewModel);
+			this.boneViewModel = null;
+		}
 	}
 
 	private void OnLoaded(object sender, RoutedEventArgs e) => this.FindParent<BonesPanel>()?.BoneViews.Add(this);
@@ -79,6 +92,11 @@ public partial class BoneView : UserControl
 
 	private void OnChecked(object sender, RoutedEventArgs e)
 	{
-		this.Select();
+		this.Select(true);
+	}
+
+	private void OnUnchecked(object sender, RoutedEventArgs e)
+	{
+		this.Select(false);
 	}
 }

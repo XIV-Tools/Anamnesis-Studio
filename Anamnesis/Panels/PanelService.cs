@@ -29,7 +29,7 @@ public class PanelService : ServiceBase<PanelService>
 		typeof(SettingsPanel),
 		typeof(WeatherPanel),
 		typeof(BonesPanel),
-		typeof(TransformPanel),
+		typeof(BoneTransformPanel),
 	};
 
 	public enum PanelThreadingMode

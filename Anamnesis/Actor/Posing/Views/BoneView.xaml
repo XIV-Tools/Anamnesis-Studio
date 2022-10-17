@@ -26,11 +26,14 @@
 			</StackPanel>
 		</Grid.ToolTip>
 
-		<RadioButton
+		<ToggleButton
 			x:Name="Radio"
+			Margin="0"
 			HorizontalAlignment="Center"
 			VerticalAlignment="Center"
-			Checked="OnChecked" />
+			Checked="OnChecked"
+			Content="O"
+			Unchecked="OnUnchecked" />
 
 		<!--<Ellipse
 			x:Name="BackgroundElipse"

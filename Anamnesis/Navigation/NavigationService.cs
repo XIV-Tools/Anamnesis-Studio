@@ -23,7 +23,7 @@ public class NavigationService : ServiceBase<NavigationService>
 		{ "Camera", typeof(CameraPanel) },
 		{ "Posing", typeof(PosingPanel) },
 		{ "Bones", typeof(BonesPanel) },
-		{ "Transform", typeof(TransformPanel) },
+		{ "BoneTransform", typeof(BoneTransformPanel) },
 		{ "ImportCharacter", typeof(ImportCharacterPanel) },
 		{ "ImportPose", typeof(ImportPosePanel) },
 		{ "Library", typeof(LibraryPanel) },

@@ -3,18 +3,21 @@
 
 namespace Anamnesis.Actor.Panels;
 
+using Anamnesis.Actor.Posing;
+using System.Collections.Specialized;
 using System.Windows;
 using XivToolsWpf;
 
-public partial class TransformPanel : ActorPanelBase
+public partial class BoneTransformPanel : ActorPanelBase
 {
-	public TransformPanel()
+	public BoneTransformPanel()
 		: base()
 	{
 		PoseService.EnabledChanged += this.OnPoseServiceEnabledChanged;
+		this.Services.Pose.SelectedBones.CollectionChanged += this.OnSelectedBonesChanged;
 	}
 
-	public bool IsFlipping { get; private set; }
+	public BoneViewModel? CurrentBone { get; set; }
 
 	private async void OnPoseServiceEnabledChanged(bool value)
 	{
@@ -23,6 +26,14 @@ public partial class TransformPanel : ActorPanelBase
 			await this.Dispatcher.MainThread();
 			this.Close();
 		}
+	}
+
+	private void OnSelectedBonesChanged(object? sender, NotifyCollectionChangedEventArgs e)
+	{
+		if (this.Services.Pose.SelectedBones.Count <= 0)
+			return;
+
+		this.CurrentBone = this.Services.Pose.SelectedBones[0];
 	}
 
 	private void OnParentClicked(object sender, RoutedEventArgs e)
