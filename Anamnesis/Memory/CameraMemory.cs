@@ -25,7 +25,7 @@ public class CameraMemory : MemoryBase
 		get
 		{
 			Vector3D camEuler = default;
-			camEuler.Y = (float)MathUtils.RadiansToDegrees((double)this.Angle.X) - 180;
+			camEuler.Y = (float)MathUtils.RadiansToDegrees((double)this.Angle.X);
 			camEuler.Z = (float)-MathUtils.RadiansToDegrees((double)this.Angle.Y);
 			camEuler.X = (float)MathUtils.RadiansToDegrees((double)this.Rotation);
 			return camEuler.ToQuaternion();

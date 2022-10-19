@@ -43,8 +43,10 @@ public struct BoneReference
 
 	public void SetRotation(Quaternion newRotation, ref HashSet<TransformMemory> writtenMemories)
 	{
-		// ??
-		Quaternion delta = Quaternion.Identity;
+		Quaternion currentInverse = this.Rotation;
+		currentInverse.Invert();
+
+		Quaternion delta = currentInverse * newRotation;
 		this.Change(Vector.Zero, Vector.Zero, delta, this.Position, ref writtenMemories);
 	}
 
