@@ -153,6 +153,11 @@ public struct BoneReference : IEquatable<BoneReference>
 		if (App.Services.Pose.FreezeScale)
 			bone.Transform.Scale += deltaScale;
 
+		/*Quaternion newRotation = bone.Rotation * deltaRotation;
+		Quaternion newDeltaRotaton = bone.Rotation.Invert() * newRotation;
+		if (App.Services.Pose.FreezeRotation)
+			bone.Transform.Rotation = newRotation;*/
+
 		if (App.Services.Pose.FreezeRotation)
 			bone.Transform.Rotation *= deltaRotation;
 
@@ -162,15 +167,18 @@ public struct BoneReference : IEquatable<BoneReference>
 			return;
 		}
 
-		List<BoneReference>? children = bone.GetChildren();
-		if (children == null)
-			return;
-
-		depth++;
-
-		foreach (BoneReference child in children)
+		if (App.Services.Pose.EnableParenting)
 		{
-			Change(child, bone, source, deltaPosition, deltaScale, deltaRotation, ref writtenMemories, depth);
+			List<BoneReference>? children = bone.GetChildren();
+			if (children == null)
+				return;
+
+			depth++;
+
+			foreach (BoneReference child in children)
+			{
+				Change(child, bone, source, deltaPosition, deltaScale, deltaRotation, ref writtenMemories, depth);
+			}
 		}
 	}
 }

@@ -46,11 +46,13 @@ public struct Quaternion : IEquatable<Quaternion>
 
 	public static Quaternion operator *(Quaternion left, Quaternion right)
 	{
-		float x = (left.W * right.X) + (left.X * right.W) + (left.Y * right.Z) - (left.Z * right.Y);
-		float y = (left.W * right.Y) + (left.Y * right.W) + (left.Z * right.X) - (left.X * right.Z);
-		float z = (left.W * right.Z) + (left.Z * right.W) + (left.X * right.Y) - (left.Y * right.X);
-		float w = (left.W * right.W) - (left.X * right.X) - (left.Y * right.Y) - (left.Z * right.Z);
-		return new Quaternion(x, y, z, w);
+		float x = (left.X * right.X) - (left.Y * right.Y) - (left.Z * right.Z) - (left.W * right.W);
+		float y = (left.X * right.Y) + (left.Y * right.X) + (left.Z * right.W) - (left.W * right.Z);
+		float z = (left.X * right.Z) - (left.Y * right.W) + (left.Z * right.X) + (left.W * right.Y);
+		float w = (left.X * right.W) + (left.Y * right.Z) - (left.Z * right.Y) + (left.W * right.X);
+		Quaternion q = new Quaternion(x, y, z, w);
+		q.Normalize();
+		return q;
 	}
 
 	public static Vector operator *(Quaternion left, Vector right)
@@ -209,14 +211,7 @@ public struct Quaternion : IEquatable<Quaternion>
 
 	public Quaternion Invert()
 	{
-		Quaternion q = this.Conjugate();
-		float num = (q.X * q.X) + (q.Y * q.Y) + (q.Z * q.Z) + (q.W * q.W);
-		q.X /= num;
-		q.Y /= num;
-		q.Z /= num;
-		q.W /= num;
-
-		return q;
+		return new Quaternion(this.X, -this.Y, -this.Z, -this.W);
 	}
 
 	public override string ToString()
