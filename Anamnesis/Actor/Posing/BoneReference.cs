@@ -153,11 +153,6 @@ public struct BoneReference : IEquatable<BoneReference>
 		if (App.Services.Pose.FreezeScale)
 			bone.Transform.Scale += deltaScale;
 
-		/*Quaternion newRotation = bone.Rotation * deltaRotation;
-		Quaternion newDeltaRotaton = bone.Rotation.Invert() * newRotation;
-		if (App.Services.Pose.FreezeRotation)
-			bone.Transform.Rotation = newRotation;*/
-
 		if (App.Services.Pose.FreezeRotation)
 			bone.Transform.Rotation *= deltaRotation;
 
