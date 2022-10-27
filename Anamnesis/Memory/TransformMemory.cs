@@ -8,4 +8,9 @@ public class TransformMemory : MemoryBase
 	[Bind(0x000)] public Vector Position { get; set; }
 	[Bind(0x010)] public Quaternion Rotation { get; set; }
 	[Bind(0x020)] public Vector Scale { get; set; }
+
+	protected override bool CanRead(BindInfo bind)
+	{
+		return base.CanRead(bind);
+	}
 }

@@ -39,8 +39,7 @@
 
 		<Grid
 			Grid.Row="1"
-			Grid.ColumnSpan="3"
-			IsEnabled="{Binding Skeleton, Converter={StaticResource NotNullToBoolConverter}}">
+			Grid.ColumnSpan="3">
 
 			<!--  Content  -->
 			<Grid
@@ -55,10 +54,7 @@
 					MouseDown="OnCanvasMouseDown"
 					MouseMove="OnCanvasMouseMove"
 					MouseUp="OnCanvasMouseUp">
-					<Grid DataContext="{Binding Skeleton}">
-						<views:Pose3DView
-							x:Name="ThreeDView"
-							Visibility="Collapsed" />
+					<Grid>
 						<views:PoseGuiView
 							x:Name="GuiView"
 							Visibility="Visible" />
@@ -100,8 +96,7 @@
 						Margin="1"
 						Padding="8,5"
 						Cursor="Hand"
-						ToolTip="GUI View"
-						Visibility="{Binding Skeleton.File.AllowPoseGui, Converter={StaticResource B2V}}">
+						ToolTip="GUI View">
 						<XivToolsWpf:IconBlock
 							FontSize="10"
 							Icon="ProjectDiagram" />
@@ -110,21 +105,10 @@
 						Margin="1"
 						Padding="8,5"
 						Cursor="Hand"
-						ToolTip="Matrix View"
-						Visibility="{Binding Skeleton.File.AllowPoseMatrix, Converter={StaticResource B2V}}">
+						ToolTip="Matrix View">
 						<XivToolsWpf:IconBlock
 							FontSize="10"
 							Icon="BorderAll" />
-					</ListBoxItem>
-					<ListBoxItem
-						x:Name="View3dButton"
-						Margin="1"
-						Padding="8,5"
-						Cursor="Hand"
-						ToolTip="3D View">
-						<XivToolsWpf:IconBlock
-							FontSize="10"
-							Icon="Cube" />
 					</ListBoxItem>
 				</ListBox>
 			</Grid>

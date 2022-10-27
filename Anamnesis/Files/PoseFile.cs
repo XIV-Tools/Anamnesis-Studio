@@ -42,7 +42,7 @@ public class PoseFile : JsonFileBase
 
 	public Dictionary<string, Bone?>? Bones { get; set; }
 
-	public static BoneProcessingModes GetBoneMode(ActorMemory? actor, SkeletonVisual3d? skeleton, string boneName)
+	public static BoneProcessingModes GetBoneMode(ActorMemory? actor, string boneName)
 	{
 		if (boneName == "n_root")
 			return BoneProcessingModes.Ignore;
@@ -60,9 +60,9 @@ public class PoseFile : JsonFileBase
 		return BoneProcessingModes.FullLoad;
 	}
 
-	public static async Task<DirectoryInfo?> Save(DirectoryInfo? dir, ActorMemory? actor, SkeletonVisual3d? skeleton, HashSet<string>? bones = null, bool editMeta = false)
+	public static async Task<DirectoryInfo?> Save(DirectoryInfo? dir, ActorMemory? actor, HashSet<string>? bones = null, bool editMeta = false)
 	{
-		if (actor == null || skeleton == null)
+		if (actor == null)
 			return null;
 
 		SaveResult result = await FileService.Save<PoseFile>(dir, FileService.DefaultPoseDirectory);
@@ -71,7 +71,7 @@ public class PoseFile : JsonFileBase
 			return null;
 
 		PoseFile file = new PoseFile();
-		file.WriteToFile(actor, skeleton, bones);
+		file.WriteToFile(actor, bones);
 
 		using FileStream stream = new FileStream(result.Path.FullName, FileMode.Create);
 		file.Serialize(stream);
@@ -82,13 +82,10 @@ public class PoseFile : JsonFileBase
 		return result.Directory;
 	}
 
-	public void WriteToFile(ActorMemory actor, SkeletonVisual3d skeleton, HashSet<string>? bones)
+	public void WriteToFile(ActorMemory actor, HashSet<string>? bones)
 	{
 		if (actor.ModelObject == null || actor.ModelObject.Transform == null)
 			throw new Exception("No model in actor");
-
-		if (skeleton == null || skeleton.Bones == null)
-			throw new Exception("No skeleton in actor");
 
 		this.Rotation = actor.ModelObject.Transform.Rotation;
 		this.Position = actor.ModelObject.Transform.Position;
@@ -96,16 +93,17 @@ public class PoseFile : JsonFileBase
 
 		this.Bones = new Dictionary<string, Bone?>();
 
-		foreach (BoneVisual3d bone in skeleton.Bones.Values)
+		/*foreach (BoneVisual3d bone in skeleton.Bones.Values)
 		{
 			if (bones != null && !bones.Contains(bone.BoneName))
 				continue;
 
 			this.Bones.Add(bone.BoneName, new Bone(bone));
-		}
+		}*/
+		throw new NotImplementedException();
 	}
 
-	public async Task Apply(ActorMemory actor, SkeletonVisual3d skeleton, HashSet<string>? bones, Mode mode)
+	public Task Apply(ActorMemory actor, HashSet<string>? bones, Mode mode)
 	{
 		if (actor == null)
 			throw new ArgumentNullException(nameof(actor));
@@ -117,14 +115,16 @@ public class PoseFile : JsonFileBase
 			throw new Exception("Actor model has no skeleton");
 
 		if (this.Bones == null)
-			return;
+			return Task.CompletedTask;
 
+		throw new NotImplementedException();
 		/*
 		// Positions would be nice... but they are per-map!
 		if (this.Position != null)
 			actor.ModelObject.Transform.Position = this.Position;
 		*/
 
+		/*
 		if (bones == null)
 		{
 			if (mode.HasFlag(Mode.WorldScale) && this.Scale != null)
@@ -246,6 +246,7 @@ public class PoseFile : JsonFileBase
 		skeletonMem.Tick();
 
 		PoseService.Instance.CanEdit = true;
+		*/
 	}
 
 	[Serializable]
@@ -253,13 +254,6 @@ public class PoseFile : JsonFileBase
 	{
 		public Bone()
 		{
-		}
-
-		public Bone(BoneVisual3d boneVisual)
-		{
-			this.Position = boneVisual.TransformMemory.Position;
-			this.Rotation = boneVisual.TransformMemory.Rotation;
-			this.Scale = boneVisual.TransformMemory.Scale;
 		}
 
 		public Vector? Position { get; set; }

@@ -64,8 +64,7 @@ public class CameraShotFile : JsonFileBase
 			Vector localRelativePositon = camService.GPoseCamera.Position - actor.ModelObject.Transform.Position;
 
 			// Now we calculate what the position would be if the actor had a 0 rotation
-			Quaternion invertedActorRotation = Quaternion.FromEuler(actorEuler);
-			invertedActorRotation.Invert();
+			Quaternion invertedActorRotation = Quaternion.FromEuler(actorEuler).Invert();
 			Vector rotatedRelativePosition = invertedActorRotation * localRelativePositon;
 			this.Position = rotatedRelativePosition;
 

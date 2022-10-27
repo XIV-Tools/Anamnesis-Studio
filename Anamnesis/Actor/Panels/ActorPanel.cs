@@ -13,6 +13,8 @@ public abstract class ActorPanelBase : PanelBase
 {
 	public static readonly IBind<ActorMemory?> ActorDp = Binder.Register<ActorMemory?, ActorPanelBase>(nameof(Actor), OnActorChanged, BindMode.TwoWay);
 
+	private ActorBasicMemory? oldActor;
+
 	public ActorMemory? Actor
 	{
 		get => ActorDp.Get(this);
@@ -21,6 +23,14 @@ public abstract class ActorPanelBase : PanelBase
 
 	protected virtual Task OnActorChanged()
 	{
+		if (this.oldActor != null)
+			this.Services.Actor.ActorsToTick.Remove(this.oldActor);
+
+		this.oldActor = this.Actor;
+
+		if (this.Actor != null)
+			this.Services.Actor.ActorsToTick.Add(this.Actor);
+
 		return Task.CompletedTask;
 	}
 

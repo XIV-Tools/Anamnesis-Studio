@@ -96,19 +96,6 @@ public class TargetService : ServiceBase<TargetService>
 		{
 			// This section can only fail when FFXIV isn't running (fail to set address) so it should be safe to ignore
 		}
-
-		// Tick the actor if it still exists
-		if (this.TargetedActor != null && this.TargetedActor.Address != IntPtr.Zero)
-		{
-			try
-			{
-				this.TargetedActor.Tick();
-			}
-			catch
-			{
-				// Should only fail to tick if the game isn't running
-			}
-		}
 	}
 
 	private async Task TargetWatcherThread()

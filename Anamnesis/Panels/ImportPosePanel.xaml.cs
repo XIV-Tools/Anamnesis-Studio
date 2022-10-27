@@ -27,7 +27,6 @@ public partial class ImportPosePanel : PanelBase
 	public Destinations Destination { get; set; } = Destinations.All;
 	public PoseFile? File { get; set; }
 
-	public SkeletonVisual3d? Skeleton { get; private set; }
 	public ActorMemory? Actor { get; private set; }
 
 	public override void SetContext(FloatingWindow host, object? context)
@@ -56,10 +55,10 @@ public partial class ImportPosePanel : PanelBase
 
 	private void OnImportClicked(object sender, RoutedEventArgs e)
 	{
-		if (this.Actor == null || this.Skeleton == null)
+		if (this.Actor == null)
 			return;
 
-		this.File?.Apply(this.Actor, this.Skeleton, null, this.Mode).Run();
+		this.File?.Apply(this.Actor, null, this.Mode).Run();
 		this.Close();
 	}
 

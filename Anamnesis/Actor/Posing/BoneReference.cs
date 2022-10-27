@@ -7,9 +7,10 @@ using Anamnesis.Actor.Extensions;
 using Anamnesis.Core;
 using Anamnesis.Memory;
 using Serilog;
+using System;
 using System.Collections.Generic;
 
-public struct BoneReference
+public struct BoneReference : IEquatable<BoneReference>
 {
 	private readonly SkeletonMemory skeleton;
 	private readonly int partialSkeletonIndex;
@@ -35,63 +36,32 @@ public struct BoneReference
 
 	public string? Name => this.HkaPose?.Skeleton?.Bones?[this.boneIndex]?.Name.ToString();
 
+	public static bool operator ==(BoneReference left, BoneReference right)
+	{
+		return left.Equals(right);
+	}
+
+	public static bool operator !=(BoneReference left, BoneReference right)
+	{
+		return !(left == right);
+	}
+
 	public void SetPosition(Vector newPosition, ref HashSet<TransformMemory> writtenMemories)
 	{
 		Vector delta = newPosition - this.Position;
-		this.Change(delta, Vector.Zero, Quaternion.Identity, this.Position, ref writtenMemories);
+		Change(this, null, this, delta, Vector.Zero, Quaternion.Identity, ref writtenMemories);
 	}
 
 	public void SetRotation(Quaternion newRotation, ref HashSet<TransformMemory> writtenMemories)
 	{
-		Quaternion currentInverse = this.Rotation;
-		currentInverse.Invert();
-
-		Quaternion delta = currentInverse * newRotation;
-		this.Change(Vector.Zero, Vector.Zero, delta, this.Position, ref writtenMemories);
+		Quaternion delta = this.Rotation.Invert() * newRotation;
+		Change(this, null, this, Vector.Zero, Vector.Zero, delta, ref writtenMemories);
 	}
 
 	public void SetScale(Vector newScale, ref HashSet<TransformMemory> writtenMemories)
 	{
 		Vector delta = newScale - this.Scale;
-		this.Change(Vector.Zero, delta, Quaternion.Identity, this.Position, ref writtenMemories);
-	}
-
-	public void Change(Vector deltaPosition, Vector deltaScale, Quaternion deltaRotation, Vector root, ref HashSet<TransformMemory> writtenMemories)
-	{
-		if (this.Transform == null)
-			return;
-
-		// Have we already written to this bone? then abort.
-		if (writtenMemories.Contains(this.Transform))
-			return;
-
-		writtenMemories.Add(this.Transform);
-
-		// This matrix stuff is _hard_ girls.
-		// It /might/ end up easier for me to just do all the math by hand.... But I'm not sure...
-		// Get current matrix
-		/*Matrix m = new();
-		m.Scale(this.Scale);
-		m.Rotate(this.Rotation);
-		m.Translate(this.Position);
-
-		// Add the new deltas
-		m.ScaleAt(deltaScale, root);
-		m.RotateAt(deltaRotation, root);
-		m.Translate(deltaPosition);*/
-
-		this.Transform.Position += deltaPosition; ////m.TransformPoint(Vector.Zero);
-		this.Transform.Scale += deltaScale;
-		this.Transform.Rotation *= deltaRotation;
-
-		List<BoneReference>? children = this.GetChildren();
-		if (children == null)
-			return;
-
-		foreach (BoneReference child in children)
-		{
-			child.Change(deltaPosition, deltaScale, deltaRotation, root, ref writtenMemories);
-		}
+		Change(this, null, this, Vector.Zero, delta, Quaternion.Identity, ref writtenMemories);
 	}
 
 	public BoneReference? GetParent()
@@ -133,5 +103,74 @@ public struct BoneReference
 		}
 
 		return results;
+	}
+
+	public override bool Equals(object? obj)
+	{
+		return obj is BoneReference reference && this.Equals(reference);
+	}
+
+	public bool Equals(BoneReference other)
+	{
+		return EqualityComparer<SkeletonMemory>.Default.Equals(this.skeleton, other.skeleton) &&
+			   this.partialSkeletonIndex == other.partialSkeletonIndex &&
+			   this.poseIndex == other.poseIndex &&
+			   this.boneIndex == other.boneIndex;
+	}
+
+	public override int GetHashCode()
+	{
+		return HashCode.Combine(this.skeleton, this.partialSkeletonIndex, this.poseIndex, this.boneIndex);
+	}
+
+	private static void Change(BoneReference bone, BoneReference? parent, BoneReference source, Vector deltaPosition, Vector deltaScale, Quaternion deltaRotation, ref HashSet<TransformMemory> writtenMemories, int depth = 0)
+	{
+		if (bone.Transform == null)
+			return;
+
+		// Have we already written to this bone? then abort.
+		if (writtenMemories.Contains(bone.Transform))
+			return;
+
+		writtenMemories.Add(bone.Transform);
+
+		if (App.Services.Pose.FreezePositions && bone != source)
+		{
+			if (parent == null)
+			{
+				Log.Error("No bone parent provided");
+				return;
+			}
+
+			Vector offset = bone.Position - parent.Value.Position;
+			offset = deltaRotation * offset;
+			bone.Transform.Position = parent.Value.Position + offset;
+		}
+
+		if (App.Services.Pose.FreezePositions)
+			bone.Transform.Position += deltaPosition;
+
+		if (App.Services.Pose.FreezeScale)
+			bone.Transform.Scale += deltaScale;
+
+		if (App.Services.Pose.FreezeRotation)
+			bone.Transform.Rotation *= deltaRotation;
+
+		if (depth > 1000)
+		{
+			Log.Error("Bone stack depth exceded! (do we have circular bone references?)");
+			return;
+		}
+
+		List<BoneReference>? children = bone.GetChildren();
+		if (children == null)
+			return;
+
+		depth++;
+
+		foreach (BoneReference child in children)
+		{
+			Change(child, bone, source, deltaPosition, deltaScale, deltaRotation, ref writtenMemories, depth);
+		}
 	}
 }

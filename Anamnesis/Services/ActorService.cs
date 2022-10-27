@@ -16,6 +16,8 @@ using static Anamnesis.Memory.ActorBasicMemory;
 [AddINotifyPropertyChangedInterface]
 public class ActorService : ServiceBase<ActorService>
 {
+	public readonly HashSet<ActorBasicMemory> ActorsToTick = new();
+
 	private const int TickDelay = 10;
 	private const int ActorTableSize = 424;
 	private const int GPoseIndexStart = 200;
@@ -218,6 +220,11 @@ public class ActorService : ServiceBase<ActorService>
 			await Task.Delay(TickDelay);
 
 			this.ForceRefresh();
+
+			foreach (ActorBasicMemory actor in this.ActorsToTick)
+			{
+				actor.Tick();
+			}
 		}
 	}
 

@@ -94,9 +94,14 @@ public struct Quaternion : IEquatable<Quaternion>
 	/// <returns>Quaternion from Euler angles.</returns>
 	public static Quaternion FromEuler(Vector euler)
 	{
-		double yaw = euler.Y * Deg2Rad;
-		double pitch = euler.X * Deg2Rad;
-		double roll = euler.Z * Deg2Rad;
+		return Quaternion.FromEuler(euler.X, euler.Y, euler.Z);
+	}
+
+	public static Quaternion FromEuler(float pitch_x, float yaw_y, float roll_z)
+	{
+		double yaw = yaw_y * Deg2Rad;
+		double pitch = pitch_x * Deg2Rad;
+		double roll = roll_z * Deg2Rad;
 
 		double c1 = Math.Cos(yaw / 2);
 		double s1 = Math.Sin(yaw / 2);
@@ -197,21 +202,21 @@ public struct Quaternion : IEquatable<Quaternion>
 		return HashCode.Combine(this.X, this.Y, this.Z, this.W);
 	}
 
-	public void Conjugate()
+	public Quaternion Conjugate()
 	{
-		this.X = 0.0f - this.X;
-		this.Y = 0.0f - this.Y;
-		this.Z = 0.0f - this.Z;
+		return new Quaternion(-this.X, -this.Y, -this.Z, this.W);
 	}
 
-	public void Invert()
+	public Quaternion Invert()
 	{
-		this.Conjugate();
-		float num = (this.X * this.X) + (this.Y * this.Y) + (this.Z * this.Z) + (this.W * this.W);
-		this.X /= num;
-		this.Y /= num;
-		this.Z /= num;
-		this.W /= num;
+		Quaternion q = this.Conjugate();
+		float num = (q.X * q.X) + (q.Y * q.Y) + (q.Z * q.Z) + (q.W * q.W);
+		q.X /= num;
+		q.Y /= num;
+		q.Z /= num;
+		q.W /= num;
+
+		return q;
 	}
 
 	public override string ToString()
