@@ -24,6 +24,8 @@ public struct Vector : IEquatable<object>
 	public float Y { get; set; }
 	public float Z { get; set; }
 
+	public float Length => (float)Math.Sqrt((this.X * this.X) + (this.Y * this.Y) + (this.Z * this.Z));
+
 	public static bool operator !=(Vector lhs, Vector rhs)
 	{
 		return !lhs.Equals(rhs);

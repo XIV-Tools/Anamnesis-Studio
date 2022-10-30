@@ -128,24 +128,17 @@ public struct BoneReference : IEquatable<BoneReference>
 		if (bone.Transform == null)
 			return;
 
+		if (!bone.Transform.IsValid())
+		{
+			Log.Verbose($"Bone: {bone.Name} transform is not valid for bone change");
+			return;
+		}
+
 		// Have we already written to this bone? then abort.
 		if (writtenMemories.Contains(bone.Transform))
 			return;
 
 		writtenMemories.Add(bone.Transform);
-
-		if (App.Services.Pose.FreezePositions && bone != source)
-		{
-			if (parent == null)
-			{
-				Log.Error("No bone parent provided");
-				return;
-			}
-
-			Vector offset = bone.Position - parent.Value.Position;
-			offset = deltaRotation * offset;
-			bone.Transform.Position = parent.Value.Position + offset;
-		}
 
 		if (App.Services.Pose.FreezePositions)
 			bone.Transform.Position += deltaPosition;
@@ -160,6 +153,27 @@ public struct BoneReference : IEquatable<BoneReference>
 		{
 			Log.Error("Bone stack depth exceded! (do we have circular bone references?)");
 			return;
+		}
+
+		if (App.Services.Pose.FreezePositions && bone != source)
+		{
+			Vector offset = bone.Transform.Position - source.Position;
+			float originalLength = offset.Length;
+
+			// Hack, but sometimes bones have weird values.
+			if (originalLength < 100)
+			{
+				offset = (Quaternion.Identity * deltaRotation) * offset;
+
+				if (!Float.IsApproximately(offset.Length, originalLength))
+				{
+					Log.Warning($"Bone {bone.Name} rotation resulted in a different offset length: got {offset.Length} expected: {originalLength} delta: {Math.Abs(originalLength - offset.Length)}");
+				}
+				else
+				{
+					bone.Transform.Position = source.Position + offset;
+				}
+			}
 		}
 
 		if (App.Services.Pose.EnableParenting)

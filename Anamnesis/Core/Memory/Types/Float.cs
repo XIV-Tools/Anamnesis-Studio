@@ -3,6 +3,8 @@
 
 namespace Anamnesis.Memory;
 
+using System;
+
 public static class Float
 {
 	public static bool IsValid(float? number)
@@ -32,5 +34,11 @@ public static class Float
 			number += range;
 
 		return number;
+	}
+
+	public static bool IsApproximately(float a, float b, float errorMargin = 0.001f)
+	{
+		float d = MathF.Abs(a - b);
+		return d < errorMargin;
 	}
 }

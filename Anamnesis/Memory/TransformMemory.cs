@@ -9,8 +9,8 @@ public class TransformMemory : MemoryBase
 	[Bind(0x010)] public Quaternion Rotation { get; set; }
 	[Bind(0x020)] public Vector Scale { get; set; }
 
-	protected override bool CanRead(BindInfo bind)
+	public bool IsValid()
 	{
-		return base.CanRead(bind);
+		return this.Position.IsValid() && this.Rotation.IsValid() && this.Scale.IsValid();
 	}
 }

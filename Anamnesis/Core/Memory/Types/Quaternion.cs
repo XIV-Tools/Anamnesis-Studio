@@ -51,8 +51,7 @@ public struct Quaternion : IEquatable<Quaternion>
 		float z = (left.X * right.Z) - (left.Y * right.W) + (left.Z * right.X) + (left.W * right.Y);
 		float w = (left.X * right.W) + (left.Y * right.Z) - (left.Z * right.Y) + (left.W * right.X);
 		Quaternion q = new Quaternion(x, y, z, w);
-		q.Normalize();
-		return q;
+		return q.Normalize();
 	}
 
 	public static Vector operator *(Quaternion left, Vector right)
@@ -125,10 +124,20 @@ public struct Quaternion : IEquatable<Quaternion>
 
 	public bool IsApproximately(Quaternion other, float errorMargin = 0.001f)
 	{
-		return IsApproximately(this.X, other.X, errorMargin)
-			&& IsApproximately(this.Y, other.Y, errorMargin)
-			&& IsApproximately(this.Z, other.Z, errorMargin)
-			&& IsApproximately(this.W, other.W, errorMargin);
+		return Float.IsApproximately(this.X, other.X, errorMargin)
+			&& Float.IsApproximately(this.Y, other.Y, errorMargin)
+			&& Float.IsApproximately(this.Z, other.Z, errorMargin)
+			&& Float.IsApproximately(this.W, other.W, errorMargin);
+	}
+
+	public bool IsValid()
+	{
+		bool valid = Float.IsValid(this.X);
+		valid &= Float.IsValid(this.Y);
+		valid &= Float.IsValid(this.Z);
+		valid &= Float.IsValid(this.W);
+
+		return valid;
 	}
 
 	public Vector ToEuler()
@@ -166,24 +175,27 @@ public struct Quaternion : IEquatable<Quaternion>
 		return v;
 	}
 
-	public void Normalize()
+	public Quaternion Normalize()
 	{
-		float num = (this.X * this.X) + (this.Y * this.Y) + (this.Z * this.Z) + (this.W * this.W);
+		Quaternion q = new(this);
+		float num = (q.X * q.X) + (q.Y * q.Y) + (q.Z * q.Z) + (q.W * q.W);
 		if (num > float.MaxValue)
 		{
-			float num2 = 1.0f / Max(Math.Abs(this.X), Math.Abs(this.Y), Math.Abs(this.Z), Math.Abs(this.W));
-			this.X *= num2;
-			this.Y *= num2;
-			this.Z *= num2;
-			this.W *= num2;
-			num = (this.X * this.X) + (this.Y * this.Y) + (this.Z * this.Z) + (this.W * this.W);
+			float num2 = 1.0f / Max(Math.Abs(q.X), Math.Abs(q.Y), Math.Abs(q.Z), Math.Abs(q.W));
+			q.X *= num2;
+			q.Y *= num2;
+			q.Z *= num2;
+			q.W *= num2;
+			num = (q.X * q.X) + (q.Y * q.Y) + (q.Z * q.Z) + (q.W * q.W);
 		}
 
 		float num3 = 1.0f / (float)Math.Sqrt(num);
-		this.X *= num3;
-		this.Y *= num3;
-		this.Z *= num3;
-		this.W *= num3;
+		q.X *= num3;
+		q.Y *= num3;
+		q.Z *= num3;
+		q.W *= num3;
+
+		return q;
 	}
 
 	public override bool Equals(object? obj)
@@ -234,11 +246,5 @@ public struct Quaternion : IEquatable<Quaternion>
 			a = d;
 
 		return a;
-	}
-
-	private static bool IsApproximately(float a, float b, float errorMargin)
-	{
-		float d = MathF.Abs(a - b);
-		return d < errorMargin;
 	}
 }
