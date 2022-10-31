@@ -33,11 +33,11 @@ public class CameraMemory : MemoryBase
 	}
 
 	[AlsoNotifyFor(nameof(CameraMemory.Angle), nameof(CameraMemory.Rotation))]
-	public Vector3D Euler
+	public Vector Euler
 	{
 		get
 		{
-			Vector3D camEuler = default;
+			Vector camEuler = default;
 			camEuler.Y = (float)MathUtils.RadiansToDegrees((double)this.Angle.X);
 			camEuler.Z = (float)MathUtils.RadiansToDegrees((double)this.Angle.Y);
 			camEuler.X = (float)MathUtils.RadiansToDegrees((double)this.Rotation);

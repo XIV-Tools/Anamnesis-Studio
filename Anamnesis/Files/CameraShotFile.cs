@@ -42,7 +42,7 @@ public class CameraShotFile : JsonFileBase
 
 			// Now we apply the angle offset of the camera to the actor
 			Vector adjusted = actorEuler + this.Rotation;
-			camService.Camera.Euler = adjusted.ToMedia3DVector();
+			camService.Camera.Euler = adjusted;
 		}
 	}
 
@@ -69,7 +69,7 @@ public class CameraShotFile : JsonFileBase
 			this.Position = rotatedRelativePosition;
 
 			// We save the angle of the camera as an offset from the angle of the actor
-			Vector cameraEuler = camService.Camera.Euler.ToCmVector();
+			Vector cameraEuler = camService.Camera.Euler;
 			this.Rotation = cameraEuler - actorEuler;
 		}
 	}

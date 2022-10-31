@@ -3,7 +3,6 @@
 
 namespace Anamnesis.Actor.Posing;
 
-using Anamnesis.Actor.Extensions;
 using Anamnesis.Core;
 using Anamnesis.Memory;
 using Serilog;

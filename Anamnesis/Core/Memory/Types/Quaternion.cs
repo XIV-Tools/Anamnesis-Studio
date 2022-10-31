@@ -198,6 +198,11 @@ public struct Quaternion : IEquatable<Quaternion>
 		return q;
 	}
 
+	public Quaternion Mirror()
+	{
+		return new Quaternion(this.Z, this.W, this.X, this.Y);
+	}
+
 	public override bool Equals(object? obj)
 	{
 		return obj is Quaternion quaternion && this.Equals(quaternion);
