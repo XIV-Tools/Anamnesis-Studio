@@ -142,6 +142,7 @@
 					</StackPanel>
 
 					<Border
+						Margin="1,1,1,-1"
 						Background="{DynamicResource XivToolsControlBorderBackground}"
 						CornerRadius="6,6,0,0"
 						MouseDown="OnTitleMouseDown" />
@@ -155,6 +156,17 @@
 							Width="22"
 							Height="22"
 							Background="Transparent"
+							Click="OnTitlebarContextButtonClicked"
+							Style="{StaticResource TransparentIconButton}">
+							<XivToolsWpf:IconBlock
+								Foreground="{DynamicResource ForegroundLightBrush}"
+								Icon="List" />
+						</Button>
+
+						<Button
+							Width="22"
+							Height="22"
+							Background="Transparent"
 							Click="OnTitlebarCloseButtonClicked"
 							Style="{StaticResource TransparentIconButton}"
 							Visibility="{Binding CanManualyClose, Converter={StaticResource B2V}}">
@@ -163,16 +175,6 @@
 								Icon="Times" />
 						</Button>
 
-						<Button
-							Width="22"
-							Height="22"
-							Background="Transparent"
-							Click="OnTitlebarContextButtonClicked"
-							Style="{StaticResource TransparentIconButton}">
-							<XivToolsWpf:IconBlock
-								Foreground="{DynamicResource ForegroundLightBrush}"
-								Icon="AngleDown" />
-						</Button>
 					</StackPanel>
 
 					<Grid.ContextMenu>
@@ -181,19 +183,16 @@
 								Header="OverlayWindow_AutoClose"
 								IsCheckable="True"
 								IsChecked="{Binding AutoClose}"
-								Style="{StaticResource AnaMenuItem}"
 								Visibility="{Binding CanChangeAutoClose, Converter={StaticResource B2V}}" />
 
 							<MenuItem
 								Click="OnPopOutClicked"
 								Header="OverlayWindow_PopOut"
-								Style="{StaticResource AnaMenuItem}"
 								Visibility="{Binding CanPopOut, Converter={StaticResource B2V}}" />
 
 							<MenuItem
 								Click="OnPopInClicked"
 								Header="OverlayWindow_PopIn"
-								Style="{StaticResource AnaMenuItem}"
 								Visibility="{Binding CanPopIn, Converter={StaticResource B2V}}" />
 
 						</ContextMenu>
