@@ -21,11 +21,7 @@ public class LogService : IService
 
 	private static readonly LoggingLevelSwitch LogLevel = new LoggingLevelSwitch()
 	{
-#if DEBUG
-		MinimumLevel = LogEventLevel.Verbose,
-#else
-			MinimumLevel = LogEventLevel.Debug,
-#endif
+		MinimumLevel = LogEventLevel.Debug,
 	};
 
 	private static LogService? instance;
