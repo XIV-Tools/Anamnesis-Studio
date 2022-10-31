@@ -248,7 +248,7 @@ public class PanelService : ServiceBase<PanelService>
 		await Dispatch.NonUiThread();
 
 		// Open last used panels
-		foreach (PanelsData data in SettingsService.Current.Panels.Values)
+		/*foreach (PanelsData data in SettingsService.Current.Panels.Values)
 		{
 			if (data.IsOpen)
 			{
@@ -271,7 +271,7 @@ public class PanelService : ServiceBase<PanelService>
 					}
 				}
 			}
-		}
+		}*/
 
 		// Preload panels
 		/*try
