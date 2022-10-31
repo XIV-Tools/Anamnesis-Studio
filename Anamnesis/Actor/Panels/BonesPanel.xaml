@@ -16,137 +16,85 @@
 	mc:Ignorable="d">
 
 	<Grid x:Name="ContentArea">
-
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition />
-		</Grid.RowDefinitions>
-
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition />
-			<ColumnDefinition />
-		</Grid.ColumnDefinitions>
-
 		<controls:ActorSelector
-			Grid.Row="0"
-			Grid.Column="0"
+			Width="256"
+			Height="61"
+			HorizontalAlignment="Left"
+			VerticalAlignment="Top"
 			Selection="{Binding Actor}" />
 
-		<TextBlock
+		<TabControl Padding="256,3,3,3">
+
+			<TabItem Header="GUI">
+				<views:PoseGuiView />
+			</TabItem>
+			<TabItem Header="Matrix">
+				<views:PoseMatrixView />
+			</TabItem>
+			<TabItem Header="All" />
+		</TabControl>
+
+		<!--<Grid
+			Grid.Row="1"
+			Margin="3"
+			IsEnabled="{Binding Services.Pose.IsEnabled}">
+
+			<Grid
+				x:Name="MouseCanvas"
+				Grid.Row="1"
+				Background="Transparent"
+				MouseDown="OnCanvasMouseDown"
+				MouseMove="OnCanvasMouseMove"
+				MouseUp="OnCanvasMouseUp" />
+
+			<Canvas
+				x:Name="SelectionCanvas"
+				Grid.Row="1"
+				IsHitTestVisible="False">
+				<Border
+					x:Name="DragSelectionBorder"
+					BorderBrush="{DynamicResource TrimBrush}"
+					BorderThickness="1"
+					CornerRadius="3"
+					Visibility="Collapsed">
+					<Border
+						Background="{DynamicResource BackgroundBrush}"
+						Opacity="0.1" />
+				</Border>
+			</Canvas>
+		</Grid>-->
+
+		<XivToolsWpf:InfoControl
 			Grid.Row="0"
-			Grid.Column="1"
-			Text="{Binding Actor.Names.Text}" />
+			Grid.RowSpan="2"
+			Margin="6,7"
+			Text="[Pose_WarningNotGPose]"
+			Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource !B2V}}" />
 
 		<Grid
-			Grid.Row="1"
-			Grid.ColumnSpan="3">
-
-			<!--  Content  -->
-			<Grid
-				Grid.Row="1"
-				Margin="3"
-				IsEnabled="{Binding Services.Pose.IsEnabled}">
-
-				<Grid
-					x:Name="MouseCanvas"
-					Grid.Row="1"
-					Background="Transparent"
-					MouseDown="OnCanvasMouseDown"
-					MouseMove="OnCanvasMouseMove"
-					MouseUp="OnCanvasMouseUp">
-					<Grid>
-						<views:PoseGuiView
-							x:Name="GuiView"
-							Visibility="Visible" />
-						<views:PoseMatrixView
-							x:Name="MatrixView"
-							Margin="3,28,0,3"
-							Visibility="Collapsed" />
-					</Grid>
-				</Grid>
-
-				<Canvas
-					x:Name="SelectionCanvas"
-					Grid.Row="1"
-					IsHitTestVisible="False">
-					<Border
-						x:Name="DragSelectionBorder"
-						BorderBrush="{DynamicResource TrimBrush}"
-						BorderThickness="1"
-						CornerRadius="3"
-						Visibility="Collapsed">
-						<Border
-							Background="{DynamicResource BackgroundBrush}"
-							Opacity="0.1" />
-					</Border>
-				</Canvas>
-			</Grid>
-
-			<Grid
-				Grid.Row="1"
-				Margin="7,4,6,3"
-				VerticalAlignment="Top">
-				<ListBox
-					x:Name="ViewSelector"
-					Width="128"
-					SelectedIndex="0"
-					SelectionChanged="OnViewChanged"
-					Style="{StaticResource XivToolsSwitchSelector}">
-					<ListBoxItem
-						Margin="1"
-						Padding="8,5"
-						Cursor="Hand"
-						ToolTip="GUI View">
-						<XivToolsWpf:IconBlock
-							FontSize="10"
-							Icon="ProjectDiagram" />
-					</ListBoxItem>
-					<ListBoxItem
-						Margin="1"
-						Padding="8,5"
-						Cursor="Hand"
-						ToolTip="Matrix View">
-						<XivToolsWpf:IconBlock
-							FontSize="10"
-							Icon="BorderAll" />
-					</ListBoxItem>
-				</ListBox>
-			</Grid>
-
+			Grid.Row="0"
+			Grid.RowSpan="2"
+			Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource B2V}}">
 			<XivToolsWpf:InfoControl
-				Grid.Row="0"
-				Grid.RowSpan="2"
 				Margin="6,7"
-				Text="[Pose_WarningNotGPose]"
-				Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource !B2V}}" />
+				VerticalAlignment="Bottom"
+				IsError="False"
+				Text="[Pose_NotEnabled]"
+				Visibility="{Binding Services.Pose.IsEnabled, Converter={StaticResource !B2V}}" />
+		</Grid>
 
-			<Grid
-				Grid.Row="0"
-				Grid.RowSpan="2"
-				Visibility="{Binding Services.Gpose.IsGpose, Converter={StaticResource B2V}}">
-				<XivToolsWpf:InfoControl
-					Margin="6,7"
-					VerticalAlignment="Bottom"
-					IsError="False"
-					Text="[Pose_NotEnabled]"
-					Visibility="{Binding Services.Pose.IsEnabled, Converter={StaticResource !B2V}}" />
-			</Grid>
-
-			<!--  Info popups  -->
-			<Grid Margin="12">
-				<Grid Visibility="{Binding Actor, Converter={StaticResource NotNullToVisibilityConverter}}">
-					<Grid Visibility="{Binding Actor.ModelObject, Converter={StaticResource NullToVisibilityConverter}}">
-						<XivToolsWpf:InfoControl
-							Margin="12"
-							VerticalAlignment="Bottom"
-							Background="{DynamicResource BackgroundBrush}"
-							IsError="True"
-							Text="[Pose_NoModel]" />
-					</Grid>
+		<!--  Info popups  -->
+		<Grid Margin="12">
+			<Grid Visibility="{Binding Actor, Converter={StaticResource NotNullToVisibilityConverter}}">
+				<Grid Visibility="{Binding Actor.ModelObject, Converter={StaticResource NullToVisibilityConverter}}">
+					<XivToolsWpf:InfoControl
+						Margin="12"
+						VerticalAlignment="Bottom"
+						Background="{DynamicResource BackgroundBrush}"
+						IsError="True"
+						Text="[Pose_NoModel]" />
 				</Grid>
 			</Grid>
 		</Grid>
-
-
 	</Grid>
 </local:ActorPanelBase>

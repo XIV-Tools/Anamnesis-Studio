@@ -60,6 +60,17 @@ public partial class BoneView : UserControl
 		}
 	}*/
 
+	public string? InternalBoneName
+	{
+		get
+		{
+			if (this.boneViewModel == null)
+				this.boneViewModel = this.FindParent<BonesPanel>()?.Actor?.ModelObject?.Skeleton?.GetBone(this.BoneName);
+
+			return this.boneViewModel?.Name;
+		}
+	}
+
 	public void Hover(bool hover)
 	{
 		// TODO: it woudl be nice if we could get our control to act as though its hovered.

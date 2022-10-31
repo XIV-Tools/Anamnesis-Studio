@@ -21,7 +21,7 @@
 			<StackPanel>
 				<TextBlock
 					FontWeight="Bold"
-					Text="{Binding Bone.Tooltip}" />
+					Text="{Binding CurrentBoneName}" />
 				<TextBlock Text="{Binding Bone.BoneName}" />
 			</StackPanel>
 		</Grid.ToolTip>
@@ -33,32 +33,57 @@
 			VerticalAlignment="Center"
 			Checked="OnChecked"
 			Content="O"
-			Unchecked="OnUnchecked" />
+			Unchecked="OnUnchecked">
+			<ToggleButton.Style>
+				<Style TargetType="{x:Type ToggleButton}">
+					<Setter Property="Template">
+						<Setter.Value>
+							<ControlTemplate TargetType="{x:Type ToggleButton}">
+								<Grid
+									Width="16"
+									Height="16"
+									Cursor="Hand"
+									TextBlock.Foreground="{DynamicResource ForegroundLightBrush}">
 
-		<!--<Ellipse
-			x:Name="BackgroundElipse"
-			Fill="{DynamicResource BackgroundLightBrush}"
-			Stroke="{DynamicResource TrimBrush}"
-			StrokeThickness="1" />
-		<Ellipse
-			x:Name="ForegroundElipse"
-			Margin="4"
-			Fill="{DynamicResource TrimBrush}"
-			Visibility="Hidden" />
-		<Ellipse
-			x:Name="ErrorEllipse"
-			Fill="Transparent"
-			Opacity="0.5"
-			Stroke="{DynamicResource BackgroundLightBrush}"
-			StrokeThickness="1"
-			Visibility="Collapsed" />
+									<Ellipse
+										Margin="-1"
+										Fill="{DynamicResource XivToolsControlBorderBackground}" />
 
-		<TextBlock
-			Margin="3"
-			HorizontalAlignment="Center"
-			VerticalAlignment="Center"
-			FontSize="8"
-			Style="{StaticResource Label}"
-			Text="{Binding Label}" />-->
+									<Ellipse
+										x:Name="BackgroundElipse"
+										Fill="{DynamicResource XivToolsControlBorderBackground}"
+										Stroke="{DynamicResource BackgroundLightBrush}"
+										StrokeThickness="1" />
+
+									<Ellipse
+										x:Name="HoverElipse"
+										Opacity="0"
+										Stroke="{DynamicResource TrimBrush}" />
+
+									<Ellipse
+										x:Name="SelectionElipse"
+										Margin="4"
+										Fill="{DynamicResource TrimBrush}"
+										Opacity="0" />
+
+								</Grid>
+
+								<ControlTemplate.Triggers>
+									<Trigger Property="IsMouseOver" Value="true">
+										<Setter TargetName="HoverElipse" Property="Opacity" Value="1" />
+									</Trigger>
+									<Trigger Property="IsEnabled" Value="false">
+										<Setter TargetName="BackgroundElipse" Property="Opacity" Value="0" />
+									</Trigger>
+									<Trigger Property="IsChecked" Value="True">
+										<Setter TargetName="SelectionElipse" Property="Opacity" Value="1" />
+									</Trigger>
+								</ControlTemplate.Triggers>
+							</ControlTemplate>
+						</Setter.Value>
+					</Setter>
+				</Style>
+			</ToggleButton.Style>
+		</ToggleButton>
 	</Grid>
 </UserControl>

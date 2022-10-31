@@ -29,9 +29,9 @@ public partial class BonesPanel : ActorPanelBase
 
 	public HashSet<BoneView> BoneViews = new HashSet<BoneView>();
 
-	private bool isLeftMouseButtonDownOnWindow;
-	private bool isDragging;
-	private Point origMouseDownPoint;
+	////private bool isLeftMouseButtonDownOnWindow;
+	////private bool isDragging;
+	////private Point origMouseDownPoint;
 
 	public BonesPanel()
 		: base()
@@ -74,18 +74,7 @@ public partial class BonesPanel : ActorPanelBase
 		lastSaveDir = await PoseFile.Save(lastSaveDir, this.Actor, this.Skeleton, bones);
 	}*/
 
-	private void OnViewChanged(object sender, SelectionChangedEventArgs e)
-	{
-		int selected = this.ViewSelector.SelectedIndex;
-
-		if (this.GuiView == null)
-			return;
-
-		this.GuiView.Visibility = selected == 0 ? Visibility.Visible : Visibility.Collapsed;
-		this.MatrixView.Visibility = selected == 1 ? Visibility.Visible : Visibility.Collapsed;
-	}
-
-	private void OnCanvasMouseDown(object sender, MouseButtonEventArgs e)
+	/*private void OnCanvasMouseDown(object sender, MouseButtonEventArgs e)
 	{
 		if (e.ChangedButton == MouseButton.Left)
 		{
@@ -191,5 +180,5 @@ public partial class BonesPanel : ActorPanelBase
 		}
 
 		this.MouseCanvas.ReleaseMouseCapture();
-	}
+	}*/
 }
