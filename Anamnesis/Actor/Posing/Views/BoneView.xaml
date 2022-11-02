@@ -21,7 +21,7 @@
 			<StackPanel>
 				<TextBlock
 					FontWeight="Bold"
-					Text="{Binding CurrentBoneName}" />
+					Text="{Binding LocalizedBoneName}" />
 				<TextBlock Text="{Binding InternalBoneName}" />
 			</StackPanel>
 		</Grid.ToolTip>
@@ -33,6 +33,7 @@
 			VerticalAlignment="Center"
 			Checked="OnChecked"
 			Content="O"
+			IsChecked="{Binding IsSelected}"
 			Unchecked="OnUnchecked">
 			<ToggleButton.Style>
 				<Style TargetType="{x:Type ToggleButton}">
@@ -65,6 +66,8 @@
 										Margin="4"
 										Fill="{DynamicResource TrimBrush}"
 										Opacity="0" />
+
+									<TextBlock Text="{Binding Label}" />
 
 								</Grid>
 

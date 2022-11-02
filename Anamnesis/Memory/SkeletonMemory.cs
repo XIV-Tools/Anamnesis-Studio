@@ -19,7 +19,7 @@ public class SkeletonMemory : ArrayMemory<PartialSkeletonMemory, short>
 		if (bones.Count <= 0)
 			return null;
 
-		return new BoneViewModel(boneName, bones);
+		return new BoneViewModel(this, boneName, bones);
 	}
 
 	public List<BoneReference> FindBones(string boneName)

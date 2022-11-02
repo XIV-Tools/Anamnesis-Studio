@@ -9,7 +9,7 @@
 	xmlns:local="clr-namespace:Anamnesis.Actor.Panels"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:panels="clr-namespace:Anamnesis.Panels"
-	Title="[Navigation_Actor_Transform"
+	Title="[Navigation_Actor_Transform]"
 	Width="250"
 	Height="512"
 	CanResize="False"
@@ -30,121 +30,118 @@
 			</Grid.RowDefinitions>
 
 			<Grid
-				Grid.Row="0"
-				Grid.ColumnSpan="2"
-				Margin="8,4,6,3">
-
-				<TextBlock
-					FontWeight="Bold"
-					Style="{StaticResource Header}"
-					Text="{Binding CurrentBone.Tooltip}" />
-
-				<TextBlock
-					HorizontalAlignment="Right"
-					VerticalAlignment="Top"
-					FontSize="10"
-					Style="{StaticResource Header}"
-					Text="{Binding CurrentBone.Name}" />
-
-				<TextBlock
-					HorizontalAlignment="Left"
-					Style="{StaticResource Header}"
-					Text="[Pose_NothingSelected]"
-					Visibility="{Binding CurrentBone, Converter={StaticResource NullToVisibilityConverter}}" />
-			</Grid>
-
-
-			<WrapPanel
 				Grid.Row="1"
 				Grid.ColumnSpan="2"
-				IsEnabled="{Binding Services.Pose.IsEnabled}"
-				Orientation="Horizontal">
+				IsEnabled="{Binding Services.Pose.IsEnabled}">
 
-				<ToggleButton
-					Height="22"
-					MinWidth="32"
-					Margin="2,0"
-					IsChecked="{Binding Skeleton.CurrentBone.EnableLinkedBones}"
-					IsEnabled="{Binding Skeleton.CurrentBone.LinkedBonesCount, Converter={StaticResource NotZeroToBool}, FallbackValue=False}"
-					Style="{StaticResource TransparentIconToggleButton}">
-					<StackPanel Orientation="Horizontal">
-						<XivToolsWpf:IconBlock
-							FontSize="11"
-							Icon="Link" />
-						<TextBlock
-							Margin="4,0,0,0"
-							Text="{Binding Skeleton.CurrentBone.LinkedBonesCount, FallbackValue=0}" />
-					</StackPanel>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
 
-					<ToggleButton.ToolTip>
-						<StackPanel
-							Width="256"
-							Orientation="Vertical">
+				<Border
+					Grid.Column="0"
+					Margin="3,0"
+					CornerRadius="6,0,0,6"
+					Style="{StaticResource XivToolsControlBorder}">
+					<ToggleButton
+						MinWidth="42"
+						IsChecked="{Binding Skeleton.CurrentBone.EnableLinkedBones}"
+						IsEnabled="{Binding Skeleton.CurrentBone.LinkedBonesCount, Converter={StaticResource NotZeroToBool}, FallbackValue=False}">
+						<StackPanel Orientation="Horizontal">
+							<XivToolsWpf:IconBlock
+								FontSize="11"
+								Icon="Link" />
 							<TextBlock
-								FontWeight="Bold"
-								Text="[Pose_Linked" />
-
-							<ItemsControl
-								Margin="10,0,0,0"
-								ItemsSource="{Binding Skeleton.CurrentBone.LinkedBones}">
-								<ItemsControl.ItemTemplate>
-									<DataTemplate>
-										<StackPanel Orientation="Horizontal">
-											<TextBlock Text="{Binding Tooltip}" />
-											<TextBlock
-												Margin="6,0,0,0"
-												Text="{Binding BoneName, StringFormat=( {0:D} )}" />
-										</StackPanel>
-									</DataTemplate>
-								</ItemsControl.ItemTemplate>
-							</ItemsControl>
-
-							<TextBlock
-								Margin="0,20,0,0"
-								Text="[Pose_Linked_Tooltip"
-								TextWrapping="Wrap" />
+								Margin="4,0,0,0"
+								Text="{Binding Skeleton.CurrentBone.LinkedBonesCount, FallbackValue=0}" />
 						</StackPanel>
-					</ToggleButton.ToolTip>
 
-				</ToggleButton>
+						<ToggleButton.ToolTip>
+							<StackPanel
+								Width="256"
+								Orientation="Vertical">
+								<TextBlock
+									FontWeight="Bold"
+									Text="[Pose_Linked]" />
 
-				<Grid IsEnabled="{Binding Skeleton.HasSelection}">
+								<ItemsControl
+									Margin="10,0,0,0"
+									ItemsSource="{Binding Skeleton.CurrentBone.LinkedBones}">
+									<ItemsControl.ItemTemplate>
+										<DataTemplate>
+											<StackPanel Orientation="Horizontal">
+												<TextBlock Text="{Binding Tooltip}" />
+												<TextBlock
+													Margin="6,0,0,0"
+													Text="{Binding BoneName, StringFormat=( {0:D} )}" />
+											</StackPanel>
+										</DataTemplate>
+									</ItemsControl.ItemTemplate>
+								</ItemsControl>
 
+								<TextBlock
+									Margin="0,20,0,0"
+									Text="[Pose_Linked_Tooltip]"
+									TextWrapping="Wrap" />
+							</StackPanel>
+						</ToggleButton.ToolTip>
+
+					</ToggleButton>
+				</Border>
+
+				<Border
+					Grid.Column="1"
+					Margin="0,0,3,0"
+					CornerRadius="0"
+					IsEnabled="{Binding CurrentBone, Converter={StaticResource NotNullToBoolConverter}, FallbackValue=False}"
+					Style="{StaticResource XivToolsControlBorder}">
+
+					<StackPanel
+						HorizontalAlignment="Center"
+						Orientation="Horizontal">
+						<Button
+							Background="Transparent"
+							Click="OnParentClicked"
+							Style="{StaticResource TransparentIconButton}"
+							ToolTip="[Pose_SelectParent]">
+							<XivToolsWpf:IconBlock Icon="ArrowCircleUp" />
+						</Button>
+
+						<Button
+							Background="Transparent"
+							Click="OnClearClicked"
+							Style="{StaticResource TransparentIconButton}"
+							ToolTip="[Pose_Clear]">
+							<XivToolsWpf:IconBlock Icon="TimesCircle" />
+						</Button>
+
+						<Button
+							Background="Transparent"
+							Click="OnSelectChildrenClicked"
+							Style="{StaticResource TransparentIconButton}"
+							ToolTip="[Pose_SelectChildren]">
+							<XivToolsWpf:IconBlock Icon="ArrowCircleDown" />
+						</Button>
+					</StackPanel>
+				</Border>
+
+				<Border
+					Grid.Column="2"
+					Margin="0,0,3,0"
+					CornerRadius="0, 6, 6, 0"
+					Style="{StaticResource XivToolsControlBorder}">
 					<Button
-						anaUtils:Behaviours.Tooltip="Pose_SelectParent"
-						Click="OnParentClicked"
-						IsEnabled="{Binding Skeleton.CurrentBone.Parent, Converter={StaticResource NotNullToBoolConverter}}"
-						Style="{StaticResource TransparentIconButton}">
-						<XivToolsWpf:IconBlock Icon="ArrowCircleUp" />
+						MinWidth="48"
+						Margin="2"
+						Padding="6,3"
+						Click="OnFlipClicked">
+						<TextBlock Text="[Pose_Flip]" />
 					</Button>
-				</Grid>
+				</Border>
 
-				<Button
-					anaUtils:Behaviours.Tooltip="Pose_Clear"
-					Click="OnClearClicked"
-					IsEnabled="{Binding Skeleton.HasSelection}"
-					Style="{StaticResource TransparentIconButton}">
-					<XivToolsWpf:IconBlock Icon="TimesCircle" />
-				</Button>
-
-				<Button
-					anaUtils:Behaviours.Tooltip="Pose_SelectChildren"
-					Click="OnSelectChildrenClicked"
-					IsEnabled="{Binding Skeleton.HasSelection}"
-					Style="{StaticResource TransparentIconButton}">
-					<XivToolsWpf:IconBlock Icon="ArrowCircleDown" />
-				</Button>
-
-				<Button
-					MinWidth="48"
-					Margin="2"
-					Padding="6,3"
-					Click="OnFlipClicked"
-					Style="{StaticResource TransparentButton}">
-					<TextBlock Text="[Pose_Flip" />
-				</Button>
-
-			</WrapPanel>
+			</Grid>
 
 			<controls:TransformEditor
 				Grid.Row="2"

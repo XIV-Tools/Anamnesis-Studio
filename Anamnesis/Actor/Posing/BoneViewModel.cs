@@ -13,13 +13,16 @@ public class BoneViewModel : ITransform
 {
 	private readonly List<BoneReference> boneReferences;
 
-	public BoneViewModel(string name, List<BoneReference> bones)
+	public BoneViewModel(SkeletonMemory skeleton, string name, List<BoneReference> bones)
 	{
+		this.Skeleton = skeleton;
 		this.Name = name;
 		this.boneReferences = bones;
 	}
 
+	public SkeletonMemory Skeleton { get; init; }
 	public string Name { get; init; }
+	public string LocalizedBoneName => $"[Pose_{this.Name}]";
 
 	public bool IsSelected { get; set; }
 
@@ -79,5 +82,65 @@ public class BoneViewModel : ITransform
 				bone.SetScale(value, ref writtenMemories);
 			}
 		}
+	}
+
+	public List<BoneViewModel>? GetChildren()
+	{
+		HashSet<string> childrenNames = new();
+		foreach (BoneReference bone in this.boneReferences)
+		{
+			List<BoneReference>? childrenReferences = bone.GetChildren();
+			if (childrenReferences == null)
+				continue;
+
+			foreach (BoneReference childReference in childrenReferences)
+			{
+				if (childReference.Name == null)
+					continue;
+
+				childrenNames.Add(childReference.Name);
+			}
+		}
+
+		if (childrenNames.Count <= 0)
+			return null;
+
+		List<BoneViewModel> children = new();
+		foreach (string boneName in childrenNames)
+		{
+			BoneViewModel? bone = this.Skeleton.GetBone(boneName);
+
+			if (bone == null)
+				continue;
+
+			children.Add(bone);
+		}
+
+		return children;
+	}
+
+	public BoneViewModel? GetParent()
+	{
+		List<BoneReference> parents = new();
+		string name = string.Empty;
+		foreach (BoneReference bone in this.boneReferences)
+		{
+			BoneReference? parent = bone.GetParent();
+
+			if (parent == null)
+				continue;
+
+			parents.Add(parent.Value);
+
+			if (parent.Value.Name != null)
+			{
+				name = parent.Value.Name;
+			}
+		}
+
+		if (parents.Count <= 0)
+			return null;
+
+		return new BoneViewModel(this.Skeleton, name, parents);
 	}
 }

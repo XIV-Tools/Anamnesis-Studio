@@ -69,6 +69,12 @@ public class LocalizationService : ServiceBase<LocalizationService>
 	{
 		string val = string.Empty;
 
+		if (key.StartsWith('['))
+			key = key.Substring(1);
+
+		if (key.EndsWith(']'))
+			key = key.Substring(0, key.Length - 1);
+
 		if (currentLocale?.Get(key, out val) ?? false)
 			return val;
 

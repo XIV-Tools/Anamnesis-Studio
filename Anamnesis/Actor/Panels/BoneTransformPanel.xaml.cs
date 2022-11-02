@@ -4,9 +4,12 @@
 namespace Anamnesis.Actor.Panels;
 
 using Anamnesis.Actor.Posing;
+using Anamnesis.Services;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Windows;
 using XivToolsWpf;
+using static Anamnesis.Files.PoseFile;
 
 public partial class BoneTransformPanel : ActorPanelBase
 {
@@ -34,18 +37,46 @@ public partial class BoneTransformPanel : ActorPanelBase
 			return;
 
 		this.CurrentBone = this.Services.Pose.SelectedBones[0];
+
+		this.Dispatcher.BeginInvoke(() =>
+		{
+			string? title = LocalizationService.GetLocalizedText("[Navigation_Actor_Transform]");
+
+			if (this.CurrentBone == null)
+			{
+				this.Title = title;
+			}
+			else
+			{
+				string? bone = LocalizationService.GetLocalizedText(this.CurrentBone.LocalizedBoneName);
+				this.Title = $"{title} - {bone}";
+			}
+		});
 	}
 
 	private void OnParentClicked(object sender, RoutedEventArgs e)
 	{
+		BoneViewModel? parent = this.CurrentBone?.GetParent();
+		if (parent == null)
+			return;
+
+		this.Services.Pose.SelectedBones.Clear();
+		this.Services.Pose.SelectedBones.Add(parent);
 	}
 
 	private void OnSelectChildrenClicked(object sender, RoutedEventArgs e)
 	{
+		List<BoneViewModel>? children = this.CurrentBone?.GetChildren();
+		if (children == null)
+			return;
+
+		this.Services.Pose.SelectedBones.Clear();
+		this.Services.Pose.SelectedBones.AddRange(children);
 	}
 
 	private void OnClearClicked(object? sender, RoutedEventArgs? e)
 	{
+		this.Services.Pose.SelectedBones.Clear();
 	}
 
 	private void OnFlipClicked(object sender, RoutedEventArgs e)
