@@ -22,7 +22,7 @@
 				<TextBlock
 					FontWeight="Bold"
 					Text="{Binding CurrentBoneName}" />
-				<TextBlock Text="{Binding Bone.BoneName}" />
+				<TextBlock Text="{Binding InternalBoneName}" />
 			</StackPanel>
 		</Grid.ToolTip>
 
@@ -52,7 +52,7 @@
 									<Ellipse
 										x:Name="BackgroundElipse"
 										Fill="{DynamicResource XivToolsControlBorderBackground}"
-										Stroke="{DynamicResource BackgroundLightBrush}"
+										Stroke="{DynamicResource ForegroundBrush}"
 										StrokeThickness="1" />
 
 									<Ellipse
