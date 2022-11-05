@@ -20,9 +20,7 @@
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
 
-		<GroupBox
-			Grid.Column="0"
-			Style="{StaticResource PanelGroupBox}">
+		<GroupBox Grid.Column="0">
 			<GroupBox.Header>
 				<controls:Header
 					Icon="Database"
@@ -47,9 +45,7 @@
 
 		</GroupBox>
 
-		<GroupBox
-			Grid.Column="1"
-			Style="{StaticResource PanelGroupBox}">
+		<GroupBox Grid.Column="1">
 			<GroupBox.Header>
 				<StackPanel Orientation="Horizontal">
 					<controls:Header
@@ -107,7 +103,7 @@
                 <controls:Header Icon="Question" Text="Experimental"/>
             </GroupBox.Header>
             <StackPanel>
-                <GroupBox Style="{StaticResource PanelGroupBox}" Grid.Column="2" IsEnabled="{Binding GposeService.IsGpose}">
+                <GroupBox Grid.Column="2" IsEnabled="{Binding GposeService.IsGpose}">
                     <GroupBox.Header>
                         <controls:Header Icon="CameraRetro" Text="Scenes"/>
                     </GroupBox.Header>

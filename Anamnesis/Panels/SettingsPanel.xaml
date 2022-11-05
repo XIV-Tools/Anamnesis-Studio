@@ -21,9 +21,7 @@
 			<ColumnDefinition Width="*" />
 		</Grid.ColumnDefinitions>
 
-		<GroupBox
-			Grid.Column="0"
-			Style="{StaticResource PanelGroupBox}">
+		<GroupBox Grid.Column="0">
 
 			<GroupBox.Header>
 				<XivToolsWPF:Header
@@ -243,7 +241,7 @@
 		</GroupBox>
 
 		<StackPanel Grid.Column="1">
-			<GroupBox Style="{StaticResource PanelGroupBox}">
+			<GroupBox>
 				<GroupBox.Header>
 					<XivToolsWPF:Header
 						Icon="Folder"

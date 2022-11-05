@@ -21,7 +21,6 @@
 
 				<GroupBox
 					Grid.Row="0"
-					Style="{StaticResource PanelGroupBox}"
 					Visibility="{Binding Actor.ModelObject, Converter={StaticResource NotNullToVisibilityConverter}}">
 					<GroupBox.Header>
 						<XivToolsWpf:Header
@@ -34,7 +33,6 @@
 
 				<GroupBox
 					Grid.Row="1"
-					Style="{StaticResource PanelGroupBox}"
 					Visibility="{Binding Actor.ModelObject.ExtendedAppearance, Converter={StaticResource NotNullToVisibilityConverter}, FallbackValue=Collapsed}">
 					<GroupBox.Header>
 						<XivToolsWpf:Header
