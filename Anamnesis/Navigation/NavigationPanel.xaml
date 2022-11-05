@@ -111,6 +111,15 @@
 				CornerRadius="0,0,6,6"
 				Style="{StaticResource XivToolsControlBorder}" />
 
+			<ProgressBar
+				Height="2"
+				Margin="32,2,2,0"
+				VerticalAlignment="Top"
+				Maximum="1"
+				Minimum="0"
+				Visibility="{Binding Services.BootComplete, Converter={StaticResource !B2V}}"
+				Value="{Binding Services.BootProgress, Mode=OneWay}" />
+
 			<StackPanel
 				Grid.Row="0"
 				Margin="36,6,6,6"
@@ -376,11 +385,7 @@
 										<Ellipse
 											x:Name="Background"
 											Fill="{StaticResource BackgroundBrush}"
-											Opacity="0">
-											<Ellipse.BitmapEffect>
-												<DropShadowBitmapEffect ShadowDepth="0" />
-											</Ellipse.BitmapEffect>
-										</Ellipse>
+											Opacity="0" />
 
 										<Image
 											Margin="0,0,0,0"

@@ -36,7 +36,7 @@ public static class ErrorDialog
 		{
 			Log.Error(new ErrorException(ex2), "Failed to display exception panel");
 
-			MessageBox.Show("An error was encountered when attempting to display the previous error", "Anamnesis Internal Error");
+			MessageBox.Show(ex.SourceException?.Message + "\n\n" + ex.SourceException?.StackTrace, "Anamnesis Error");
 			Application.Current.Shutdown(2);
 		}
 

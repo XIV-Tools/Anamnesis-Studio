@@ -17,10 +17,18 @@ using Anamnesis.Navigation;
 using System.Collections.Generic;
 using Anamnesis.Panels;
 using Anamnesis.Libraries;
+using PropertyChanged;
 
+[AddINotifyPropertyChangedInterface]
 public class ServiceManager
 {
+	private const int ServiceCount = 27;
 	private readonly List<IService> services = new();
+	private double initializedServiceSount = 0;
+	private double startedServiceCount = 0;
+
+	public double BootProgress { get; private set; } = 0;
+	public bool BootComplete { get; private set; } = false;
 
 	public LogService Logs { get; } = new();
 	public SettingsService Settings { get; } = new();
@@ -91,6 +99,8 @@ public class ServiceManager
 		await this.InitializeService(this.Library);
 
 		await this.StartServices();
+
+		this.BootComplete = true;
 	}
 
 	public async Task StartServices()
@@ -102,7 +112,16 @@ public class ServiceManager
 			Stopwatch sw = new();
 			sw.Start();
 			await service.Start();
+			this.startedServiceCount++;
+			this.UpdateBootProgress();
 			Log.Information($"Started service: {service.GetType().Name} in {sw.ElapsedMilliseconds}ms");
+		}
+
+		if (this.initializedServiceSount != ServiceCount ||
+			this.startedServiceCount != ServiceCount ||
+			this.services.Count != ServiceCount)
+		{
+			throw new Exception("Service Count is incorrect. (Was a new service added without increasing the service count?)");
 		}
 	}
 
@@ -118,6 +137,9 @@ public class ServiceManager
 				// If this throws an exception we should keep trying to shut down the rest
 				// not doing so can leave the game memory in a corrupt state
 				await service.Shutdown();
+				this.initializedServiceSount--;
+				this.startedServiceCount--;
+				this.UpdateBootProgress();
 			}
 			catch (Exception ex)
 			{
@@ -134,5 +156,13 @@ public class ServiceManager
 		await service.Initialize();
 		this.services.Add(service);
 		Log.Information($"Initialized service: {service.GetType().Name} in {sw.ElapsedMilliseconds}ms");
+
+		this.initializedServiceSount++;
+		this.UpdateBootProgress();
+	}
+
+	private void UpdateBootProgress()
+	{
+		this.BootProgress = ((this.initializedServiceSount / ServiceCount) / 2.0) + ((this.startedServiceCount / ServiceCount) / 2.0);
 	}
 }
