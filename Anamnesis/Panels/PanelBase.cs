@@ -32,10 +32,10 @@ public abstract class PanelBase : UserControl, INotifyPropertyChanged
 		this.GetType().GetMethod("InitializeComponent")?.Invoke(this, null);
 		this.DataContext = this;
 
-		if (!SettingsService.Current.Panels.TryGetValue(this.Id, out PanelSettings? settings) || settings == null)
+		if (SettingsService.Current == null || !SettingsService.Current.Panels.TryGetValue(this.Id, out PanelSettings? settings) || settings == null)
 		{
 			this.Settings = new();
-			SettingsService.Current.Panels.Add(this.Id, this.Settings);
+			SettingsService.Current?.Panels.Add(this.Id, this.Settings);
 		}
 		else
 		{

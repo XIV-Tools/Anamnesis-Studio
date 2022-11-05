@@ -33,7 +33,7 @@
 		<TabControl Grid.Row="1">
 
 			<TabItem Header="[Character_Tab_Info]">
-				<character:CharacterInfo />
+				<character:CharacterInfo Actor="{Binding Actor}" />
 			</TabItem>
 
 			<TabItem

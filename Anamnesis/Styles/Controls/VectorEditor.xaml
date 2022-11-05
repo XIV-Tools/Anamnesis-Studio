@@ -1,105 +1,237 @@
-﻿<UserControl x:Class="Anamnesis.Styles.Controls.VectorEditor"
-			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-			 xmlns:local="clr-namespace:Anamnesis.Styles.Controls"
-			 xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-			 xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
-			 mc:Ignorable="d"
-			 d:DesignWidth="256">
+﻿<UserControl
+	x:Class="Anamnesis.Styles.Controls.VectorEditor"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+	xmlns:local="clr-namespace:Anamnesis.Styles.Controls"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	d:DesignWidth="256"
+	mc:Ignorable="d">
 	<Grid x:Name="ContentArea">
 
 		<Grid Visibility="{Binding Expanded, Converter={StaticResource !B2V}}">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition/>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
 			</Grid.ColumnDefinitions>
 
-			<ToggleButton Grid.Column="0" Style="{StaticResource TransparentIconToggleButton}" Margin="2, 0, -2, 0" IsChecked="{Binding Linked}"
-					Visibility="{Binding CanLink, Converter={StaticResource B2V}}"
-					Height="20"
-					Padding="0">
+			<Border
+				Grid.Column="0"
+				CornerRadius="6,0,0,6"
+				Style="{StaticResource XivToolsControlBorder}" />
+
+			<ToggleButton
+				Grid.Column="0"
+				Padding="0"
+				Background="Transparent"
+				IsChecked="{Binding Linked}"
+				Visibility="{Binding CanLink, Converter={StaticResource B2V}}">
 
 				<ToggleButton.ToolTip>
-					<TextBlock Text="[Common_LinkVector"/>
+					<TextBlock Text="[Common_LinkVector" />
 				</ToggleButton.ToolTip>
 
 				<Grid>
-					<fa:IconBlock Icon="Link" FontSize="10"/>
+					<fa:IconBlock
+						FontSize="10"
+						Icon="Link" />
 				</Grid>
 			</ToggleButton>
 
-			<Grid Grid.Column="1" Visibility="{Binding Linked, Converter={StaticResource B2V}}">
-				<XivToolsWpf:NumberBox Value="{Binding X, Mode=TwoWay}" TickFrequency="{Binding TickFrequency}" Minimum="{Binding Minimum}" Maximum="{Binding Maximum}" Slider="{Binding Sliders}" Buttons="True" Wrap="{Binding Wrap}" UncapTextInput="{Binding UncapTextInput}" Margin="0, 0, 0, 2"/>
+			<Grid
+				Grid.Column="1"
+				Margin="1,0,0,0"
+				Visibility="{Binding Linked, Converter={StaticResource B2V}}">
+				<XivToolsWpf:NumberBox
+					Buttons="True"
+					CornerRadius="0,6,6,0"
+					Maximum="{Binding Maximum}"
+					Minimum="{Binding Minimum}"
+					Slider="{Binding Sliders}"
+					TickFrequency="{Binding TickFrequency}"
+					UncapTextInput="{Binding UncapTextInput}"
+					Wrap="{Binding Wrap}"
+					Value="{Binding X, Mode=TwoWay}" />
 			</Grid>
 
-			<Grid Grid.Column="1" Visibility="{Binding Linked, Converter={StaticResource !B2V}}" Height="26">
+			<Grid
+				Grid.Column="1"
+				Margin="1,0,0,0"
+				Visibility="{Binding Linked, Converter={StaticResource !B2V}}">
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto"/>
-					<ColumnDefinition/>
-					<ColumnDefinition Width="Auto"/>
-					<ColumnDefinition/>
-					<ColumnDefinition Width="Auto"/>
-					<ColumnDefinition/>
+					<ColumnDefinition />
+					<ColumnDefinition />
+					<ColumnDefinition />
 				</Grid.ColumnDefinitions>
 
-				<Label Grid.Column="0" Content="X:" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundLightBrush}" FontSize="10"/>
-				<XivToolsWpf:NumberBox Value="{Binding X, Mode=TwoWay}" TickFrequency="{Binding TickFrequency}" Minimum="{Binding Minimum}" Maximum="{Binding Maximum}" Wrap="{Binding Wrap}" UncapTextInput="{Binding UncapTextInput}" Grid.Column="1" Margin="-1, -2, 0, 2"/>
+				<XivToolsWpf:NumberBox
+					Grid.Column="0"
+					Margin="0,0,1,0"
+					CornerRadius="0,0,0,0"
+					Maximum="{Binding Maximum}"
+					Minimum="{Binding Minimum}"
+					TickFrequency="{Binding TickFrequency}"
+					UncapTextInput="{Binding UncapTextInput}"
+					Wrap="{Binding Wrap}"
+					Value="{Binding X, Mode=TwoWay}">
+					<XivToolsWpf:NumberBox.Prefix>
+						<Label
+							Margin="0,-2,0,0"
+							HorizontalContentAlignment="Right"
+							Content="X:"
+							Foreground="{StaticResource ForegroundLightBrush}" />
+					</XivToolsWpf:NumberBox.Prefix>
+				</XivToolsWpf:NumberBox>
 
-				<Label Grid.Column="2" Content="Y:" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundLightBrush}" FontSize="10"/>
-				<XivToolsWpf:NumberBox Value="{Binding Y, Mode=TwoWay}" TickFrequency="{Binding TickFrequency}" Minimum="{Binding Minimum}" Maximum="{Binding Maximum}" Wrap="{Binding Wrap}" UncapTextInput="{Binding UncapTextInput}" Grid.Column="3" Margin="-1, -2, 0, 2"/>
+				<XivToolsWpf:NumberBox
+					Grid.Column="1"
+					Margin="1,0"
+					CornerRadius="0,0,0,0"
+					Maximum="{Binding Maximum}"
+					Minimum="{Binding Minimum}"
+					TickFrequency="{Binding TickFrequency}"
+					UncapTextInput="{Binding UncapTextInput}"
+					Wrap="{Binding Wrap}"
+					Value="{Binding Y, Mode=TwoWay}">
+					<XivToolsWpf:NumberBox.Prefix>
+						<Label
+							Margin="0,-2,0,0"
+							HorizontalContentAlignment="Right"
+							Content="Y:"
+							Foreground="{StaticResource ForegroundLightBrush}" />
+					</XivToolsWpf:NumberBox.Prefix>
+				</XivToolsWpf:NumberBox>
 
-				<Label Grid.Column="4" Content="Z:" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundLightBrush}" FontSize="10"/>
-				<XivToolsWpf:NumberBox Value="{Binding Z, Mode=TwoWay}" TickFrequency="{Binding TickFrequency}" Minimum="{Binding Minimum}" Maximum="{Binding Maximum}" Wrap="{Binding Wrap}" UncapTextInput="{Binding UncapTextInput}" Grid.Column="5" Margin="-1, -2, 0, 2"/>
+
+				<XivToolsWpf:NumberBox
+					Grid.Column="2"
+					Margin="1,0,0,0"
+					CornerRadius="0,6,6,0"
+					Maximum="{Binding Maximum}"
+					Minimum="{Binding Minimum}"
+					TickFrequency="{Binding TickFrequency}"
+					UncapTextInput="{Binding UncapTextInput}"
+					Wrap="{Binding Wrap}"
+					Value="{Binding Z, Mode=TwoWay}">
+
+					<XivToolsWpf:NumberBox.Prefix>
+						<Label
+							Margin="0,-2,0,0"
+							HorizontalContentAlignment="Right"
+							Content="Z:"
+							Foreground="{StaticResource ForegroundLightBrush}" />
+					</XivToolsWpf:NumberBox.Prefix>
+				</XivToolsWpf:NumberBox>
 
 			</Grid>
 		</Grid>
 
 		<Grid Visibility="{Binding Expanded, Converter={StaticResource B2V}}">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition/>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
 			</Grid.ColumnDefinitions>
 
 			<Grid.RowDefinitions>
-				<RowDefinition/>
-				<RowDefinition/>
-				<RowDefinition/>
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
 			</Grid.RowDefinitions>
 
-			<Grid Grid.Column="1" Grid.RowSpan="3" Visibility="{Binding CanLink, Converter={StaticResource B2V}}">
+			<Border
+				Grid.RowSpan="3"
+				Grid.ColumnSpan="2"
+				CornerRadius="6,0,0,6"
+				Style="{StaticResource XivToolsControlBorder}" />
 
-				<Grid.RowDefinitions>
-					<RowDefinition/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition/>
-				</Grid.RowDefinitions>
+			<ToggleButton
+				Grid.RowSpan="3"
+				Grid.ColumnSpan="2"
+				Background="Transparent"
+				IsChecked="{Binding Linked}"
+				ToolTip="[Common_LinkVector]"
+				Visibility="{Binding CanLink, Converter={StaticResource B2V}}">
 
-				<Line Grid.Row="0" Y1="0" Y2="1" Stretch="Fill" Stroke="{DynamicResource ForegroundLightBrush}" StrokeThickness="1" SnapsToDevicePixels="True" Margin="0, 11, 0, 0"/>
-				<Line Grid.Row="2" Y1="0" Y2="1" Stretch="Fill" Stroke="{DynamicResource ForegroundLightBrush}" StrokeThickness="1" SnapsToDevicePixels="True" Margin="0, 0, 0, 11"/>
+				<XivToolsWpf:IconBlock
+					Grid.Row="1"
+					Margin="22,0,0,0"
+					FontSize="10"
+					Icon="Link" />
+			</ToggleButton>
 
-				<Line Grid.Row="0" X1="0" X2="1" Stretch="Fill" Stroke="{DynamicResource ForegroundLightBrush}" StrokeThickness="1" SnapsToDevicePixels="True" Margin="0, 11, 0, 0" VerticalAlignment="Top"/>
-				<!--<Line X1="0" X2="1" Stretch="Fill" Stroke="{DynamicResource ForegroundLightBrush}" StrokeThickness="1" SnapsToDevicePixels="True" Margin="0, 0, 0, 0"/>-->
-				<Line Grid.Row="2" X1="0" X2="1" Stretch="Fill" Stroke="{DynamicResource ForegroundLightBrush}" StrokeThickness="1" SnapsToDevicePixels="True" Margin="0, 6, 0, 11" VerticalAlignment="Bottom"/>
-
-				<ToggleButton Grid.RowSpan="3" Style="{StaticResource TransparentIconToggleButton}" Opacity="0.01" Margin="-2, 0, -2, 0" IsChecked="{Binding Linked}">
-					<ToggleButton.ToolTip>
-						<TextBlock Text="[Common_LinkVector" />
-					</ToggleButton.ToolTip>
-
-					<fa:IconBlock Grid.Row="1" Icon="Link" FontSize="10"/>
-				</ToggleButton>
-
-			</Grid>
-
-			<Label Grid.Column="0" Grid.Row="0" Content="X:" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundLightBrush}" Width="20" FontSize="10"/>
-			<XivToolsWpf:NumberBox x:Name="ExpandedX" Grid.Column="2" Grid.Row="0" Value="{Binding X, Mode=TwoWay}" TickFrequency="{Binding TickFrequency}" Minimum="{Binding Minimum}" Maximum="{Binding Maximum}" Slider="{Binding Sliders}" Buttons="True" Wrap="{Binding Wrap}" UncapTextInput="{Binding UncapTextInput}" Margin="0, 0, 0, 2"/>
-			<Label Grid.Column="0" Grid.Row="1" Content="Y:" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundLightBrush}" Width="20" FontSize="10"/>
-			<XivToolsWpf:NumberBox Grid.Column="2" Grid.Row="1"  Value="{Binding Y, Mode=TwoWay}" TickFrequency="{Binding TickFrequency}" Minimum="{Binding Minimum}" Maximum="{Binding Maximum}" Slider="{Binding Sliders}" Buttons="True" Wrap="{Binding Wrap}" UncapTextInput="{Binding UncapTextInput}" Margin="0, 0, 0, 2"/>
-			<Label Grid.Column="0" Grid.Row="2" Content="Z:" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundLightBrush}" Width="20" FontSize="10"/>
-			<XivToolsWpf:NumberBox  Grid.Column="2" Grid.Row="2" Value="{Binding Z, Mode=TwoWay}" TickFrequency="{Binding TickFrequency}" Minimum="{Binding Minimum}" Maximum="{Binding Maximum}" Slider="{Binding Sliders}" Buttons="True" Wrap="{Binding Wrap}" UncapTextInput="{Binding UncapTextInput}" Margin="0, 0, 0, 2"/>
+			<Label
+				Grid.Row="0"
+				Grid.Column="0"
+				Width="20"
+				HorizontalContentAlignment="Left"
+				VerticalContentAlignment="Center"
+				Content="X:"
+				FontSize="10"
+				Foreground="{StaticResource ForegroundLightBrush}"
+				IsHitTestVisible="False" />
+			<XivToolsWpf:NumberBox
+				x:Name="ExpandedX"
+				Grid.Row="0"
+				Grid.Column="2"
+				Margin="1,0,0,1"
+				Buttons="True"
+				CornerRadius="0,6,0,0"
+				Maximum="{Binding Maximum}"
+				Minimum="{Binding Minimum}"
+				Slider="{Binding Sliders}"
+				TickFrequency="{Binding TickFrequency}"
+				UncapTextInput="{Binding UncapTextInput}"
+				Wrap="{Binding Wrap}"
+				Value="{Binding X, Mode=TwoWay}" />
+			<Label
+				Grid.Row="1"
+				Grid.Column="0"
+				Width="20"
+				HorizontalContentAlignment="Left"
+				VerticalContentAlignment="Center"
+				Content="Y:"
+				FontSize="10"
+				Foreground="{StaticResource ForegroundLightBrush}"
+				IsHitTestVisible="False" />
+			<XivToolsWpf:NumberBox
+				Grid.Row="1"
+				Grid.Column="2"
+				Margin="1,1,0,1"
+				Buttons="True"
+				CornerRadius="0,0,0,0"
+				Maximum="{Binding Maximum}"
+				Minimum="{Binding Minimum}"
+				Slider="{Binding Sliders}"
+				TickFrequency="{Binding TickFrequency}"
+				UncapTextInput="{Binding UncapTextInput}"
+				Wrap="{Binding Wrap}"
+				Value="{Binding Y, Mode=TwoWay}" />
+			<Label
+				Grid.Row="2"
+				Grid.Column="0"
+				Width="20"
+				HorizontalContentAlignment="Left"
+				VerticalContentAlignment="Center"
+				Content="Z:"
+				FontSize="10"
+				Foreground="{StaticResource ForegroundLightBrush}"
+				IsHitTestVisible="False" />
+			<XivToolsWpf:NumberBox
+				Grid.Row="2"
+				Grid.Column="2"
+				Margin="1,1,0,0"
+				Buttons="True"
+				CornerRadius="0,0,6,0"
+				Maximum="{Binding Maximum}"
+				Minimum="{Binding Minimum}"
+				Slider="{Binding Sliders}"
+				TickFrequency="{Binding TickFrequency}"
+				UncapTextInput="{Binding UncapTextInput}"
+				Wrap="{Binding Wrap}"
+				Value="{Binding Z, Mode=TwoWay}" />
 		</Grid>
 	</Grid>
 </UserControl>

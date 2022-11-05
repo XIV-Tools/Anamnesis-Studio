@@ -61,7 +61,7 @@
 			</GroupBox.Header>
 			<controls:VectorEditor
 				CanLink="{Binding Value.CanLinkScale}"
-				Expanded="False"
+				Expanded="True"
 				Linked="{Binding Value.ScaleLinked}"
 				Maximum="10"
 				Minimum="-10"

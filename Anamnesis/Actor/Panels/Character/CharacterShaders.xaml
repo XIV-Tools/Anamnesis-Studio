@@ -19,17 +19,7 @@
 					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
 
-				<GroupBox
-					Grid.Row="0"
-					Visibility="{Binding Actor.ModelObject, Converter={StaticResource NotNullToVisibilityConverter}}">
-					<GroupBox.Header>
-						<XivToolsWpf:Header
-							Icon="GraduationCap"
-							Text="[Character_Model_Header]" />
-					</GroupBox.Header>
-
-					<views:CharacterModelEditor DataContext="{Binding Actor}" />
-				</GroupBox>
+	
 
 				<GroupBox
 					Grid.Row="1"
