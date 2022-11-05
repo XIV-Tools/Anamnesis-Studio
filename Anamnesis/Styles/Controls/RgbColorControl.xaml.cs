@@ -4,40 +4,108 @@
 namespace Anamnesis.Styles.Controls;
 
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using Anamnesis.Memory;
-using Anamnesis.Services;
-using Anamnesis.Styles.Drawers;
+using System.Windows.Media;
 using PropertyChanged;
 using XivToolsWpf.DependencyProperties;
-using CmColor = Anamnesis.Memory.Color;
+
+using Color = Anamnesis.Memory.Color;
 using WpfColor = System.Windows.Media.Color;
 
-/// <summary>
-/// Interaction logic for ColorControl.xaml.
-/// </summary>
 [AddINotifyPropertyChangedInterface]
-public partial class RgbColorControl : UserControl
+public partial class RgbColorControl : UserControl, INotifyPropertyChanged
 {
-	public static readonly IBind<CmColor?> ValueDp = Binder.Register<CmColor?, RgbColorControl>(nameof(Value), OnValueChanged);
+	public static readonly IBind<Color?> ValueDp = Binder.Register<Color?, RgbColorControl>(nameof(Value), OnValueChanged);
+
+	private static readonly ColorConverter ColorConverter = new();
 
 	public RgbColorControl()
 	{
 		this.InitializeComponent();
 		this.ContentArea.DataContext = this;
-		this.UpdatePreview();
 	}
 
-	public CmColor? Value
+	public event PropertyChangedEventHandler? PropertyChanged;
+
+	public Color? Value
 	{
 		get => ValueDp.Get(this);
 		set => ValueDp.Set(this, value);
 	}
 
-	private static void OnValueChanged(RgbColorControl sender, CmColor? value)
+	public WpfColor? WpfColor
 	{
-		sender.UpdatePreview();
+		get
+		{
+			WpfColor c = default;
+
+			if (this.Value != null)
+			{
+				Color color = (Color)this.Value;
+				c.R = (byte)(Clamp(color.R) * 255);
+				c.G = (byte)(Clamp(color.G) * 255);
+				c.B = (byte)(Clamp(color.B) * 255);
+				c.A = 255;
+			}
+			else
+			{
+				c.A = 0;
+			}
+
+			return c;
+		}
+	}
+
+	public float R
+	{
+		get => this.Value?.R ?? 0;
+		set
+		{
+			if (this.Value == null)
+				return;
+
+			Color c = (Color)this.Value;
+			c.R = value;
+			this.Value = c;
+		}
+	}
+
+	public float G
+	{
+		get => this.Value?.G ?? 0;
+		set
+		{
+			if (this.Value == null)
+				return;
+
+			Color c = (Color)this.Value;
+			c.G = value;
+			this.Value = c;
+		}
+	}
+
+	public float B
+	{
+		get => this.Value?.B ?? 0;
+		set
+		{
+			if (this.Value == null)
+				return;
+
+			Color c = (Color)this.Value;
+			c.B = value;
+			this.Value = c;
+		}
+	}
+
+	private static void OnValueChanged(RgbColorControl sender, Color? value)
+	{
+		sender.PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(nameof(WpfColor)));
+		sender.PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(nameof(R)));
+		sender.PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(nameof(G)));
+		sender.PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(nameof(B)));
 	}
 
 	private static double Clamp(double v)
@@ -49,39 +117,5 @@ public partial class RgbColorControl : UserControl
 
 	private void OnClick(object sender, RoutedEventArgs e)
 	{
-		ColorSelectorDrawer selector = new ColorSelectorDrawer();
-		selector.EnableAlpha = false;
-
-		if (this.Value == null)
-			this.Value = new CmColor(1, 1, 1);
-
-		selector.Value = new Color4((CmColor)this.Value);
-
-		selector.ValueChanged += (v) =>
-		{
-			this.Value = v.Color;
-		};
-
-		throw new NotImplementedException();
-	}
-
-	private void UpdatePreview()
-	{
-		WpfColor c = default;
-
-		if (this.Value != null)
-		{
-			CmColor color = (CmColor)this.Value;
-			c.R = (byte)(Clamp(color.R) * 255);
-			c.G = (byte)(Clamp(color.G) * 255);
-			c.B = (byte)(Clamp(color.B) * 255);
-			c.A = 255;
-		}
-		else
-		{
-			c.A = 0;
-		}
-
-		this.PreviewColor.Color = c;
 	}
 }

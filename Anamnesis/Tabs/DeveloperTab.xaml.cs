@@ -85,7 +85,7 @@ public partial class DeveloperTab : UserControl
 
 			sb.AppendLine("Base: " + memory.Address.ToString("X"));
 			sb.AppendLine("Model: " + (memory.ModelObject?.Address.ToString("X") ?? "0"));
-			sb.AppendLine("Extended Appearance: " + (memory.ModelObject?.ExtendedAppearance?.Address.ToString("X") ?? "0"));
+			sb.AppendLine("Shader Parameters: " + (memory.ModelObject?.ShaderParameters?.Address.ToString("X") ?? "0"));
 			sb.AppendLine("Skeleton: " + (memory.ModelObject?.Skeleton?.Address.ToString("X") ?? "0"));
 			sb.AppendLine("Main Hand Model: " + (memory.MainHand?.Model?.Address.ToString("X") ?? "0"));
 			sb.AppendLine("Off Hand Model: " + (memory.OffHand?.Model?.Address.ToString("X") ?? "0"));

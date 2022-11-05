@@ -45,7 +45,7 @@ public class ActorModelMemory : MemoryBase
 	[Bind(0x050)] public TransformMemory? Transform { get; set; }
 	[Bind(0x0A0, BindFlags.Pointer | BindFlags.OnlyInGPose)] public SkeletonMemory? Skeleton { get; set; }
 	[Bind(0x148, BindFlags.Pointer)] public BustMemory? Bust { get; set; }
-	[Bind(0x248, 0x040, 0x020, BindFlags.Pointer)] public ExtendedAppearanceMemory? ExtendedAppearance { get; set; }
+	[Bind(0x248, 0x040, 0x020, BindFlags.Pointer)] public ShaderParametersMemory? ShaderParameters { get; set; }
 	[Bind(0x260)] public Color Tint { get; set; }
 	[Bind(0x274)] public float Height { get; set; }
 	[Bind(0x2B0)] public float Wetness { get; set; }
@@ -83,15 +83,15 @@ public class ActorModelMemory : MemoryBase
 
 	protected override bool CanRead(BindInfo bind)
 	{
-		if (bind.Name == nameof(ActorModelMemory.ExtendedAppearance))
+		if (bind.Name == nameof(ActorModelMemory.ShaderParameters))
 		{
-			// No extended appearance for anything that isn't a player!
+			// No shader parameters for anything that isn't a player!
 			if (!this.IsHuman)
 			{
-				if (this.ExtendedAppearance != null)
+				if (this.ShaderParameters != null)
 				{
-					this.ExtendedAppearance.Dispose();
-					this.ExtendedAppearance = null;
+					this.ShaderParameters.Dispose();
+					this.ShaderParameters = null;
 				}
 
 				return false;

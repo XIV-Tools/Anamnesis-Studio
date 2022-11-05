@@ -43,7 +43,7 @@
 			</TabItem>
 
 			<TabItem Header="[Character_Tab_Shaders]">
-				<character:CharacterShaders />
+				<character:CharacterShaders Actor="{Binding Actor}" />
 			</TabItem>
 			<TabItem Header="[Character_Tab_Equipment]">
 				<character:CharacterEquipment />
