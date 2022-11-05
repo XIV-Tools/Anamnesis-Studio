@@ -50,7 +50,9 @@
 			</TabItem>
 
 			<TabItem Header="Transform">
-				<controls1:TransformEditor VerticalAlignment="Top" />
+				<controls1:TransformEditor
+					VerticalAlignment="Top"
+					Value="{Binding Actor.ModelObject.Transform}" />
 			</TabItem>
 
 		</TabControl>
