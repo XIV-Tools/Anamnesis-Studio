@@ -25,27 +25,12 @@ public partial class NavigationPanel : PanelBase
 		this.IsExpanded = false;
 	}
 
-	private async void OnIconMouseDown(object sender, MouseButtonEventArgs e)
+	private void OnIconMouseDown(object sender, MouseButtonEventArgs e)
 	{
 		if (e.LeftButton == MouseButtonState.Pressed)
 		{
 			this.DragMove();
 		}
-		else if (e.RightButton == MouseButtonState.Pressed)
-		{
-			bool? result = await GenericDialogPanel.ShowLocalizedAsync("Pose_WarningQuit", "Common_Confirm", MessageBoxButton.YesNo);
-			if (result == true)
-			{
-				this.Close();
-
-				Application.Current.Dispatcher.Invoke(() =>
-				{
-					Application.Current.Shutdown();
-				});
-			}
-		}
-
-		this.PanelsData.SavePosition(this.Window);
 	}
 
 	private void OnSaveSceneClicked(object sender, RoutedEventArgs e)
@@ -70,5 +55,19 @@ public partial class NavigationPanel : PanelBase
 
 	private void OnExpandClicked(object sender, RoutedEventArgs e)
 	{
+	}
+
+	private async void OnQuitClicked(object sender, RoutedEventArgs e)
+	{
+		bool? result = await GenericDialogPanel.ShowLocalizedAsync("WarningQuit", "Common_Confirm", MessageBoxButton.YesNo);
+		if (result == true)
+		{
+			this.Close();
+
+			Application.Current.Dispatcher.Invoke(() =>
+			{
+				Application.Current.Shutdown();
+			});
+		}
 	}
 }

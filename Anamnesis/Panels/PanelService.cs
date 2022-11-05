@@ -111,7 +111,7 @@ public class PanelService : ServiceBase<PanelService>
 
 		await panel.Dispatcher.MainThread();
 		FloatingWindow panelHost = panelHost = this.CreateWindow();
-		panelHost.AddPanel(panel);
+		panelHost.SetPanel(panel);
 		panel.SetContext(panelHost, context);
 		panelHost.Show();
 
@@ -129,17 +129,6 @@ public class PanelService : ServiceBase<PanelService>
 		{
 			this.ClosedPanelCache.Add(panelType, panel);
 		}
-	}
-
-	public PanelsData GetData(FloatingWindow panelHost)
-	{
-		if (!SettingsService.Current.Panels.TryGetValue(panelHost.Id, out PanelsData? data) || data == null)
-		{
-			data = new();
-			SettingsService.Current.Panels.Add(panelHost.Id, data);
-		}
-
-		return data;
 	}
 
 	public override Task Start()
@@ -210,16 +199,14 @@ public class PanelService : ServiceBase<PanelService>
 	}
 
 	[Serializable]
-	public class PanelsData
+	public class PanelSettings
 	{
-		public PanelsData()
+		public PanelSettings()
 		{
 		}
 
-		public List<string> PanelIds { get; init; } = new();
 		public Rect Position { get; set; } = default;
 		public SizeToContent SizeToContent { get; set; } = SizeToContent.WidthAndHeight;
-		public bool IsOpen { get; set; } = false;
 
 		public Rect? GetLastPosition()
 		{
@@ -242,16 +229,16 @@ public class PanelService : ServiceBase<PanelService>
 			return pos;
 		}
 
-		public void SavePosition(FloatingWindow panel)
+		public void SavePosition(FloatingWindow window)
 		{
 			Rect pos = new();
-			pos.Width = panel.Rect.Width;
-			pos.Height = panel.Rect.Height;
-			pos.X = (panel.Rect.X - panel.ScreenRect.Left) / panel.ScreenRect.Width;
-			pos.Y = (panel.Rect.Y - panel.ScreenRect.Top) / panel.ScreenRect.Height;
+			pos.Width = window.Rect.Width;
+			pos.Height = window.Rect.Height;
+			pos.X = (window.Rect.X - window.ScreenRect.Left) / window.ScreenRect.Width;
+			pos.Y = (window.Rect.Y - window.ScreenRect.Top) / window.ScreenRect.Height;
 
 			this.Position = pos;
-			this.SizeToContent = panel.SizeToContent;
+			this.SizeToContent = window.SizeToContent;
 
 			this.Save();
 		}

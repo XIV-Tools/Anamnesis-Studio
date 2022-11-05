@@ -120,21 +120,42 @@
 				Visibility="{Binding Services.BootComplete, Converter={StaticResource !B2V}}"
 				Value="{Binding Services.BootProgress, Mode=OneWay}" />
 
-			<StackPanel
+			<Grid
 				Grid.Row="0"
-				Margin="36,6,6,6"
-				Orientation="Horizontal">
+				Margin="36,0,0,0">
 
-				<TextBlock Text="{Binding Services.Scene.CurrentSceneName}" />
-				<XivToolsWpf:IconBlock
-					Margin="6,3,0,0"
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+
+				<StackPanel
 					VerticalAlignment="Center"
-					ana:Behaviours.Tooltip="Scene_Unsaved"
-					FontSize="6"
-					Icon="ExclamationTriangle"
-					Visibility="{Binding Services.Scene.UnsavedChanges, Converter={StaticResource B2V}}" />
+					Orientation="Horizontal">
 
-			</StackPanel>
+					<TextBlock Text="{Binding Services.Scene.CurrentSceneName}" />
+					<XivToolsWpf:IconBlock
+						Margin="6,3,0,0"
+						VerticalAlignment="Center"
+						ana:Behaviours.Tooltip="Scene_Unsaved"
+						FontSize="6"
+						Icon="ExclamationTriangle"
+						Visibility="{Binding Services.Scene.UnsavedChanges, Converter={StaticResource B2V}}" />
+
+				</StackPanel>
+
+				<Button
+					Grid.Column="1"
+					Width="22"
+					Height="22"
+					Background="Transparent"
+					Click="OnQuitClicked"
+					Style="{StaticResource TransparentIconButton}">
+					<XivToolsWpf:IconBlock
+						Foreground="{DynamicResource ForegroundLightBrush}"
+						Icon="Times" />
+				</Button>
+			</Grid>
 
 			<StackPanel
 				Grid.Row="1"
@@ -350,6 +371,7 @@
 
 			<Rectangle
 				Grid.Row="0"
+				Margin="0,0,24,0"
 				Fill="Transparent"
 				MouseDown="OnIconMouseDown" />
 		</Grid>

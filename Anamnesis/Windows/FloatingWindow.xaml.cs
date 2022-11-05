@@ -13,16 +13,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media;
 using XivToolsWpf;
-using XivToolsWpf.Windows;
-using MediaColor = System.Windows.Media.Color;
 
 [AddINotifyPropertyChangedInterface]
 public partial class FloatingWindow : Window
@@ -30,8 +26,6 @@ public partial class FloatingWindow : Window
 	protected readonly WindowInteropHelper windowInteropHelper;
 
 	private const double MaxSizeScreenPadding = 25;
-
-	private readonly List<PanelBase> panels = new();
 
 	private bool canResize = true;
 
@@ -48,9 +42,8 @@ public partial class FloatingWindow : Window
 	public ContentPresenter PanelGroupArea => this.ContentPresenter;
 	public bool ShowBackground { get; set; } = true;
 	public bool IsOpen { get; private set; }
-	public PanelService.PanelsData PanelsData { get; private set; } = new();
 
-	public IEnumerable<PanelBase> Panels => this.panels.AsReadOnly();
+	public PanelBase? Panel { get; private set; }
 
 	public new bool Topmost
 	{
@@ -87,19 +80,7 @@ public partial class FloatingWindow : Window
 
 	public virtual Rect Rect => new Rect(this.Left, this.Top, this.Width, this.Height);
 
-	public string Id
-	{
-		get
-		{
-			StringBuilder sb = new();
-			foreach (PanelBase panel in this.panels)
-			{
-				sb.Append(panel.Id);
-			}
-
-			return sb.ToString();
-		}
-	}
+	public string Id => this.Panel?.Id ?? string.Empty;
 
 	public virtual Rect ScreenRect
 	{
@@ -118,7 +99,10 @@ public partial class FloatingWindow : Window
 	{
 		Rect screen = this.ScreenRect;
 
-		Rect? desiredPosition = this.PanelsData.GetLastPosition();
+		if (this.Panel == null)
+			throw new Exception("No panel in window");
+
+		Rect? desiredPosition = this.Panel.Settings.GetLastPosition();
 
 		// Center screen
 		if (desiredPosition == null)
@@ -136,13 +120,11 @@ public partial class FloatingWindow : Window
 			this.MinWidth = 64;
 			this.MinHeight = 64;
 
-			foreach (PanelBase panel in this.Panels)
-			{
-				this.MinWidth = Math.Max(this.MinWidth, panel.MinWidth + 20);
-				this.MinHeight = Math.Max(this.MinHeight, panel.MinHeight);
-				this.MaxHeight = Math.Min(this.MaxHeight, panel.MaxHeight);
-				this.MaxWidth = Math.Min(this.MaxWidth, panel.MaxWidth);
-			}
+			// foreach (PanelBase panel in this.Panels)
+			this.MinWidth = Math.Max(this.MinWidth, this.Panel.MinWidth + 20);
+			this.MinHeight = Math.Max(this.MinHeight, this.Panel.MinHeight);
+			this.MaxHeight = Math.Min(this.MaxHeight, this.Panel.MaxHeight);
+			this.MaxWidth = Math.Min(this.MaxWidth, this.Panel.MaxWidth);
 
 			this.MinWidth = Math.Clamp(this.MinWidth, 0, screen.Width);
 			this.MinHeight = Math.Clamp(this.MinHeight, 0, screen.Height);
@@ -192,49 +174,22 @@ public partial class FloatingWindow : Window
 		return base.Activate();
 	}
 
-	public void AddPanel(PanelBase panel)
+	public void SetPanel(PanelBase panel)
 	{
-		// TODO: panel docking.
 		this.PanelGroupArea.Content = panel as PanelBase;
 
-		this.panels.Add(panel);
-		this.PanelsData = App.Services.Panels.GetData(this);
-		this.PanelsData.PanelIds.Add(panel.Id);
-		this.PanelsData.IsOpen = true;
-		this.PanelsData.Save();
+		this.Panel = panel;
 
 		panel.PropertyChanged += this.OnPanelPropertyChanged;
 		this.OnPanelPropertyChanged(this, null);
 	}
 
-	public void RemovePanel(PanelBase panel)
-	{
-		panel.PropertyChanged -= this.OnPanelPropertyChanged;
-		this.panels.Remove(panel);
-		this.PanelsData = App.Services.Panels.GetData(this);
-		this.PanelsData.PanelIds.Remove(panel.Id);
-		this.PanelsData.IsOpen = true;
-		this.PanelsData.Save();
-
-		if (this.IsOpen && this.panels.Count <= 0)
-		{
-			this.Close();
-		}
-	}
-
 	public new void Close()
 	{
-		this.PanelsData.IsOpen = false;
-		this.PanelsData.SavePosition(this);
-		this.PanelsData.Save();
+		this.Panel?.Close();
 
 		this.BeginStoryboard("CloseStoryboard");
 		this.IsOpen = false;
-
-		foreach (PanelBase panel in this.Panels.ToArray())
-		{
-			panel.Close();
-		}
 	}
 
 	protected virtual void OnWindowLoaded()
@@ -330,32 +285,20 @@ public partial class FloatingWindow : Window
 
 	private async void OnPanelPropertyChanged(object? sender, PropertyChangedEventArgs? e = null)
 	{
-		if (this.panels.Count <= 0)
-			throw new Exception("Panel host reciving panel events without any panel children");
-
 		await this.Dispatcher.MainThread();
 
-		if (this.panels.Count == 1)
-		{
-			this.ShowBackground = this.panels[0].ShowBackground;
-			this.CanResize = this.panels[0].CanResize;
-			this.CanScroll = this.panels[0].CanScroll;
-			this.TitleIcon.Icon = this.panels[0].Icon;
+		if (this.Panel == null)
+			return;
 
-			if (!string.IsNullOrEmpty(this.panels[0].Title))
-				this.Title = this.panels[0].Title;
+		this.ShowBackground = this.Panel.ShowBackground;
+		this.CanResize = this.Panel.CanResize;
+		this.CanScroll = this.Panel.CanScroll;
+		this.TitleIcon.Icon = this.Panel.Icon;
 
-			this.TitleText.Text = this.Title;
-		}
-		else
-		{
-			this.ShowBackground = true;
-			this.CanResize = true;
-			this.CanScroll = true;
-			this.TitleIcon.Icon = IconChar.None;
-			this.Title = string.Empty;
-			this.TitleText.Text = string.Empty;
-		}
+		if (!string.IsNullOrEmpty(this.Panel.Title))
+			this.Title = this.Panel.Title;
+
+		this.TitleText.Text = this.Title;
 	}
 
 	// Swallow all keyboard events, as we have the global keyboard hook handling
@@ -380,17 +323,16 @@ public partial class FloatingWindow : Window
 
 	private void OnActivated(object sender, EventArgs e)
 	{
-		foreach (PanelBase panel in this.panels)
-		{
-			panel.OnActivated();
-		}
+		this.Panel?.OnActivated();
 	}
 
 	private void OnDeactivated(object sender, EventArgs e)
 	{
-		foreach (PanelBase panel in this.panels)
-		{
-			panel.OnDeactivated();
-		}
+		this.Panel?.OnDeactivated();
+	}
+
+	private void OnLocationChanged(object sender, EventArgs e)
+	{
+		this.Panel?.Settings?.SavePosition(this);
 	}
 }

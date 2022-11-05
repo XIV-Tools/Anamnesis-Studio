@@ -18,6 +18,7 @@ using System.Windows.Media;
 using XivToolsWpf;
 using XivToolsWpf.DependencyProperties;
 using XivToolsWpf.Localization;
+using static Anamnesis.Panels.PanelService;
 
 public abstract class PanelBase : UserControl, INotifyPropertyChanged
 {
@@ -30,11 +31,22 @@ public abstract class PanelBase : UserControl, INotifyPropertyChanged
 
 		this.GetType().GetMethod("InitializeComponent")?.Invoke(this, null);
 		this.DataContext = this;
+
+		if (!SettingsService.Current.Panels.TryGetValue(this.Id, out PanelSettings? settings) || settings == null)
+		{
+			this.Settings = new();
+			SettingsService.Current.Panels.Add(this.Id, this.Settings);
+		}
+		else
+		{
+			this.Settings = settings;
+		}
 	}
 
 	public event PropertyChangedEventHandler? PropertyChanged;
 
 	public ServiceManager Services => App.Services;
+	public PanelService.PanelSettings Settings { get; private set; }
 	public bool IsOpen { get; private set; } = true;
 	public virtual string Id => this.GetType().ToString();
 	public IconChar Icon { get; set; }
@@ -67,7 +79,6 @@ public abstract class PanelBase : UserControl, INotifyPropertyChanged
 	}
 
 	public object? PanelContext { get; private set; }
-	public PanelService.PanelsData PanelsData => this.Window.PanelsData;
 
 	protected ILogger Log => Serilog.Log.ForContext(this.GetType());
 
@@ -81,10 +92,9 @@ public abstract class PanelBase : UserControl, INotifyPropertyChanged
 
 	public void Close()
 	{
-		this.window?.RemovePanel(this);
-
 		this.IsOpen = false;
 		this.Services.Panels.OnPanelClosed(this);
+		this.Settings.Save();
 	}
 
 	public async Task WhileOpen()

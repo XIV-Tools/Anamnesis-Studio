@@ -46,5 +46,5 @@ public class Settings : INotifyPropertyChanged
 	public DateTimeOffset LastUpdateCheck { get; set; } = DateTimeOffset.MinValue;
 	public string? GamePath { get; set; }
 	public Dictionary<string, bool> PosingBoneLinks { get; set; } = new();
-	public Dictionary<string, PanelService.PanelsData> Panels { get; set; } = new();
+	public Dictionary<string, PanelService.PanelSettings> Panels { get; set; } = new();
 }

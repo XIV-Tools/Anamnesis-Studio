@@ -16,6 +16,7 @@
 	Background="Transparent"
 	Deactivated="OnDeactivated"
 	Loaded="OnWindowLoaded"
+	LocationChanged="OnLocationChanged"
 	MouseEnter="OnMouseEnter"
 	MouseLeave="OnMouseLeave"
 	Opacity="0"
