@@ -15,7 +15,6 @@ using Anamnesis.Actor.Panels;
 using Anamnesis.Libraries.Panels;
 using XivToolsWpf;
 using XivToolsWpf.Extensions;
-using System.Collections.Concurrent;
 
 public class PanelService : ServiceBase<PanelService>
 {
@@ -41,7 +40,6 @@ public class PanelService : ServiceBase<PanelService>
 	public List<PanelBase> OpenPanels { get; init; } = new();
 	public List<PanelBase> ActivePanels { get; init; } = new();
 	private Dictionary<Type, PanelBase?> ClosedPanelCache { get; init; } = new();
-	private ConcurrentQueue<PanelBase> ThreadedPanelCreationQueue { get; init; } = new();
 
 	public async Task<PanelBase> Show(string panelId, object? context = null, PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
 	{
@@ -92,43 +90,7 @@ public class PanelService : ServiceBase<PanelService>
 			}
 		}
 
-		// Create a new panel;
-		if (threadMode == PanelThreadingMode.CustomThread)
-		{
-			Thread panelMainThread = new Thread(this.PanelMainThread);
-			panelMainThread.SetApartmentState(ApartmentState.STA);
-			panelMainThread.Start(panelType);
-		}
-		else
-		{
-			PanelBase? newPanel = Activator.CreateInstance(panelType) as PanelBase;
-
-			if (newPanel == null)
-			{
-				throw new Exception($"Failed to create instance of panel: {panelType}");
-			}
-		}
-
-		PanelBase? panel = null;
-		while (panel == null)
-		{
-			if (this.ThreadedPanelCreationQueue.TryPeek(out panel) && panel.GetType() == panelType)
-			{
-				this.ThreadedPanelCreationQueue.TryDequeue(out panel);
-				if (panel == null)
-					continue;
-
-				if (panel.GetType() != panelType)
-				{
-					Log.Error("Panel creation queue error: The retrieved panel was the wrong type");
-					this.ThreadedPanelCreationQueue.Enqueue(panel);
-				}
-			}
-
-			await Task.Delay(10);
-		}
-
-		return panel;
+		return await new PanelThread().Start(panelType, threadMode);
 	}
 
 	public async Task<PanelBase> Show(Type panelType, object? context = null, PanelThreadingMode threadMode = PanelThreadingMode.CustomThread)
@@ -224,72 +186,27 @@ public class PanelService : ServiceBase<PanelService>
 		////return new FloatingWindow();
 	}
 
-	private void PanelMainThread(object? panelTypeObj)
-	{
-		if (panelTypeObj is not Type panelType)
-			return;
-
-		PanelBase? newPanel = Activator.CreateInstance(panelType) as PanelBase;
-
-		if (newPanel == null)
-			throw new Exception($"Failed to create instance of panel: {panelType}");
-
-		this.ThreadedPanelCreationQueue.Enqueue(newPanel);
-
-		Log.Information($"Panel: {panelType} has started");
-
-		Dispatcher.Run();
-
-		Log.Information($"Panel: {panelType} has shutdown");
-	}
-
 	private async Task CompleteStart()
 	{
 		await Dispatch.NonUiThread();
 
-		// Open last used panels
-		/*foreach (PanelsData data in SettingsService.Current.Panels.Values)
-		{
-			if (data.IsOpen)
-			{
-				foreach (string panelId in data.PanelIds.ToArray())
-				{
-					if (panelId == "Anamnesis.Panels.GenericDialogPanel" ||
-						panelId == "Anamnesis.Panels.ExceptionPanel" ||
-						panelId == "Anamnesis.Navigation.NavigationPanel" ||
-						panelId == "Anamnesis.Actor.Panels.BonesPanel" ||
-						panelId == "Anamnesis.Actor.Panels.TransformPanel")
-						continue;
-
-					try
-					{
-						await this.Show(panelId);
-					}
-					catch (Exception ex)
-					{
-						Log.Warning(ex, $"Failed to reopen panel: {panelId}");
-					}
-				}
-			}
-		}*/
-
-		// Preload panels
-		/*try
+		try
 		{
 			List<Task> tasks = new();
 
 			foreach (Type panelType in PreLoadPanels)
 			{
-				Log.Information($"Spwning panel: {panelType}");
-				tasks.Add(Spawn(panelType));
+				Log.Information($"Spawning panel: {panelType}");
+				PanelBase panel = await this.Spawn(panelType);
+				this.ClosedPanelCache.Add(panelType, panel);
 			}
 
 			await Task.WhenAll(tasks);
 		}
 		catch (Exception ex)
 		{
-			Log.Error(ex, "Failed to spawn panels");
-		}*/
+			Log.Error(ex, "Failed to preload panels");
+		}
 	}
 
 	[Serializable]
@@ -342,6 +259,54 @@ public class PanelService : ServiceBase<PanelService>
 		public void Save()
 		{
 			SettingsService.Save();
+		}
+	}
+
+	private class PanelThread
+	{
+		private PanelBase? panel;
+		private Type? panelType;
+
+		public async Task<PanelBase> Start(Type panelType, PanelThreadingMode threadMode)
+		{
+			this.panelType = panelType;
+
+			// Create a new panel;
+			if (threadMode == PanelThreadingMode.CustomThread)
+			{
+				Thread panelMainThread = new Thread(this.PanelMainThread);
+				panelMainThread.SetApartmentState(ApartmentState.STA);
+				panelMainThread.Start(this);
+			}
+			else
+			{
+				this.panel = Activator.CreateInstance(this.panelType) as PanelBase;
+			}
+
+			// Wait for the panel to load for up to 1 second.
+			int timeOut = 1000;
+			while (this.panel == null && timeOut > 0)
+			{
+				await Task.Delay(10);
+				timeOut -= 10;
+			}
+
+			if (this.panel == null)
+				throw new Exception($"Failed to start panel {this.panelType}");
+
+			return this.panel;
+		}
+
+		private void PanelMainThread(object? param)
+		{
+			if (this.panelType == null)
+				throw new Exception("No panel type in panel thread");
+
+			this.panel = Activator.CreateInstance(this.panelType) as PanelBase;
+
+			Log.Information($"Panel: {this.panelType} has started");
+			Dispatcher.Run();
+			Log.Information($"Panel: {this.panelType} has shutdown");
 		}
 	}
 }
