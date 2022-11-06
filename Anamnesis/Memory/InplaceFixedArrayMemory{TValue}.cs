@@ -113,9 +113,9 @@ public abstract class InplaceFixedArrayMemory<TValue> : MemoryBase, IEnumerable<
 		}
 	}
 
-	protected override void OnSelfPropertyChanged(object? sender, PropertyChangedEventArgs e)
+	protected override void OnPropertyChanged(string propertyName)
 	{
-		base.OnSelfPropertyChanged(sender, e);
+		base.OnPropertyChanged(propertyName);
 
 		if (!this.IsReading)
 			return;

@@ -9,15 +9,15 @@ using XivToolsWpf.Meida3D;
 
 public class CameraMemory : MemoryBase
 {
-	[Bind(0x114)] public float Zoom { get; set; }
-	[Bind(0x118)] public float MinZoom { get; set; }
-	[Bind(0x11C)] public float MaxZoom { get; set; }
-	[Bind(0x12C)] public float FieldOfView { get; set; }
-	[Bind(0x130)] public Vector2D Angle { get; set; }
-	[Bind(0x14C)] public float YMin { get; set; }
-	[Bind(0x148)] public float YMax { get; set; }
-	[Bind(0x150)] public Vector2D Pan { get; set; }
-	[Bind(0x160)] public float Rotation { get; set; }
+	[Bind(0x114)] public float Zoom { get => this.GetValue<ushort>(); set => this.SetValue(value); }
+	[Bind(0x118)] public float MinZoom { get => this.GetValue<ushort>(); set => this.SetValue(value); }
+	[Bind(0x11C)] public float MaxZoom { get => this.GetValue<ushort>(); set => this.SetValue(value); }
+	[Bind(0x12C)] public float FieldOfView { get => this.GetValue<ushort>(); set => this.SetValue(value); }
+	[Bind(0x130)] public Vector2D Angle { get => this.GetValue<Vector2D>(); set => this.SetValue(value); }
+	[Bind(0x14C)] public float YMin { get => this.GetValue<ushort>(); set => this.SetValue(value); }
+	[Bind(0x148)] public float YMax { get => this.GetValue<ushort>(); set => this.SetValue(value); }
+	[Bind(0x150)] public Vector2D Pan { get => this.GetValue<Vector2D>(); set => this.SetValue(value); }
+	[Bind(0x160)] public float Rotation { get => this.GetValue<ushort>(); set => this.SetValue(value); }
 
 	[AlsoNotifyFor(nameof(CameraMemory.Angle), nameof(CameraMemory.Rotation))]
 	public System.Windows.Media.Media3D.Quaternion Rotation3d

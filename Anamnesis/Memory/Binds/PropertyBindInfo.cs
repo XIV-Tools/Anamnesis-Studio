@@ -32,6 +32,8 @@ public class PropertyBindInfo : BindInfo
 	public override Type Type => this.Property.PropertyType;
 	public override BindFlags Flags => this.Attribute.Flags;
 
+	public object? Value { get; set; }
+
 	public override IntPtr GetAddress()
 	{
 		if (this.offsets == null)

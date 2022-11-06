@@ -7,8 +7,8 @@ using Anamnesis.Actor.Posing;
 
 public class HkaPoseMemory : MemoryBase
 {
-	[Bind(0x000, BindFlags.Pointer)] public HkaSkeletonMemory? Skeleton { get; set; }
-	[Bind(0x010)] public TransformArrayMemory? Transforms { get; set; }
+	[Bind(0x000, BindFlags.Pointer)] public HkaSkeletonMemory? Skeleton { get => this.GetValue<HkaSkeletonMemory?>(); set => this.SetValue(value); }
+	[Bind(0x010)] public TransformArrayMemory? Transforms { get => this.GetValue<TransformArrayMemory?>(); set => this.SetValue(value); }
 
 	public BoneReference? FindBone(string name, SkeletonMemory skeleton, int partialSkeletonIndex, int poseIndex)
 	{

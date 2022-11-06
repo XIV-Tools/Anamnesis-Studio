@@ -6,13 +6,15 @@ namespace Anamnesis.Memory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Tracing;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Anamnesis.Services;
 using PropertyChanged;
 using Serilog;
 
 [AddINotifyPropertyChangedInterface]
-public abstract class MemoryBase : INotifyPropertyChanged, IDisposable
+public abstract partial class MemoryBase : INotifyPropertyChanged, IDisposable
 {
 	public IntPtr Address = IntPtr.Zero;
 
@@ -37,8 +39,6 @@ public abstract class MemoryBase : INotifyPropertyChanged, IDisposable
 
 			this.binds.Add(property.Name, new PropertyBindInfo(this, property, attribute));
 		}
-
-		this.PropertyChanged += this.OnSelfPropertyChanged;
 	}
 
 	public event PropertyChangedEventHandler? PropertyChanged;
@@ -125,6 +125,40 @@ public abstract class MemoryBase : INotifyPropertyChanged, IDisposable
 			throw new Exception("Attempt to get address of property that is not a bind");
 
 		return bind.GetAddress();
+	}
+
+	protected T GetValue<T>([CallerMemberName] string propertyName = "")
+	{
+		PropertyBindInfo? bind;
+		if (!this.binds.TryGetValue(propertyName, out bind))
+			throw new Exception("Attempt to freeze value that is not a bind");
+
+		if (bind.Value is T tVal)
+			return tVal;
+
+		T? newVal = default(T);
+
+		if (newVal == null)
+		{
+			// Not nullable
+			Type? innerType = Nullable.GetUnderlyingType(typeof(T));
+			if (innerType != null)
+			{
+				return Activator.CreateInstance<T>();
+			}
+		}
+
+		return newVal!;
+	}
+
+	protected void SetValue(object? value, [CallerMemberName] string propertyName = "")
+	{
+		PropertyBindInfo? bind;
+		if (!this.binds.TryGetValue(propertyName, out bind))
+			throw new Exception("Attempt to freeze value that is not a bind");
+
+		bind.Value = value;
+		this.OnPropertyChanged(propertyName);
 	}
 
 	protected bool IsFrozen(string propertyName)
@@ -223,23 +257,39 @@ public abstract class MemoryBase : INotifyPropertyChanged, IDisposable
 		}
 	}
 
-	protected virtual void OnSelfPropertyChanged(object? sender, PropertyChangedEventArgs e)
+	/*protected virtual void OnPropertyChanged(PropertyChangedEventArgs e, object? oldValue, object? newValue)
 	{
 		if (string.IsNullOrEmpty(e.PropertyName))
 			return;
 
+		throw new NotImplementedException();
+	}*/
+
+	protected virtual void OnPropertyChanged(string propertyName)
+	{
+		PropertyChangedEventArgs e = new PropertyChangedEventArgs(propertyName);
+
 		PropertyBindInfo? bind;
-		if (!this.binds.TryGetValue(e.PropertyName, out bind))
+		if (!this.binds.TryGetValue(propertyName, out bind))
+		{
+			this.PropertyChanged?.Invoke(this, e);
 			return;
+		}
 
 		// Dont process property changes if we are reading memory, since these will just be changes from memory
 		// and we only care about changes from anamnesis here.
 		if (bind.IsReading)
+		{
+			this.PropertyChanged?.Invoke(this, e);
 			return;
+		}
 
 		object? val = bind.Property.GetValue(this);
 		if (val == null || bind.Flags.HasFlag(BindFlags.Pointer))
+		{
+			this.PropertyChanged?.Invoke(this, e);
 			return;
+		}
 
 		if (bind.FreezeValue != null)
 			bind.FreezeValue = bind.Property.GetValue(this);
@@ -249,17 +299,17 @@ public abstract class MemoryBase : INotifyPropertyChanged, IDisposable
 			// If this bind couldn't be written right now, add it to the delayed bind list
 			// to attempt to write later.
 			this.delayedBinds.Add(bind);
+			this.PropertyChanged?.Invoke(this, e);
 			return;
 		}
 
 		object? oldVal = bind.LastValue;
-		object? newVal = bind.Property.GetValue(this);
 
 		// Don't kick off the binding updates unless the value actually changed.
-		if (oldVal == newVal)
+		if (oldVal == val)
 			return;
 
-		if (oldVal != null && oldVal.Equals(newVal))
+		if (oldVal != null && oldVal.Equals(val))
 			return;
 
 		lock (this)
@@ -274,9 +324,10 @@ public abstract class MemoryBase : INotifyPropertyChanged, IDisposable
 		}
 
 		bind.LastValue = val;
+		this.PropertyChanged?.Invoke(this, e);
 	}
 
-	protected virtual void RaisePropertyChanged(string propertyName)
+	protected virtual void RaisePropertyChangedSomeMethod2(string propertyName)
 	{
 		this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 	}

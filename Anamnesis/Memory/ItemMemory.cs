@@ -7,9 +7,9 @@ using Anamnesis.GameData;
 
 public class ItemMemory : MemoryBase, IEquipmentItemMemory
 {
-	[Bind(0x000, BindFlags.ActorRefresh)] public ushort Base { get; set; }
-	[Bind(0x002, BindFlags.ActorRefresh)] public byte Variant { get; set; }
-	[Bind(0x003, BindFlags.ActorRefresh)] public byte Dye { get; set; }
+	[Bind(0x000, BindFlags.ActorRefresh)] public ushort Base { get => this.GetValue<ushort>(); set => this.SetValue(value); }
+	[Bind(0x002, BindFlags.ActorRefresh)] public byte Variant { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x003, BindFlags.ActorRefresh)] public byte Dye { get => this.GetValue<byte>(); set => this.SetValue(value); }
 
 	// Items dont have a 'Set' but the UI wants to bind to something, so...
 	public ushort Set { get; set; } = 0;

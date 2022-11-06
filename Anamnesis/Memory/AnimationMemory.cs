@@ -27,11 +27,11 @@ public class AnimationMemory : MemoryBase
 		Overlay = 12,
 	}
 
-	[Bind(0x000)] public AnimationIdArrayMemory? AnimationIds { get; set; }
-	[Bind(0x074)] public AnimationSpeedArrayMemory? Speeds { get; set; }
-	[Bind(0x102)] public byte SpeedTrigger { get; set; }
-	[Bind(0x1EC)] public ushort BaseOverride { get; set; }
-	[Bind(0x1EE)] public ushort LipsOverride { get; set; }
+	[Bind(0x000)] public AnimationIdArrayMemory? AnimationIds { get => this.GetValue<AnimationIdArrayMemory?>(); set => this.SetValue(value); }
+	[Bind(0x074)] public AnimationSpeedArrayMemory? Speeds { get => this.GetValue<AnimationSpeedArrayMemory?>(); set => this.SetValue(value); }
+	[Bind(0x102)] public byte SpeedTrigger { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x1EC)] public ushort BaseOverride { get => this.GetValue<ushort>(); set => this.SetValue(value); }
+	[Bind(0x1EE)] public ushort LipsOverride { get => this.GetValue<ushort>(); set => this.SetValue(value); }
 
 	public bool BlendLocked { get; set; } = false;
 

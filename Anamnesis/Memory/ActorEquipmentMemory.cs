@@ -7,16 +7,16 @@ using Anamnesis.GameData;
 
 public class ActorEquipmentMemory : MemoryBase
 {
-	[Bind(0x000)] public ItemMemory? Head { get; set; }
-	[Bind(0x004)] public ItemMemory? Body { get; set; }
-	[Bind(0x008)] public ItemMemory? Hands { get; set; }
-	[Bind(0x00C)] public ItemMemory? Legs { get; set; }
-	[Bind(0x010)] public ItemMemory? Feet { get; set; }
-	[Bind(0x014)] public ItemMemory? Ears { get; set; }
-	[Bind(0x018)] public ItemMemory? Neck { get; set; }
-	[Bind(0x01C)] public ItemMemory? Wrists { get; set; }
-	[Bind(0x020)] public ItemMemory? RightRing { get; set; }
-	[Bind(0x024)] public ItemMemory? LeftRing { get; set; }
+	[Bind(0x000)] public ItemMemory? Head { get => this.GetValue<ItemMemory?>(); set => this.SetValue(value); }
+	[Bind(0x004)] public ItemMemory? Body { get => this.GetValue<ItemMemory?>(); set => this.SetValue(value); }
+	[Bind(0x008)] public ItemMemory? Hands { get => this.GetValue<ItemMemory?>(); set => this.SetValue(value); }
+	[Bind(0x00C)] public ItemMemory? Legs { get => this.GetValue<ItemMemory?>(); set => this.SetValue(value); }
+	[Bind(0x010)] public ItemMemory? Feet { get => this.GetValue<ItemMemory?>(); set => this.SetValue(value); }
+	[Bind(0x014)] public ItemMemory? Ears { get => this.GetValue<ItemMemory?>(); set => this.SetValue(value); }
+	[Bind(0x018)] public ItemMemory? Neck { get => this.GetValue<ItemMemory?>(); set => this.SetValue(value); }
+	[Bind(0x01C)] public ItemMemory? Wrists { get => this.GetValue<ItemMemory?>(); set => this.SetValue(value); }
+	[Bind(0x020)] public ItemMemory? RightRing { get => this.GetValue<ItemMemory?>(); set => this.SetValue(value); }
+	[Bind(0x024)] public ItemMemory? LeftRing { get => this.GetValue<ItemMemory?>(); set => this.SetValue(value); }
 
 	public ItemMemory? GetSlot(ItemSlots slot)
 	{

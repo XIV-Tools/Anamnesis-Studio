@@ -41,17 +41,17 @@ public class ActorModelMemory : MemoryBase
 		PadjalFeminine = 9204,
 	}
 
-	[Bind(0x030, BindFlags.Pointer)] public ExtendedWeaponMemory? Weapons { get; set; }
-	[Bind(0x050)] public TransformMemory? Transform { get; set; }
-	[Bind(0x0A0, BindFlags.Pointer | BindFlags.OnlyInGPose)] public SkeletonMemory? Skeleton { get; set; }
-	[Bind(0x148, BindFlags.Pointer)] public BustMemory? Bust { get; set; }
-	[Bind(0x248, 0x040, 0x020, BindFlags.Pointer)] public ShaderParametersMemory? ShaderParameters { get; set; }
-	[Bind(0x260)] public Color Tint { get; set; }
-	[Bind(0x274)] public float Height { get; set; }
-	[Bind(0x2B0)] public float Wetness { get; set; }
-	[Bind(0x2BC)] public float Drenched { get; set; }
-	[Bind(0x938)] public short DataPath { get; set; }
-	[Bind(0x93C)] public byte DataHead { get; set; }
+	[Bind(0x030, BindFlags.Pointer)] public ExtendedWeaponMemory? Weapons { get => this.GetValue<ExtendedWeaponMemory?>(); set => this.SetValue(value); }
+	[Bind(0x050)] public TransformMemory? Transform { get => this.GetValue<TransformMemory?>(); set => this.SetValue(value); }
+	[Bind(0x0A0, BindFlags.Pointer | BindFlags.OnlyInGPose)] public SkeletonMemory? Skeleton { get => this.GetValue<SkeletonMemory?>(); set => this.SetValue(value); }
+	[Bind(0x148, BindFlags.Pointer)] public BustMemory? Bust { get => this.GetValue<BustMemory?>(); set => this.SetValue(value); }
+	[Bind(0x248, 0x040, 0x020, BindFlags.Pointer)] public ShaderParametersMemory? ShaderParameters { get => this.GetValue<ShaderParametersMemory?>(); set => this.SetValue(value); }
+	[Bind(0x260)] public Color Tint { get => this.GetValue<Color>(); set => this.SetValue(value); }
+	[Bind(0x274)] public float Height { get => this.GetValue<float>(); set => this.SetValue(value); }
+	[Bind(0x2B0)] public float Wetness { get => this.GetValue<float>(); set => this.SetValue(value); }
+	[Bind(0x2BC)] public float Drenched { get => this.GetValue<float>(); set => this.SetValue(value); }
+	[Bind(0x938)] public short DataPath { get => this.GetValue<short>(); set => this.SetValue(value); }
+	[Bind(0x93C)] public byte DataHead { get => this.GetValue<byte>(); set => this.SetValue(value); }
 
 	public bool LockWetness
 	{
@@ -101,13 +101,13 @@ public class ActorModelMemory : MemoryBase
 		return base.CanRead(bind);
 	}
 
-	protected override void OnSelfPropertyChanged(object? sender, PropertyChangedEventArgs e)
+	protected override void OnPropertyChanged(string propertyName)
 	{
-		if(e.PropertyName == nameof(this.Height) && this.Height <= 0)
+		if(propertyName == nameof(this.Height) && this.Height <= 0)
 		{
 			this.Height = 0.1f;
 		}
 
-		base.OnSelfPropertyChanged(sender, e);
+		base.OnPropertyChanged(propertyName);
 	}
 }

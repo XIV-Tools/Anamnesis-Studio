@@ -84,32 +84,32 @@ public class ActorCustomizeMemory : MemoryBase
 		return ap;
 	}*/
 
-	[Bind(0x000, BindFlags.ActorRefresh)] public Races RaceId { get; set; }
-	[Bind(0x001, BindFlags.ActorRefresh)] public Genders Gender { get; set; }
-	[Bind(0x002, BindFlags.ActorRefresh)] public Ages Age { get; set; }
-	[Bind(0x003, BindFlags.ActorRefresh)] public byte Height { get; set; }
-	[Bind(0x004, BindFlags.ActorRefresh)] public Tribes TribeId { get; set; }
-	[Bind(0x005, BindFlags.ActorRefresh)] public byte Face { get; set; }
-	[Bind(0x006, BindFlags.ActorRefresh)] public byte Hair { get; set; }
-	[Bind(0x007, BindFlags.ActorRefresh)] public byte HighlightType { get; set; }
-	[Bind(0x008, BindFlags.ActorRefresh)] public byte SkinTone { get; set; }
-	[Bind(0x009, BindFlags.ActorRefresh)] public byte RightEyeColor { get; set; }
-	[Bind(0x00a, BindFlags.ActorRefresh)] public byte HairTone { get; set; }
-	[Bind(0x00b, BindFlags.ActorRefresh)] public byte Highlights { get; set; }
-	[Bind(0x00c, BindFlags.ActorRefresh)] public FacialFeature FacialFeatures { get; set; }
-	[Bind(0x00d, BindFlags.ActorRefresh)] public byte FacialFeatureColor { get; set; }
-	[Bind(0x00e, BindFlags.ActorRefresh)] public byte Eyebrows { get; set; }
-	[Bind(0x00f, BindFlags.ActorRefresh)] public byte LeftEyeColor { get; set; }
-	[Bind(0x010, BindFlags.ActorRefresh)] public byte Eyes { get; set; }
-	[Bind(0x011, BindFlags.ActorRefresh)] public byte Nose { get; set; }
-	[Bind(0x012, BindFlags.ActorRefresh)] public byte Jaw { get; set; }
-	[Bind(0x013, BindFlags.ActorRefresh)] public byte MouthId { get; set; }
-	[Bind(0x014, BindFlags.ActorRefresh)] public byte LipsToneFurPattern { get; set; }
-	[Bind(0x015, BindFlags.ActorRefresh)] public byte EarMuscleTailSize { get; set; }
-	[Bind(0x016, BindFlags.ActorRefresh)] public byte TailEarsType { get; set; }
-	[Bind(0x017, BindFlags.ActorRefresh)] public byte Bust { get; set; }
-	[Bind(0x018, BindFlags.ActorRefresh)] public byte FacePaintId { get; set; }
-	[Bind(0x019, BindFlags.ActorRefresh)] public byte FacePaintColor { get; set; }
+	[Bind(0x000, BindFlags.ActorRefresh)] public Races RaceId { get => this.GetValue<Races>(); set => this.SetValue(value); }
+	[Bind(0x001, BindFlags.ActorRefresh)] public Genders Gender { get => this.GetValue<Genders>(); set => this.SetValue(value); }
+	[Bind(0x002, BindFlags.ActorRefresh)] public Ages Age { get => this.GetValue<Ages>(); set => this.SetValue(value); }
+	[Bind(0x003, BindFlags.ActorRefresh)] public byte Height { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x004, BindFlags.ActorRefresh)] public Tribes TribeId { get => this.GetValue<Tribes>(); set => this.SetValue(value); }
+	[Bind(0x005, BindFlags.ActorRefresh)] public byte Face { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x006, BindFlags.ActorRefresh)] public byte Hair { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x007, BindFlags.ActorRefresh)] public byte HighlightType { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x008, BindFlags.ActorRefresh)] public byte SkinTone { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x009, BindFlags.ActorRefresh)] public byte RightEyeColor { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x00a, BindFlags.ActorRefresh)] public byte HairTone { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x00b, BindFlags.ActorRefresh)] public byte Highlights { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x00c, BindFlags.ActorRefresh)] public FacialFeature FacialFeatures { get => this.GetValue<FacialFeature>(); set => this.SetValue(value); }
+	[Bind(0x00d, BindFlags.ActorRefresh)] public byte FacialFeatureColor { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x00e, BindFlags.ActorRefresh)] public byte Eyebrows { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x00f, BindFlags.ActorRefresh)] public byte LeftEyeColor { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x010, BindFlags.ActorRefresh)] public byte Eyes { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x011, BindFlags.ActorRefresh)] public byte Nose { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x012, BindFlags.ActorRefresh)] public byte Jaw { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x013, BindFlags.ActorRefresh)] public byte MouthId { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x014, BindFlags.ActorRefresh)] public byte LipsToneFurPattern { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x015, BindFlags.ActorRefresh)] public byte EarMuscleTailSize { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x016, BindFlags.ActorRefresh)] public byte TailEarsType { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x017, BindFlags.ActorRefresh)] public byte Bust { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x018, BindFlags.ActorRefresh)] public byte FacePaintId { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x019, BindFlags.ActorRefresh)] public byte FacePaintColor { get => this.GetValue<byte>(); set => this.SetValue(value); }
 
 	public bool EnableHighlights
 	{

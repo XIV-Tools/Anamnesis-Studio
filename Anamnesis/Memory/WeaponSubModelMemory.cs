@@ -5,8 +5,8 @@ namespace Anamnesis.Memory;
 
 public class WeaponSubModelMemory : MemoryBase
 {
-	[Bind(0x070)] public Vector Scale { get; set; }
-	[Bind(0x260)] public Color Tint { get; set; }
+	[Bind(0x070)] public Vector Scale { get => this.GetValue<Vector>(); set => this.SetValue(value); }
+	[Bind(0x260)] public Color Tint { get => this.GetValue<Color>(); set => this.SetValue(value); }
 
 	public bool IsHidden
 	{

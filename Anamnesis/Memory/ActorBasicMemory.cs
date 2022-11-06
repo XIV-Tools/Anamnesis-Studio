@@ -10,7 +10,7 @@ using Anamnesis.Styles;
 using Anamnesis.Utils;
 using FontAwesome.Sharp;
 using PropertyChanged;
-
+using static Anamnesis.Memory.ActorCustomizeMemory;
 using MediaColor = System.Windows.Media.Color;
 
 public class ActorBasicMemory : MemoryBase
@@ -29,15 +29,15 @@ public class ActorBasicMemory : MemoryBase
 		Load = 4,
 	}
 
-	[Bind(0x030)] public Utf8String NameBytes { get; set; }
-	[Bind(0x074)] public uint ObjectId { get; set; }
-	[Bind(0x080)] public uint DataId { get; set; }
-	[Bind(0x084)] public uint OwnerId { get; set; }
-	[Bind(0x088)] public ushort ObjectIndex { get; set; }
-	[Bind(0x08c, BindFlags.ActorRefresh)] public ActorTypes ObjectKind { get; set; }
-	[Bind(0x090)] public byte DistanceFromPlayerX { get; set; }
-	[Bind(0x092)] public byte DistanceFromPlayerY { get; set; }
-	[Bind(0x0104)] public RenderModes RenderMode { get; set; }
+	[Bind(0x030)] public Utf8String NameBytes { get => this.GetValue<Utf8String>(); set => this.SetValue(value); }
+	[Bind(0x074)] public uint ObjectId { get => this.GetValue<uint>(); set => this.SetValue(value); }
+	[Bind(0x080)] public uint DataId { get => this.GetValue<uint>(); set => this.SetValue(value); }
+	[Bind(0x084)] public uint OwnerId { get => this.GetValue<uint>(); set => this.SetValue(value); }
+	[Bind(0x088)] public ushort ObjectIndex { get => this.GetValue<ushort>(); set => this.SetValue(value); }
+	[Bind(0x08c, BindFlags.ActorRefresh)] public ActorTypes ObjectKind { get => this.GetValue<ActorTypes>(); set => this.SetValue(value); }
+	[Bind(0x090)] public byte DistanceFromPlayerX { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x092)] public byte DistanceFromPlayerY { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x0104)] public RenderModes RenderMode { get => this.GetValue<RenderModes>(); set => this.SetValue(value); }
 
 	public string Id => $"n{this.NameHash}_d{this.DataId}_o{this.Address}";
 	public string IdNoAddress => $"n{this.NameHash}_d{this.DataId}"; ////_k{this.ObjectKind}";

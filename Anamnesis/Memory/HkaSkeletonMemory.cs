@@ -7,9 +7,9 @@ using System;
 
 public class HkaSkeletonMemory : MemoryBase
 {
-	[Bind(0x010, BindFlags.Pointer)] public Utf8String Name { get; set; }
-	[Bind(0x018)] public ParentingArrayMemory? ParentIndices { get; set; }
-	[Bind(0x028)] public BoneArrayMemory? Bones { get; set; }
+	[Bind(0x010, BindFlags.Pointer)] public Utf8String Name { get => this.GetValue<Utf8String>(); set => this.SetValue(value); }
+	[Bind(0x018)] public ParentingArrayMemory? ParentIndices { get => this.GetValue<ParentingArrayMemory?>(); set => this.SetValue(value); }
+	[Bind(0x028)] public BoneArrayMemory? Bones { get => this.GetValue<BoneArrayMemory?>(); set => this.SetValue(value); }
 
 	public class ParentingArrayMemory : HkaArrayMemory<short>
 	{

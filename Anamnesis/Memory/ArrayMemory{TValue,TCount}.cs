@@ -9,7 +9,7 @@ using System.Collections.Generic;
 public abstract class ArrayMemory<TValue, TCount> : FixedArrayMemory<TValue>, IEnumerable<TValue>
 	where TCount : struct
 {
-	[Bind(nameof(CountOffset))] public TCount ArrayCount { get; set; }
+	[Bind(nameof(CountOffset))] public TCount ArrayCount { get => this.GetValue<TCount>(); set => this.SetValue(value); }
 
 	public virtual int CountOffset => 0x000;
 
