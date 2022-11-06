@@ -99,8 +99,7 @@ public class CharaMakeType : ExcelRow
 					menu.AllOptions[j].Value = customize[j].FeatureId;
 					menu.AllOptions[j].Icon = customize[j].Icon;
 					menu.AllOptions[j].Customize = customize[j];
-
-					menu.AllOptions[j].Enabled = menu.AllOptions[j].Value >= menu.Min && menu.AllOptions[j].Value <= menu.Max;
+					menu.AllOptions[j].Enabled = true;
 				}
 			}
 			else

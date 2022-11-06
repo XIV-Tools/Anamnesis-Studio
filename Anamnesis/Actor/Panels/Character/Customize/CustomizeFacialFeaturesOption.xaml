@@ -10,6 +10,7 @@
 	mc:Ignorable="d">
 
 	<Grid x:Name="ContentArea">
+		<Border Style="{StaticResource XivToolsControlBorder}" />
 		<ItemsControl ItemsSource="{Binding Options}">
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
@@ -18,7 +19,9 @@
 			</ItemsControl.ItemsPanel>
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
-					<ToggleButton IsChecked="{Binding IsEnabled}">
+					<ToggleButton
+						Background="Transparent"
+						IsChecked="{Binding IsEnabled}">
 						<Grid
 							Width="48"
 							Height="48"
