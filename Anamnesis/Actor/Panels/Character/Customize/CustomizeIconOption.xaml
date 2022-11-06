@@ -33,7 +33,7 @@
 
 			<ComboBox.ItemTemplate>
 				<DataTemplate>
-					<Grid>
+					<Grid Visibility="{Binding Enabled, Converter={StaticResource B2V}}">
 
 						<Grid.ToolTip>
 							<TextBlock Text="{Binding Customize.Name}" />

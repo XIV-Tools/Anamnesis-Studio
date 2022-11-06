@@ -22,7 +22,7 @@ public class ActorCustomizeMemory : MemoryBase
 	{
 		Hyur = 1,
 		Elezen = 2,
-		Lalafel = 3,
+		Lalafell = 3,
 		Miqote = 4,
 		Roegadyn = 5,
 		AuRa = 6,

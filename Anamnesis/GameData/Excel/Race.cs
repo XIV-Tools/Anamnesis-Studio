@@ -73,7 +73,7 @@ public class Race : ExcelRow
 				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Duskwight),
 			},
 
-			ActorCustomizeMemory.Races.Lalafel => new()
+			ActorCustomizeMemory.Races.Lalafell => new()
 			{
 				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Plainsfolk),
 				GameData.Tribes.Get((byte)ActorCustomizeMemory.Tribes.Dunesfolk),

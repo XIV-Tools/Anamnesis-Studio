@@ -13,7 +13,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:panels="clr-namespace:Anamnesis.Panels"
 	Title="[Navigation_Actor_Character]"
-	MinWidth="300"
+	MinWidth="415"
 	ana:Behaviours.DesignerLocalization="True"
 	d:DataContext="{Binding RelativeSource={RelativeSource Self}}"
 	designer:DesignModeProperties.Background="LightGray"

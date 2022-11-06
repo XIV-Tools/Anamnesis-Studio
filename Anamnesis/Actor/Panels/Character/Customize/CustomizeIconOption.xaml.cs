@@ -57,5 +57,7 @@ public partial class CustomizeIconOption : UserControl, INotifyPropertyChanged
 	public static void OnMenuChanged(CustomizeIconOption sender, CharaMakeType.Menu? newalue)
 	{
 		sender.PropertyChanged?.Invoke(sender, new(nameof(Option)));
+		sender.PropertyChanged?.Invoke(sender, new(nameof(Menu)));
+		sender.PropertyChanged?.Invoke(sender, new(nameof(Value)));
 	}
 }

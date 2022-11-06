@@ -28,15 +28,55 @@
 
 	<Grid x:Name="ContentArea">
 		<ScrollViewer ana:Behaviours.SmoothScroll="True">
-			<StackPanel Margin="6">
+			<Grid Margin="6">
+
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+				</Grid.RowDefinitions>
 
 				<!--  Race & Tribe  -->
 				<TextBlock
-					Style="{StaticResource Header}"
+					Grid.Row="0"
+					Grid.Column="0"
+					Style="{StaticResource Label}"
 					Text="[Character_Customize_RaceTribe" />
 				<Grid
 					Grid.Row="0"
-					Grid.ColumnSpan="2">
+					Grid.Column="1">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition />
 						<ColumnDefinition />
@@ -57,26 +97,36 @@
 
 				<!--  Body Type  -->
 				<TextBlock
-					Style="{StaticResource Header}"
+					Grid.Row="1"
+					Grid.Column="0"
+					Style="{StaticResource Label}"
 					Text="[Character_Customize_Gender" />
 
 				<ListBox
+					Grid.Row="1"
+					Grid.Column="1"
 					ItemsSource="{Binding Actor.Customize.Race.Genders}"
 					SelectedItem="{Binding Actor.Customize.Gender}"
 					Style="{StaticResource XivToolsSwitchSelector}" />
 
 				<ListBox
 					x:Name="AgeComboBox"
-					Margin="0,4,0,0"
+					Grid.Row="2"
+					Grid.Column="1"
+					Margin="0,1"
 					IsEnabled="{Binding Actor.Customize.CanAge}"
 					SelectedItem="{Binding Actor.Customize.Age}"
 					Style="{StaticResource XivToolsSwitchSelector}" />
 
 				<!--  Height  -->
 				<TextBlock
+					Grid.Row="3"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_Height" />
 				<controls:HeightEditor
+					Grid.Row="3"
+					Grid.Column="1"
 					Age="{Binding Actor.Customize.Age}"
 					Gender="{Binding Actor.Customize.Gender}"
 					Tribe="{Binding Actor.Customize.TribeId}"
@@ -84,10 +134,14 @@
 
 				<!--  Muscle Tone  -->
 				<TextBlock
+					Grid.Row="4"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_Muscle"
 					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Hyur|Roegadyn}" />
 				<XivToolsWpf:NumberBox
+					Grid.Row="4"
+					Grid.Column="1"
 					Maximum="{Binding Actor.Customize.MakeType.EarMuscleTailSizes.Max}"
 					Minimum="{Binding Actor.Customize.MakeType.EarMuscleTailSizes.Min}"
 					Slider="Absolute"
@@ -96,10 +150,14 @@
 
 				<!--  Bust Size  -->
 				<TextBlock
+					Grid.Row="5"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_BustSize"
 					Visibility="{Binding Actor.Customize.Gender, Converter={StaticResource EnumToVisibility}, ConverterParameter=Feminine}" />
 				<XivToolsWpf:NumberBox
+					Grid.Row="5"
+					Grid.Column="1"
 					Maximum="100"
 					Minimum="0"
 					Slider="Absolute"
@@ -108,10 +166,15 @@
 
 				<!--  Tail Shape  -->
 				<TextBlock
+					Grid.Row="6"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_Tail"
 					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Hrothgar|Miqote|AuRa}" />
-				<Grid Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Hrothgar|Miqote|AuRa}">
+				<Grid
+					Grid.Row="6"
+					Grid.Column="1"
+					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Hrothgar|Miqote|AuRa}">
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto" />
 						<RowDefinition />
@@ -149,9 +212,13 @@
 
 				<!--  Face  -->
 				<TextBlock
+					Grid.Row="7"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_Face" />
-				<Grid>
+				<Grid
+					Grid.Row="7"
+					Grid.Column="1">
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto" />
 						<RowDefinition />
@@ -180,18 +247,26 @@
 
 				<!--  Skin Color  -->
 				<TextBlock
+					Grid.Row="8"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_Skin" />
 				<controls:CustomizeColorOption
+					Grid.Row="8"
+					Grid.Column="1"
 					Menu="{Binding Actor.Customize.MakeType.SkinTones}"
 					Value="{Binding Actor.Customize.SkinTone}" />
 
 				<!--  Hairstyle  -->
 				<TextBlock
+					Grid.Row="9"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_Hair" />
 
-				<Grid>
+				<Grid
+					Grid.Row="9"
+					Grid.Column="1">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="80" />
 						<ColumnDefinition />
@@ -223,17 +298,12 @@
 						Menu="{Binding Actor.Customize.MakeType.HairTones}"
 						Value="{Binding Actor.Customize.HairTone}" />
 
-					<Border
+					<CheckBox
 						Grid.Row="2"
-						Margin="0,2"
-						CornerRadius="6, 0, 0, 6"
-						Style="{StaticResource XivToolsControlBorder}">
-						<ToggleButton
-							Background="Transparent"
-							IsChecked="{Binding Actor.Customize.EnableHighlights}">
-							<TextBlock Text="[Character_Appearance_Highlights" />
-						</ToggleButton>
-					</Border>
+						HorizontalAlignment="Right"
+						Background="Transparent"
+						IsChecked="{Binding Actor.Customize.EnableHighlights}" />
+
 
 					<controls:CustomizeColorOption
 						Grid.Row="2"
@@ -245,41 +315,77 @@
 				</Grid>
 
 
-				<!--  Fur Color  -->
-				<TextBlock
-					Style="{StaticResource Label}"
-					Text="[Character_Appearance_Fur"
-					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Hrothgar}" />
-
 				<!--  Fur Pattern  -->
 				<TextBlock
+					Grid.Row="11"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
-					Text="[Character_Appearance_Fur"
+					Text="[Character_Appearance_Fur]"
 					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Hrothgar}" />
+				<Grid
+					Grid.Row="11"
+					Grid.Column="1"
+					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Hrothgar}">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+
+					<Grid.RowDefinitions>
+						<RowDefinition />
+						<RowDefinition />
+					</Grid.RowDefinitions>
+
+					<controls:CustomizeIconOption
+						Grid.Row="0"
+						Grid.RowSpan="2"
+						Grid.Column="0"
+						Menu="{Binding Actor.Customize.MakeType.LipsToneFurPatterns}"
+						Value="{Binding Actor.Customize.LipsToneFurPattern}" />
+
+					<controls:CustomizeNumberOption
+						Grid.Row="0"
+						Grid.Column="1"
+						Menu="{Binding Actor.Customize.MakeType.LipsToneFurPatterns}"
+						Value="{Binding Actor.Customize.LipsToneFurPattern}" />
+
+				</Grid>
 
 				<!--  Jaw  -->
 				<TextBlock
+					Grid.Row="12"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_Jaw" />
 				<ListBox
+					Grid.Row="12"
+					Grid.Column="1"
 					ItemsSource="{Binding Actor.Customize.MakeType.Jaws.Values}"
 					SelectedItem="{Binding Actor.Customize.Jaw}"
 					Style="{StaticResource XivToolsSwitchSelector}" />
 
 				<!--  Eye Shape  -->
 				<TextBlock
+					Grid.Row="13"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_Eyes" />
 				<ListBox
+					Grid.Row="13"
+					Grid.Column="1"
 					ItemsSource="{Binding Actor.Customize.MakeType.EyeShapes.Values}"
 					SelectedItem="{Binding Actor.Customize.EyeShape}"
 					Style="{StaticResource XivToolsSwitchSelector}" />
 
 				<!--  Iris Size  -->
 				<TextBlock
+					Grid.Row="14"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_Iris" />
 				<Border
+					Grid.Row="14"
+					Grid.Column="1"
 					Height="28"
 					Style="{StaticResource XivToolsControlBorder}">
 					<Grid>
@@ -305,9 +411,13 @@
 
 				<!--  Eye Color  -->
 				<TextBlock
+					Grid.Row="15"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_EyeColor" />
-				<Grid>
+				<Grid
+					Grid.Row="15"
+					Grid.Column="1">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition />
 						<ColumnDefinition Width="Auto" />
@@ -347,78 +457,84 @@
 
 				<!--  Limbal Ring  -->
 				<TextBlock
+					Grid.Row="16"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_LimbalRing"
 					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=AuRa}" />
-
 				<controls:CustomizeColorOption
-					Grid.Column="0"
+					Grid.Row="16"
+					Grid.Column="1"
 					Menu="{Binding Actor.Customize.MakeType.EyeColors}"
 					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=AuRa}"
 					Value="{Binding Actor.Customize.FacialFeatureColor}" />
 
-				<!--  Facial Feature Color  -->
-				<TextBlock
-					Style="{StaticResource Label}"
-					Text="[Character_Appearance_FacialFeatureColor"
-					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=AuRa}" />
-
 				<!--  Eyebrows  -->
 				<TextBlock
+					Grid.Row="18"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_Eyebrows" />
 				<ListBox
+					Grid.Row="18"
+					Grid.Column="1"
 					ItemsSource="{Binding Actor.Customize.MakeType.Eyebrows.Values}"
 					SelectedItem="{Binding Actor.Customize.Eyebrows}"
 					Style="{StaticResource XivToolsSwitchSelector}" />
 
 				<!--  Nose  -->
 				<TextBlock
+					Grid.Row="19"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_Nose" />
 				<ListBox
+					Grid.Row="19"
+					Grid.Column="1"
 					ItemsSource="{Binding Actor.Customize.MakeType.Noses.Values}"
 					SelectedItem="{Binding Actor.Customize.Nose}"
 					Style="{StaticResource XivToolsSwitchSelector}" />
 
 				<!--  Fang Length  -->
 				<TextBlock
+					Grid.Row="20"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_Nose"
 					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Hrothgar}" />
 
 				<!--  Mouth  -->
 				<TextBlock
+					Grid.Row="21"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_Mouth" />
 				<ListBox
+					Grid.Row="21"
+					Grid.Column="1"
 					ItemsSource="{Binding Actor.Customize.MakeType.Mouths.Values}"
 					SelectedItem="{Binding Actor.Customize.Mouth}"
 					Style="{StaticResource XivToolsSwitchSelector}" />
 
 				<!--  Lip Color  -->
 				<TextBlock
+					Grid.Row="22"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_LipColor"
 					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=!Hrothgar}" />
-				<Grid Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=!Hrothgar}">
+				<Grid
+					Grid.Row="22"
+					Grid.Column="1"
+					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=!Hrothgar}">
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="80" />
+						<ColumnDefinition Width="Auto" />
 						<ColumnDefinition />
 					</Grid.ColumnDefinitions>
 
-					<Border
-						Grid.Row="0"
-						Margin="0,2"
-						CornerRadius="6,0,0,6"
-						Style="{StaticResource XivToolsControlBorder}">
-						<ToggleButton
-							Background="Transparent"
-							IsChecked="{Binding Actor.Customize.EnableLipColor}"
-							Style="{StaticResource XivToolsToggleButton}">
-							<TextBlock Text="[Character_Appearance_LipColor" />
-						</ToggleButton>
-					</Border>
+					<CheckBox
+						Background="Transparent"
+						IsChecked="{Binding Actor.Customize.EnableLipColor}" />
 
 					<controls:CustomizeColorOption
 						Grid.Column="1"
@@ -430,64 +546,81 @@
 
 				<!--  Ear Shape  -->
 				<TextBlock
+					Grid.Row="23"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_Ears"
-					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Viera|Lalafel|Elezen}" />
+					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Viera|Lalafell|Elezen}" />
 				<ListBox
+					Grid.Row="23"
+					Grid.Column="1"
 					ItemsSource="{Binding Actor.Customize.MakeType.TailEarsTypes.Values}"
 					SelectedItem="{Binding Actor.Customize.TailEarsType}"
 					Style="{StaticResource XivToolsSwitchSelector}"
-					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Viera|Lalafel|Elezen}" />
+					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Viera|Lalafell|Elezen}" />
 
 				<!--  Ear Length  -->
 				<XivToolsWpf:NumberBox
-					Grid.Row="1"
+					Grid.Row="24"
 					Grid.Column="1"
-					Grid.ColumnSpan="2"
 					Margin="0,1,0,1"
 					Maximum="{Binding Actor.Customize.MakeType.EarMuscleTailSizes.Max}"
 					Minimum="{Binding Actor.Customize.MakeType.EarMuscleTailSizes.Min}"
 					Slider="Absolute"
 					TickFrequency="1"
-					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Viera|Lalafel|Elezen}"
+					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Viera|Lalafell|Elezen}"
 					Value="{Binding Actor.Customize.EarMuscleTailSize}" />
 
 				<!--  Ear Clasp Color  -->
 				<TextBlock
+					Grid.Row="25"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_EarClaspColor"
-					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Elezen | Lalafel}" />
+					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Elezen}" />
 				<controls:CustomizeColorOption
+					Grid.Row="25"
 					Grid.Column="1"
 					Menu="{Binding Actor.Customize.MakeType.FacialFeatureColors}"
-					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Elezen | Lalafel}"
+					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Elezen}"
 					Value="{Binding Actor.Customize.FacialFeatureColor}" />
 
 				<!--  Facial Features  -->
 				<TextBlock
+					Grid.Row="26"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_Features" />
 				<controls:CustomizeFacialFeaturesOption
+					Grid.Row="26"
+					Grid.Column="1"
 					FacialFeatures="{Binding Actor.Customize.FacialFeatureOptions}"
 					Value="{Binding Actor.Customize.FacialFeatures}" />
 
 				<!--  Tattoo Color  -->
 				<TextBlock
+					Grid.Row="27"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_TattooColor"
-					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Hyur}" />
+					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Hyur|Viera|Lalafell|Miqote|Roegadyn}" />
 				<controls:CustomizeColorOption
+					Grid.Row="27"
 					Grid.Column="1"
 					Menu="{Binding Actor.Customize.MakeType.FacialFeatureColors}"
-					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Hyur}"
+					Visibility="{Binding Actor.Customize.RaceId, Converter={StaticResource EnumToVisibility}, ConverterParameter=Hyur|Viera|Lalafell|Miqote|Roegadyn}"
 					Value="{Binding Actor.Customize.FacialFeatureColor}" />
 
 				<!--  Face Paint  -->
 				<!--  Face Paint Color  -->
 				<TextBlock
+					Grid.Row="28"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Appearance_FacePaint" />
-				<Grid>
+				<Grid
+					Grid.Row="28"
+					Grid.Column="1">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="80" />
 						<ColumnDefinition />
@@ -532,10 +665,12 @@
 
 				<!--  Voice  -->
 				<TextBlock
+					Grid.Row="29"
+					Grid.Column="0"
 					Style="{StaticResource Label}"
 					Text="[Character_Actor_Voice" />
 
-			</StackPanel>
+			</Grid>
 		</ScrollViewer>
 	</Grid>
 </UserControl>

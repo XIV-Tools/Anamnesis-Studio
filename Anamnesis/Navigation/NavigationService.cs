@@ -32,7 +32,7 @@ public class NavigationService : ServiceBase<NavigationService>
 	/// <summary>
 	/// Navigate to a panel.
 	/// </summary>
-	public async Task<PanelBase> Navigate(Request request)
+	public async Task<PanelBase?> Navigate(Request request)
 	{
 		try
 		{
@@ -44,7 +44,8 @@ public class NavigationService : ServiceBase<NavigationService>
 		}
 		catch (Exception ex)
 		{
-			throw new Exception($"Failed to handle navigation request to Uri: \"{request}\"", ex);
+			Log.Error(ex, $"Failed to handle navigation request to Uri: \"{request}\"");
+			return null;
 		}
 	}
 

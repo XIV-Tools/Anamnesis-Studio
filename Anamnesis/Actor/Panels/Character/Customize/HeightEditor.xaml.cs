@@ -123,7 +123,7 @@ public partial class HeightEditor : UserControl, INotifyPropertyChanged
 			case ActorCustomizeMemory.Tribes.Wildwood:
 			case ActorCustomizeMemory.Tribes.Duskwight: return isMale ? 194.1 : 183.5;
 
-			// Lalafel
+			// Lalafell
 			case ActorCustomizeMemory.Tribes.Plainsfolk:
 			case ActorCustomizeMemory.Tribes.Dunesfolk: return 86.9;
 
@@ -165,7 +165,7 @@ public partial class HeightEditor : UserControl, INotifyPropertyChanged
 			case ActorCustomizeMemory.Tribes.Wildwood:
 			case ActorCustomizeMemory.Tribes.Duskwight: return isMale ? 209.8 : 198.4;
 
-			// Lalafel
+			// Lalafell
 			case ActorCustomizeMemory.Tribes.Plainsfolk:
 			case ActorCustomizeMemory.Tribes.Dunesfolk: return 97;
 

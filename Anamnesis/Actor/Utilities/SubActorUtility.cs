@@ -129,7 +129,7 @@ public class SubActorUtility
 
 				break;
 
-			case ActorCustomizeMemory.Races.Lalafel:
+			case ActorCustomizeMemory.Races.Lalafell:
 				switch (memory.Customize.Gender)
 				{
 					case ActorCustomizeMemory.Genders.Masculine:

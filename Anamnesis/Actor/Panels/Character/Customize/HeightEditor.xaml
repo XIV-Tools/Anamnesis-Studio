@@ -24,7 +24,7 @@
 
 		<XivToolsWpf:NumberBox
 			Grid.Column="1"
-			Margin="4,0"
+			Margin="4,0,0,0"
 			Maximum="250"
 			Minimum="0"
 			Slider="None"

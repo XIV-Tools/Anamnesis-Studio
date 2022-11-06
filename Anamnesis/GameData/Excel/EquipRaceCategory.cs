@@ -53,7 +53,7 @@ public class EquipRaceCategory : ExcelRow
 		if (!this.Elezen && race == ActorCustomizeMemory.Races.Elezen)
 			return false;
 
-		if (!this.Lalafell && race == ActorCustomizeMemory.Races.Lalafel)
+		if (!this.Lalafell && race == ActorCustomizeMemory.Races.Lalafell)
 			return false;
 
 		if (!this.Miqote && race == ActorCustomizeMemory.Races.Miqote)

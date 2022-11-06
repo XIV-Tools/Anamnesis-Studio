@@ -92,13 +92,15 @@ public class CharaMakeType : ExcelRow
 				List<CharaMakeCustomize> customize = GameDataService.Instance.CharacterMakeCustomize.GetFeatureOptions(featureType, this.Tribe, this.Gender);
 
 				menu.NumOptions = (byte)customize.Count;
-				menu.Options = new Menu.Option[menu.NumOptions];
+				menu.AllOptions = new Menu.Option[menu.NumOptions];
 				for (byte j = 0; j < menu.NumOptions; ++j)
 				{
-					menu.Options[j] = new Menu.Option();
-					menu.Options[j].Value = customize[j].FeatureId;
-					menu.Options[j].Icon = customize[j].Icon;
-					menu.Options[j].Customize = customize[j];
+					menu.AllOptions[j] = new Menu.Option();
+					menu.AllOptions[j].Value = customize[j].FeatureId;
+					menu.AllOptions[j].Icon = customize[j].Icon;
+					menu.AllOptions[j].Customize = customize[j];
+
+					menu.AllOptions[j].Enabled = menu.AllOptions[j].Value >= menu.Min && menu.AllOptions[j].Value <= menu.Max;
 				}
 			}
 			else
@@ -119,11 +121,12 @@ public class CharaMakeType : ExcelRow
 				if (colors != null)
 					menu.NumOptions = (byte)colors.Length;
 
-				menu.Options = new Menu.Option[menu.NumOptions];
+				menu.AllOptions = new Menu.Option[menu.NumOptions];
 				for (byte j = 0; j < menu.NumOptions; ++j)
 				{
-					menu.Options[j] = new Menu.Option();
-					menu.Options[j].Value = (byte)(menu.Min + j);
+					menu.AllOptions[j] = new Menu.Option();
+					menu.AllOptions[j].Value = (byte)(menu.Min + j);
+					menu.AllOptions[j].Enabled = menu.AllOptions[j].Value >= menu.Min && menu.AllOptions[j].Value <= menu.Max;
 
 					if (menu.Type == Menu.Types.ColorPicker || menu.Type == Menu.Types.DoubleColorPicker)
 					{
@@ -132,12 +135,12 @@ public class CharaMakeType : ExcelRow
 
 						if (colors != null && j < colors.Length)
 						{
-							menu.Options[j].Color = colors[j];
+							menu.AllOptions[j].Color = colors[j];
 						}
 					}
 					else
 					{
-						menu.Options[j].Icon = new ImageReference(parser.ReadColumn<uint>(3 + ((7 + j) * NumMenus) + i));
+						menu.AllOptions[j].Icon = new ImageReference(parser.ReadColumn<uint>(3 + ((7 + j) * NumMenus) + i));
 					}
 				}
 			}
@@ -255,18 +258,42 @@ public class CharaMakeType : ExcelRow
 		public uint CustomizationIndex { get; set; }
 		public byte Min { get; set; }
 		public byte Max { get; set; }
-		public Option[]? Options { get; set; }
+		public Option[]? AllOptions { get; set; }
+
+		public Option[] Options
+		{
+			get
+			{
+				List<Option> options = new();
+
+				if (this.AllOptions != null)
+				{
+					foreach (var option in this.AllOptions)
+					{
+						if (!option.Enabled)
+							continue;
+
+						options.Add(option);
+					}
+				}
+
+				return options.ToArray();
+			}
+		}
 
 		public byte[]? Values
 		{
 			get
 			{
-				if (this.Options == null)
+				if (this.AllOptions == null)
 					return null;
 
 				List<byte> values = new();
-				foreach (Option op in this.Options)
+				foreach (Option op in this.AllOptions)
 				{
+					if (!op.Enabled)
+						continue;
+
 					values.Add(op.Value);
 				}
 
@@ -276,10 +303,10 @@ public class CharaMakeType : ExcelRow
 
 		public Option? GetOption(byte value)
 		{
-			if (this.Options == null)
+			if (this.AllOptions == null)
 				return null;
 
-			foreach (Option op in this.Options)
+			foreach (Option op in this.AllOptions)
 			{
 				if (op.Value == value)
 				{
@@ -297,6 +324,7 @@ public class CharaMakeType : ExcelRow
 			public ImageReference? Icon { get; set; }
 			public ColorData.Entry Color { get; set; }
 			public CharaMakeCustomize? Customize { get; set; }
+			public bool Enabled { get; set; }
 		}
 	}
 
@@ -314,6 +342,7 @@ public class CharaMakeType : ExcelRow
 		{
 			public ActorCustomizeMemory.FacialFeature Value { get; set; }
 			public ImageReference? Icon { get; set; }
+			public bool Enabled => true;
 		}
 	}
 }
