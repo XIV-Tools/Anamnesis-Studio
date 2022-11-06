@@ -4,13 +4,10 @@
 namespace Anamnesis.Libraries.Sources;
 
 using Anamnesis.Files;
-using Anamnesis.GameData.Excel;
 using Anamnesis.Libraries.Items;
 using Anamnesis.Serialization;
-using Anamnesis.Services;
 using Anamnesis.Tags;
 using FontAwesome.Sharp;
-using Lumina.Excel.GeneratedSheets;
 using Octokit;
 using Serilog;
 using System;
@@ -19,8 +16,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
 using System.Threading.Tasks;
-using XivToolsWpf;
-using XivToolsWpf.Extensions;
 using static Anamnesis.Libraries.Sources.GitHubSource.RepositoryCache;
 
 internal class GitHubSource : FileSource

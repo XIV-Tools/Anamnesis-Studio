@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Windows;
 using XivToolsWpf;
-using static Anamnesis.Files.PoseFile;
 
 public partial class BoneTransformPanel : ActorPanelBase
 {

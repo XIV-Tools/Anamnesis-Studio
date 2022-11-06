@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using XivToolsWpf;
 using XivToolsWpf.DependencyProperties;
 using XivToolsWpf.Localization;

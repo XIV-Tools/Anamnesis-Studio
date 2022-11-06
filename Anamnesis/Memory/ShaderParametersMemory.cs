@@ -79,45 +79,45 @@ public class ShaderParametersMemory : MemoryBase
 	}
 
 	[AlsoNotifyFor(
-		nameof(this.SkinColor),
-		nameof(this.MuscleTone),
-		nameof(this.SkinGloss),
-		nameof(this.MouthColor),
-		nameof(this.HairColor),
-		nameof(this.HairGloss),
-		nameof(this.HairHighlight),
-		nameof(this.LeftEyeColor),
-		nameof(this.RightEyeColor),
-		nameof(this.LimbalRingColor))]
+		nameof(this.FreezeSkinColor),
+		nameof(this.FreezeMuscleTone),
+		nameof(this.FreezeSkinGloss),
+		nameof(this.FreezeMouthColor),
+		nameof(this.FreezeHairColor),
+		nameof(this.FreezeHairGloss),
+		nameof(this.FreezeHairHighlight),
+		nameof(this.FreezeLeftEyeColor),
+		nameof(this.FreezeRightEyeColor),
+		nameof(this.FreezeLimbalRingColor))]
 	public bool FreezeAll
 	{
 		get
 		{
 			bool allFrozen = true;
-			allFrozen &= this.IsFrozen(nameof(this.SkinColor));
-			allFrozen &= this.IsFrozen(nameof(this.MuscleTone));
-			allFrozen &= this.IsFrozen(nameof(this.SkinGloss));
-			allFrozen &= this.IsFrozen(nameof(this.MouthColor));
-			allFrozen &= this.IsFrozen(nameof(this.HairColor));
-			allFrozen &= this.IsFrozen(nameof(this.HairGloss));
-			allFrozen &= this.IsFrozen(nameof(this.HairHighlight));
-			allFrozen &= this.IsFrozen(nameof(this.LeftEyeColor));
-			allFrozen &= this.IsFrozen(nameof(this.RightEyeColor));
-			allFrozen &= this.IsFrozen(nameof(this.LimbalRingColor));
+			allFrozen &= this.FreezeSkinColor;
+			allFrozen &= this.FreezeMuscleTone;
+			allFrozen &= this.FreezeSkinGloss;
+			allFrozen &= this.FreezeMouthColor;
+			allFrozen &= this.FreezeHairColor;
+			allFrozen &= this.FreezeHairGloss;
+			allFrozen &= this.FreezeHairHighlight;
+			allFrozen &= this.FreezeLeftEyeColor;
+			allFrozen &= this.FreezeRightEyeColor;
+			allFrozen &= this.FreezeLimbalRingColor;
 			return allFrozen;
 		}
 		set
 		{
-			this.SetFrozen(nameof(this.SkinColor), value);
-			this.SetFrozen(nameof(this.MuscleTone), value);
-			this.SetFrozen(nameof(this.SkinGloss), value);
-			this.SetFrozen(nameof(this.MouthColor), value);
-			this.SetFrozen(nameof(this.HairColor), value);
-			this.SetFrozen(nameof(this.HairGloss), value);
-			this.SetFrozen(nameof(this.HairHighlight), value);
-			this.SetFrozen(nameof(this.LeftEyeColor), value);
-			this.SetFrozen(nameof(this.RightEyeColor), value);
-			this.SetFrozen(nameof(this.LimbalRingColor), value);
+			this.FreezeSkinColor = value;
+			this.FreezeMuscleTone = value;
+			this.FreezeSkinGloss = value;
+			this.FreezeMouthColor = value;
+			this.FreezeHairColor = value;
+			this.FreezeHairGloss = value;
+			this.FreezeHairHighlight = value;
+			this.FreezeLeftEyeColor = value;
+			this.FreezeRightEyeColor = value;
+			this.FreezeLimbalRingColor = value;
 		}
 	}
 }

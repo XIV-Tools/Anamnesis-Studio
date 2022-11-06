@@ -2,9 +2,6 @@
 // Licensed under the MIT license.
 
 namespace Anamnesis.Windows;
-
-using Anamnesis.Panels;
-using System.Windows;
 using XivToolsWpf.Windows;
 
 /// <summary>

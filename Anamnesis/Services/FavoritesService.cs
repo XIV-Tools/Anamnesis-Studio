@@ -9,7 +9,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Anamnesis.Files;
 using Anamnesis.GameData;
-using Anamnesis.GameData.Excel;
 using Anamnesis.Memory;
 using Anamnesis.Serialization;
 using PropertyChanged;

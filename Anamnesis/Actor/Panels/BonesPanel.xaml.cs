@@ -5,23 +5,8 @@ namespace Anamnesis.Actor.Panels;
 
 using Anamnesis.Actor;
 using Anamnesis.Actor.Views;
-using Anamnesis.Memory;
-using Anamnesis.Navigation;
-using Anamnesis.Panels;
-using Anamnesis.Services;
-using FontAwesome.Sharp;
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media.Media3D;
 using XivToolsWpf;
-
-using CmQuaternion = Anamnesis.Memory.Quaternion;
 
 public partial class BonesPanel : ActorPanelBase
 {

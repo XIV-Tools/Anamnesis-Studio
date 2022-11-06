@@ -5,7 +5,6 @@ namespace Anamnesis.Files;
 
 using System;
 using Anamnesis.Memory;
-using Anamnesis.Actor;
 
 [Serializable]
 public class CameraShotFile : JsonFileBase

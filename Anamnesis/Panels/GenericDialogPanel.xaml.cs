@@ -3,13 +3,11 @@
 
 namespace Anamnesis.Panels;
 
-using Anamnesis.Navigation;
 using Anamnesis.Services;
 using Anamnesis.Windows;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
-using XivToolsWpf;
 
 public partial class GenericDialogPanel : PanelBase
 {

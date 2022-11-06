@@ -8,7 +8,6 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using Anamnesis.GUI.Windows;
 using Anamnesis.Services;
 using Anamnesis.Windows;
 using Microsoft.Win32;

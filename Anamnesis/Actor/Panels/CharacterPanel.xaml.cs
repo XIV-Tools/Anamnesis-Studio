@@ -2,16 +2,6 @@
 // Licensed under the MIT license.
 
 namespace Anamnesis.Actor.Panels;
-
-using Anamnesis.Actor.Utilities;
-using Anamnesis.GameData.Excel;
-using Anamnesis.Memory;
-using Anamnesis.Panels;
-using Anamnesis.Services;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Data;
-
 public partial class CharacterPanel : ActorPanelBase
 {
 	/*private async void OnResetClicked(object sender, RoutedEventArgs e)

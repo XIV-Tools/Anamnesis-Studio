@@ -10,7 +10,6 @@ using System.Windows.Controls;
 using Anamnesis.GameData;
 using Anamnesis.GameData.Excel;
 using Anamnesis.Services;
-using Anamnesis.Styles.Drawers;
 using Anamnesis.Utils;
 using PropertyChanged;
 using XivToolsWpf;

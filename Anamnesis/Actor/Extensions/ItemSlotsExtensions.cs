@@ -4,9 +4,7 @@
 namespace Anamnesis.Actor;
 
 using System;
-using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
-using Anamnesis.Actor.Utilities;
 using Anamnesis.GameData;
 
 public static class ItemSlotsExtensions

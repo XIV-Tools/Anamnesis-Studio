@@ -6,7 +6,6 @@ namespace Anamnesis.GameData.Excel;
 using System;
 using Anamnesis.GameData.Sheets;
 using Anamnesis.Services;
-using Anamnesis.Tags;
 using Lumina;
 using Lumina.Data;
 using Lumina.Excel;

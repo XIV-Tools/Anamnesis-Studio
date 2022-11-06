@@ -5,11 +5,8 @@ namespace Anamnesis.Services;
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 using System.Threading.Tasks;
 using Anamnesis.Files;
-using XivToolsWpf.Designer;
 using XivToolsWpf.Localization;
 
 public class LocalizationService : ServiceBase<LocalizationService>

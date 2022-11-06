@@ -8,14 +8,11 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using Anamnesis.Actor.Views;
 using Anamnesis.GameData.Excel;
-using Anamnesis.GameData.Interfaces;
 using Anamnesis.Memory;
 using Anamnesis.Actor;
 using Anamnesis.Services;
 using Anamnesis.Styles;
-using Anamnesis.Styles.Drawers;
 using PropertyChanged;
 using System;
 

@@ -3,7 +3,6 @@
 
 namespace Anamnesis.Tags;
 
-using Anamnesis.Actor;
 using PropertyChanged;
 using System;
 using System.Collections.Generic;

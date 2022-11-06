@@ -7,7 +7,6 @@ using Anamnesis.Files;
 using Anamnesis.Memory;
 using System.Windows;
 using System;
-using Anamnesis.Actor;
 using XivToolsWpf.Extensions;
 using System.Threading.Tasks;
 using Anamnesis.Windows;

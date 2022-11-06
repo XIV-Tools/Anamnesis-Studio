@@ -12,8 +12,6 @@ using XivToolsWpf;
 
 using static XivToolsWpf.Dialogs.ErrorDialog;
 
-using XivToolsErrorDialog = XivToolsWpf.Dialogs.ErrorDialog;
-
 public static class ErrorDialog
 {
 	public static async void ShowError(ExceptionDispatchInfo ex, bool isCriticial)

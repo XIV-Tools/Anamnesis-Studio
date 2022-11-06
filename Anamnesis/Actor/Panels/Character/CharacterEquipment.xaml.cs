@@ -10,9 +10,7 @@ using System.Windows.Controls;
 using Anamnesis.Actor.Panels.Character.Equipment;
 using Anamnesis.Actor.Utilities;
 using Anamnesis.GameData;
-using Anamnesis.GameData.Excel;
 using Anamnesis.Memory;
-using Anamnesis.Services;
 using PropertyChanged;
 
 [AddINotifyPropertyChangedInterface]

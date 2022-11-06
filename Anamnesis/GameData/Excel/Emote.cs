@@ -3,7 +3,6 @@
 
 namespace Anamnesis.GameData.Excel;
 
-using Anamnesis.GameData.Interfaces;
 using Anamnesis.GameData.Sheets;
 using Lumina.Data;
 using Lumina.Excel;

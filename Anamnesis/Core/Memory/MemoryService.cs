@@ -11,14 +11,10 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Anamnesis.Core.Memory;
-using Anamnesis.Files;
 using Anamnesis.GUI.Windows;
-using Anamnesis.Keyboard;
 using Anamnesis.Services;
 using Anamnesis.Windows;
-using Microsoft.Win32;
 using PropertyChanged;
 using XivToolsWpf;
 

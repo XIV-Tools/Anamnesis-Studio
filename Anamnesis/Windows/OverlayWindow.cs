@@ -5,7 +5,6 @@ namespace Anamnesis.Windows;
 
 using Anamnesis.Memory;
 using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows;
 

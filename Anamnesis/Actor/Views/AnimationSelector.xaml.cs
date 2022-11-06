@@ -10,10 +10,8 @@ using Anamnesis.GameData.Excel;
 using Anamnesis.GameData.Interfaces;
 using Anamnesis.GameData.Sheets;
 using Anamnesis.Services;
-using Anamnesis.Styles.Drawers;
 using PropertyChanged;
 using XivToolsWpf;
-using XivToolsWpf.Selectors;
 
 /// <summary>
 /// Interaction logic for EquipmentSelector.xaml.

@@ -4,14 +4,12 @@
 namespace Anamnesis.Libraries.Sources;
 using Anamnesis.Files;
 using Anamnesis.Libraries.Items;
-using Anamnesis.Serialization;
 using Anamnesis.Services;
 using Anamnesis.Tags;
 using FontAwesome.Sharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using XivToolsWpf;

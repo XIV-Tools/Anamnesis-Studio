@@ -2,9 +2,6 @@
 // Licensed under the MIT license.
 
 namespace Anamnesis.Libraries.Items;
-
-using System.Threading.Tasks;
-
 public abstract class ItemEntry : EntryBase
 {
 	public string? Author { get; set; } = null;

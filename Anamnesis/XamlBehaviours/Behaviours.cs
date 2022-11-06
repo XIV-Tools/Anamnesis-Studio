@@ -3,7 +3,6 @@
 
 namespace Anamnesis;
 
-using Anamnesis.Navigation;
 using Anamnesis.Services;
 using Anamnesis.XamlBehaviours;
 using System.ComponentModel;

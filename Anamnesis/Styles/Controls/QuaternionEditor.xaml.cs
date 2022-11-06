@@ -14,7 +14,6 @@ using Anamnesis.Keyboard;
 using Anamnesis.Memory;
 using Anamnesis.Services;
 using PropertyChanged;
-using XivToolsWpf;
 using XivToolsWpf.DependencyProperties;
 using XivToolsWpf.Meida3D;
 using XivToolsWpf.Meida3D.Lines;

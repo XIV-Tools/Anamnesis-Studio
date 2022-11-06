@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Anamnesis.Extensions;
-using Anamnesis.Services;
 using PropertyChanged;
 
 /// <summary>

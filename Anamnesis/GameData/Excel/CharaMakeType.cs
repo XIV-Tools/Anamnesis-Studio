@@ -5,15 +5,11 @@ namespace Anamnesis.GameData.Excel;
 
 using Anamnesis.Actor.Utilities;
 using Anamnesis.GameData.Sheets;
-using Anamnesis.Libraries.Items;
 using Anamnesis.Memory;
 using Anamnesis.Services;
 using Lumina.Data;
 using Lumina.Excel;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Windows.Documents;
 using ExcelRow = Anamnesis.GameData.Sheets.ExcelRow;
 using LuminaData = Lumina.GameData;
 

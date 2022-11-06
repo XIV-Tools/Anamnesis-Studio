@@ -15,188 +15,213 @@
 		x:Name="ContentArea"
 		Margin="3">
 
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition />
-		</Grid.ColumnDefinitions>
-
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
+			<RowDefinition />
 		</Grid.RowDefinitions>
 
-		<TextBlock
-			Grid.Row="0"
-			Grid.Column="0"
-			Style="{StaticResource Label}"
-			Text="[Character_Shader_SkinColor]" />
-		<CheckBox
-			Grid.Row="0"
-			Grid.Column="1"
-			IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeSkinColor}"
-			Style="{StaticResource XivToolsLockCheckBox}"
-			ToolTip="[Common_FreezeTooltip]" />
-		<controls:RgbColorControl
-			Grid.Row="0"
-			Grid.Column="2"
-			Value="{Binding Actor.ModelObject.ShaderParameters.SkinColor}" />
 
-		<TextBlock
-			Grid.Row="1"
-			Grid.Column="0"
-			Style="{StaticResource Label}"
-			Text="[Character_Shader_SkinGloss]" />
-		<CheckBox
-			Grid.Row="1"
-			Grid.Column="1"
-			IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeSkinGloss}"
-			Style="{StaticResource XivToolsLockCheckBox}"
-			ToolTip="[Common_FreezeTooltip]" />
-		<controls:RgbColorControl
-			Grid.Row="1"
-			Grid.Column="2"
-			Value="{Binding Actor.ModelObject.ShaderParameters.SkinGloss}" />
 
-		<TextBlock
-			Grid.Row="2"
-			Grid.Column="0"
-			Style="{StaticResource Label}"
-			Text="[Character_Shader_MuscleTone]" />
-		<CheckBox
-			Grid.Row="2"
-			Grid.Column="1"
-			IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeMuscleTone}"
-			Style="{StaticResource XivToolsLockCheckBox}"
-			ToolTip="[Common_FreezeTooltip]" />
-		<XivToolsWpf:NumberBox
-			Grid.Row="2"
-			Grid.Column="2"
-			CornerRadius="0,6,6,0"
-			Maximum="10"
-			Minimum="0"
-			Slider="Absolute"
-			Value="{Binding Actor.ModelObject.ShaderParameters.MuscleTone}" />
+		<Grid Grid.Row="1">
 
-		<TextBlock
-			Grid.Row="3"
-			Grid.Column="0"
-			Style="{StaticResource Label}"
-			Text="[Character_Shader_MouthColor]" />
-		<CheckBox
-			Grid.Row="3"
-			Grid.Column="1"
-			IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeMouthColor}"
-			Style="{StaticResource XivToolsLockCheckBox}"
-			ToolTip="[Common_FreezeTooltip]" />
-		<controls:RgbColorControl
-			Grid.Row="3"
-			Grid.Column="2"
-			Value="{Binding Actor.ModelObject.ShaderParameters.MouthColor}" />
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
 
-		<TextBlock
-			Grid.Row="4"
-			Grid.Column="0"
-			Style="{StaticResource Label}"
-			Text="[Character_Shader_HairColor]" />
-		<CheckBox
-			Grid.Row="4"
-			Grid.Column="1"
-			IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeHairColor}"
-			Style="{StaticResource XivToolsLockCheckBox}"
-			ToolTip="[Common_FreezeTooltip]" />
-		<controls:RgbColorControl
-			Grid.Row="4"
-			Grid.Column="2"
-			Value="{Binding Actor.ModelObject.ShaderParameters.HairColor}" />
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
 
-		<TextBlock
-			Grid.Row="5"
-			Grid.Column="0"
-			Style="{StaticResource Label}"
-			Text="[Character_Shader_HairGloss]" />
-		<CheckBox
-			Grid.Row="5"
-			Grid.Column="1"
-			IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeHairGloss}"
-			Style="{StaticResource XivToolsLockCheckBox}"
-			ToolTip="[Common_FreezeTooltip]" />
-		<controls:RgbColorControl
-			Grid.Row="5"
-			Grid.Column="2"
-			Value="{Binding Actor.ModelObject.ShaderParameters.HairGloss}" />
+			<TextBlock
+				Grid.Row="0"
+				Grid.Column="0"
+				Margin="3,3,6,10"
+				Style="{StaticResource Label}"
+				Text="All" />
 
-		<TextBlock
-			Grid.Row="6"
-			Grid.Column="0"
-			Style="{StaticResource Label}"
-			Text="[Character_Shader_HairHighlight]" />
-		<CheckBox
-			Grid.Row="6"
-			Grid.Column="1"
-			IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeHairHighlight}"
-			Style="{StaticResource XivToolsLockCheckBox}"
-			ToolTip="[Common_FreezeTooltip]" />
-		<controls:RgbColorControl
-			Grid.Row="6"
-			Grid.Column="2"
-			Value="{Binding Actor.ModelObject.ShaderParameters.HairHighlight}" />
+			<CheckBox
+				Grid.Row="0"
+				Grid.Column="1"
+				Margin="0,1,0,10"
+				IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeAll}"
+				Style="{StaticResource XivToolsLockCheckBox}" />
 
-		<TextBlock
-			Grid.Row="7"
-			Grid.Column="0"
-			Style="{StaticResource Label}"
-			Text="[Character_Shader_LeftEyeColor]" />
-		<CheckBox
-			Grid.Row="7"
-			Grid.Column="1"
-			IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeLeftEyeColor}"
-			Style="{StaticResource XivToolsLockCheckBox}"
-			ToolTip="[Common_FreezeTooltip]" />
-		<controls:RgbColorControl
-			Grid.Row="7"
-			Grid.Column="2"
-			Value="{Binding Actor.ModelObject.ShaderParameters.LeftEyeColor}" />
+			<TextBlock
+				Grid.Row="1"
+				Grid.Column="0"
+				Style="{StaticResource Label}"
+				Text="[Character_Shader_SkinColor]" />
+			<CheckBox
+				Grid.Row="1"
+				Grid.Column="1"
+				IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeSkinColor}"
+				Style="{StaticResource XivToolsLockCheckBox}"
+				ToolTip="[Common_FreezeTooltip]" />
+			<controls:ColorControl
+				Grid.Row="1"
+				Grid.Column="2"
+				Value="{Binding Actor.ModelObject.ShaderParameters.SkinColor}" />
 
-		<TextBlock
-			Grid.Row="8"
-			Grid.Column="0"
-			Style="{StaticResource Label}"
-			Text="[Character_Shader_RightEyeColor]" />
-		<CheckBox
-			Grid.Row="8"
-			Grid.Column="1"
-			IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeRightEyeColor}"
-			Style="{StaticResource XivToolsLockCheckBox}"
-			ToolTip="[Common_FreezeTooltip]" />
-		<controls:RgbColorControl
-			Grid.Row="8"
-			Grid.Column="2"
-			Value="{Binding Actor.ModelObject.ShaderParameters.RightEyeColor}" />
+			<TextBlock
+				Grid.Row="2"
+				Grid.Column="0"
+				Style="{StaticResource Label}"
+				Text="[Character_Shader_SkinGloss]" />
+			<CheckBox
+				Grid.Row="2"
+				Grid.Column="1"
+				IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeSkinGloss}"
+				Style="{StaticResource XivToolsLockCheckBox}"
+				ToolTip="[Common_FreezeTooltip]" />
+			<controls:ColorControl
+				Grid.Row="2"
+				Grid.Column="2"
+				Value="{Binding Actor.ModelObject.ShaderParameters.SkinGloss}" />
 
-		<TextBlock
-			Grid.Row="9"
-			Grid.Column="0"
-			Style="{StaticResource Label}"
-			Text="[Character_Shader_LimbalRingColor]" />
-		<CheckBox
-			Grid.Row="9"
-			Grid.Column="1"
-			IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeLimbalRingColor}"
-			Style="{StaticResource XivToolsLockCheckBox}"
-			ToolTip="[Common_FreezeTooltip]" />
-		<controls:RgbColorControl
-			Grid.Row="9"
-			Grid.Column="2"
-			Value="{Binding Actor.ModelObject.ShaderParameters.LimbalRingColor}" />
+			<TextBlock
+				Grid.Row="3"
+				Grid.Column="0"
+				Style="{StaticResource Label}"
+				Text="[Character_Shader_MuscleTone]" />
+			<CheckBox
+				Grid.Row="3"
+				Grid.Column="1"
+				IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeMuscleTone}"
+				Style="{StaticResource XivToolsLockCheckBox}"
+				ToolTip="[Common_FreezeTooltip]" />
+			<XivToolsWpf:NumberBox
+				Grid.Row="3"
+				Grid.Column="2"
+				CornerRadius="0,6,6,0"
+				Maximum="10"
+				Minimum="0"
+				Slider="Absolute"
+				Value="{Binding Actor.ModelObject.ShaderParameters.MuscleTone}" />
+
+			<TextBlock
+				Grid.Row="4"
+				Grid.Column="0"
+				Style="{StaticResource Label}"
+				Text="[Character_Shader_MouthColor]" />
+			<CheckBox
+				Grid.Row="4"
+				Grid.Column="1"
+				IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeMouthColor}"
+				Style="{StaticResource XivToolsLockCheckBox}"
+				ToolTip="[Common_FreezeTooltip]" />
+			<controls:ColorControl
+				Grid.Row="4"
+				Grid.Column="2"
+				Value="{Binding Actor.ModelObject.ShaderParameters.MouthColor}" />
+
+			<TextBlock
+				Grid.Row="5"
+				Grid.Column="0"
+				Style="{StaticResource Label}"
+				Text="[Character_Shader_HairColor]" />
+			<CheckBox
+				Grid.Row="5"
+				Grid.Column="1"
+				IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeHairColor}"
+				Style="{StaticResource XivToolsLockCheckBox}"
+				ToolTip="[Common_FreezeTooltip]" />
+			<controls:ColorControl
+				Grid.Row="5"
+				Grid.Column="2"
+				Value="{Binding Actor.ModelObject.ShaderParameters.HairColor}" />
+
+			<TextBlock
+				Grid.Row="6"
+				Grid.Column="0"
+				Style="{StaticResource Label}"
+				Text="[Character_Shader_HairGloss]" />
+			<CheckBox
+				Grid.Row="6"
+				Grid.Column="1"
+				IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeHairGloss}"
+				Style="{StaticResource XivToolsLockCheckBox}"
+				ToolTip="[Common_FreezeTooltip]" />
+			<controls:ColorControl
+				Grid.Row="6"
+				Grid.Column="2"
+				Value="{Binding Actor.ModelObject.ShaderParameters.HairGloss}" />
+
+			<TextBlock
+				Grid.Row="7"
+				Grid.Column="0"
+				Style="{StaticResource Label}"
+				Text="[Character_Shader_HairHighlight]" />
+			<CheckBox
+				Grid.Row="7"
+				Grid.Column="1"
+				IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeHairHighlight}"
+				Style="{StaticResource XivToolsLockCheckBox}"
+				ToolTip="[Common_FreezeTooltip]" />
+			<controls:ColorControl
+				Grid.Row="7"
+				Grid.Column="2"
+				Value="{Binding Actor.ModelObject.ShaderParameters.HairHighlight}" />
+
+			<TextBlock
+				Grid.Row="8"
+				Grid.Column="0"
+				Style="{StaticResource Label}"
+				Text="[Character_Shader_LeftEyeColor]" />
+			<CheckBox
+				Grid.Row="8"
+				Grid.Column="1"
+				IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeLeftEyeColor}"
+				Style="{StaticResource XivToolsLockCheckBox}"
+				ToolTip="[Common_FreezeTooltip]" />
+			<controls:ColorControl
+				Grid.Row="8"
+				Grid.Column="2"
+				Value="{Binding Actor.ModelObject.ShaderParameters.LeftEyeColor}" />
+
+			<TextBlock
+				Grid.Row="9"
+				Grid.Column="0"
+				Style="{StaticResource Label}"
+				Text="[Character_Shader_RightEyeColor]" />
+			<CheckBox
+				Grid.Row="9"
+				Grid.Column="1"
+				IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeRightEyeColor}"
+				Style="{StaticResource XivToolsLockCheckBox}"
+				ToolTip="[Common_FreezeTooltip]" />
+			<controls:ColorControl
+				Grid.Row="9"
+				Grid.Column="2"
+				Value="{Binding Actor.ModelObject.ShaderParameters.RightEyeColor}" />
+
+			<TextBlock
+				Grid.Row="10"
+				Grid.Column="0"
+				Style="{StaticResource Label}"
+				Text="[Character_Shader_LimbalRingColor]" />
+			<CheckBox
+				Grid.Row="10"
+				Grid.Column="1"
+				IsChecked="{Binding Actor.ModelObject.ShaderParameters.FreezeLimbalRingColor}"
+				Style="{StaticResource XivToolsLockCheckBox}"
+				ToolTip="[Common_FreezeTooltip]" />
+			<controls:ColorControl
+				Grid.Row="10"
+				Grid.Column="2"
+				Value="{Binding Actor.ModelObject.ShaderParameters.LimbalRingColor}" />
+		</Grid>
 	</Grid>
 
 </UserControl>

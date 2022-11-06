@@ -18,9 +18,6 @@
 		<converters:MasculineGenderToVisibilityConverter x:Key="mGenderVis" />
 		<converters:MasculineGenderToVisibilityConverter x:Key="fGenderVis" />
 
-		<BooleanToVisibilityConverter x:Key="B2V" />
-		<XivToolsWpfConverters:InvertedBoolToVisibilityConverter x:Key="!B2V" />
-
 		<DataTemplate x:Key="DisplayNameComboBox">
 			<Grid>
 				<TextBlock Text="{Binding DisplayName}" />

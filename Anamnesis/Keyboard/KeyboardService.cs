@@ -7,11 +7,8 @@ using System.Runtime.InteropServices;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 using System.Collections.Generic;
 using Anamnesis.Memory;
-using static Lumina.Data.Parsing.Layer.LayerCommon;
-using System.Reflection.Emit;
 using Anamnesis.Panels;
 using System.Diagnostics;
 

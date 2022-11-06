@@ -8,9 +8,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Anamnesis.Memory;
-using Anamnesis.Actor;
-using Anamnesis.Posing;
-using Serilog;
 
 public class PoseFile : JsonFileBase
 {

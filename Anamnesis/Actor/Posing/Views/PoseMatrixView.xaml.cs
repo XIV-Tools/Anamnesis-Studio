@@ -3,10 +3,8 @@
 
 namespace Anamnesis.Actor.Views;
 
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 /// <summary>
 /// Interaction logic for PoseMatrixPage.xaml.

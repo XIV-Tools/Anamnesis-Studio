@@ -5,8 +5,6 @@ namespace Anamnesis.Services;
 
 using System;
 using System.Threading.Tasks;
-using Anamnesis.Keyboard;
-using Anamnesis.Memory;
 
 public class HistoryService : ServiceBase<HistoryService>
 {

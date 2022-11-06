@@ -6,7 +6,6 @@ namespace Anamnesis.Dialogs;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using Anamnesis.Services;
 using PropertyChanged;
 using XivToolsWpf;
 

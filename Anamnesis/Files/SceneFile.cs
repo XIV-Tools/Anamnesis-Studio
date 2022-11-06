@@ -3,14 +3,9 @@
 
 namespace Anamnesis.Files;
 
-using Anamnesis.Actor;
 using Anamnesis.Memory;
-using Anamnesis.Windows;
-using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 [Serializable]

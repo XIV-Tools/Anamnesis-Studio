@@ -13,12 +13,6 @@
 	d:DesignWidth="800"
 	mc:Ignorable="d">
 
-
-	<UserControl.Resources>
-		<BooleanToVisibilityConverter x:Key="Pose_B2V" />
-		<XivToolsWpf.Converters:InvertedBoolToVisibilityConverter x:Key="Pose_!B2V" />
-	</UserControl.Resources>
-
 	<ScrollViewer
 		Margin="0,22,0,0"
 		HorizontalScrollBarVisibility="Disabled"

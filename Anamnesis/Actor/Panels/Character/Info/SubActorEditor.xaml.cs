@@ -15,7 +15,6 @@ using Anamnesis.GameData;
 using Anamnesis.GameData.Excel;
 using Anamnesis.Memory;
 using Anamnesis.Services;
-using Anamnesis.Styles.Drawers;
 using PropertyChanged;
 using XivToolsWpf;
 using XivToolsWpf.DependencyProperties;
