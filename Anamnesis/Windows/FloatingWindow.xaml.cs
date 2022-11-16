@@ -293,7 +293,14 @@ public partial class FloatingWindow : Window
 		if (!string.IsNullOrEmpty(this.Panel.Title))
 			this.Title = this.Panel.Title;
 
-		this.TitleText.Text = this.Title;
+		string title = this.Title;
+		if (title.StartsWith('['))
+		{
+			title = title.Trim('[', ']');
+			title = LocalizationService.GetLocalizedText(title);
+		}
+
+		this.TitleText.Text = title;
 	}
 
 	// Swallow all keyboard events, as we have the global keyboard hook handling

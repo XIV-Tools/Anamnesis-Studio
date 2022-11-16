@@ -88,7 +88,7 @@ public partial class ActorSelector : UserControl
 			if (this.Selection == null)
 				this.Selection = new();
 
-			this.Selection.SetAddress(basic.Address);
+			this.Selection?.SetAddress(basic.Address);
 		}
 	}
 

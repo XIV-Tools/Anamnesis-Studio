@@ -61,22 +61,22 @@ public class FileService : ServiceBase<FileService>
 				typeof(PoseFile),
 			});
 
-		#pragma warning restore SA1118
+#pragma warning restore SA1118
 
-		if (result.File != null)
+		if (result.Path != null)
 		{
-			await Import(result.File);
+			await Services.Navigation.Navigate(new("ImportFile", result.Path.FullName));
 		}
 	}
 
-	public static async Task Import(FileBase file)
+	/*public static async Task Import(string filePath)
 	{
 		if (file is IUpgradeCharacterFile upgradeFile)
 			file = upgradeFile.Upgrade();
 
 		if (file is CharacterFile characterFile)
 		{
-			await Services.Navigation.Navigate(new("ImportCharacter", file));
+			await Services.Navigation.Navigate(new("ImportFile", file));
 			return;
 		}
 		else if (file is PoseFile poseFile)
@@ -84,7 +84,7 @@ public class FileService : ServiceBase<FileService>
 			await Services.Navigation.Navigate(new("ImportPose", file));
 			return;
 		}
-	}
+	}*/
 
 	public static Task Export()
 	{

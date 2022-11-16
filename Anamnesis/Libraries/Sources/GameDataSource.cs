@@ -118,10 +118,11 @@ public class GameDataSource : LibrarySourceBase
 		public override bool CanOpen => true;
 		public override bool IsType(LibraryFilter.Types type) => type == LibraryFilter.Types.Characters;
 
-		public override async Task Open()
+		public override Task Open()
 		{
-			INpcAppearance? appearance = this.npc.GetAppearance();
-			await App.Services.Navigation.Navigate(new("ImportCharacter", appearance));
+			////INpcAppearance? appearance = this.npc.GetAppearance();
+			////await App.Services.Navigation.Navigate(new("ImportCharacter", appearance));
+			throw new NotImplementedException();
 		}
 	}
 }

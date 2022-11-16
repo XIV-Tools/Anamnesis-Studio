@@ -11,7 +11,7 @@ using XivToolsWpf.Extensions;
 using System.Threading.Tasks;
 using Anamnesis.Windows;
 
-public partial class ImportPosePanel : PanelBase
+public partial class ImportFilePanel : PanelBase
 {
 	public enum Destinations
 	{

@@ -208,8 +208,9 @@ internal class FileSource : LibrarySourceBase
 
 		public override Task Open()
 		{
-			FileBase fileBase = FileService.Load(this.Info, SupportedFiles);
-			return FileService.Import(fileBase);
+			////FileBase fileBase = FileService.Load(this.Info, SupportedFiles);
+			////return FileService.Import(fileBase);
+			throw new NotImplementedException();
 		}
 	}
 

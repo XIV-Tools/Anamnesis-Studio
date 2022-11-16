@@ -7,6 +7,7 @@
 	xmlns:controls="clr-namespace:Anamnesis.Controls"
 	xmlns:controls1="clr-namespace:Anamnesis.Libraries.Controls"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:files="clr-namespace:Anamnesis.Files"
 	xmlns:libraryItems="clr-namespace:Anamnesis.Libraries.Items"
 	xmlns:local="clr-namespace:Anamnesis.Libraries.Panels"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -24,7 +25,7 @@
 		x:Name="ContentArea"
 		Margin="3,0,3,3">
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="200" />
+			<ColumnDefinition Width="262" />
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
 
@@ -110,14 +111,37 @@
 		<Grid
 			Grid.Row="2"
 			Grid.Column="0"
-			Margin="1,1,4,0">
+			Margin="3">
 
-			<Border Style="{StaticResource XivToolsControlBorder}" />
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
 
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+
+			<!--  Thumbnail  -->
 			<Grid
-				x:Name="SidebarBorder"
-				Margin="1"
-				Opacity="0.25">
+				x:Name="ImageBorder"
+				Grid.Row="0"
+				Grid.Column="0"
+				MaxWidth="100"
+				MaxHeight="200"
+				Margin="0,0,0,6"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Top"
+				Visibility="{Binding SelectedEntry.Thumbnail, Converter={StaticResource NotNullToVisibilityConverter}}">
+
+				<Grid.Effect>
+					<DropShadowEffect
+						Opacity="0.5"
+						ShadowDepth="0" />
+				</Grid.Effect>
 
 				<Grid.OpacityMask>
 					<VisualBrush
@@ -128,9 +152,8 @@
 						ViewboxUnits="Absolute">
 						<VisualBrush.Visual>
 							<Border
-								Width="{Binding ActualWidth, ElementName=SidebarBorder}"
-								Height="{Binding ActualHeight, ElementName=SidebarBorder}"
-								Margin="25"
+								Width="{Binding ActualWidth, ElementName=ImageBorder}"
+								Height="{Binding ActualHeight, ElementName=ImageBorder}"
 								Background="Black"
 								BorderBrush="Transparent"
 								BorderThickness="0"
@@ -140,77 +163,31 @@
 				</Grid.OpacityMask>
 
 				<Image
-					Margin="-25"
 					HorizontalAlignment="Center"
 					VerticalAlignment="Center"
 					Source="{Binding SelectedEntry.Thumbnail}"
-					Stretch="UniformToFill">
-					<Image.Effect>
-						<BlurEffect Radius="30" />
-					</Image.Effect>
-				</Image>
+					Stretch="Uniform" />
 
 			</Grid>
 
+			<!--  Info  -->
 			<Grid
-				Margin="6,4,6,3"
-				VerticalAlignment="Top">
-
+				Grid.Row="0"
+				Grid.Column="1"
+				Margin="6,3,3,3">
 				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
 					<RowDefinition />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
 
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition />
 				</Grid.ColumnDefinitions>
-
-				<Grid
-					x:Name="ImageBorder"
-					Grid.Row="0"
-					Grid.ColumnSpan="2"
-					Margin="-4,-3,-4,6">
-
-					<Grid.OpacityMask>
-						<VisualBrush
-							AlignmentX="Left"
-							AlignmentY="Top"
-							Stretch="None"
-							TileMode="None"
-							ViewboxUnits="Absolute">
-							<VisualBrush.Visual>
-								<Border
-									Width="{Binding ActualWidth, ElementName=ImageBorder}"
-									Height="{Binding ActualHeight, ElementName=ImageBorder}"
-									Background="Black"
-									BorderBrush="Transparent"
-									BorderThickness="0"
-									CornerRadius="6, 6, 0, 0" />
-							</VisualBrush.Visual>
-						</VisualBrush>
-					</Grid.OpacityMask>
-
-					<Image
-						HorizontalAlignment="Center"
-						VerticalAlignment="Center"
-						Source="{Binding SelectedEntry.Thumbnail}"
-						Stretch="Uniform" />
-
-				</Grid>
-
-				<ProgressBar
-					Grid.Row="0"
-					Grid.ColumnSpan="2"
-					Height="2"
-					Margin="-6,0"
-					VerticalAlignment="Bottom"
-					IsIndeterminate="True"
-					Visibility="{Binding SelectedEntry.Source.IsLoading, Converter={StaticResource B2V}, FallbackValue=Collapsed}" />
 
 				<TextBlock
 					Grid.Row="1"
@@ -259,39 +236,70 @@
 					Grid.Column="1"
 					Text="{Binding SelectedEntry.Version}"
 					Visibility="{Binding SelectedEntry.Version, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
-
-				<ItemsControl
-					Grid.Row="5"
-					Grid.ColumnSpan="2"
-					Margin="-3,6,-3,-3"
-					ItemsSource="{Binding SelectedEntry.Actions}">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<WrapPanel Orientation="Horizontal" />
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<Button
-								Command="{Binding Command}"
-								IsEnabled="{Binding CanExecute}"
-								Style="{StaticResource TransparentButton}">
-								<StackPanel
-									Margin="6"
-									Orientation="Horizontal">
-									<XivToolsWpf:IconBlock
-										Margin="3,0"
-										Icon="{Binding DisplayIcon}" />
-									<TextBlock
-										Margin="3,0"
-										Text="{Binding Display}" />
-								</StackPanel>
-							</Button>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
 			</Grid>
+
+			<ProgressBar
+				Grid.Row="1"
+				Grid.ColumnSpan="2"
+				Height="2"
+				Margin="-6,0"
+				VerticalAlignment="Bottom"
+				IsIndeterminate="True"
+				Visibility="{Binding SelectedEntry.Source.IsLoading, Converter={StaticResource B2V}, FallbackValue=Collapsed}" />
+
+
+			<ItemsControl
+				Grid.Row="2"
+				Grid.ColumnSpan="2"
+				Margin="-3,6,-3,-3"
+				ItemsSource="{Binding SelectedEntry.Actions}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel Orientation="Horizontal" />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Button
+							Command="{Binding Command}"
+							IsEnabled="{Binding CanExecute}"
+							Style="{StaticResource TransparentButton}">
+							<StackPanel
+								Margin="6"
+								Orientation="Horizontal">
+								<XivToolsWpf:IconBlock
+									Margin="3,0"
+									Icon="{Binding DisplayIcon}" />
+								<TextBlock
+									Margin="3,0"
+									Text="{Binding Display}" />
+							</StackPanel>
+						</Button>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+
+			<GroupBox
+				Grid.Row="3"
+				Grid.ColumnSpan="2"
+				Width="256"
+				Margin="0"
+				Style="{StaticResource XivToolsGroupBox}">
+
+				<GroupBox.Header>
+					<CheckBox
+						Width="128"
+						Content="Live Preview"
+						IsChecked="True" />
+				</GroupBox.Header>
+
+				<files:CharacterFileImporter Margin="-3,0,0,-3" />
+			</GroupBox>
+
+
+
 		</Grid>
+
 
 
 		<!--  Toolbar  -->

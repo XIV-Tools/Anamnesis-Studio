@@ -33,6 +33,7 @@ public class CharacterFile : JsonFileBase
 
 	public override string FileExtension => ".chara";
 	public override string TypeName => "Anamnesis Character File";
+	public override Type? GetImporterType => typeof(CharacterFileImporter);
 
 	public SaveModes SaveMode { get; set; } = SaveModes.All;
 

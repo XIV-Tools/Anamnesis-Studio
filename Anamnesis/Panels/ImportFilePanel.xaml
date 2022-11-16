@@ -1,5 +1,5 @@
 ﻿<local:PanelBase
-	x:Class="Anamnesis.Panels.ImportCharacterPanel"
+	x:Class="Anamnesis.Panels.ImportFilePanel"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:XivToolsWpf="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
@@ -41,7 +41,7 @@
 				Style="{StaticResource InsetPanel}">
 
 				<Image
-					Source="{Binding CharacterFile.ImageSource}"
+					Source="{Binding File.ImageSource}"
 					Stretch="Fill">
 					<Image.Effect>
 						<BlurEffect Radius="20" />
@@ -53,7 +53,7 @@
 			<Border Style="{StaticResource InsetPanel}">
 				<Border.Background>
 					<ImageBrush
-						ImageSource="{Binding CharacterFile.ImageSource}"
+						ImageSource="{Binding File.ImageSource}"
 						Stretch="Uniform" />
 				</Border.Background>
 			</Border>
@@ -72,32 +72,32 @@
 
 				<TextBlock
 					Margin="0,0,0,6"
-					Text="{Binding CharacterFile.Description}"
+					Text="{Binding File.Description}"
 					TextWrapping="Wrap"
-					Visibility="{Binding CharacterFile.Description, Converter={StaticResource NotNullToVisibilityConverter}}" />
+					Visibility="{Binding File.Description, Converter={StaticResource NotNullToVisibilityConverter}}" />
 
 				<StackPanel
 					Orientation="Horizontal"
-					Visibility="{Binding CharacterFile.Author, Converter={StaticResource NotNullToVisibilityConverter}}">
+					Visibility="{Binding File.Author, Converter={StaticResource NotNullToVisibilityConverter}}">
 					<TextBlock
 						Margin="0,0,6,0"
 						Style="{StaticResource Label}"
 						Text="[FileMeta_Author" />
 					<TextBlock
 						FontWeight="SemiBold"
-						Text="{Binding CharacterFile.Author}" />
+						Text="{Binding File.Author}" />
 				</StackPanel>
 
 				<StackPanel
 					Orientation="Horizontal"
-					Visibility="{Binding CharacterFile.Version, Converter={StaticResource NotNullToVisibilityConverter}}">
+					Visibility="{Binding File.Version, Converter={StaticResource NotNullToVisibilityConverter}}">
 					<TextBlock
 						Margin="0,0,6,0"
 						Style="{StaticResource Label}"
 						Text="[FileMeta_Version" />
 					<TextBlock
 						FontWeight="SemiBold"
-						Text="{Binding CharacterFile.Version}" />
+						Text="{Binding File.Version}" />
 				</StackPanel>
 
 			</StackPanel>
@@ -131,74 +131,74 @@
 			<XivToolsWpf:FlagCheckbox
 				Grid.Row="0"
 				Grid.Column="0"
-				Margin="0,0,12,0"
-				Flag="Equipment"
-				Label="Equipment"
+				Flag="Rotation"
+				Label="Rotation"
 				Value="{Binding Mode}" />
-
 			<XivToolsWpf:FlagCheckbox
 				Grid.Row="1"
 				Grid.Column="0"
-				Margin="20,0,12,0"
-				Flag="EquipmentGear"
-				Label="Gear"
+				Flag="Scale"
+				Label="Scale"
 				Value="{Binding Mode}" />
 			<XivToolsWpf:FlagCheckbox
 				Grid.Row="2"
 				Grid.Column="0"
-				Margin="20,0,12,0"
-				Flag="EquipmentAccessories"
-				Label="Accessories"
+				Flag="Position"
+				Label="Position"
 				Value="{Binding Mode}" />
 			<XivToolsWpf:FlagCheckbox
 				Grid.Row="3"
 				Grid.Column="0"
-				Margin="20,0,12,0"
-				Flag="EquipmentWeapons"
-				Label="Weapons"
-				Value="{Binding Mode}" />
-
-			<XivToolsWpf:FlagCheckbox
-				Grid.Row="0"
-				Grid.Column="1"
-				Margin="0,0,12,0"
-				Flag="Appearance"
-				Label="Appearance"
-				Value="{Binding Mode}" />
-			<XivToolsWpf:FlagCheckbox
-				Grid.Row="1"
-				Grid.Column="1"
-				Margin="20,0,12,0"
-				Flag="AppearanceHair"
-				Label="Hair"
-				Value="{Binding Mode}" />
-			<XivToolsWpf:FlagCheckbox
-				Grid.Row="2"
-				Grid.Column="1"
-				Margin="20,0,12,0"
-				Flag="AppearanceFace"
-				Label="Face"
-				Value="{Binding Mode}" />
-			<XivToolsWpf:FlagCheckbox
-				Grid.Row="3"
-				Grid.Column="1"
-				Margin="20,0,12,0"
-				Flag="AppearanceBody"
-				Label="Body"
+				Flag="WorldRotation"
+				Label="World Rotation"
 				Value="{Binding Mode}" />
 			<XivToolsWpf:FlagCheckbox
 				Grid.Row="4"
-				Grid.Column="1"
-				Margin="20,0,12,0"
-				Flag="AppearanceExtended"
-				Label="Extended"
+				Grid.Column="0"
+				Flag="WorldScale"
+				Label="World Scale"
 				Value="{Binding Mode}" />
+
+			<RadioButton
+				Grid.Row="0"
+				Grid.Column="1"
+				IsChecked="{Binding Destination, Converter={StaticResource EnumToBool}, ConverterParameter=Expression}">
+				<TextBlock Text="[Pose_Expression" />
+			</RadioButton>
+
+			<RadioButton
+				Grid.Row="1"
+				Grid.Column="1"
+				IsChecked="{Binding Destination, Converter={StaticResource EnumToBool}, ConverterParameter=Body}">
+				<TextBlock Text="[Pose_Body" />
+			</RadioButton>
+
+			<RadioButton
+				Grid.Row="2"
+				Grid.Column="1"
+				IsChecked="{Binding Destination, Converter={StaticResource EnumToBool}, ConverterParameter=ScalePack}">
+				<TextBlock Text="[Pose_ScalePack" />
+			</RadioButton>
+
+			<RadioButton
+				Grid.Row="3"
+				Grid.Column="1"
+				IsChecked="{Binding Destination, Converter={StaticResource EnumToBool}, ConverterParameter=Selection}">
+				<TextBlock Text="[Pose_Selected" />
+			</RadioButton>
+
+			<RadioButton
+				Grid.Row="4"
+				Grid.Column="1"
+				IsChecked="{Binding Destination, Converter={StaticResource EnumToBool}, ConverterParameter=All}">
+				<TextBlock Text="[Pose_All" />
+			</RadioButton>
+
 		</Grid>
 
 		<Button
 			Grid.Row="3"
 			Grid.Column="1"
-			MinWidth="75"
 			Margin="6"
 			HorizontalAlignment="Right"
 			Click="OnImportClicked"

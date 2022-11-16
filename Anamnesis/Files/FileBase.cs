@@ -24,6 +24,7 @@ public abstract class FileBase
 	[JsonIgnore] public virtual Func<FileSystemInfo, string> GetFilename => (f) => Path.GetFileNameWithoutExtension(f.FullName);
 	[JsonIgnore] public virtual Func<FileSystemInfo, string> GetFullFilename => (f) => Path.GetFileName(f.FullName);
 	[JsonIgnore] public BitmapImage? ImageSource => this.GetImage();
+	[JsonIgnore] public virtual Type? GetImporterType => null;
 
 	public virtual void Serialize(Stream stream)
 	{

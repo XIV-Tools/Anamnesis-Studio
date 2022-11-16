@@ -38,7 +38,7 @@ public partial class GenericDialogPanel : PanelBase
 	public static async Task<bool?> ShowAsync(string message, string title, MessageBoxButton buttons)
 	{
 		DialogInfo info = new(title, message, buttons);
-		GenericDialogPanel? panel = await App.Services.Navigation.Navigate(new("GenericDialog", info)) as GenericDialogPanel;
+		GenericDialogPanel? panel = await App.Services.Panels.Show<GenericDialogPanel>(info);
 
 		if (panel == null)
 			throw new Exception("Failed to open generic dialog");
@@ -61,27 +61,27 @@ public partial class GenericDialogPanel : PanelBase
 		switch (info.Buttons)
 		{
 			case MessageBoxButton.OK:
-				{
-					this.Left = null;
-					this.Right = "OK";
-					break;
-				}
+			{
+				this.Left = null;
+				this.Right = "OK";
+				break;
+			}
 
 			case MessageBoxButton.OKCancel:
-				{
-					this.Left = "Cancel";
-					this.Right = "OK";
-					break;
-				}
+			{
+				this.Left = "Cancel";
+				this.Right = "OK";
+				break;
+			}
 
 			case MessageBoxButton.YesNoCancel: throw new NotImplementedException();
 
 			case MessageBoxButton.YesNo:
-				{
-					this.Left = "No";
-					this.Right = "Yes";
-					break;
-				}
+			{
+				this.Left = "No";
+				this.Right = "Yes";
+				break;
+			}
 		}
 	}
 

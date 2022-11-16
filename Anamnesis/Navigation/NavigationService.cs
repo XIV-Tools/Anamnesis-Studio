@@ -24,8 +24,7 @@ public class NavigationService : ServiceBase<NavigationService>
 		{ "Posing", typeof(PosingPanel) },
 		{ "Bones", typeof(BonesPanel) },
 		{ "BoneTransform", typeof(BoneTransformPanel) },
-		{ "ImportCharacter", typeof(ImportCharacterPanel) },
-		{ "ImportPose", typeof(ImportPosePanel) },
+		{ "ImportFile", typeof(ImportFilePanel) },
 		{ "Library", typeof(LibraryPanel) },
 	};
 
@@ -51,20 +50,11 @@ public class NavigationService : ServiceBase<NavigationService>
 
 	public struct Request
 	{
-		public object? Origin;
 		public string Destination;
-		public object? Context;
+		public string? Context;
 
-		public Request(object origin, string destination, object? context = null)
+		public Request(string destination, string? context = null)
 		{
-			this.Origin = origin;
-			this.Destination = destination;
-			this.Context = context;
-		}
-
-		public Request(string destination, object? context = null)
-		{
-			this.Origin = null;
 			this.Destination = destination;
 			this.Context = context;
 		}
@@ -74,23 +64,17 @@ public class NavigationService : ServiceBase<NavigationService>
 		/// </summary>
 		public async Task<PanelBase?> Navigate() => await Services.Navigation.Navigate(this);
 
-		public PanelBase? GetOriginPanel()
-		{
-			if (this.Origin is PanelBase panel)
-				return panel;
-
-			if (this.Origin is FrameworkElement fe)
-				return fe.FindParent<PanelBase>();
-
-			return null;
-		}
-
 		public readonly override string? ToString()
 		{
 			if (this.Context != null)
-				return $"{this.Destination} - {this.Context}";
+				return $"Anamnesis://{this.Destination}/{this.Context}";
 
-			return this.Destination;
+			return $"Anamnesis://{this.Destination}";
+		}
+
+		public void Parse(string str)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

@@ -34,7 +34,7 @@ public static class Behaviours
 	{
 		host.Click += (s, e) =>
 		{
-			App.Services.Navigation.Navigate(new(host, destination)).Run();
+			App.Services.Navigation.Navigate(new(destination)).Run();
 		};
 	}
 
