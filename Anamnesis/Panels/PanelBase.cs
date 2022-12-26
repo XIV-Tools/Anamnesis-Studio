@@ -89,7 +89,7 @@ public abstract class PanelBase : UserControl, INotifyPropertyChanged
 
 	public void DragMove() => this.Window.DragMove();
 
-	public void Close()
+	public virtual void Close()
 	{
 		this.IsOpen = false;
 		this.Services.Panels.OnPanelClosed(this);

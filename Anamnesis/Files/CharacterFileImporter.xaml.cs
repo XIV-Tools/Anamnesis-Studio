@@ -5,14 +5,24 @@ namespace Anamnesis.Files;
 
 using System;
 using System.Threading.Tasks;
+using System.Windows;
 
 public partial class CharacterFileImporter : ActorFileImporterBase
 {
 	private CharacterFile? characterBackup;
+	private CharacterFile.SaveModes mode = CharacterFile.SaveModes.All;
 
 	public CharacterFile File => (CharacterFile)this.BaseFile!;
 
-	public CharacterFile.SaveModes Mode { get; set; } = CharacterFile.SaveModes.All;
+	public CharacterFile.SaveModes Mode
+	{
+		get => this.mode;
+		set
+		{
+			this.mode = value;
+			this.OnConfigurationChanged();
+		}
+	}
 
 	public override bool CanRevert => base.CanRevert && this.characterBackup != null;
 
@@ -28,6 +38,8 @@ public partial class CharacterFileImporter : ActorFileImporterBase
 		}
 
 		await this.File.Apply(this.Actor, this.Mode);
+
+		this.RaisePropertyChanged(nameof(this.CanRevert));
 	}
 
 	public override async Task Revert()
@@ -39,5 +51,7 @@ public partial class CharacterFileImporter : ActorFileImporterBase
 
 		await this.characterBackup.Apply(this.Actor, CharacterFile.SaveModes.All);
 		this.characterBackup = null;
+
+		this.RaisePropertyChanged(nameof(this.CanRevert));
 	}
 }

@@ -10,6 +10,8 @@
 	"Common_OpenDir": "Open",
 	"Common_Enable": "Enable",
 	"Common_Disable": "Disable",
+	"Common_Apply": "Apply",
+	"Common_Revert": "Revert",
 	"Common_Back": "Back",
 	"Common_None": "None",
 	"Common_All": "All",
@@ -164,6 +166,7 @@
 	"Library_ListView": "Show entries as a list",
 	"Library_DirectoryView": "Show directories",
 	"Library_FlattenView": "Show all items in all subdirectories",
+	"Library_LivePreviewTooltip": "Live Preview - Temporarily apply files while they are selected",
 
 	"Library_GameData_Author": "Square Enix - FFXIV",
 	"Library_GameData_Named": "Named",

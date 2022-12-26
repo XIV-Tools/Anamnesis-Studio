@@ -55,6 +55,9 @@ public abstract class ActorFileImporterBase : FileImporterBase
 			{
 				await this.Apply(true);
 			}
+
+			this.RaisePropertyChanged(nameof(this.CanApply));
+			this.RaisePropertyChanged(nameof(this.CanRevert));
 		}
 		catch (Exception ex)
 		{

@@ -17,6 +17,7 @@ using System.Windows.Input;
 using XivToolsWpf;
 using XivToolsWpf.Extensions;
 using XivToolsWpf.Selectors;
+
 using static Anamnesis.Libraries.Sources.FileSource;
 
 public partial class LibraryPanel : PanelBase, IFilterable
@@ -24,6 +25,7 @@ public partial class LibraryPanel : PanelBase, IFilterable
 	private readonly DirectoryEntry rootDir = new();
 	private EntryBase? selectedEntry;
 	private bool selectionChanging = false;
+	private bool livePreview;
 
 	public LibraryPanel()
 		: base()
@@ -37,7 +39,16 @@ public partial class LibraryPanel : PanelBase, IFilterable
 	public FastObservableCollection<EntryBase> Entries { get; init; } = new();
 	public bool ViewList { get; set; } = false;
 	public FileImporterBase? Importer { get; private set; }
-	public bool LivePreview { get; set; }
+
+	public bool LivePreview
+	{
+		get => this.livePreview;
+		set
+		{
+			this.livePreview = value;
+			this.OnSelectionChanged(this.selectedEntry, true).Run();
+		}
+	}
 
 	public EntryBase? SelectedEntry
 	{
@@ -91,6 +102,14 @@ public partial class LibraryPanel : PanelBase, IFilterable
 		return Task.FromResult<IEnumerable<object>>(entries);
 	}
 
+	public override void Close()
+	{
+		if (this.LivePreview && this.Importer != null && this.Importer.CanRevert)
+			this.Importer.Revert().Run();
+
+		base.Close();
+	}
+
 	private void GetEntries(DirectoryEntry directory, ref List<EntryBase> results)
 	{
 		results.AddRange(directory.Entries);
@@ -132,7 +151,7 @@ public partial class LibraryPanel : PanelBase, IFilterable
 		this.RaisePropertyChanged(nameof(LibraryPanel.CurrentPath));
 	}
 
-	private async Task OnSelectionChanged(EntryBase? entry)
+	private async Task OnSelectionChanged(EntryBase? entry, bool forceRevertPreview = false)
 	{
 		this.selectionChanging = true;
 
@@ -140,9 +159,9 @@ public partial class LibraryPanel : PanelBase, IFilterable
 
 		try
 		{
-			await this.UpdateImporter(entry);
+			await this.UpdateImporter(entry, forceRevertPreview);
 		}
-		catch(Exception ex)
+		catch (Exception ex)
 		{
 			this.Log.Error(ex, "Failed to update importer for library panel");
 		}
@@ -150,18 +169,15 @@ public partial class LibraryPanel : PanelBase, IFilterable
 		this.selectionChanging = false;
 	}
 
-	private async Task UpdateImporter(EntryBase? entry)
+	private async Task UpdateImporter(EntryBase? entry, bool forceRevert)
 	{
 		// If we have an active importer, and we are about to change to a new type, do a revert.
 		// otherwise, don't revert.
-		if (this.Importer != null && this.Importer.CanRevert && this.Importer.GetType() != entry?.ImporterType)
+		if (this.Importer != null && this.Importer.CanRevert && (this.Importer.GetType() != entry?.ImporterType || forceRevert))
 			await this.Importer.Revert();
 
-		if (entry == null)
-		{
-			this.Importer = null;
+		if (entry == null || entry.ImporterType == null)
 			return;
-		}
 
 		if (this.Importer?.GetType() != entry.ImporterType)
 		{
@@ -205,10 +221,22 @@ public partial class LibraryPanel : PanelBase, IFilterable
 
 	private void OnDirectorySelected(object sender, RoutedEventArgs e)
 	{
-		if(sender is Button btn && btn.DataContext is DirectoryEntry directory)
+		if (sender is Button btn && btn.DataContext is DirectoryEntry directory)
 		{
 			this.Filter.CurrentDirectory = directory;
 			this.RaisePropertyChanged(nameof(LibraryPanel.CurrentPath));
 		}
+	}
+
+	private void OnRevertClicked(object sender, RoutedEventArgs e)
+	{
+		this.LivePreview = false;
+		this.Importer?.Revert().Run();
+	}
+
+	private void OnApplyClicked(object sender, RoutedEventArgs e)
+	{
+		this.LivePreview = false;
+		this.Importer?.Apply(false).Run();
 	}
 }

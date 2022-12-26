@@ -25,8 +25,8 @@
 		x:Name="ContentArea"
 		Margin="3,0,3,3">
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="262" />
 			<ColumnDefinition />
+			<ColumnDefinition Width="256" />
 		</Grid.ColumnDefinitions>
 
 		<Grid.RowDefinitions>
@@ -110,8 +110,8 @@
 		<!--  Sidebar  -->
 		<Grid
 			Grid.Row="2"
-			Grid.Column="0"
-			Margin="3">
+			Grid.Column="1"
+			Margin="3,0,0,0">
 
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
@@ -132,16 +132,10 @@
 				Grid.Column="0"
 				MaxWidth="100"
 				MaxHeight="200"
-				Margin="0,0,0,6"
+				Margin="2,2,0,6"
 				HorizontalAlignment="Center"
 				VerticalAlignment="Top"
 				Visibility="{Binding SelectedEntry.Thumbnail, Converter={StaticResource NotNullToVisibilityConverter}}">
-
-				<Grid.Effect>
-					<DropShadowEffect
-						Opacity="0.5"
-						ShadowDepth="0" />
-				</Grid.Effect>
 
 				<Grid.OpacityMask>
 					<VisualBrush
@@ -279,26 +273,68 @@
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 
-			<!--  Live preview panel  -->
-			<GroupBox
+			<!--  Import panel  -->
+			<Grid
 				Grid.Row="3"
 				Grid.ColumnSpan="2"
-				Width="256"
-				Margin="0"
-				Style="{StaticResource XivToolsGroupBox}">
+				Visibility="{Binding Importer, Converter={StaticResource NotNullToVisibilityConverter}}">
 
-				<GroupBox.Header>
-					<CheckBox
-						Width="128"
-						Content="Live Preview"
-						IsChecked="{Binding LivePreview}" />
-				</GroupBox.Header>
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
 
 				<ContentPresenter
-					Margin="-3,0,0,-3"
+					Grid.Row="0"
+					Grid.ColumnSpan="2"
+					Margin="-3,0,0,3"
 					Content="{Binding Importer}" />
-				<!--  ="{Binding LivePreview, Converter={StaticResource B2V}}" />  -->
-			</GroupBox>
+
+				<Button
+					Grid.Row="1"
+					Grid.Column="0"
+					Click="OnRevertClicked"
+					Content="[Common_Revert]"
+					IsEnabled="{Binding Importer.CanRevert}" />
+
+				<Grid
+					Grid.Row="1"
+					Grid.Column="1">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+
+					<Border
+						Grid.ColumnSpan="2"
+						Margin="1"
+						Style="{StaticResource XivToolsControlBorder}" />
+
+					<ToggleButton
+						Grid.Column="0"
+						Background="Transparent"
+						IsChecked="{Binding LivePreview}"
+						Style="{StaticResource XivToolsToggleButton}"
+						ToolTip="[Library_LivePreviewTooltip]">
+						<XivToolsWpf:IconBlock
+							Margin="2,0"
+							Icon="Sync" />
+					</ToggleButton>
+
+					<Button
+						Grid.Column="1"
+						Background="Transparent"
+						Click="OnApplyClicked"
+						Content="[Common_Apply]"
+						IsEnabled="{Binding Importer.CanApply}" />
+				</Grid>
+			</Grid>
+
 		</Grid>
 
 		<!--  Toolbar  -->
@@ -461,13 +497,13 @@
 
 		<Border
 			Grid.Row="3"
-			Grid.Column="1"
+			Grid.Column="0"
 			Style="{StaticResource XivToolsControlBorder}" />
 
 		<!--  Icon Grid  -->
 		<ListBox
 			Grid.Row="3"
-			Grid.Column="1"
+			Grid.Column="0"
 			Margin="0,1,1,1"
 			ana:Behaviours.SmoothScroll="True"
 			Background="Transparent"

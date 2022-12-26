@@ -9,6 +9,7 @@ using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using XivToolsWpf.Extensions;
 
 [AddINotifyPropertyChangedInterface]
 public abstract class FileImporterBase : UserControl, INotifyPropertyChanged
@@ -53,18 +54,36 @@ public abstract class FileImporterBase : UserControl, INotifyPropertyChanged
 		return Task.CompletedTask;
 	}
 
+	protected void OnConfigurationChanged()
+	{
+		this.HandleConfigurationChange().Run();
+	}
+
 	protected void SetFile(FileBase? file)
 	{
 		this.baseFile = file;
 		this.RaisePropertyChanged(nameof(this.BaseFile));
+		this.RaisePropertyChanged(nameof(this.CanApply));
+		this.RaisePropertyChanged(nameof(this.CanRevert));
 
 		// Small hack: raise a property changed for a property 'File' that we don't have yet,
 		// as its almost asuredly used by our derrived type for the specific file type.
-		this.PropertyChanged?.Invoke(this, new("File"));
+		this.RaisePropertyChanged("File");
 	}
 
 	protected void RaisePropertyChanged(string propertyName)
 	{
 		this.PropertyChanged?.Invoke(this, new(propertyName));
+	}
+
+	private async Task HandleConfigurationChange()
+	{
+		if (this.CanRevert)
+			await this.Revert();
+
+		if (this.CanApply && this.LivePreview)
+		{
+			await this.Apply(true);
+		}
 	}
 }
