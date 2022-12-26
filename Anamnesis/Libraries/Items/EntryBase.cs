@@ -3,6 +3,7 @@
 
 namespace Anamnesis.Libraries.Items;
 
+using Anamnesis.Files;
 using Anamnesis.Tags;
 using FontAwesome.Sharp;
 using PropertyChanged;
@@ -33,6 +34,7 @@ public abstract class EntryBase : ITagged, INotifyPropertyChanged
 	public abstract IconChar Icon { get; }
 	public abstract IconChar IconBack { get; }
 	public virtual bool CanOpen => true;
+	public virtual Type? ImporterType => null;
 
 	public bool HasThumbnail => this.Thumbnail != null;
 
@@ -44,7 +46,7 @@ public abstract class EntryBase : ITagged, INotifyPropertyChanged
 	}
 
 	public abstract bool IsType(LibraryFilter.Types type);
-	public abstract Task Open();
+	public abstract Task Open(FileImporterBase? importer = null);
 
 	public virtual bool Search(string[] query)
 	{

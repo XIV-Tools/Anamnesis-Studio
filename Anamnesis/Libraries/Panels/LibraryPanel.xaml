@@ -279,6 +279,7 @@
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 
+			<!--  Live preview panel  -->
 			<GroupBox
 				Grid.Row="3"
 				Grid.ColumnSpan="2"
@@ -290,17 +291,15 @@
 					<CheckBox
 						Width="128"
 						Content="Live Preview"
-						IsChecked="True" />
+						IsChecked="{Binding LivePreview}" />
 				</GroupBox.Header>
 
-				<files:CharacterFileImporter Margin="-3,0,0,-3" />
+				<ContentPresenter
+					Margin="-3,0,0,-3"
+					Content="{Binding Importer}" />
+				<!--  ="{Binding LivePreview, Converter={StaticResource B2V}}" />  -->
 			</GroupBox>
-
-
-
 		</Grid>
-
-
 
 		<!--  Toolbar  -->
 		<Grid

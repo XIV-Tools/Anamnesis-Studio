@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Media;
 using XivToolsWpf;
 
@@ -130,6 +131,7 @@ internal class FileSource : LibrarySourceBase
 	{
 		private readonly bool hasThumbnail;
 		private readonly IconChar icon;
+		private readonly Type? importerType;
 
 		public FileItem(FileInfo info, TagCollection tags)
 		{
@@ -145,6 +147,7 @@ internal class FileSource : LibrarySourceBase
 			this.Version = fileBase.Version;
 			this.Type = fileBase.GetType();
 			this.hasThumbnail = !string.IsNullOrEmpty(fileBase.Base64Image);
+			this.importerType = fileBase.ImporterType;
 
 			this.Tags.AddRange(tags);
 
@@ -172,6 +175,7 @@ internal class FileSource : LibrarySourceBase
 
 		public FileInfo Info { get; init; }
 		public Type Type { get; init; }
+		public override Type? ImporterType => this.importerType;
 		public override IconChar Icon => this.icon;
 		public override IconChar IconBack => IconChar.File;
 		public override bool CanOpen => true;
@@ -206,18 +210,38 @@ internal class FileSource : LibrarySourceBase
 			return false;
 		}
 
-		public override Task Open()
+		public override async Task Open(FileImporterBase? importer = null)
 		{
-			////FileBase fileBase = FileService.Load(this.Info, SupportedFiles);
-			////return FileService.Import(fileBase);
-			throw new NotImplementedException();
+			if (importer == null)
+			{
+				if (this.ImporterType == null)
+					return;
+
+				importer = Activator.CreateInstance(this.ImporterType) as FileImporterBase;
+
+				if (importer == null)
+				{
+					throw new Exception($"Failed to create instance of file importer: {this.ImporterType} for library panel");
+				}
+			}
+
+			FileBase fileBase = FileService.Load(this.Info, SupportedFiles);
+			await importer.Initialize(fileBase);
+
+			if (importer.CanApply && importer.LivePreview)
+			{
+				await importer.Apply(true);
+			}
 		}
 	}
 
 	public class BrokenFileItem : ItemEntry
 	{
+		private readonly FileInfo fileInfo;
+
 		public BrokenFileItem(FileInfo info, params string[] tags)
 		{
+			this.fileInfo = info;
 			this.Description = $"Failed to load file: {info.FullName}";
 			this.Name = Path.GetFileNameWithoutExtension(info.Name);
 
@@ -236,9 +260,13 @@ internal class FileSource : LibrarySourceBase
 			return true;
 		}
 
-		public override Task Open()
+		public override Task Open(FileImporterBase? preview = null)
 		{
-			throw new NotSupportedException();
+			if (this.fileInfo.Directory == null)
+				return Task.CompletedTask;
+
+			FileService.OpenDirectory(this.fileInfo.Directory);
+			return Task.CompletedTask;
 		}
 	}
 }

@@ -18,6 +18,9 @@ public abstract class ActorFileImporterBase : FileImporterBase
 		set => this.SetActor(value).Run();
 	}
 
+	public override bool CanApply => base.CanRevert && this.actor != null;
+	public override bool CanRevert => base.CanRevert && this.actor != null;
+
 	public override async Task Apply(bool isPreview)
 	{
 		await base.Apply(isPreview);
@@ -42,14 +45,20 @@ public abstract class ActorFileImporterBase : FileImporterBase
 	{
 		try
 		{
-			await this.Revert();
+			if (this.CanRevert)
+				await this.Revert();
+
 			this.actor = actor;
 			this.RaisePropertyChanged(nameof(this.Actor));
-			await this.Apply(true);
+
+			if (this.CanApply && this.LivePreview)
+			{
+				await this.Apply(true);
+			}
 		}
 		catch (Exception ex)
 		{
-			this.Log.Error("Failed to set actor", ex);
+			this.Log.Error(ex, "Failed to set actor");
 		}
 	}
 }

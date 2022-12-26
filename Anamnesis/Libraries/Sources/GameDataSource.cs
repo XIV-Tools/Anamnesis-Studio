@@ -3,6 +3,7 @@
 
 namespace Anamnesis.Libraries.Sources;
 
+using Anamnesis.Files;
 using Anamnesis.GameData;
 using Anamnesis.Libraries.Items;
 using Anamnesis.Services;
@@ -118,7 +119,7 @@ public class GameDataSource : LibrarySourceBase
 		public override bool CanOpen => true;
 		public override bool IsType(LibraryFilter.Types type) => type == LibraryFilter.Types.Characters;
 
-		public override Task Open()
+		public override Task Open(FileImporterBase? preview = null)
 		{
 			////INpcAppearance? appearance = this.npc.GetAppearance();
 			////await App.Services.Navigation.Navigate(new("ImportCharacter", appearance));

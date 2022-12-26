@@ -83,7 +83,7 @@ public class ActorService : ServiceBase<ActorService>
 
 			await Task.Delay(16);
 
-			if (actor.ObjectKind == ActorTypes.Player)
+			/*if (actor.ObjectKind == ActorTypes.Player)
 			{
 				actor.ObjectKind = ActorTypes.BattleNpc;
 				actor.RenderMode = RenderModes.Unload;
@@ -93,7 +93,7 @@ public class ActorService : ServiceBase<ActorService>
 				actor.ObjectKind = ActorTypes.Player;
 				actor.RenderMode = RenderModes.Draw;
 			}
-			else
+			else*/
 			{
 				actor.RenderMode = RenderModes.Unload;
 				await Task.Delay(75);

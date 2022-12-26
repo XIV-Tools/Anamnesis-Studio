@@ -3,8 +3,11 @@
 
 namespace Anamnesis.Libraries.Panels;
 
+using Anamnesis.Files;
 using Anamnesis.Libraries.Items;
 using Anamnesis.Panels;
+using PropertyChanged;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,11 +17,13 @@ using System.Windows.Input;
 using XivToolsWpf;
 using XivToolsWpf.Extensions;
 using XivToolsWpf.Selectors;
+using static Anamnesis.Libraries.Sources.FileSource;
 
 public partial class LibraryPanel : PanelBase, IFilterable
 {
 	private readonly DirectoryEntry rootDir = new();
 	private EntryBase? selectedEntry;
+	private bool selectionChanging = false;
 
 	public LibraryPanel()
 		: base()
@@ -31,14 +36,18 @@ public partial class LibraryPanel : PanelBase, IFilterable
 	public LibraryFilter Filter { get; init; } = new();
 	public FastObservableCollection<EntryBase> Entries { get; init; } = new();
 	public bool ViewList { get; set; } = false;
+	public FileImporterBase? Importer { get; private set; }
+	public bool LivePreview { get; set; }
 
 	public EntryBase? SelectedEntry
 	{
 		get => this.selectedEntry;
 		set
 		{
-			this.selectedEntry = value;
-			this.OnSelectionChanged(value);
+			if (this.selectionChanging)
+				return;
+
+			this.OnSelectionChanged(value).Run();
 		}
 	}
 
@@ -101,6 +110,8 @@ public partial class LibraryPanel : PanelBase, IFilterable
 		this.Filter.CurrentDirectory = this.Filter.CurrentDirectory?.Parent;
 
 		this.RaisePropertyChanged(nameof(LibraryPanel.CurrentPath));
+
+		this.OnSelectionChanged(null).Run();
 	}
 
 	private async void OnItemDoubleClicked(object sender, MouseButtonEventArgs e)
@@ -111,6 +122,7 @@ public partial class LibraryPanel : PanelBase, IFilterable
 		if (this.SelectedEntry is DirectoryEntry directory)
 		{
 			this.Filter.CurrentDirectory = directory;
+			this.OnSelectionChanged(null).Run();
 		}
 		else if (this.SelectedEntry is ItemEntry item)
 		{
@@ -120,8 +132,57 @@ public partial class LibraryPanel : PanelBase, IFilterable
 		this.RaisePropertyChanged(nameof(LibraryPanel.CurrentPath));
 	}
 
-	private void OnSelectionChanged(EntryBase? entry)
+	private async Task OnSelectionChanged(EntryBase? entry)
 	{
+		this.selectionChanging = true;
+
+		this.selectedEntry = entry;
+
+		try
+		{
+			await this.UpdateImporter(entry);
+		}
+		catch(Exception ex)
+		{
+			this.Log.Error(ex, "Failed to update importer for library panel");
+		}
+
+		this.selectionChanging = false;
+	}
+
+	private async Task UpdateImporter(EntryBase? entry)
+	{
+		// If we have an active importer, and we are about to change to a new type, do a revert.
+		// otherwise, don't revert.
+		if (this.Importer != null && this.Importer.CanRevert && this.Importer.GetType() != entry?.ImporterType)
+			await this.Importer.Revert();
+
+		if (entry == null)
+		{
+			this.Importer = null;
+			return;
+		}
+
+		if (this.Importer?.GetType() != entry.ImporterType)
+		{
+			this.Importer = null;
+
+			if (entry.ImporterType == null)
+				return;
+
+			this.Importer = Activator.CreateInstance(entry.ImporterType) as FileImporterBase;
+
+			if (this.Importer == null)
+			{
+				throw new Exception($"Failed to create instance of file importer: {entry.ImporterType} for library panel");
+			}
+		}
+
+		if (this.Importer != null)
+		{
+			this.Importer.LivePreview = this.LivePreview;
+			await entry.Open(this.Importer);
+		}
 	}
 
 	private void OnTabChanged(object sender, RoutedEventArgs e)

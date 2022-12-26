@@ -3,6 +3,7 @@
 
 namespace Anamnesis.Libraries.Items;
 
+using Anamnesis.Files;
 using FontAwesome.Sharp;
 using PropertyChanged;
 using System;
@@ -35,5 +36,5 @@ public class DirectoryEntry : EntryBase
 		return false;
 	}
 
-	public override Task Open() => throw new NotSupportedException();
+	public override Task Open(FileImporterBase? preview = null) => throw new NotSupportedException();
 }
