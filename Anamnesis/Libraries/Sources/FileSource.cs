@@ -83,9 +83,9 @@ internal class FileSource : LibrarySourceBase
 		}
 	}
 
-	protected DirectoryEntry AddDirectory(DirectoryEntry directory, DirectoryInfo info, TagCollection tags)
+	protected FileDirectoryEntry AddDirectory(DirectoryEntry directory, DirectoryInfo info, TagCollection tags)
 	{
-		DirectoryEntry entry = new();
+		FileDirectoryEntry entry = new(info);
 		entry.Parent = directory;
 		entry.Name = info.Name;
 		entry.Description = info.FullName;
@@ -171,6 +171,8 @@ internal class FileSource : LibrarySourceBase
 			{
 				this.icon = IconChar.Question;
 			}
+
+			this.Actions.Add(new EntryAction("[Library_File_OpenDirectory]", IconChar.Folder, this.OpenContainingDirectory));
 		}
 
 		public FileInfo Info { get; init; }
@@ -233,6 +235,12 @@ internal class FileSource : LibrarySourceBase
 				await importer.Apply(true);
 			}
 		}
+
+		private Task OpenContainingDirectory()
+		{
+			FileService.ShowFileInExplorer(this.Info);
+			return Task.CompletedTask;
+		}
 	}
 
 	public class BrokenFileItem : ItemEntry
@@ -262,10 +270,24 @@ internal class FileSource : LibrarySourceBase
 
 		public override Task Open(FileImporterBase? preview = null)
 		{
-			if (this.fileInfo.Directory == null)
-				return Task.CompletedTask;
+			FileService.ShowFileInExplorer(this.fileInfo);
+			return Task.CompletedTask;
+		}
+	}
 
-			FileService.OpenDirectory(this.fileInfo.Directory);
+	public class FileDirectoryEntry : DirectoryEntry
+	{
+		private readonly DirectoryInfo fileInfo;
+
+		public FileDirectoryEntry(DirectoryInfo info)
+		{
+			this.fileInfo = info;
+			this.Actions.Add(new EntryAction("[Library_File_OpenDirectory]", IconChar.Folder, this.OpenContainingDirectory));
+		}
+
+		private Task OpenContainingDirectory()
+		{
+			FileService.ShowDirectoryInExplorer(this.fileInfo);
 			return Task.CompletedTask;
 		}
 	}

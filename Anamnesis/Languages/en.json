@@ -167,6 +167,7 @@
 	"Library_DirectoryView": "Show directories",
 	"Library_FlattenView": "Show all items in all subdirectories",
 	"Library_LivePreviewTooltip": "Live Preview - Temporarily apply files while they are selected",
+	"Library_File_OpenDirectory": "Open Containing Folder",
 
 	"Library_GameData_Author": "Square Enix - FFXIV",
 	"Library_GameData_Named": "Named",

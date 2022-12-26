@@ -116,60 +116,62 @@
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
+				<RowDefinition Height="6" />
 				<RowDefinition />
 				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto" />
-				<ColumnDefinition />
-			</Grid.ColumnDefinitions>
-
-			<!--  Thumbnail  -->
-			<Grid
-				x:Name="ImageBorder"
+			<TextBlock
 				Grid.Row="0"
-				Grid.Column="0"
-				MaxWidth="100"
-				MaxHeight="200"
-				Margin="2,2,0,6"
-				HorizontalAlignment="Center"
-				VerticalAlignment="Top"
-				Visibility="{Binding SelectedEntry.Thumbnail, Converter={StaticResource NotNullToVisibilityConverter}}">
+				Margin="3,0,0,4"
+				Style="{StaticResource Header}"
+				Text="{Binding SelectedEntry.Name}" />
 
-				<Grid.OpacityMask>
-					<VisualBrush
-						AlignmentX="Left"
-						AlignmentY="Top"
-						Stretch="None"
-						TileMode="None"
-						ViewboxUnits="Absolute">
-						<VisualBrush.Visual>
-							<Border
-								Width="{Binding ActualWidth, ElementName=ImageBorder}"
-								Height="{Binding ActualHeight, ElementName=ImageBorder}"
-								Background="Black"
-								BorderBrush="Transparent"
-								BorderThickness="0"
-								CornerRadius="6" />
-						</VisualBrush.Visual>
-					</VisualBrush>
-				</Grid.OpacityMask>
+			<!--  Actions  -->
+			<Grid Grid.Row="1">
 
-				<Image
-					HorizontalAlignment="Center"
-					VerticalAlignment="Center"
-					Source="{Binding SelectedEntry.Thumbnail}"
-					Stretch="Uniform" />
+				<Border Style="{StaticResource XivToolsControlBorder}" />
 
+				<ItemsControl ItemsSource="{Binding SelectedEntry.Actions}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel Orientation="Horizontal" />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Button
+								Command="{Binding Command}"
+								IsEnabled="{Binding CanExecute}"
+								Style="{StaticResource XivToolsButton}"
+								ToolTip="{Binding Label}">
+
+								<XivToolsWpf:IconBlock
+									Margin="2,0"
+									Icon="{Binding Icon}" />
+
+							</Button>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
 			</Grid>
+
+			<ProgressBar
+				Grid.Row="2"
+				Grid.ColumnSpan="2"
+				Height="2"
+				Margin="3,2"
+				VerticalAlignment="Bottom"
+				IsIndeterminate="True"
+				Visibility="{Binding SelectedEntry.Source.IsLoading, Converter={StaticResource B2V}, FallbackValue=Collapsed}" />
 
 			<!--  Info  -->
 			<Grid
-				Grid.Row="0"
-				Grid.Column="1"
-				Margin="6,3,3,3">
+				Grid.Row="3"
+				Grid.Column="1">
 				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
@@ -180,26 +182,55 @@
 
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition />
 				</Grid.ColumnDefinitions>
 
-				<TextBlock
-					Grid.Row="1"
-					Grid.ColumnSpan="2"
-					Margin="0,-2,0,4"
-					Style="{StaticResource Header}"
-					Text="{Binding SelectedEntry.Name}" />
+				<!--  Thumbnail  -->
+				<Grid
+					x:Name="ImageBorder"
+					Grid.Row="2"
+					Grid.RowSpan="20"
+					Grid.Column="0"
+					MaxWidth="100"
+					MaxHeight="200"
+					Margin="0,3,3,0"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Top"
+					Visibility="{Binding SelectedEntry.Thumbnail, Converter={StaticResource NotNullToVisibilityConverter}}">
 
-				<Separator
-					Grid.Row="1"
-					Grid.ColumnSpan="2"
-					Margin="0,0,0,2"
-					VerticalAlignment="Bottom" />
+					<Grid.OpacityMask>
+						<VisualBrush
+							AlignmentX="Left"
+							AlignmentY="Top"
+							Stretch="None"
+							TileMode="None"
+							ViewboxUnits="Absolute">
+							<VisualBrush.Visual>
+								<Border
+									Width="{Binding ActualWidth, ElementName=ImageBorder}"
+									Height="{Binding ActualHeight, ElementName=ImageBorder}"
+									Background="Black"
+									BorderBrush="Transparent"
+									BorderThickness="0"
+									CornerRadius="6" />
+							</VisualBrush.Visual>
+						</VisualBrush>
+					</Grid.OpacityMask>
+
+					<Image
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						Source="{Binding SelectedEntry.Thumbnail}"
+						Stretch="Uniform" />
+
+				</Grid>
 
 				<TextBlock
 					Grid.Row="2"
+					Grid.Column="1"
 					Grid.ColumnSpan="2"
-					Margin="0,0,0,12"
+					Margin="3,2,0,12"
 					Text="{Binding SelectedEntry.Description}"
 					TextWrapping="Wrap"
 					Visibility="{Binding SelectedEntry.Description, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
@@ -207,75 +238,34 @@
 
 				<TextBlock
 					Grid.Row="3"
-					Grid.Column="0"
-					Margin="0,0,6,0"
+					Grid.Column="1"
+					Margin="3,0,6,0"
 					Style="{StaticResource Label}"
 					Text="[FileMeta_Author"
 					Visibility="{Binding SelectedEntry.Author, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
 				<TextBlock
 					Grid.Row="3"
-					Grid.Column="1"
+					Grid.Column="2"
 					Text="{Binding SelectedEntry.Author}"
 					Visibility="{Binding SelectedEntry.Author, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
 
 				<TextBlock
 					Grid.Row="4"
-					Grid.Column="0"
-					Margin="0,0,6,0"
+					Grid.Column="1"
+					Margin="3,0,6,0"
 					Style="{StaticResource Label}"
 					Text="[FileMeta_Version"
 					Visibility="{Binding SelectedEntry.Version, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
 				<TextBlock
 					Grid.Row="4"
-					Grid.Column="1"
+					Grid.Column="2"
 					Text="{Binding SelectedEntry.Version}"
 					Visibility="{Binding SelectedEntry.Version, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
 			</Grid>
 
-			<ProgressBar
-				Grid.Row="1"
-				Grid.ColumnSpan="2"
-				Height="2"
-				Margin="-6,0"
-				VerticalAlignment="Bottom"
-				IsIndeterminate="True"
-				Visibility="{Binding SelectedEntry.Source.IsLoading, Converter={StaticResource B2V}, FallbackValue=Collapsed}" />
-
-
-			<ItemsControl
-				Grid.Row="2"
-				Grid.ColumnSpan="2"
-				Margin="-3,6,-3,-3"
-				ItemsSource="{Binding SelectedEntry.Actions}">
-				<ItemsControl.ItemsPanel>
-					<ItemsPanelTemplate>
-						<WrapPanel Orientation="Horizontal" />
-					</ItemsPanelTemplate>
-				</ItemsControl.ItemsPanel>
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						<Button
-							Command="{Binding Command}"
-							IsEnabled="{Binding CanExecute}"
-							Style="{StaticResource TransparentButton}">
-							<StackPanel
-								Margin="6"
-								Orientation="Horizontal">
-								<XivToolsWpf:IconBlock
-									Margin="3,0"
-									Icon="{Binding DisplayIcon}" />
-								<TextBlock
-									Margin="3,0"
-									Text="{Binding Display}" />
-							</StackPanel>
-						</Button>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
-
 			<!--  Import panel  -->
 			<Grid
-				Grid.Row="3"
+				Grid.Row="5"
 				Grid.ColumnSpan="2"
 				Visibility="{Binding Importer, Converter={StaticResource NotNullToVisibilityConverter}}">
 

@@ -142,9 +142,14 @@ public class FileService : ServiceBase<FileService>
 		Process.Start(Environment.GetEnvironmentVariable("WINDIR") + @"\explorer.exe", $"\"{dir}\"");
 	}
 
-	public static void OpenDirectory(DirectoryInfo directory)
+	public static void ShowDirectoryInExplorer(DirectoryInfo directory)
 	{
 		Process.Start(Environment.GetEnvironmentVariable("WINDIR") + @"\explorer.exe", $"\"{directory.FullName}\"");
+	}
+
+	public static void ShowFileInExplorer(FileInfo file)
+	{
+		Process.Start(Environment.GetEnvironmentVariable("WINDIR") + @"\explorer.exe", $"/select,\"{file.FullName}\"");
 	}
 
 	public static Task<OpenResult> Open(DirectoryInfo? defaultDirectory, DirectoryInfo shortcut, Type fileType)

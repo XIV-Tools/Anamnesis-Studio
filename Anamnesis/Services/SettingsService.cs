@@ -29,7 +29,7 @@ public class SettingsService : ServiceBase<SettingsService>
 
 	public static void ShowDirectory()
 	{
-		FileService.OpenDirectory(FileService.StoreDirectory);
+		FileService.ShowDirectoryInExplorer(FileService.StoreDirectory);
 	}
 
 	public static void Save()

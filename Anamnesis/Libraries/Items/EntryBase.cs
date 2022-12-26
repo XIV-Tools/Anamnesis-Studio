@@ -67,10 +67,10 @@ public abstract class EntryBase : ITagged, INotifyPropertyChanged
 	[AddINotifyPropertyChangedInterface]
 	public class EntryAction
 	{
-		public EntryAction(string key, IconChar icon, Func<Task> callback, bool canExecute = true)
+		public EntryAction(string label, IconChar icon, Func<Task> callback, bool canExecute = true)
 		{
-			this.DisplayKey = key;
-			this.DisplayIcon = icon;
+			this.Label = label;
+			this.Icon = icon;
 			this.Execute = callback;
 			this.CanExecute = canExecute;
 			this.Command = new SimpleCommand(() => this.Execute().Run(), () => this.CanExecute);
@@ -78,8 +78,8 @@ public abstract class EntryBase : ITagged, INotifyPropertyChanged
 
 		public ICommand Command { get; init; }
 		public Func<Task> Execute { get; init; }
-		public string DisplayKey { get; init; }
-		public IconChar DisplayIcon { get; init; }
+		public string Label { get; init; }
+		public IconChar Icon { get; init; }
 		public bool CanExecute { get; set; }
 	}
 }
