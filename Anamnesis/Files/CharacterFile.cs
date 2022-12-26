@@ -6,7 +6,10 @@ namespace Anamnesis.Files;
 using System;
 using System.Threading.Tasks;
 using Anamnesis.Actor.Utilities;
+using Anamnesis.GameData.Excel;
 using Anamnesis.Memory;
+using Anamnesis.Services;
+using Anamnesis.Tags;
 using Serilog;
 
 [Serializable]
@@ -100,6 +103,39 @@ public class CharacterFile : JsonFileBase
 	public float? Transparency { get; set; }
 	public float? MuscleTone { get; set; }
 	public float? HeightMultiplier { get; set; }
+
+	public override void GenerateTags(TagCollection tags)
+	{
+		base.GenerateTags(tags);
+
+		// Race
+		if (this.Race != null)
+		{
+			Race? race = GameDataService.Instance.Races.Find((byte)this.Race);
+
+			if (race != null)
+			{
+				tags.Add(race.Name);
+			}
+		}
+
+		// Tribe
+		if (this.Tribe != null)
+		{
+			Tribe? tribe = GameDataService.Instance.Tribes.Find((byte)this.Tribe);
+
+			if (tribe != null)
+			{
+				tags.Add(tribe.Name);
+			}
+		}
+
+		// Gender
+		if (this.Gender != null)
+		{
+			tags.Add(((ActorCustomizeMemory.Genders)this.Gender).ToString());
+		}
+	}
 
 	public void WriteToFile(ActorMemory actor, SaveModes mode)
 	{

@@ -79,7 +79,10 @@ internal class FileSource : LibrarySourceBase
 			pack.Name = info.Name;
 			pack.Description = info.FullName;
 			await this.AddPack(pack);
-			this.Populate(pack, info, new());
+
+			TagCollection tags = new();
+
+			this.Populate(pack, info, tags);
 		}
 	}
 
@@ -149,7 +152,10 @@ internal class FileSource : LibrarySourceBase
 			this.hasThumbnail = !string.IsNullOrEmpty(fileBase.Base64Image);
 			this.importerType = fileBase.ImporterType;
 
+			this.Tags.AddRange(fileBase.Tags);
 			this.Tags.AddRange(tags);
+
+			fileBase.GenerateTags(this.Tags);
 
 			if (this.Type == typeof(CharacterFile))
 			{

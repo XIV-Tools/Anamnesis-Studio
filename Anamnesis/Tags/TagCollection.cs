@@ -6,6 +6,8 @@ using System.Collections.Generic;
 
 public class TagCollection : HashSet<Tag>
 {
+	public static readonly TagCollection Empty = new();
+
 	public TagCollection()
 	{
 	}

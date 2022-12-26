@@ -35,6 +35,7 @@ public class SerializerService : ServiceBase<SerializerService>
 		Options.Converters.Add(new MediaColorConverter());
 		Options.Converters.Add(new PointConverter());
 		Options.Converters.Add(new RectConverter());
+		Options.Converters.Add(new TagConverter());
 	}
 
 	public static string Serialize(object obj)

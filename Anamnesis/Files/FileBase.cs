@@ -9,6 +9,7 @@ using System.Text.Json.Serialization;
 using System.Windows.Media.Imaging;
 using Anamnesis.Serialization;
 using Anamnesis.Services;
+using Anamnesis.Tags;
 
 [Serializable]
 public abstract class FileBase
@@ -17,6 +18,7 @@ public abstract class FileBase
 	public string? Description { get; set; }
 	public string? Version { get; set; }
 	public string? Base64Image { get; set; }
+	public TagCollection Tags { get; set; } = new();
 
 	[JsonIgnore] public virtual string TypeName => this.GetType().Name;
 	[JsonIgnore] public abstract string FileExtension { get; }
@@ -64,6 +66,14 @@ public abstract class FileBase
 	public void SetImage(byte[] binaryData)
 	{
 		this.Base64Image = Convert.ToBase64String(binaryData);
+	}
+
+	public virtual void GenerateTags(TagCollection tags)
+	{
+		if (this.Author != null)
+		{
+			tags.Add(this.Author);
+		}
 	}
 }
 

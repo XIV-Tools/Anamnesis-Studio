@@ -186,7 +186,6 @@
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
 					<RowDefinition />
 				</Grid.RowDefinitions>
 
@@ -200,7 +199,7 @@
 				<Grid
 					x:Name="ImageBorder"
 					Grid.Row="2"
-					Grid.RowSpan="20"
+					Grid.RowSpan="6"
 					Grid.Column="0"
 					MaxWidth="100"
 					MaxHeight="200"
@@ -271,6 +270,13 @@
 					Grid.Column="2"
 					Text="{Binding SelectedEntry.Version}"
 					Visibility="{Binding SelectedEntry.Version, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
+
+				<tags:TagList
+					Grid.Row="5"
+					Grid.Column="1"
+					Grid.ColumnSpan="2"
+					Margin="0,3,0,3"
+					Tags="{Binding SelectedEntry.Tags}" />
 			</Grid>
 
 			<!--  Import panel  -->
@@ -293,7 +299,8 @@
 					Grid.Row="0"
 					Grid.ColumnSpan="2"
 					Margin="0,0,0,3"
-					Content="{Binding Importer}" />
+					Content="{Binding Importer}"
+					IsEnabled="{Binding SelectedEntry.ImporterType, Converter={StaticResource NotNullToBoolConverter}}" />
 
 				<Button
 					Grid.Row="1"
@@ -304,7 +311,8 @@
 
 				<Grid
 					Grid.Row="1"
-					Grid.Column="1">
+					Grid.Column="1"
+					IsEnabled="{Binding SelectedEntry.ImporterType, Converter={StaticResource NotNullToBoolConverter}}">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto" />
 						<ColumnDefinition />
