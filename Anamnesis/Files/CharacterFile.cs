@@ -115,7 +115,7 @@ public class CharacterFile : JsonFileBase
 
 			if (race != null)
 			{
-				tags.Add(race.Name);
+				tags.Add(race.DisplayName);
 			}
 		}
 
@@ -126,7 +126,7 @@ public class CharacterFile : JsonFileBase
 
 			if (tribe != null)
 			{
-				tags.Add(tribe.Name);
+				tags.Add(tribe.DisplayName);
 			}
 		}
 
