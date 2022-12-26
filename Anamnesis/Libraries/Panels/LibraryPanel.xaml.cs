@@ -39,6 +39,7 @@ public partial class LibraryPanel : PanelBase, IFilterable
 	public FastObservableCollection<EntryBase> Entries { get; init; } = new();
 	public bool ViewList { get; set; } = false;
 	public FileImporterBase? Importer { get; private set; }
+	public bool IsRunningAction { get; set; } = false;
 
 	public bool LivePreview
 	{
@@ -173,8 +174,17 @@ public partial class LibraryPanel : PanelBase, IFilterable
 	{
 		// If we have an active importer, and we are about to change to a new type, do a revert.
 		// otherwise, don't revert.
-		if (this.Importer != null && this.Importer.CanRevert && (this.Importer.GetType() != entry?.ImporterType || forceRevert))
-			await this.Importer.Revert();
+		if (this.LivePreview && this.Importer != null && this.Importer.CanRevert && (this.Importer.GetType() != entry?.ImporterType || forceRevert))
+		{
+			try
+			{
+				await this.Importer.Revert();
+			}
+			catch (Exception ex)
+			{
+				this.Log.Error(ex, $"Failed to revert importer: {this.Importer.GetType()} for library panel");
+			}
+		}
 
 		if (entry == null || entry.ImporterType == null)
 			return;
@@ -231,12 +241,48 @@ public partial class LibraryPanel : PanelBase, IFilterable
 	private void OnRevertClicked(object sender, RoutedEventArgs e)
 	{
 		this.LivePreview = false;
-		this.Importer?.Revert().Run();
+
+		if (this.Importer == null)
+			return;
+
+		Task.Run(async () =>
+		{
+			this.IsRunningAction = true;
+
+			try
+			{
+				await this.Importer.Revert();
+			}
+			catch (Exception ex)
+			{
+				this.Log.Error(ex, "Failed to apply file importer");
+			}
+
+			this.IsRunningAction = false;
+		});
 	}
 
 	private void OnApplyClicked(object sender, RoutedEventArgs e)
 	{
 		this.LivePreview = false;
-		this.Importer?.Apply(false).Run();
+
+		if (this.Importer == null)
+			return;
+
+		Task.Run(async () =>
+		{
+			this.IsRunningAction = true;
+
+			try
+			{
+				await this.Importer.Apply(false);
+			}
+			catch (Exception ex)
+			{
+				this.Log.Error(ex, "Failed to apply file importer");
+			}
+
+			this.IsRunningAction = false;
+		});
 	}
 }

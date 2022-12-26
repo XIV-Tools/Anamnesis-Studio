@@ -32,6 +32,7 @@ public class PoseFile : JsonFileBase
 
 	public override string FileExtension => ".pose";
 	public override string TypeName => "Anamnesis Pose";
+	public override Type? ImporterType => typeof(PoseFileImporter);
 
 	public Vector? Position { get; set; }
 	public Quaternion? Rotation { get; set; }
