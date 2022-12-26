@@ -8,6 +8,7 @@
 	xmlns:local="clr-namespace:Anamnesis.Controls"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:xivToolsWpfSelectors="clr-namespace:XivToolsWpf.Selectors;assembly=XivToolsWpf"
+	Margin="3"
 	Loaded="OnLoaded"
 	mc:Ignorable="d">
 
@@ -20,20 +21,19 @@
 
 		<Border
 			Grid.Column="0"
-			Margin="3"
+			Margin="0,0,3,0"
 			CornerRadius="6,0,0,6"
 			Style="{StaticResource XivToolsControlBorder}" />
 
 		<Border
 			Grid.Column="1"
-			Margin="0,3,3,3"
 			CornerRadius="0,6,6,0"
 			Style="{StaticResource XivToolsControlBorder}" />
 
 		<ToggleButton
 			x:Name="SelectorButton"
 			Grid.Column="0"
-			Margin="3"
+			Margin="0,0,3,0"
 			Background="Transparent"
 			Click="OnClicked"
 			Style="{StaticResource XivToolsComboBoxButton}">
@@ -44,7 +44,6 @@
 		<ToggleButton
 			Grid.Column="1"
 			Width="28"
-			Margin="0,3,3,3"
 			ana:Behaviours.Tooltip="Target_Sync"
 			Background="Transparent"
 			IsChecked="{Binding SyncTarget}"
@@ -191,10 +190,10 @@
 											Text="{Binding Names.Text}" />
 
 										<TextBlock
-											Text="[Target_Gpose"
 											Margin="6,0,0,0"
 											FontWeight="Light"
 											Foreground="{DynamicResource ForegroundBrush}"
+											Text="[Target_Gpose"
 											Visibility="{Binding IsGPoseActor, Converter={StaticResource B2V}}" />
 									</StackPanel>
 

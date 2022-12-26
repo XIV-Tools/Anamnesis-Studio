@@ -282,7 +282,7 @@
 				<ContentPresenter
 					Grid.Row="0"
 					Grid.ColumnSpan="2"
-					Margin="-3,0,0,3"
+					Margin="0,0,0,3"
 					Content="{Binding Importer}" />
 
 				<Button
