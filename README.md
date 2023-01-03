@@ -1,6 +1,6 @@
-# Anamnesis Studio is in Alpha development. For end-users, please continue to use Anamnesis:
+Anamnesis Studio is in Alpha development. For end-users, please continue to use Anamnesis:
 https://github.com/imchillin/Anamnesis
-# [![Anamnesis](ArtSource/DownloadButton.png "Download Releases")](https://github.com/imchillin/Anamnesis/releases)
+[![Anamnesis](ArtSource/DownloadButton.png "Download Releases")](https://github.com/imchillin/Anamnesis/releases)
 
 
 # Anamnesis Studio
