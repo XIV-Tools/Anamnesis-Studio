@@ -4,8 +4,6 @@ https://github.com/imchillin/Anamnesis
 
 
 # Anamnesis Studio
-![Anamnesis](Anamnesis/Assets/Anamnesis.png "Anamnesis")
-
 Anamnesis Studio is a standalone tool that is used to modify certain clientside-only values and allow the user a greater degree of flexibility for making creative and interesting screenshots. In short, this tool allows its users to temporarily change their race, gender, looks, equipment, etc. in game without actually making any changes visible to other players. This tool also allows users to create their own poses. 
 
 Anamnesis Studio is the successor to  [Anamnesis](https://github.com/imchillin/Anamnesis) and [Concept Matrix (CMTool)](https://github.com/imchillin/CMTool).
