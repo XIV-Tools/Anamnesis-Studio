@@ -11,10 +11,6 @@ Anamnesis Studio is a standalone tool that is used to modify certain clientside-
 Anamnesis Studio is the successor to  [Anamnesis](https://github.com/imchillin/Anamnesis) and [Concept Matrix (CMTool)](https://github.com/imchillin/CMTool).
 ![Studio](https://user-images.githubusercontent.com/379714/210293190-9783a6b1-d2e0-4937-9d0b-2bdc3b06ea19.jpg)
 
-
-
-We actively encourage people to contribute to the project with their forks to improve the tool overall. With this said, we are **not** supporting builds done via forks and, if you've received a release of the tool from any repo that isn't [XIV-Tools/Anamnesis-Studio](https://github.com/XIV-Tools/Anamnesis-Studio), you are encouraged to bring the issue up with the person who packaged the build, as it will inevitably contain code we're unfamiliar with.
-
 ## Getting Started
 
 ### Prerequisites
@@ -31,24 +27,24 @@ Make sure to check out the included [wiki](https://github.com/XIV-Tools/Anamnesi
 
 ## Authors
 
-* **[Yuki](https://github.com/Yuki-Walsh)** - *Main development*
-* **[Ani-ki](https://github.com/Ani-ki)** - *Project management, code contributions and wiki curating* 
-* **[Peebs-miqo](https://github.com/Peebs-miqo)** - *Wiki and tip curating* 
-* **[AsgardXIV](https://github.com/AsgardXIV)** - *Animation god*
+* **[Yuki](https://github.com/Yuki-Walsh)**
+* **[Ani-ki](https://github.com/Ani-ki)**
+* **[Peebs-miqo](https://github.com/Peebs-miqo)**
+* **[AsgardXIV](https://github.com/AsgardXIV)**
 
-## God Tier Contributing Developers
+### God Tier Contributing Developers
 
 * **[HoloWise](https://github.com/HoloWise)**
 * **[SoyaX](https://github.com/SoyaX)**
 * **[Reyli](https://github.com/Reyli)**
 
-## Community Developers
+### Community Developers
 
 * **[JKAnderson](https://github.com/JKAnderson)**
 * **[ajiiisai](https://github.com/ajiiisai)**
 * **[goaaats](https://github.com/goaaats)**
 
-## Translations
+### Translations
 * **[Maxunit](https://github.com/Maxunit)** - *German* 
 * **[Arianishka](https://github.com/Arianishka)** - *French*
 * **[wozaiha](https://github.com/wozaiha)** - *Chinese*
@@ -67,5 +63,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 The work by the following people laid the foundation for Anamnesis Studio:
 
 * Special thanks to PerchBird for extensive research into game memory structure and Havok skeletons in-game.
-* Special thanks to those who have worked on all iterations of Concept Matrix and SSTool, the foundation Anamnesis is built on.
+* Special thanks to those who have worked on all iterations of Anamnesis, Concept Matrix, and SSTool.
 * Special thanks to those who have contributed via pull requests.
