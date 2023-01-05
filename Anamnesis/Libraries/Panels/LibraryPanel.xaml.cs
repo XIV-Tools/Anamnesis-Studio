@@ -10,6 +10,7 @@ using PropertyChanged;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,6 +34,8 @@ public partial class LibraryPanel : PanelBase, IFilterable
 		this.rootDir.Name = "[Library_Root]";
 		this.Filter.Filterable = this;
 		this.Filter.CurrentDirectory = this.rootDir;
+
+		this.Services.Library.Packs.CollectionChanged += this.OnLibraryPacksChanged;
 	}
 
 	public LibraryFilter Filter { get; init; } = new();
@@ -122,6 +125,11 @@ public partial class LibraryPanel : PanelBase, IFilterable
 				this.GetEntries(subDirectory, ref results);
 			}
 		}
+	}
+
+	private void OnLibraryPacksChanged(object? sender, NotifyCollectionChangedEventArgs e)
+	{
+		this.Filter.Run();
 	}
 
 	private void OnBackClicked(object sender, RoutedEventArgs e)
