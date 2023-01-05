@@ -19,15 +19,6 @@ public partial class SettingsPanel : PanelBase
 	public SettingsPanel()
 		: base()
 	{
-		List<double> sizes = new List<double>();
-		sizes.Add(0.75);
-		sizes.Add(1.0);
-		sizes.Add(1.25);
-		sizes.Add(1.5);
-		sizes.Add(1.75);
-		sizes.Add(2.0);
-		this.SizeSelector.ItemsSource = sizes;
-
 		List<FontOption> fonts = new();
 		foreach (Settings.Fonts font in Enum.GetValues<Settings.Fonts>())
 		{
@@ -141,26 +132,11 @@ public partial class SettingsPanel : PanelBase
 		SettingsService.Current.DefaultSceneDirectory = FileService.ParseFromFilePath(dlg.SelectedPath);
 	}
 
-	private void OnBrowseGallery(object sender, RoutedEventArgs e)
-	{
-		FolderBrowserDialog dlg = new FolderBrowserDialog();
-
-		if (SettingsService.Current.GalleryDirectory != null)
-			dlg.SelectedPath = FileService.ParseToFilePath(SettingsService.Current.GalleryDirectory);
-
-		DialogResult result = dlg.ShowDialog();
-
-		if (result != DialogResult.OK)
-			return;
-
-		SettingsService.Current.GalleryDirectory = FileService.ParseFromFilePath(dlg.SelectedPath);
-	}
-
 	public class FontOption
 	{
 		public FontOption(Settings.Fonts font)
 		{
-			this.Key = "Settings_Font_" + font.ToString();
+			this.Key = $"[Settings_Font_{font}]";
 			this.Font = font;
 		}
 
@@ -178,87 +154,5 @@ public partial class SettingsPanel : PanelBase
 
 		public string Key { get; }
 		public string Display { get; }
-	}
-
-	public class HotkeyOption
-	{
-		private readonly KeyCombination keys;
-		private readonly string function;
-
-		public HotkeyOption(string function, KeyCombination keys)
-		{
-			this.keys = keys;
-			this.function = function;
-
-			string[] parts = this.function.Split('.');
-			if (parts.Length == 2)
-			{
-				this.Category = LocalizationService.GetString("HotkeyCategory_" + parts[0], true);
-				if (this.Category == string.Empty)
-					this.Category = parts[0];
-
-				this.Name = LocalizationService.GetString("Hotkey_" + parts[1], true);
-				if (this.Name == string.Empty)
-					this.Name = parts[1];
-			}
-			else
-			{
-				this.Category = string.Empty;
-				this.Name = LocalizationService.GetString("Hotkey_" + function, true);
-				if (this.Name == string.Empty)
-					this.Name = function;
-			}
-		}
-
-		public string Category { get; }
-		public string Name { get; }
-
-		public string KeyName => this.keys.Key.ToString();
-		public string? ModifierName
-		{
-			get
-			{
-				if (this.keys.Modifiers == ModifierKeys.None)
-					return null;
-
-				StringBuilder builder = new StringBuilder();
-				bool hasContent = false;
-
-				if (this.keys.Modifiers.HasFlag(ModifierKeys.Control))
-				{
-					builder.Append("Ctrl");
-					hasContent = true;
-				}
-
-				if (this.keys.Modifiers.HasFlag(ModifierKeys.Shift))
-				{
-					if (hasContent)
-						builder.Append(", ");
-
-					builder.Append("Shift");
-					hasContent = true;
-				}
-
-				if (this.keys.Modifiers.HasFlag(ModifierKeys.Alt))
-				{
-					if (hasContent)
-						builder.Append(", ");
-
-					builder.Append("Alt");
-					hasContent = true;
-				}
-
-				if (this.keys.Modifiers.HasFlag(ModifierKeys.Windows))
-				{
-					if (hasContent)
-						builder.Append(", ");
-
-					builder.Append("Win");
-					hasContent = true;
-				}
-
-				return builder.ToString();
-			}
-		}
 	}
 }

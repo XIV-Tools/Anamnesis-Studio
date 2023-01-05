@@ -9,243 +9,184 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
 	Title="[Navigation_Settings"
-	Width="600"
+	Width="350"
 	Height="512"
 	Icon="Cogs"
 	mc:Ignorable="d">
 
 	<Grid x:Name="ContentArea">
 
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*" />
-			<ColumnDefinition Width="*" />
-		</Grid.ColumnDefinitions>
+		<StackPanel>
 
-		<GroupBox Grid.Column="0">
+			<!--  Interface  -->
+			<GroupBox>
+				<GroupBox.Header>
+					<XivToolsWPF:Header
+						Icon="IdCard"
+						Text="[Settings_InterfaceHeader" />
+				</GroupBox.Header>
 
-			<GroupBox.Header>
-				<XivToolsWPF:Header
-					Icon="IdCard"
-					Text="[Settings_InterfaceHeader" />
-			</GroupBox.Header>
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
 
-			<Grid>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition />
-				</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
 
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-				</Grid.RowDefinitions>
+					<XivToolsWPF:IconBlock
+						Grid.Column="0"
+						HorizontalAlignment="Right"
+						FontSize="22"
+						Icon="Language" />
+					<TextBlock
+						Grid.Row="0"
+						Grid.Column="0"
+						Margin="10,0,35,0"
+						Style="{StaticResource Label}"
+						Text="[Settings_Language]" />
+					<ComboBox
+						Grid.Row="0"
+						Grid.Column="1"
+						Margin="5,1"
+						ItemsSource="{Binding Languages, Mode=OneTime}"
+						SelectedValue="{Binding SelectedLanguage}">
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Display}" />
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
 
-				<XivToolsWPF:IconBlock
-					Grid.Column="0"
-					HorizontalAlignment="Right"
-					FontSize="22"
-					Icon="Language" />
-				<TextBlock
-					Grid.Row="0"
-					Grid.Column="0"
-					Margin="10,0,35,0"
-					Style="{StaticResource Label}"
-					Text="[Settings_Language]" />
-				<ComboBox
-					Grid.Row="0"
-					Grid.Column="1"
-					Margin="6"
-					ItemsSource="{Binding Languages, Mode=OneTime}"
-					SelectedValue="{Binding SelectedLanguage}">
-					<ComboBox.ItemTemplate>
-						<DataTemplate>
-							<TextBlock Text="{Binding Display}" />
-						</DataTemplate>
-					</ComboBox.ItemTemplate>
-				</ComboBox>
+					<TextBlock
+						Grid.Row="5"
+						Grid.Column="0"
+						Style="{StaticResource Label}"
+						Text="[Settings_WindowOpacity]" />
+					<XivToolsWPF:NumberBox
+						x:Name="TransparancySlider"
+						Grid.Row="5"
+						Grid.Column="1"
+						Margin="6,1"
+						Maximum="1"
+						Minimum="0.1"
+						Slider="Absolute"
+						TickFrequency="0.1"
+						Value="{Binding SettingsService.Settings.Opacity}" />
 
-				<TextBlock
-					Grid.Row="1"
-					Grid.Column="0"
-					Style="{StaticResource Label}"
-					Text="[Settings_AlwaysOnTop" />
-				<CheckBox
-					Grid.Row="1"
-					Grid.Column="1"
-					Margin="6,3"
-					IsChecked="{Binding SettingsService.Settings.AlwaysOnTop}" />
+					<TextBlock
+						Grid.Row="6"
+						Grid.Column="0"
+						Style="{StaticResource Label}"
+						Text="[Settings_Font]" />
 
-				<TextBlock
-					Grid.Row="2"
-					Grid.Column="0"
-					Style="{StaticResource Label}"
-					Text="[Settings_Overlay" />
-				<CheckBox
-					Grid.Row="2"
-					Grid.Column="1"
-					Margin="6,3"
-					IsChecked="{Binding SettingsService.Settings.OverlayWindow}" />
+					<ComboBox
+						Grid.Row="6"
+						Grid.Column="1"
+						Margin="5,1"
+						ItemsSource="{Binding Fonts}"
+						SelectedItem="{Binding SelectedFont}">
 
-				<TextBlock
-					Grid.Row="3"
-					Grid.Column="0"
-					Style="{StaticResource Label}"
-					Text="[Settings_WindowSize" />
-				<ComboBox
-					x:Name="SizeSelector"
-					Grid.Row="3"
-					Grid.Column="1"
-					Margin="6,3"
-					SelectedValue="{Binding SettingsService.Settings.Scale}" />
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Key}" />
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
 
-				<TextBlock
-					Grid.Row="4"
-					Grid.Column="0"
-					Style="{StaticResource Label}"
-					Text="[Settings_Translucency" />
-				<CheckBox
-					Grid.Row="4"
-					Grid.Column="1"
-					Margin="6,3"
-					IsChecked="{Binding SettingsService.Settings.EnableTranslucency}" />
+					<TextBlock
+						Grid.Row="7"
+						Grid.Column="0"
+						Style="{StaticResource Label}"
+						Text="[Settings_WrapRotations]" />
+					<CheckBox
+						Grid.Row="7"
+						Grid.Column="1"
+						Margin="6,1"
+						IsChecked="{Binding SettingsService.Settings.WrapRotationSliders}" />
 
-				<TextBlock
-					Grid.Row="5"
-					Grid.Column="0"
-					Style="{StaticResource Label}"
-					Text="[Settings_WindowOpacity" />
-				<XivToolsWPF:NumberBox
-					x:Name="TransparancySlider"
-					Grid.Row="5"
-					Grid.Column="1"
-					Margin="6,3"
-					IsEnabled="{Binding SettingsService.Settings.EnableTranslucency}"
-					Maximum="1"
-					Minimum="0.1"
-					Slider="Absolute"
-					TickFrequency="0.1"
-					Value="{Binding SettingsService.Settings.Opacity}" />
+					<TextBlock
+						Grid.Row="8"
+						Grid.Column="0"
+						Style="{StaticResource Label}"
+						Text="[Settings_Developer]" />
+					<CheckBox
+						Grid.Row="8"
+						Grid.Column="1"
+						Margin="6,1"
+						IsChecked="{Binding SettingsService.Settings.EnableDeveloperTab}" />
 
-				<TextBlock
-					Grid.Row="6"
-					Grid.Column="0"
-					Style="{StaticResource Label}"
-					Text="[Settings_Font" />
-				<!--<CheckBox IsChecked="{Binding SettingsService.Settings.UseHyperlegibleFont}" Grid.Column="1" Grid.Row="6" Margin="6, 3"/>-->
+					<GroupBox
+						Grid.Row="9"
+						Grid.ColumnSpan="2"
+						IsEnabled="False"
+						Visibility="Collapsed">
+						<GroupBox.Header>
+							<TextBlock Text="[Settings_Theme]" />
+						</GroupBox.Header>
 
-				<ComboBox
-					Grid.Row="6"
-					Grid.Column="1"
-					Width="150"
-					HorizontalAlignment="Left"
-					ItemsSource="{Binding Fonts}"
-					SelectedItem="{Binding SelectedFont}">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition />
+							</Grid.ColumnDefinitions>
 
-					<ComboBox.ItemTemplate>
-						<DataTemplate>
-							<TextBlock Text="{Binding Key}" />
-						</DataTemplate>
-					</ComboBox.ItemTemplate>
-				</ComboBox>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+								<RowDefinition />
+								<RowDefinition Height="Auto" />
+							</Grid.RowDefinitions>
 
-				<TextBlock
-					Grid.Row="7"
-					Grid.Column="0"
-					Style="{StaticResource Label}"
-					Text="[Settings_WrapRotations" />
-				<CheckBox
-					Grid.Row="7"
-					Grid.Column="1"
-					Margin="6,3"
-					IsChecked="{Binding SettingsService.Settings.WrapRotationSliders}" />
 
-				<TextBlock
-					Grid.Row="8"
-					Grid.Column="0"
-					Style="{StaticResource Label}"
-					Text="[Settings_Developer" />
-				<CheckBox
-					Grid.Row="8"
-					Grid.Column="1"
-					Margin="6,3"
-					IsChecked="{Binding SettingsService.Settings.EnableDeveloperTab}" />
+							<TextBlock
+								Grid.Row="1"
+								Grid.Column="0"
+								IsEnabled="{Binding SettingsService.Current.OverrideSystemTheme}"
+								Style="{StaticResource Label}"
+								Text="[Settings_Theme_Light]" />
+							<CheckBox
+								Grid.Row="1"
+								Grid.Column="1"
+								Margin="6"
+								IsChecked="{Binding SettingsService.Settings.ThemeLight}"
+								IsEnabled="{Binding SettingsService.Current.OverrideSystemTheme}" />
 
-				<GroupBox
-					Grid.Row="9"
-					Grid.ColumnSpan="2">
-					<GroupBox.Header>
-						<TextBlock Text="[Settings_Theme" />
-					</GroupBox.Header>
-
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition />
-						</Grid.ColumnDefinitions>
-
-						<Grid.RowDefinitions>
-							<RowDefinition Height="Auto" />
-							<RowDefinition Height="Auto" />
-							<RowDefinition />
-							<RowDefinition Height="Auto" />
-						</Grid.RowDefinitions>
-
-						<TextBlock
-							Grid.Row="0"
-							Grid.Column="0"
-							Style="{StaticResource Label}"
-							Text="[Settings_Theme_Override" />
-						<CheckBox
-							Grid.Row="0"
-							Grid.Column="1"
-							Margin="6"
-							IsChecked="{Binding SettingsService.Settings.OverrideSystemTheme}" />
-
-						<TextBlock
-							Grid.Row="1"
-							Grid.Column="0"
-							IsEnabled="{Binding SettingsService.Current.OverrideSystemTheme}"
-							Style="{StaticResource Label}"
-							Text="[Settings_Theme_Light" />
-						<CheckBox
-							Grid.Row="1"
-							Grid.Column="1"
-							Margin="6"
-							IsChecked="{Binding SettingsService.Settings.ThemeLight}"
-							IsEnabled="{Binding SettingsService.Current.OverrideSystemTheme}" />
-
-						<TextBlock
-							Grid.Row="2"
-							Grid.Column="0"
-							IsEnabled="{Binding SettingsService.Current.OverrideSystemTheme}"
-							Style="{StaticResource Label}"
-							Text="[Settings_Theme_Color" />
-						<!--<wpf:ColorPicker
+							<TextBlock
+								Grid.Row="2"
+								Grid.Column="0"
+								IsEnabled="{Binding SettingsService.Current.OverrideSystemTheme}"
+								Style="{StaticResource Label}"
+								Text="[Settings_Theme_Color]" />
+							<!--<wpf:ColorPicker
 							Grid.Row="2"
 							Grid.Column="1"
 							IsEnabled="{Binding SettingsService.Current.OverrideSystemTheme}"
 							Color="{Binding SettingsService.Settings.ThemeTrimColor}" />-->
 
-					</Grid>
-				</GroupBox>
-			</Grid>
-		</GroupBox>
+						</Grid>
+					</GroupBox>
+				</Grid>
+			</GroupBox>
 
-		<StackPanel Grid.Column="1">
+			<!--  Files  -->
 			<GroupBox>
 				<GroupBox.Header>
 					<XivToolsWPF:Header
-						Icon="Folder"
-						Text="[Settings_FilesHeader" />
+						Icon="File"
+						Text="[Settings_FilesHeader]" />
 				</GroupBox.Header>
 
 				<Grid>
@@ -272,115 +213,94 @@
 						Margin="6"
 						Text="{Binding SettingsService.Settings.DefaultAuthor}" />
 
+
+				</Grid>
+			</GroupBox>
+
+			<!--  Directory options  -->
+			<GroupBox
+				Grid.Row="3"
+				Grid.ColumnSpan="2">
+				<GroupBox.Header>
+					<XivToolsWPF:Header
+						Icon="Folder"
+						Text="[Settings_Directories]" />
+				</GroupBox.Header>
+
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+
+					<Grid.RowDefinitions>
+						<RowDefinition />
+						<RowDefinition />
+						<RowDefinition />
+						<RowDefinition />
+					</Grid.RowDefinitions>
+
+					<TextBlock
+						Grid.Row="0"
+						Grid.Column="0"
+						Style="{StaticResource Label}"
+						Text="[Settings_Dir_Characters]" />
+					<TextBox
+						Grid.Row="0"
+						Grid.Column="1"
+						IsEnabled="False"
+						Text="{Binding SettingsService.Settings.DefaultCharacterDirectory}" />
+					<Button
+						Grid.Row="0"
+						Grid.Column="2"
+						Margin="6,3,0,0"
+						Click="OnBrowseCharacter"
+						Content="..."
+						Style="{StaticResource TransparentButton}" />
+
 					<TextBlock
 						Grid.Row="1"
 						Grid.Column="0"
 						Style="{StaticResource Label}"
-						Text="[Settings_ShowFileExtensions" />
-					<CheckBox
+						Text="[Settings_Dir_Poses]" />
+					<TextBox
 						Grid.Row="1"
 						Grid.Column="1"
-						Margin="6"
-						IsChecked="{Binding SettingsService.Settings.ShowFileExtensions}" />
+						IsEnabled="False"
+						Text="{Binding SettingsService.Settings.DefaultPoseDirectory}" />
+					<Button
+						Grid.Row="1"
+						Grid.Column="2"
+						Margin="6,3,0,0"
+						Click="OnBrowsePose"
+						Content="..."
+						Style="{StaticResource TransparentButton}" />
 
 					<TextBlock
 						Grid.Row="2"
 						Grid.Column="0"
 						Style="{StaticResource Label}"
-						Text="[Settings_UseWindowsExplorer" />
-					<CheckBox
+						Text="[Settings_Dir_CameraShots]" />
+					<TextBox
 						Grid.Row="2"
 						Grid.Column="1"
-						Margin="6"
-						IsChecked="{Binding SettingsService.Settings.UseWindowsExplorer}" />
+						IsEnabled="False"
+						Text="{Binding SettingsService.Settings.DefaultCameraShotDirectory}" />
+					<Button
+						Grid.Row="2"
+						Grid.Column="2"
+						Margin="6,3,0,0"
+						Click="OnBrowseCamera"
+						Content="..."
+						Style="{StaticResource TransparentButton}" />
 
-					<!--  Directory options  -->
-					<GroupBox
-						Grid.Row="3"
-						Grid.ColumnSpan="2">
-						<GroupBox.Header>
-							<TextBlock Text="[Settings_Directories" />
-						</GroupBox.Header>
+					<!--
+					<ana:TextBlock Grid.Row="2" Grid.Column="0" Text="[Settings_Dir_Scenes" Style="{StaticResource Label}"/>
+					<TextBox Grid.Row="2" Grid.Column="1" Margin="3, 0, 0, 0" Text="{Binding SettingsService.Settings.DefaultSceneDirectory}" IsEnabled="False"/>
+					<Button Grid.Row="2" Grid.Column="2" Margin="6, 3, 0, 0" Style="{StaticResource TransparentButton}" Content="..." Click="OnBrowseScene"/>
+					-->
 
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition />
-								<ColumnDefinition Width="Auto" />
-							</Grid.ColumnDefinitions>
-
-							<Grid.RowDefinitions>
-								<RowDefinition />
-								<RowDefinition />
-								<RowDefinition />
-								<RowDefinition />
-							</Grid.RowDefinitions>
-
-							<TextBlock
-								Grid.Row="0"
-								Grid.Column="0"
-								Style="{StaticResource Label}"
-								Text="[Settings_Dir_Characters" />
-							<TextBox
-								Grid.Row="0"
-								Grid.Column="1"
-								Margin="3,0,0,0"
-								IsEnabled="False"
-								Text="{Binding SettingsService.Settings.DefaultCharacterDirectory}" />
-							<Button
-								Grid.Row="0"
-								Grid.Column="2"
-								Margin="6,3,0,0"
-								Click="OnBrowseCharacter"
-								Content="..."
-								Style="{StaticResource TransparentButton}" />
-
-							<TextBlock
-								Grid.Row="1"
-								Grid.Column="0"
-								Style="{StaticResource Label}"
-								Text="[Settings_Dir_Poses" />
-							<TextBox
-								Grid.Row="1"
-								Grid.Column="1"
-								Margin="3,0,0,0"
-								IsEnabled="False"
-								Text="{Binding SettingsService.Settings.DefaultPoseDirectory}" />
-							<Button
-								Grid.Row="1"
-								Grid.Column="2"
-								Margin="6,3,0,0"
-								Click="OnBrowsePose"
-								Content="..."
-								Style="{StaticResource TransparentButton}" />
-
-							<TextBlock
-								Grid.Row="2"
-								Grid.Column="0"
-								Style="{StaticResource Label}"
-								Text="[Settings_Dir_CameraShots" />
-							<TextBox
-								Grid.Row="2"
-								Grid.Column="1"
-								Margin="3,0,0,0"
-								IsEnabled="False"
-								Text="{Binding SettingsService.Settings.DefaultCameraShotDirectory}" />
-							<Button
-								Grid.Row="2"
-								Grid.Column="2"
-								Margin="6,3,0,0"
-								Click="OnBrowseCamera"
-								Content="..."
-								Style="{StaticResource TransparentButton}" />
-
-							<!--
-							<ana:TextBlock Grid.Row="2" Grid.Column="0" Text="[Settings_Dir_Scenes" Style="{StaticResource Label}"/>
-							<TextBox Grid.Row="2" Grid.Column="1" Margin="3, 0, 0, 0" Text="{Binding SettingsService.Settings.DefaultSceneDirectory}" IsEnabled="False"/>
-							<Button Grid.Row="2" Grid.Column="2" Margin="6, 3, 0, 0" Style="{StaticResource TransparentButton}" Content="..." Click="OnBrowseScene"/>
-							-->
-
-						</Grid>
-					</GroupBox>
 				</Grid>
 			</GroupBox>
 

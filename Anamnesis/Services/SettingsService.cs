@@ -63,12 +63,6 @@ public class SettingsService : ServiceBase<SettingsService>
 
 				string json = File.ReadAllText(SettingsPath);
 				this.Settings = SerializerService.Deserialize<Settings>(json);
-
-				if (SystemParameters.WindowGlassColor == Colors.Black)
-				{
-					this.Settings.OverrideSystemTheme = true;
-					this.Settings.ThemeTrimColor = Colors.Pink;
-				}
 			}
 			catch (Exception ex)
 			{

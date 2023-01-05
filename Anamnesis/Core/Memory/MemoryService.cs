@@ -356,9 +356,6 @@ public class MemoryService : ServiceBase<MemoryService>
 
 		proc = ProcessSelector.FindProcess();
 
-		if (SettingsService.Exists)
-			App.Current.MainWindow.Topmost = SettingsService.Current.AlwaysOnTop;
-
 		await Dispatch.NonUiThread();
 
 		// if still no process, shutdown.
