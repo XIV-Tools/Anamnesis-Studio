@@ -270,8 +270,8 @@ public class PanelService : ServiceBase<PanelService>
 				this.panel = Activator.CreateInstance(this.panelType) as PanelBase;
 			}
 
-			// Wait for the panel to load for up to 1 second.
-			int timeOut = 1000;
+			// Wait for the panel to load for up to 5 seconds.
+			int timeOut = 5000;
 			while (this.panel == null && timeOut > 0)
 			{
 				await Task.Delay(10);
