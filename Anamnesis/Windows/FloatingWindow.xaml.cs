@@ -183,7 +183,8 @@ public partial class FloatingWindow : Window
 
 	public new void Close()
 	{
-		this.Panel?.Close();
+		if (this.Panel?.IsOpen == true)
+			this.Panel?.Close();
 
 		this.BeginStoryboard("CloseStoryboard");
 		this.IsOpen = false;

@@ -89,11 +89,18 @@ public abstract class PanelBase : UserControl, INotifyPropertyChanged
 
 	public void DragMove() => this.Window.DragMove();
 
+	public virtual void Open()
+	{
+		this.IsOpen = true;
+	}
+
 	public virtual void Close()
 	{
 		this.IsOpen = false;
 		this.Services.Panels.OnPanelClosed(this);
 		this.Settings.Save();
+
+		this.window?.Close();
 	}
 
 	public async Task WhileOpen()

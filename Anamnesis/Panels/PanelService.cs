@@ -108,6 +108,7 @@ public class PanelService : ServiceBase<PanelService>
 		}
 
 		PanelBase panel = await this.Spawn(panelType, threadMode);
+		panel.Open();
 
 		await panel.Dispatcher.MainThread();
 		FloatingWindow panelHost = panelHost = this.CreateWindow();
