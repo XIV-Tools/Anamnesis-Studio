@@ -46,28 +46,36 @@ public class LibraryFilter : TagFilterBase<EntryBase>
 		if (!entry.IsDirectory && !entry.IsType(this.Type))
 			return false;
 
-		if (this.Flatten || this.HasSearchOrTags)
+		if (!entry.IsDirectory)
 		{
-			if (entry.IsDirectory)
+			DirectoryEntry? parent = entry.Parent;
+			while (parent != this.CurrentDirectory && parent != null)
+			{
+				this.UsedDirectories.TryAdd(parent, true);
+				parent = parent.Parent;
+			}
+
+			if (parent != this.CurrentDirectory)
 			{
 				return false;
 			}
 		}
 		else
 		{
-			if (!entry.IsDirectory)
+			if (this.Flatten || this.HasSearchOrTags)
 			{
-				DirectoryEntry? parent = entry.Parent;
-				while (parent != this.CurrentDirectory && parent != null)
-				{
-					this.UsedDirectories.TryAdd(parent, true);
-					parent = parent.Parent;
-				}
+				return false;
+			}
 
-				if (parent != this.CurrentDirectory)
-				{
-					return false;
-				}
+			DirectoryEntry? parent = entry.Parent;
+			while (parent != this.CurrentDirectory && parent != null)
+			{
+				parent = parent.Parent;
+			}
+
+			if (parent != this.CurrentDirectory)
+			{
+				return false;
 			}
 		}
 
