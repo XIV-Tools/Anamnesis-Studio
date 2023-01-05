@@ -19,12 +19,12 @@ using XivToolsWpf;
 
 public class UpdateService : ServiceBase<UpdateService>
 {
-	private const string Repository = "imchillin/Anamnesis";
+	private const string Repository = "XIV-Tools/Anamnesis-Studio";
 
 	private readonly HttpClient httpClient = new HttpClient();
 	private Release? currentRelease;
 
-	private static string UpdateTempDir => Path.GetTempPath() + "/AnamnesisUpdateLatest/";
+	private static string UpdateTempDir => Path.GetTempPath() + "/Anamnesis-StudioUpdateLatest/";
 
 	public override async Task Initialize()
 	{
