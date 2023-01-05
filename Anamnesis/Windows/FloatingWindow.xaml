@@ -154,14 +154,27 @@
 						Orientation="Horizontal">
 
 						<Button
-							Width="22"
+							Width="24"
 							Height="22"
-							Background="Transparent"
-							Click="OnTitlebarContextButtonClicked"
-							Style="{StaticResource TransparentIconButton}">
+							Click="OnPopOutClicked"
+							Style="{StaticResource TransparentIconButton}"
+							ToolTip="[OverlayWindow_PopOutTooltip]"
+							Visibility="{Binding CanPopOut, Converter={StaticResource B2V}}">
 							<XivToolsWpf:IconBlock
 								Foreground="{DynamicResource ForegroundLightBrush}"
-								Icon="List" />
+								Icon="SignOut" />
+						</Button>
+
+						<Button
+							Width="24"
+							Height="22"
+							Click="OnPopInClicked"
+							Style="{StaticResource TransparentIconButton}"
+							ToolTip="[OverlayWindow_PopInTooltip]"
+							Visibility="{Binding CanPopIn, Converter={StaticResource B2V}}">
+							<XivToolsWpf:IconBlock
+								Foreground="{DynamicResource ForegroundLightBrush}"
+								Icon="SignIn" />
 						</Button>
 
 						<Button
@@ -178,26 +191,6 @@
 
 					</StackPanel>
 
-					<Grid.ContextMenu>
-						<ContextMenu x:Name="WindowContextMenu">
-							<MenuItem
-								Header="OverlayWindow_AutoClose"
-								IsCheckable="True"
-								IsChecked="{Binding AutoClose}"
-								Visibility="{Binding CanChangeAutoClose, Converter={StaticResource B2V}}" />
-
-							<MenuItem
-								Click="OnPopOutClicked"
-								Header="OverlayWindow_PopOut"
-								Visibility="{Binding CanPopOut, Converter={StaticResource B2V}}" />
-
-							<MenuItem
-								Click="OnPopInClicked"
-								Header="OverlayWindow_PopIn"
-								Visibility="{Binding CanPopIn, Converter={StaticResource B2V}}" />
-
-						</ContextMenu>
-					</Grid.ContextMenu>
 				</Grid>
 
 				<ScrollViewer

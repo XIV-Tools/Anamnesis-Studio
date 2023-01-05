@@ -214,8 +214,8 @@
 	"Navigation_Library_Tip": "Browse installed scenes, or find new scenes to try",
 
 	"OverlayWindow_AutoClose": "Auto close",
-	"OverlayWindow_PopOut": "Pop-out",
-	"OverlayWindow_PopIn": "Pop-in",
+	"OverlayWindow_PopOutTooltip": "Pop-Out this window - Allows moving it outside the FFXIV window",
+	"OverlayWindow_PopInTooltip": "Pop-In this window - Restricts it to the FFXIV window",
 
 	"Character_Tab_Info": "Info",
 	"Character_Tab_Customize": "Customize",

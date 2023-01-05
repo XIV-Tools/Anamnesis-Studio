@@ -29,7 +29,6 @@ public partial class FloatingWindow : Window
 		this.windowInteropHelper = new(this);
 		this.InitializeComponent();
 		this.ContentArea.DataContext = this;
-		this.WindowContextMenu.DataContext = this;
 		base.Topmost = false;
 	}
 
@@ -161,7 +160,10 @@ public partial class FloatingWindow : Window
 
 	public virtual void Show(FloatingWindow copy)
 	{
-		throw new NotImplementedException();
+		if (copy.Panel != null)
+			this.SetPanel(copy.Panel);
+
+		this.Show();
 	}
 
 	public virtual new bool Activate()
@@ -219,11 +221,6 @@ public partial class FloatingWindow : Window
 		{
 			this.DragMove();
 		}
-	}
-
-	private void OnTitlebarContextButtonClicked(object sender, RoutedEventArgs e)
-	{
-		this.WindowContextMenu.IsOpen = true;
 	}
 
 	private void OnTitlebarCloseButtonClicked(object sender, RoutedEventArgs e)
@@ -301,6 +298,7 @@ public partial class FloatingWindow : Window
 		}
 
 		this.TitleText.Text = title;
+		this.Title = title;
 	}
 
 	// Swallow all keyboard events, as we have the global keyboard hook handling
