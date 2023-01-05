@@ -15,7 +15,7 @@
 	xmlns:tags="clr-namespace:Anamnesis.Tags"
 	xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
 	Title="[Navigation_Library]"
-	MinWidth="800"
+	MinWidth="700"
 	MinHeight="450"
 	CanResize="True"
 	Icon="Book"
@@ -107,11 +107,20 @@
 			</Border>
 		</Grid>
 
+		<ProgressBar
+			Grid.Row="0"
+			Grid.ColumnSpan="2"
+			Height="2"
+			Margin="3,0,3,0"
+			VerticalAlignment="Bottom"
+			IsIndeterminate="True"
+			Visibility="{Binding Services.Library.IsLoading, Converter={StaticResource B2V}, FallbackValue=Collapsed}" />
+
 		<!--  Sidebar  -->
 		<Grid
 			Grid.Row="2"
 			Grid.Column="1"
-			Margin="3,0,0,0"
+			Margin="3,0,3,0"
 			IsEnabled="{Binding IsRunningAction, Converter={StaticResource !B}}">
 
 			<Grid.RowDefinitions>
@@ -157,15 +166,6 @@
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
 			</Grid>
-
-			<ProgressBar
-				Grid.Row="2"
-				Grid.ColumnSpan="2"
-				Height="2"
-				Margin="3,2"
-				VerticalAlignment="Bottom"
-				IsIndeterminate="True"
-				Visibility="{Binding SelectedEntry.Source.IsLoading, Converter={StaticResource B2V}, FallbackValue=Collapsed}" />
 
 			<ProgressBar
 				Grid.Row="2"
@@ -250,12 +250,13 @@
 					Grid.Column="1"
 					Margin="3,0,6,0"
 					Style="{StaticResource Label}"
-					Text="[FileMeta_Author"
+					Text="[FileMeta_Author]"
 					Visibility="{Binding SelectedEntry.Author, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
 				<TextBlock
 					Grid.Row="3"
 					Grid.Column="2"
 					Text="{Binding SelectedEntry.Author}"
+					TextWrapping="Wrap"
 					Visibility="{Binding SelectedEntry.Author, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
 
 				<TextBlock
@@ -263,12 +264,13 @@
 					Grid.Column="1"
 					Margin="3,0,6,0"
 					Style="{StaticResource Label}"
-					Text="[FileMeta_Version"
+					Text="[FileMeta_Version]"
 					Visibility="{Binding SelectedEntry.Version, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
 				<TextBlock
 					Grid.Row="4"
 					Grid.Column="2"
 					Text="{Binding SelectedEntry.Version}"
+					TextWrapping="Wrap"
 					Visibility="{Binding SelectedEntry.Version, Converter={StaticResource NotEmptyToVisibilityConverter}, FallbackValue=Collapsed}" />
 
 				<tags:TagList
@@ -558,7 +560,7 @@
 		<!--  List  -->
 		<ListBox
 			Grid.Row="3"
-			Grid.Column="1"
+			Grid.Column="0"
 			ana:Behaviours.SmoothScroll="True"
 			Background="Transparent"
 			ItemsSource="{Binding Entries, IsAsync=True}"
@@ -594,9 +596,19 @@
 		</ListBox>
 
 		<ProgressBar
-			Grid.Row="1"
+			Grid.Row="3"
+			Grid.Column="0"
 			Height="2"
-			Margin="6,3,6,0"
+			Margin="2,1"
+			VerticalAlignment="Top"
+			IsIndeterminate="True"
+			Visibility="{Binding SelectedEntry.Source.IsLoading, Converter={StaticResource B2V}, FallbackValue=Collapsed}" />
+
+		<ProgressBar
+			Grid.Row="3"
+			Grid.Column="0"
+			Height="2"
+			Margin="2,1"
 			VerticalAlignment="Top"
 			IsIndeterminate="True"
 			Visibility="{Binding Filter.IsFiltering, Converter={StaticResource B2V}}" />
