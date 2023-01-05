@@ -79,7 +79,7 @@
 						<StackPanel>
 							<TextBlock
 								Style="{StaticResource Body}"
-								Text="The entire UI has been rebuilt from the ground up to provide a consistant, simple, and powerful interface."
+								Text="The entire UI has been rebuilt from the ground up to provide a consistent, simple, and powerful interface."
 								TextWrapping="Wrap" />
 
 							<StackPanel
@@ -93,7 +93,7 @@
 									Icon="SignOut" />
 								<TextBlock
 									Style="{StaticResource Body}"
-									Text="Poping out a window to move it ouside FFXIV." />
+									Text="Popping out a window to move it ouside FFXIV." />
 							</StackPanel>
 						</StackPanel>
 					</GroupBox>
@@ -130,7 +130,7 @@
 						<StackPanel>
 							<TextBlock
 								Style="{StaticResource Body}"
-								Text="The Character panel lets you customize characters. Change appearance, gear, shader parameters (formally 'Extended Appearance), and move them about the world by adjusting their Transform."
+								Text="The Character panel lets you customize characters. Change appearance, gear, shader parameters (formerly 'Extended Appearance), and move them about the world by adjusting their Transform."
 								TextWrapping="Wrap" />
 
 							<Button
@@ -150,13 +150,13 @@
 						<StackPanel>
 							<TextBlock
 								Style="{StaticResource Body}"
-								Text="Anamnesis-Studio now uses multi-threaded window arciteture, each window is responsible for its own thread, meaning performance problems in one window shouldn't affect another."
+								Text="Anamnesis-Studio now uses multi-threaded window architecture, each window responsible for its own thread, meaning performance problems in one window shouldn't affect another."
 								TextWrapping="Wrap" />
 
 							<TextBlock
 								Margin="0,10,0,0"
 								Style="{StaticResource Body}"
-								Text="Aditionally, Anamnesis-Studio starts up asynchronously, getting you to the navigation panel faster, keep an eye on teh progress bar atop the navigation panel to see when everything finishes."
+								Text="Additionally, Anamnesis-Studio starts up asynchronously, getting you to the navigation panel faster. Keep an eye on the progress bar atop the navigation panel to see when everything finishes."
 								TextWrapping="Wrap" />
 						</StackPanel>
 					</GroupBox>
