@@ -128,6 +128,15 @@ public partial class App : Application
 
 			oldwindow.Close();
 
+			// During alpha, force the welcome screen up every launch:
+			SettingsService.Current.HasBeenWelcomed = false;
+
+			if (!SettingsService.Current.HasBeenWelcomed)
+			{
+				SettingsService.Current.HasBeenWelcomed = true;
+				await Services.Panels.Show<WelcomePanel>();
+			}
+
 			await Services.InitializeServices();
 		}
 		catch (Exception ex)

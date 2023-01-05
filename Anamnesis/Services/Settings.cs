@@ -42,6 +42,7 @@ public class Settings : INotifyPropertyChanged
 	public string? GamePath { get; set; }
 	public Dictionary<string, bool> PosingBoneLinks { get; set; } = new();
 	public Dictionary<string, PanelService.PanelSettings> Panels { get; set; } = new();
+	public bool HasBeenWelcomed { get; set; } = false;
 
 	public Color GetTrimColor()
 	{

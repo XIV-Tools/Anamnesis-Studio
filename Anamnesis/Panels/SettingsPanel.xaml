@@ -117,17 +117,6 @@
 						Margin="6,1"
 						IsChecked="{Binding SettingsService.Settings.WrapRotationSliders}" />
 
-					<TextBlock
-						Grid.Row="8"
-						Grid.Column="0"
-						Style="{StaticResource Label}"
-						Text="[Settings_Developer]" />
-					<CheckBox
-						Grid.Row="8"
-						Grid.Column="1"
-						Margin="6,1"
-						IsChecked="{Binding SettingsService.Settings.EnableDeveloperTab}" />
-
 					<GroupBox
 						Grid.Row="9"
 						Grid.ColumnSpan="2"

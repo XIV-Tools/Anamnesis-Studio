@@ -190,23 +190,29 @@
 					<XivToolsWpf:IconBlock Icon="Save" />
 				</Button>
 
+				<!--  Disabled for alpha 0.1!  -->
 				<Button
 					Background="Transparent"
 					Click="OnOpenSceneClicked"
+					IsEnabled="False"
 					ToolTip="[Scene_Open]">
 					<XivToolsWpf:IconBlock Icon="FolderOpen" />
 				</Button>
 
+				<!--  Disabled for alpha 0.1!  -->
 				<Button
 					Background="Transparent"
 					Click="OnImportClicked"
+					IsEnabled="False"
 					ToolTip="[Scene_Import]">
 					<XivToolsWpf:IconBlock Icon="FileImport" />
 				</Button>
 
+				<!--  Disabled for alpha 0.1!  -->
 				<Button
 					Background="Transparent"
 					Click="OnExportClicked"
+					IsEnabled="False"
 					ToolTip="[Scene_Export]">
 					<XivToolsWpf:IconBlock Icon="FileExport" />
 				</Button>
@@ -310,9 +316,11 @@
 						Text="[Navigation_Weather]" />
 				</Button>
 
+				<!--  Disabled for alpha 0.1!  -->
 				<Button
 					ana:Behaviours.Navigation="Camera"
 					Background="Transparent"
+					IsEnabled="False"
 					ToolTip="[Navigation_Camera_Tip]">
 					<XivToolsWpf:Header
 						Icon="Camera"
@@ -328,9 +336,11 @@
 						Text="[Navigation_Actor_Character]" />
 				</Button>
 
+				<!--  Disabled for alpha 0.1!  -->
 				<Button
 					ana:Behaviours.Navigation="Posing"
 					Background="Transparent"
+					IsEnabled="False"
 					ToolTip="[Navigation_Actor_Pose_Tip]">
 					<XivToolsWpf:Header
 						Icon="Running"
