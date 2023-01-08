@@ -26,10 +26,4 @@ public partial class WelcomePanel : PanelBase
 	{
 		this.Close();
     }
-
-	private async void CheckBox_Checked(object sender, System.Windows.RoutedEventArgs e)
-	{
-		await GenericDialog.ShowAsync("Pfft, like you have a choice. Scrub.", "Points and Laughs", MessageBoxButton.OK);
-		this.DontShowAgain.IsChecked = false;
-	}
 }

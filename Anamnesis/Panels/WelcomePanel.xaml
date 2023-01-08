@@ -185,8 +185,8 @@
 				Grid.Row="4"
 				Width="150"
 				HorizontalAlignment="Left"
-				Checked="CheckBox_Checked"
-				Content="Dont Show Again" />
+				Content="Dont Show Again"
+				IsChecked="{Binding Settings.Current.HasBeenWelcomed}" />
 
 			<Button
 				Grid.Row="4"
