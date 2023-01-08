@@ -18,6 +18,8 @@
 	MinWidth="700"
 	MinHeight="450"
 	CanResize="True"
+	DefaultHeight="600"
+	DefaultWidth="800"
 	Icon="Book"
 	mc:Ignorable="d">
 

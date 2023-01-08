@@ -15,6 +15,7 @@ using Anamnesis.Actor.Panels;
 using Anamnesis.Libraries.Panels;
 using XivToolsWpf;
 using XivToolsWpf.Extensions;
+using Anamnesis.Memory;
 
 public class PanelService : ServiceBase<PanelService>
 {
@@ -171,6 +172,9 @@ public class PanelService : ServiceBase<PanelService>
 
 	private FloatingWindow CreateWindow()
 	{
+		if (MemoryService.Process == null)
+			return new FloatingWindow();
+
 		// TODO: if OverlayMode!
 		return new OverlayWindow();
 		////return new FloatingWindow();
@@ -206,43 +210,8 @@ public class PanelService : ServiceBase<PanelService>
 		{
 		}
 
-		public Rect Position { get; set; } = default;
-		public SizeToContent SizeToContent { get; set; } = SizeToContent.WidthAndHeight;
-
-		public Rect? GetLastPosition()
-		{
-			Rect pos = this.Position;
-
-			if (this.SizeToContent == SizeToContent.WidthAndHeight)
-			{
-				pos.Width = double.NaN;
-				pos.Height = double.NaN;
-			}
-			else if (this.SizeToContent == SizeToContent.Width)
-			{
-				pos.Width = double.NaN;
-			}
-			else if (this.SizeToContent == SizeToContent.Height)
-			{
-				pos.Height = double.NaN;
-			}
-
-			return pos;
-		}
-
-		public void SavePosition(FloatingWindow window)
-		{
-			Rect pos = new();
-			pos.Width = window.Rect.Width;
-			pos.Height = window.Rect.Height;
-			pos.X = (window.Rect.X - window.ScreenRect.Left) / window.ScreenRect.Width;
-			pos.Y = (window.Rect.Y - window.ScreenRect.Top) / window.ScreenRect.Height;
-
-			this.Position = pos;
-			this.SizeToContent = window.SizeToContent;
-
-			this.Save();
-		}
+		public Point? Position { get; set; } = null;
+		public Size? Size { get; set; } = null;
 
 		public void Save()
 		{
@@ -290,7 +259,21 @@ public class PanelService : ServiceBase<PanelService>
 			if (this.panelType == null)
 				throw new Exception("No panel type in panel thread");
 
-			this.panel = Activator.CreateInstance(this.panelType) as PanelBase;
+			if (Application.Current == null)
+				return;
+
+			try
+			{
+				this.panel = Activator.CreateInstance(this.panelType) as PanelBase;
+			}
+			catch(Exception ex)
+			{
+				if (Application.Current == null)
+					return;
+
+				Log.Error(ex, $"Exception during panel construction: {this.panelType}");
+				return;
+			}
 
 			Log.Information($"Panel: {this.panelType} has started");
 			Dispatcher.Run();

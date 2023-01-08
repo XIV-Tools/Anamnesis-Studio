@@ -26,7 +26,6 @@ public class Settings : INotifyPropertyChanged
 	public string Language { get; set; } = "EN";
 	public bool OverlayWindow { get; set; } = true;
 	public double Opacity { get; set; } = 1.0;
-	public double WindowOpacity { get; set; } = 0.75;
 	public string DefaultPoseDirectory { get; set; } = "%MyDocuments%/Anamnesis/Poses/";
 	public string DefaultCharacterDirectory { get; set; } = "%MyDocuments%/Anamnesis/Characters/";
 	public string DefaultCameraShotDirectory { get; set; } = "%MyDocuments%/Anamnesis/CameraShots/";

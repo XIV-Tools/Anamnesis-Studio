@@ -44,15 +44,25 @@ public abstract class PanelBase : UserControl, INotifyPropertyChanged
 
 	public event PropertyChangedEventHandler? PropertyChanged;
 
+	public enum OpenModes
+	{
+		AlwaysCenter,
+		TopLeftOrSaved,
+		CenterOrSaved,
+	}
+
 	public ServiceManager Services => App.Services;
 	public PanelService.PanelSettings Settings { get; private set; }
 	public bool IsOpen { get; private set; } = true;
 	public virtual string Id => this.GetType().ToString();
 	public IconChar Icon { get; set; }
-	public Rect Rect => this.Window.Rect;
 	public bool ShowBackground { get; set; } = true;
 	public bool CanResize { get; set; }
 	public bool CanScroll { get; set; } = false;
+
+	public OpenModes OpenMode { get; set; } = OpenModes.CenterOrSaved;
+	public double? DefaultWidth { get; set; } = null;
+	public double? DefaultHeight { get; set; } = null;
 
 	public bool IsActive
 	{

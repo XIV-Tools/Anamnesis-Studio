@@ -10,8 +10,6 @@ using System.Windows;
 
 public class OverlayWindow : FloatingWindow
 {
-	public override Rect Rect => new Rect(this.Left, this.Top, this.Width, this.Height);
-
 	public override Rect ScreenRect
 	{
 		get

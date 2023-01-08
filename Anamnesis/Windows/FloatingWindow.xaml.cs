@@ -36,6 +36,7 @@ public partial class FloatingWindow : Window
 	public ContentPresenter PanelGroupArea => this.ContentPresenter;
 	public bool ShowBackground { get; set; } = true;
 	public bool IsOpen { get; private set; }
+	public bool IsInitializing { get; private set; }
 
 	public PanelBase? Panel { get; private set; }
 
@@ -72,8 +73,6 @@ public partial class FloatingWindow : Window
 		}
 	}
 
-	public virtual Rect Rect => new Rect(this.Left, this.Top, this.Width, this.Height);
-
 	public string Id => this.Panel?.Id ?? string.Empty;
 
 	public virtual Rect ScreenRect
@@ -91,68 +90,7 @@ public partial class FloatingWindow : Window
 
 	public virtual new void Show()
 	{
-		Rect screen = this.ScreenRect;
-
-		if (this.Panel == null)
-			throw new Exception("No panel in window");
-
-		Rect? desiredPosition = this.Panel.Settings.GetLastPosition();
-
-		// Center screen
-		if (desiredPosition == null)
-		{
-			this.MaxWidth = Math.Clamp(this.MaxWidth, this.MinWidth, screen.Width - MaxSizeScreenPadding);
-			this.MaxHeight = Math.Clamp(this.MaxHeight, this.MinHeight, screen.Height - MaxSizeScreenPadding);
-
-			this.Left = screen.Left + ((screen.Width / 2) - (this.ActualWidth / 2));
-			this.Top = screen.Top + ((screen.Height / 2) - (this.ActualHeight / 2));
-		}
-		else
-		{
-			this.MaxWidth = Math.Max(screen.Width - ((Rect)desiredPosition).Left, 0);
-			this.MaxHeight = Math.Max(screen.Height - ((Rect)desiredPosition).Top, 0);
-			this.MinWidth = 64;
-			this.MinHeight = 64;
-
-			// foreach (PanelBase panel in this.Panels)
-			this.MinWidth = Math.Max(this.MinWidth, this.Panel.MinWidth + 20);
-			this.MinHeight = Math.Max(this.MinHeight, this.Panel.MinHeight);
-			this.MaxHeight = Math.Min(this.MaxHeight, this.Panel.MaxHeight);
-			this.MaxWidth = Math.Min(this.MaxWidth, this.Panel.MaxWidth);
-
-			this.MinWidth = Math.Clamp(this.MinWidth, 0, screen.Width);
-			this.MinHeight = Math.Clamp(this.MinHeight, 0, screen.Height);
-			this.MaxWidth = Math.Clamp(this.MaxWidth, this.MinWidth, screen.Width - MaxSizeScreenPadding);
-			this.MaxHeight = Math.Clamp(this.MaxHeight, this.MinHeight, screen.Height - MaxSizeScreenPadding);
-
-			this.Left = screen.Left + (((Rect)desiredPosition).X * screen.Width);
-			this.Top = screen.Top + (((Rect)desiredPosition).Y * screen.Height);
-
-			double height = ((Rect)desiredPosition).Height;
-			double width = ((Rect)desiredPosition).Width;
-
-			if (double.IsNaN(height) && double.IsNaN(width))
-			{
-				this.SizeToContent = SizeToContent.WidthAndHeight;
-			}
-			else if (double.IsNaN(height))
-			{
-				this.Width = Math.Clamp(width, this.MinWidth, this.MaxWidth);
-				this.SizeToContent = SizeToContent.Height;
-			}
-			else if (double.IsNaN(width))
-			{
-				this.Height = Math.Clamp(height, this.MinHeight, this.MaxHeight);
-				this.SizeToContent = SizeToContent.Width;
-			}
-			else
-			{
-				this.SizeToContent = SizeToContent.Manual;
-				this.Width = Math.Clamp(width, this.MinWidth, this.MaxWidth);
-				this.Height = Math.Clamp(height, this.MinHeight, this.MaxHeight);
-			}
-		}
-
+		this.IsInitializing = true;
 		this.UpdatePosition();
 		base.Show();
 		this.IsOpen = true;
@@ -192,10 +130,112 @@ public partial class FloatingWindow : Window
 
 	protected virtual void OnWindowLoaded()
 	{
+		this.UpdatePosition();
 	}
 
 	protected virtual void UpdatePosition()
 	{
+		Rect screen = this.ScreenRect;
+
+		if (this.Panel == null)
+			throw new Exception("No panel in window");
+
+		Point? savedPosition = this.Panel.Settings.Position;
+		Size? savedSize = this.Panel.Settings.Size;
+
+		this.MaxWidth = Math.Max(screen.Width, 0);
+		this.MaxHeight = Math.Max(screen.Height, 0);
+		this.MinWidth = 64;
+		this.MinHeight = 64;
+
+		// foreach (PanelBase panel in this.Panels)
+		this.MinWidth = Math.Max(this.MinWidth, this.Panel.MinWidth + 20);
+		this.MinHeight = Math.Max(this.MinHeight, this.Panel.MinHeight);
+		this.MaxHeight = Math.Min(this.MaxHeight, this.Panel.MaxHeight);
+		this.MaxWidth = Math.Min(this.MaxWidth, this.Panel.MaxWidth);
+
+		this.MinWidth = Math.Clamp(this.MinWidth, 0, screen.Width);
+		this.MinHeight = Math.Clamp(this.MinHeight, 0, screen.Height);
+		this.MaxWidth = Math.Clamp(this.MaxWidth, this.MinWidth, screen.Width - MaxSizeScreenPadding);
+		this.MaxHeight = Math.Clamp(this.MaxHeight, this.MinHeight, screen.Height - MaxSizeScreenPadding);
+
+		double height = -1;
+		double width = -1;
+
+		if (this.Panel.DefaultHeight != null)
+			height = (double)this.Panel.DefaultHeight;
+
+		if (this.Panel.DefaultWidth != null)
+			width = (double)this.Panel.DefaultWidth;
+
+		if (savedSize != null)
+		{
+			height = savedSize.Value.Height;
+			width = savedSize.Value.Width;
+		}
+
+		if (height < 0 && width < 0)
+		{
+			this.SizeToContent = SizeToContent.WidthAndHeight;
+		}
+		else if (height < 0)
+		{
+			this.Width = Math.Clamp(width, this.MinWidth, this.MaxWidth);
+			this.SizeToContent = SizeToContent.Height;
+		}
+		else if (width < 0)
+		{
+			this.Height = Math.Clamp(height, this.MinHeight, this.MaxHeight);
+			this.SizeToContent = SizeToContent.Width;
+		}
+		else
+		{
+			this.SizeToContent = SizeToContent.Manual;
+			this.Width = Math.Clamp(width, this.MinWidth, this.MaxWidth);
+			this.Height = Math.Clamp(height, this.MinHeight, this.MaxHeight);
+		}
+
+		switch (this.Panel.OpenMode)
+		{
+			case PanelBase.OpenModes.AlwaysCenter:
+			{
+				this.Left = screen.Left + (0.5 * screen.Width) - (0.5 * this.ActualWidth);
+				this.Top = screen.Top + (0.5 * screen.Height) - (0.5 * this.ActualHeight);
+				break;
+			}
+
+			case PanelBase.OpenModes.TopLeftOrSaved:
+			{
+				if (savedPosition == null)
+				{
+					this.Left = screen.Left;
+					this.Top = screen.Top;
+				}
+				else
+				{
+					this.Left = screen.Left + savedPosition.Value.X;
+					this.Top = screen.Top + savedPosition.Value.Y;
+				}
+
+				break;
+			}
+
+			case PanelBase.OpenModes.CenterOrSaved:
+			{
+				if (savedPosition == null)
+				{
+					this.Left = screen.Left + (0.5 * screen.Width) - (0.5 * this.ActualWidth);
+					this.Top = screen.Top + (0.5 * screen.Height) - (0.5 * this.ActualHeight);
+				}
+				else
+				{
+					this.Left = screen.Left + savedPosition.Value.X;
+					this.Top = screen.Top + savedPosition.Value.Y;
+				}
+
+				break;
+			}
+		}
 	}
 
 	protected override void OnDeactivated(EventArgs e)
@@ -210,10 +250,11 @@ public partial class FloatingWindow : Window
 
 	private void OnWindowLoaded(object sender, RoutedEventArgs e)
 	{
-		this.UpdatePosition();
 		this.OnWindowLoaded();
 
 		this.BeginStoryboard("OpenStoryboard");
+
+		this.IsInitializing = false;
 	}
 
 	private void OnTitleMouseDown(object sender, MouseButtonEventArgs e)
@@ -239,6 +280,9 @@ public partial class FloatingWindow : Window
 
 	private void OnMouseLeave(object sender, MouseEventArgs e)
 	{
+		if (SettingsService.Current == null)
+			return;
+
 		if (SettingsService.Current.Opacity != 1.0)
 		{
 			this.WindowContentArea.Animate(Grid.OpacityProperty, SettingsService.Current.Opacity, 250);
@@ -334,6 +378,30 @@ public partial class FloatingWindow : Window
 
 	private void OnLocationChanged(object sender, EventArgs e)
 	{
-		this.Panel?.Settings?.SavePosition(this);
+		if (this.IsInitializing)
+			return;
+
+		if (this.Panel == null)
+			return;
+
+		if (this.Panel.OpenMode != PanelBase.OpenModes.AlwaysCenter)
+		{
+			this.Panel.Settings.Position = new Point(this.Left - this.ScreenRect.Left, this.Top - this.ScreenRect.Top);
+		}
+		else
+		{
+			this.Panel.Settings.Position = null;
+		}
+
+		if (this.SizeToContent == SizeToContent.Manual)
+		{
+			this.Panel.Settings.Size = new Size(this.Width, this.Height);
+		}
+		else
+		{
+			this.Panel.Settings.Size = null;
+		}
+
+		this.Panel.Settings.Save();
 	}
 }

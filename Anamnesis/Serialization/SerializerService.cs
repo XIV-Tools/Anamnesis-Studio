@@ -36,6 +36,7 @@ public class SerializerService : ServiceBase<SerializerService>
 		Options.Converters.Add(new PointConverter());
 		Options.Converters.Add(new RectConverter());
 		Options.Converters.Add(new TagConverter());
+		Options.Converters.Add(new SizeConverter());
 	}
 
 	public static string Serialize(object obj)

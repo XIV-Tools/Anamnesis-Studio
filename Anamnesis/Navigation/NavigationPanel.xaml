@@ -9,6 +9,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:panels="clr-namespace:Anamnesis.Panels"
 	CanResize="False"
+	OpenMode="TopLeftOrSaved"
 	ShowBackground="False"
 	mc:Ignorable="d">
 

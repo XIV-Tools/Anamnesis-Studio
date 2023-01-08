@@ -16,7 +16,7 @@ public class PointConverter : JsonConverter<Point>
 		string? str = reader.GetString();
 
 		if (str == null)
-			throw new Exception("Cannot convert null to Vector");
+			throw new Exception("Cannot convert null to Point");
 
 		string[] parts = str.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
 
