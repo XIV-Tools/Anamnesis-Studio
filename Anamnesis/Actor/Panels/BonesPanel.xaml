@@ -17,8 +17,8 @@
 
 	<Grid x:Name="ContentArea">
 		<controls:ActorSelector
-			Width="256"
-			Height="61"
+			Width="250"
+			Height="54"
 			HorizontalAlignment="Left"
 			VerticalAlignment="Top"
 			Selection="{Binding Actor}" />

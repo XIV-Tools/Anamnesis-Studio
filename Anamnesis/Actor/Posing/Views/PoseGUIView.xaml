@@ -34,19 +34,27 @@
 				VerticalContentAlignment="Center"
 				IsChecked="{Binding FlipSides}">
 
-				<Grid>
-					<TextBlock Text="[Pose_FlipSides]" />
+				<StackPanel Orientation="Horizontal">
+					<TextBlock
+						Margin="0,0,3,0"
+						Text="[Pose_FlipSides]" />
 
 					<TextBlock
+						Margin="3,0"
+						Text=" - " />
+
+					<TextBlock
+						Margin="3,0"
 						HorizontalAlignment="Right"
 						Text="[Pose_GuiFlip]"
 						Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" />
 
 					<TextBlock
+						Margin="3,0"
 						HorizontalAlignment="Right"
 						Text="[Pose_GuiNotFlip]"
 						Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" />
-				</Grid>
+				</StackPanel>
 			</CheckBox>
 		</Grid>
 
