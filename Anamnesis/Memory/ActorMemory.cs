@@ -52,29 +52,29 @@ public class ActorMemory : ActorBasicMemory
 		VisorToggled = 1 << 3,
 	}
 
-	[Bind(0x008D)] public byte SubKind { get; set; }
-	[Bind(0x00C4)] public float Scale { get; set; }
-	[Bind(0x0100, BindFlags.Pointer)] public ActorModelMemory? ModelObject { get; set; }
-	[Bind(0x01B4, BindFlags.ActorRefresh)] public int ModelType { get; set; }
-	[Bind(0x01E0)] public byte ClassJob { get; set; }
-	[Bind(0x0660, BindFlags.Pointer)] public ActorMemory? Mount { get; set; }
-	[Bind(0x0668)] public ushort MountId { get; set; }
-	[Bind(0x06C0, BindFlags.Pointer)] public ActorMemory? Companion { get; set; }
-	[Bind(0x06E0)] public WeaponMemory? MainHand { get; set; }
-	[Bind(0x0748)] public WeaponMemory? OffHand { get; set; }
-	[Bind(0x0818)] public ActorEquipmentMemory? Equipment { get; set; }
-	[Bind(0x0840)] public ActorCustomizeMemory? Customize { get; set; }
-	[Bind(0x085E, BindFlags.ActorRefresh)] public bool HatHidden { get; set; }
-	[Bind(0x085F, BindFlags.ActorRefresh)] public CharacterFlagDefs CharacterFlags { get; set; }
-	[Bind(0x0870, BindFlags.Pointer)] public ActorMemory? Ornament { get; set; }
-	[Bind(0x0878)] public ushort OrnamentId { get; set; }
-	[Bind(0x0900)] public AnimationMemory? Animation { get; set; }
-	[Bind(0x1214)] public bool IsMotionEnabled { get; set; }
-	[Bind(0x1A18)] public float Transparency { get; set; }
-	[Bind(0x1AFE)] public byte Voice { get; set; }
-	[Bind(0x1B00)] public byte CharacterModeRaw { get; set; }
-	[Bind(0x1B01)] public byte CharacterModeInput { get; set; }
-	[Bind(0x1B24)] public byte AttachmentPoint { get; set; }
+	[Bind(0x008D)] public byte SubKind { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x00C4)] public float Scale { get => this.GetValue<float>(); set => this.SetValue(value); }
+	[Bind(0x0100, BindFlags.Pointer)] public ActorModelMemory? ModelObject { get => this.GetValue<ActorModelMemory?>(); set => this.SetValue(value); }
+	[Bind(0x01B4, BindFlags.ActorRefresh)] public int ModelType { get => this.GetValue<int>(); set => this.SetValue(value); }
+	[Bind(0x01E0)] public byte ClassJob { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x0660, BindFlags.Pointer)] public ActorMemory? Mount { get => this.GetValue<ActorMemory?>(); set => this.SetValue(value); }
+	[Bind(0x0668)] public ushort MountId { get => this.GetValue<ushort>(); set => this.SetValue(value); }
+	[Bind(0x06C0, BindFlags.Pointer)] public ActorMemory? Companion { get => this.GetValue<ActorMemory?>(); set => this.SetValue(value); }
+	[Bind(0x06E0)] public WeaponMemory? MainHand { get => this.GetValue<WeaponMemory?>(); set => this.SetValue(value); }
+	[Bind(0x0748)] public WeaponMemory? OffHand { get => this.GetValue<WeaponMemory?>(); set => this.SetValue(value); }
+	[Bind(0x0818)] public ActorEquipmentMemory? Equipment { get => this.GetValue<ActorEquipmentMemory?>(); set => this.SetValue(value); }
+	[Bind(0x0840)] public ActorCustomizeMemory? Customize { get => this.GetValue<ActorCustomizeMemory?>(); set => this.SetValue(value); }
+	[Bind(0x085E, BindFlags.ActorRefresh)] public bool HatHidden { get => this.GetValue<bool>(); set => this.SetValue(value); }
+	[Bind(0x085F, BindFlags.ActorRefresh)] public CharacterFlagDefs CharacterFlags { get => this.GetValue<CharacterFlagDefs>(); set => this.SetValue(value); }
+	[Bind(0x0870, BindFlags.Pointer)] public ActorMemory? Ornament { get => this.GetValue<ActorMemory?>(); set => this.SetValue(value); }
+	[Bind(0x0878)] public ushort OrnamentId { get => this.GetValue<ushort>(); set => this.SetValue(value); }
+	[Bind(0x0900)] public AnimationMemory? Animation { get => this.GetValue<AnimationMemory?>(); set => this.SetValue(value); }
+	[Bind(0x1214)] public bool IsMotionEnabled { get => this.GetValue<bool>(); set => this.SetValue(value); }
+	[Bind(0x1A18)] public float Transparency { get => this.GetValue<float>(); set => this.SetValue(value); }
+	[Bind(0x1AFE)] public byte Voice { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x1B00)] public byte CharacterModeRaw { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x1B01)] public byte CharacterModeInput { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x1B24)] public byte AttachmentPoint { get => this.GetValue<byte>(); set => this.SetValue(value); }
 
 	public History History { get; private set; } = new();
 
