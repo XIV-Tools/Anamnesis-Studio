@@ -52,7 +52,6 @@ public class ActorMemory : ActorBasicMemory
 		VisorToggled = 1 << 3,
 	}
 
-
 	[Bind(0x008D)] public byte SubKind { get; set; }
 	[Bind(0x00C4)] public float Scale { get; set; }
 	[Bind(0x0100, BindFlags.Pointer)] public ActorModelMemory? ModelObject { get; set; }

@@ -29,7 +29,6 @@ public class ActorBasicMemory : MemoryBase
 		Load = 4,
 	}
 
-
 	[Bind(0x030)] public Utf8String NameBytes { get; set; }
 	[Bind(0x074)] public uint ObjectId { get; set; }
 	[Bind(0x080)] public uint DataId { get; set; }
