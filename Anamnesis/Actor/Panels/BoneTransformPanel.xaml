@@ -147,7 +147,8 @@
 				Grid.Row="2"
 				Grid.ColumnSpan="2"
 				IsEnabled="{Binding CurrentBone.CanEdit}"
-				Value="{Binding CurrentBone}" />
+				Value="{Binding CurrentBone}" 
+			/>
 
 		</Grid>
 	</Grid>

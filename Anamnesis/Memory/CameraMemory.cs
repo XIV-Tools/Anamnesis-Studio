@@ -20,19 +20,6 @@ public class CameraMemory : MemoryBase
 	[Bind(0x160)] public float Rotation { get => this.GetValue<ushort>(); set => this.SetValue(value); }
 
 	[AlsoNotifyFor(nameof(CameraMemory.Angle), nameof(CameraMemory.Rotation))]
-	public System.Windows.Media.Media3D.Quaternion Rotation3d
-	{
-		get
-		{
-			Vector3D camEuler = default;
-			camEuler.Y = (float)MathUtils.RadiansToDegrees((double)this.Angle.X);
-			camEuler.Z = (float)-MathUtils.RadiansToDegrees((double)this.Angle.Y);
-			camEuler.X = (float)MathUtils.RadiansToDegrees((double)this.Rotation);
-			return camEuler.ToQuaternion();
-		}
-	}
-
-	[AlsoNotifyFor(nameof(CameraMemory.Angle), nameof(CameraMemory.Rotation))]
 	public Vector Euler
 	{
 		get

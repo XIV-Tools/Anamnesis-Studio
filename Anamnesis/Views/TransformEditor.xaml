@@ -29,7 +29,6 @@
 				Grid.Row="0"
 				Margin="0,3,0,0"
 				IsEnabled="{Binding Value.CanRotate}"
-				RootRotation="{Binding Value.RootRotation, Mode=OneWay}"
 				Value="{Binding Value.Rotation}" />
 		</GroupBox>
 

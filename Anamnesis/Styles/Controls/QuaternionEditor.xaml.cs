@@ -30,7 +30,6 @@ using Vector = Anamnesis.Memory.Vector;
 public partial class QuaternionEditor : UserControl
 {
 	public static readonly IBind<CmQuaternion> ValueDp = Binder.Register<CmQuaternion, QuaternionEditor>(nameof(Value), OnValueChanged);
-	public static readonly IBind<CmQuaternion?> RootRotationdp = Binder.Register<CmQuaternion?, QuaternionEditor>(nameof(RootRotation), OnRootRotationChanged);
 	public static readonly IBind<double> TickDp = Binder.Register<double, QuaternionEditor>(nameof(TickFrequency));
 
 	public static readonly IBind<Quaternion> ValueQuatDp = Binder.Register<Quaternion, QuaternionEditor>(nameof(ValueQuat), OnValueQuatChanged);
@@ -38,6 +37,7 @@ public partial class QuaternionEditor : UserControl
 
 	////private Vector3D euler;
 	private readonly RotationGizmo rotationGizmo;
+	private readonly QuaternionRotation3D rotationTransform = new();
 	private bool lockdp = false;
 
 	private Quaternion worldSpaceDelta;
@@ -54,6 +54,7 @@ public partial class QuaternionEditor : UserControl
 		this.Viewport.Children.Add(this.rotationGizmo);
 
 		this.Viewport.Camera = new PerspectiveCamera(new Point3D(0, 0, -2.0), new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), 45);
+		this.Viewport.Camera.Transform = new RotateTransform3D(this.rotationTransform);
 
 		this.worldSpace = false;
 	}
@@ -70,12 +71,6 @@ public partial class QuaternionEditor : UserControl
 		set => ValueDp.Set(this, value);
 	}
 
-	public CmQuaternion? RootRotation
-	{
-		get => RootRotationdp.Get(this);
-		set => RootRotationdp.Set(this, value);
-	}
-
 	public Quaternion ValueQuat
 	{
 		get => ValueQuatDp.Get(this);
@@ -89,18 +84,6 @@ public partial class QuaternionEditor : UserControl
 	}
 
 	public Settings Settings => SettingsService.Current;
-
-	public Quaternion Root
-	{
-		get
-		{
-			if (this.RootRotation == null)
-				return Quaternion.Identity;
-
-			CmQuaternion root = (CmQuaternion)this.RootRotation;
-			return new Quaternion(root.X, root.Y, root.Z, root.W);
-		}
-	}
 
 	public bool WorldSpace
 	{
@@ -129,9 +112,6 @@ public partial class QuaternionEditor : UserControl
 	{
 		Quaternion valueQuat = new Quaternion(value.X, value.Y, value.Z, value.W);
 
-		if (sender.RootRotation != null)
-			valueQuat = sender.Root * valueQuat;
-
 		sender.worldSpaceDelta = valueQuat;
 
 		if (sender.WorldSpace)
@@ -144,15 +124,8 @@ public partial class QuaternionEditor : UserControl
 			return;
 
 		sender.lockdp = true;
-
 		sender.Euler = sender.Value.ToEuler();
-
 		sender.lockdp = false;
-	}
-
-	private static void OnRootRotationChanged(QuaternionEditor sender, CmQuaternion? value)
-	{
-		OnValueChanged(sender, sender.Value);
 	}
 
 	private static void OnValueQuatChanged(QuaternionEditor sender, Quaternion value)
@@ -170,18 +143,8 @@ public partial class QuaternionEditor : UserControl
 			return;
 
 		sender.lockdp = true;
-
-		if (sender.RootRotation != null)
-		{
-			Quaternion rootInv = sender.Root;
-			rootInv.Invert();
-			newrot = rootInv * newrot;
-		}
-
 		sender.Value = new CmQuaternion((float)newrot.X, (float)newrot.Y, (float)newrot.Z, (float)newrot.W);
-
 		sender.Euler = sender.Value.ToEuler();
-
 		sender.lockdp = false;
 	}
 
@@ -303,9 +266,13 @@ public partial class QuaternionEditor : UserControl
 				{
 					vis = this.IsVisible; ////&& this.IsEnabled;
 
-					if (CameraService.Instance.Camera != null)
+					if (App.Services.Camera.Camera != null)
 					{
-						this.Viewport.Camera.Transform = new RotateTransform3D(new QuaternionRotation3D(CameraService.Instance.Camera.Rotation3d));
+						Vector3D camEuler = default;
+						camEuler.Y = (float)MathUtils.RadiansToDegrees((double)App.Services.Camera.Camera.Angle.X) - 180;
+						camEuler.Z = (float)-MathUtils.RadiansToDegrees((double)App.Services.Camera.Camera.Angle.Y);
+						camEuler.X = (float)MathUtils.RadiansToDegrees((double)App.Services.Camera.Camera.Rotation);
+						this.rotationTransform.Quaternion = camEuler.ToQuaternion();
 					}
 				});
 			}

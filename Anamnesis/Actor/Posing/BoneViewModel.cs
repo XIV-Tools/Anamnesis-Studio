@@ -60,13 +60,19 @@ public class BoneViewModel : ITransform
 
 	public Quaternion Rotation
 	{
-		get => this.PrimaryBone.Rotation;
+		get => this.ModelRotation * this.PrimaryBone.Rotation;
 		set
 		{
+			Quaternion modelRotation = this.ModelRotation;
+			Quaternion outputValue = value;
+
+			modelRotation = modelRotation.Invert();
+			outputValue = modelRotation * value;
+
 			HashSet<TransformMemory> writtenMemories = new();
 			foreach (BoneReference bone in this.boneReferences)
 			{
-				bone.SetRotation(value, ref writtenMemories);
+				bone.SetRotation(outputValue, ref writtenMemories);
 			}
 		}
 	}
@@ -82,6 +88,11 @@ public class BoneViewModel : ITransform
 				bone.SetScale(value, ref writtenMemories);
 			}
 		}
+	}
+
+	public Quaternion ModelRotation
+	{
+		get => (this.Skeleton.Parent as ActorModelMemory)?.Transform?.Rotation ?? Quaternion.Identity;
 	}
 
 	public List<BoneViewModel>? GetChildren()
