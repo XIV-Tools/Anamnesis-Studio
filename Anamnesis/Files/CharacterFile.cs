@@ -10,6 +10,7 @@ using Anamnesis.GameData.Excel;
 using Anamnesis.Memory;
 using Anamnesis.Services;
 using Anamnesis.Tags;
+using Lumina.Excel.GeneratedSheets;
 using Serilog;
 
 [Serializable]
@@ -103,6 +104,8 @@ public class CharacterFile : JsonFileBase
 	public float? Transparency { get; set; }
 	public float? MuscleTone { get; set; }
 	public float? HeightMultiplier { get; set; }
+
+	public ExportData Export { get; set; } = new();
 
 	public override void GenerateTags(TagCollection tags)
 	{
@@ -251,6 +254,15 @@ public class CharacterFile : JsonFileBase
 			this.MuscleTone = actor.ModelObject?.ShaderParameters?.MuscleTone;
 			this.BustScale = actor.ModelObject?.Bust?.Scale;
 			this.Transparency = actor.Transparency;
+		}
+
+		try
+		{
+			this.Export.Write(actor);
+		}
+		catch (Exception ex)
+		{
+			Log.Error(ex, "Error writing colors");
 		}
 	}
 
@@ -538,6 +550,39 @@ public class CharacterFile : JsonFileBase
 			vm.Base = this.ModelBase;
 			vm.Variant = this.ModelVariant;
 			vm.Dye = this.DyeId;
+		}
+	}
+
+	public class ExportData
+	{
+		// write-only data - these entries are written for use in other applications
+		public Color? SkinToneColor { get; set; }
+		public Color? HairToneColor { get; set; }
+		public Color? HighlightColor { get; set; }
+		public Color? LEyeColor { get; set; }
+		public Color? REyeColor { get; set; }
+		public Color? FacialFeatureColor { get; set; }
+		public Color? FacePaintColor { get; set; }
+		public Color? LipColor { get; set; }
+
+		public void Write(ActorMemory actor)
+		{
+			if (actor.Customize == null)
+				return;
+
+			this.SkinToneColor = ColorData.GetSkin(actor.Customize.TribeId, actor.Customize.Gender)[actor.Customize.SkinTone].CmColor;
+			this.HairToneColor = ColorData.GetHair(actor.Customize.TribeId, actor.Customize.Gender)[actor.Customize.HairTone].CmColor;
+			this.HighlightColor = ColorData.GetHairHighlights()[actor.Customize.Highlights].CmColor;
+			this.LEyeColor = ColorData.GetEyeColors()[actor.Customize.LeftEyeColor].CmColor;
+			this.REyeColor = ColorData.GetEyeColors()[actor.Customize.RightEyeColor].CmColor;
+			this.FacePaintColor = ColorData.GetFacePaintColor()[actor.Customize.FacePaintColor].CmColor;
+			this.FacialFeatureColor = ColorData.GetLimbalColors()[actor.Customize.FacialFeatureColor].CmColor;
+
+			// Everyone except hrothgar get lip color:
+			if (actor.Customize.TribeId != ActorCustomizeMemory.Tribes.Helions && actor.Customize.TribeId != ActorCustomizeMemory.Tribes.TheLost)
+			{
+				this.LipColor = ColorData.GetLipColors()[actor.Customize.LipsToneFurPattern].CmColor;
+			}
 		}
 	}
 }
