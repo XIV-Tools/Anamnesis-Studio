@@ -70,6 +70,8 @@ public class ServiceManager
 		await this.InitializeService(this.Settings);
 		await this.InitializeService(this.Localization);
 		await this.InitializeService(this.Memory);
+
+		await this.InitializeService(this.GameData);
 	}
 
 	public async Task InitializeServices()
@@ -89,7 +91,6 @@ public class ServiceManager
 		await this.InitializeService(this.Time);
 		await this.InitializeService(this.Camera);
 		await this.InitializeService(this.Gpose);
-		await this.InitializeService(this.GameData);
 		await this.InitializeService(this.Pose);
 		await this.InitializeService(this.Tips);
 		await this.InitializeService(this.Favorites);

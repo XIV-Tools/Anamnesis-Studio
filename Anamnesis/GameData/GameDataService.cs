@@ -82,30 +82,30 @@ public class GameDataService : ServiceBase<GameDataService>
 		}
 	}
 
-	public ExcelSheet<Race> Races { get; private set; } = null!;
-	public ExcelSheet<Tribe> Tribes { get; private set; } = null!;
-	public ExcelSheet<Item> Items { get; private set; } = null!;
-	public ExcelSheet<Perform> Perform { get; private set; } = null!;
-	public ExcelSheet<Stain> Dyes { get; private set; } = null!;
-	public ExcelSheet<EventNpc> EventNPCs { get; private set; } = null!;
-	public ExcelSheet<BattleNpc> BattleNPCs { get; private set; } = null!;
-	public ExcelSheet<Mount> Mounts { get; private set; } = null!;
-	public ExcelSheet<MountCustomize> MountCustomize { get; private set; } = null!;
-	public ExcelSheet<Companion> Companions { get; private set; } = null!;
-	public ExcelSheet<Territory> Territories { get; private set; } = null!;
-	public ExcelSheet<Weather> Weathers { get; private set; } = null!;
-	public ExcelSheet<CharaMakeCustomize> CharacterMakeCustomize { get; private set; } = null!;
-	public ExcelSheet<CharaMakeType> CharacterMakeTypes { get; private set; } = null!;
-	public ExcelSheet<ResidentNpc> ResidentNPCs { get; private set; } = null!;
-	public ExcelSheet<WeatherRate> WeatherRates { get; private set; } = null!;
-	public ExcelSheet<EquipRaceCategory> EquipRaceCategories { get; private set; } = null!;
-	public ExcelSheet<BattleNpcName> BattleNpcNames { get; private set; } = null!;
-	public ExcelSheet<GameData.Excel.Action> Actions { get; private set; } = null!;
-	public ExcelSheet<ActionTimeline> ActionTimelines { get; private set; } = null!;
-	public ExcelSheet<Emote> Emotes { get; private set; } = null!;
-	public ExcelSheet<Ornament> Ornaments { get; private set; } = null!;
-	public ExcelSheet<BuddyEquip> BuddyEquips { get; private set; } = null!;
-	public ExcelSheet<Lobby> Lobby { get; private set; } = null!;
+	public ExcelSheet<Race> Races => GetSheet<Race>();
+	public ExcelSheet<Tribe> Tribes => GetSheet<Tribe>();
+	public ExcelSheet<Item> Items => GetSheet<Item>();
+	public ExcelSheet<Perform> Perform => GetSheet<Perform>();
+	public ExcelSheet<Stain> Dyes => GetSheet<Stain>();
+	public ExcelSheet<EventNpc> EventNPCs => GetSheet<EventNpc>();
+	public ExcelSheet<BattleNpc> BattleNPCs => GetSheet<BattleNpc>();
+	public ExcelSheet<Mount> Mounts => GetSheet<Mount>();
+	public ExcelSheet<MountCustomize> MountCustomize => GetSheet<MountCustomize>();
+	public ExcelSheet<Companion> Companions => GetSheet<Companion>();
+	public ExcelSheet<Territory> Territories => GetSheet<Territory>();
+	public ExcelSheet<Weather> Weathers => GetSheet<Weather>();
+	public ExcelSheet<CharaMakeCustomize> CharacterMakeCustomize => GetSheet<CharaMakeCustomize>();
+	public ExcelSheet<CharaMakeType> CharacterMakeTypes => GetSheet<CharaMakeType>();
+	public ExcelSheet<ResidentNpc> ResidentNPCs => GetSheet<ResidentNpc>();
+	public ExcelSheet<WeatherRate> WeatherRates => GetSheet<WeatherRate>();
+	public ExcelSheet<EquipRaceCategory> EquipRaceCategories => GetSheet<EquipRaceCategory>();
+	public ExcelSheet<BattleNpcName> BattleNpcNames => GetSheet<BattleNpcName>();
+	public ExcelSheet<GameData.Excel.Action> Actions => GetSheet<GameData.Excel.Action>();
+	public ExcelSheet<ActionTimeline> ActionTimelines => GetSheet<ActionTimeline>();
+	public ExcelSheet<Emote> Emotes => GetSheet<Emote>();
+	public ExcelSheet<Ornament> Ornaments => GetSheet<Ornament>();
+	public ExcelSheet<BuddyEquip> BuddyEquips => GetSheet<BuddyEquip>();
+	public ExcelSheet<Lobby> Lobby => GetSheet<Lobby>();
 
 	public EquipmentSheet Equipment { get; private set; } = null!;
 
@@ -205,31 +205,6 @@ public class GameDataService : ServiceBase<GameDataService>
 			options.DefaultExcelLanguage = defaultLuminaLaunguage;
 
 			LuminaData = new LuminaData(GameDataService.GamePath + "\\game\\sqpack\\", options);
-
-			this.Races = GetSheet<Race>();
-			this.Tribes = GetSheet<Tribe>();
-			this.Items = GetSheet<Item>();
-			this.Dyes = GetSheet<Stain>();
-			this.EventNPCs = GetSheet<EventNpc>();
-			this.BattleNPCs = GetSheet<BattleNpc>();
-			this.Mounts = GetSheet<Mount>();
-			this.MountCustomize = GetSheet<MountCustomize>();
-			this.Companions = GetSheet<Companion>();
-			this.Territories = GetSheet<Territory>();
-			this.Weathers = GetSheet<Weather>();
-			this.CharacterMakeCustomize = GetSheet<CharaMakeCustomize>();
-			this.CharacterMakeTypes = GetSheet<CharaMakeType>();
-			this.ResidentNPCs = GetSheet<ResidentNpc>();
-			this.Perform = GetSheet<Perform>();
-			this.WeatherRates = GetSheet<WeatherRate>();
-			this.EquipRaceCategories = GetSheet<EquipRaceCategory>();
-			this.BattleNpcNames = GetSheet<BattleNpcName>();
-			this.Actions = GetSheet<GameData.Excel.Action>();
-			this.ActionTimelines = GetSheet<ActionTimeline>();
-			this.Emotes = GetSheet<Emote>();
-			this.Ornaments = GetSheet<Ornament>();
-			this.BuddyEquips = GetSheet<BuddyEquip>();
-			this.Lobby = GetSheet<Lobby>();
 		}
 		catch (Exception ex)
 		{
