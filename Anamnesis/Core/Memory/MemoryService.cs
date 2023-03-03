@@ -244,11 +244,6 @@ public class MemoryService : ServiceBase<MemoryService>
 		_ = Task.Run(this.ProcessWatcherTask);
 	}
 
-	public override async Task Start()
-	{
-		await base.Start();
-	}
-
 	/// <summary>
 	/// Open the PC game process with all security and access rights.
 	/// </summary>
