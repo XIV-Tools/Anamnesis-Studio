@@ -15,6 +15,12 @@ public class TransformMemory : MemoryBase, ITransform
 	public bool CanLinkScale => true;
 	public bool ScaleLinked { get; set; } = true;
 
+	public Quaternion WorldRotation
+	{
+		get => this.Rotation;
+		set => this.Rotation = value;
+	}
+
 	public bool IsValid()
 	{
 		return this.Position.IsValid() && this.Rotation.IsValid() && this.Scale.IsValid();

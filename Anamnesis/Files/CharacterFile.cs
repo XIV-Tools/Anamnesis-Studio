@@ -10,7 +10,6 @@ using Anamnesis.GameData.Excel;
 using Anamnesis.Memory;
 using Anamnesis.Services;
 using Anamnesis.Tags;
-using Lumina.Excel.GeneratedSheets;
 using Serilog;
 
 [Serializable]

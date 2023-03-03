@@ -70,26 +70,6 @@
 
 		</StackPanel>
 
-		<ToggleButton
-			Grid.Row="0"
-			Grid.Column="0"
-			Width="22"
-			Height="22"
-			HorizontalAlignment="Right"
-			VerticalAlignment="Top"
-			IsChecked="{Binding WorldSpace}"
-			ToolTip="World / Local space rotation">
-
-			<ToggleButton.Content>
-				<TextBlock
-					Margin="-3,-3,-3,0"
-					FontSize="16"
-					FontWeight="Bold"
-					IsHitTestVisible="False"
-					Text="W/L" />
-			</ToggleButton.Content>
-		</ToggleButton>
-
 		<cm3:VectorEditor
 			x:Name="VectorEditor"
 			Grid.Row="1"
@@ -100,6 +80,6 @@
 			Minimum="0"
 			TickFrequency="{Binding TickFrequency}"
 			Wrap="{Binding Settings.WrapRotationSliders}"
-			Value="{Binding Euler}" />
+			Value="{Binding LocalValueEuler}" />
 	</Grid>
 </UserControl>

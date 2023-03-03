@@ -7,9 +7,10 @@ using Anamnesis.Memory;
 using PropertyChanged;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 [AddINotifyPropertyChangedInterface]
-public class BoneViewModel : ITransform
+public class BoneViewModel : ITransform, INotifyPropertyChanged
 {
 	private readonly List<BoneReference> boneReferences;
 
@@ -18,13 +19,19 @@ public class BoneViewModel : ITransform
 		this.Skeleton = skeleton;
 		this.Name = name;
 		this.boneReferences = bones;
+
+		if (this.Model != null && this.Model.Transform != null)
+		{
+			this.Model.Transform.PropertyChanged += this.OnModelTransformChanged;
+		}
 	}
 
+	public event PropertyChangedEventHandler? PropertyChanged;
+
+	public ActorModelMemory? Model => this.Skeleton.Parent as ActorModelMemory;
 	public SkeletonMemory Skeleton { get; init; }
 	public string Name { get; init; }
 	public string LocalizedBoneName => $"[Pose_{this.Name}]";
-
-	public bool IsSelected { get; set; }
 
 	public bool CanTranslate => true;
 	public bool CanRotate => true;
@@ -58,21 +65,29 @@ public class BoneViewModel : ITransform
 		}
 	}
 
-	public Quaternion Rotation
+	public Quaternion WorldRotation
 	{
-		get => this.ModelRotation * this.PrimaryBone.Rotation;
+		get => this.Rotation * this.ModelRotation;
 		set
 		{
 			Quaternion modelRotation = this.ModelRotation;
 			Quaternion outputValue = value;
 
 			modelRotation = modelRotation.Invert();
-			outputValue = modelRotation * value;
+			outputValue = value * modelRotation;
+			this.Rotation = outputValue;
+		}
+	}
 
+	public Quaternion Rotation
+	{
+		get => this.PrimaryBone.Rotation;
+		set
+		{
 			HashSet<TransformMemory> writtenMemories = new();
 			foreach (BoneReference bone in this.boneReferences)
 			{
-				bone.SetRotation(outputValue, ref writtenMemories);
+				bone.SetRotation(value, ref writtenMemories);
 			}
 		}
 	}
@@ -153,5 +168,10 @@ public class BoneViewModel : ITransform
 			return null;
 
 		return new BoneViewModel(this.Skeleton, name, parents);
+	}
+
+	private void OnModelTransformChanged(object? sender, PropertyChangedEventArgs e)
+	{
+		this.PropertyChanged?.Invoke(this, new(nameof(this.WorldRotation)));
 	}
 }

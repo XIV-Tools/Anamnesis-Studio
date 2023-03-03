@@ -10,6 +10,7 @@ public interface ITransform
 
 	bool CanRotate { get; }
 	public Quaternion Rotation { get; set; }
+	public Quaternion WorldRotation { get; set; }
 
 	bool CanScale { get; }
 	bool CanLinkScale { get; }

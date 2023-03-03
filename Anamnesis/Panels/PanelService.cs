@@ -98,7 +98,7 @@ public class PanelService : ServiceBase<PanelService>
 	{
 		foreach (PanelBase otherPanel in this.OpenPanels)
 		{
-			if (otherPanel.GetType() == panelType)
+			if (otherPanel?.GetType() == panelType)
 			{
 				// This panel is open, swap to it instead of opening another.
 				await otherPanel.Dispatcher.MainThread();

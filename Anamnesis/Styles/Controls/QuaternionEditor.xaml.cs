@@ -4,6 +4,7 @@
 namespace Anamnesis.Styles.Controls;
 
 using System;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,19 +30,14 @@ using Vector = Anamnesis.Memory.Vector;
 [AddINotifyPropertyChangedInterface]
 public partial class QuaternionEditor : UserControl
 {
-	public static readonly IBind<CmQuaternion> ValueDp = Binder.Register<CmQuaternion, QuaternionEditor>(nameof(Value), OnValueChanged);
+	public static readonly IBind<CmQuaternion> LocalValueDp = Binder.Register<CmQuaternion, QuaternionEditor>(nameof(LocalValue), OnLocalValueChanged);
+	public static readonly IBind<CmQuaternion> WorldValueDp = Binder.Register<CmQuaternion, QuaternionEditor>(nameof(WorldValue), OnWorldValueChanged);
 	public static readonly IBind<double> TickDp = Binder.Register<double, QuaternionEditor>(nameof(TickFrequency));
+	public static readonly IBind<Vector> LocalValueEulerDp = Binder.Register<Vector, QuaternionEditor>(nameof(LocalValueEuler), OnLocalValueEulerChanged);
 
-	public static readonly IBind<Quaternion> ValueQuatDp = Binder.Register<Quaternion, QuaternionEditor>(nameof(ValueQuat), OnValueQuatChanged);
-	public static readonly IBind<Vector> EulerDp = Binder.Register<Vector, QuaternionEditor>(nameof(Euler), OnEulerChanged);
-
-	////private Vector3D euler;
 	private readonly RotationGizmo rotationGizmo;
 	private readonly QuaternionRotation3D rotationTransform = new();
 	private bool lockdp = false;
-
-	private Quaternion worldSpaceDelta;
-	private bool worldSpace;
 
 	public QuaternionEditor()
 	{
@@ -55,8 +51,6 @@ public partial class QuaternionEditor : UserControl
 
 		this.Viewport.Camera = new PerspectiveCamera(new Point3D(0, 0, -2.0), new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), 45);
 		this.Viewport.Camera.Transform = new RotateTransform3D(this.rotationTransform);
-
-		this.worldSpace = false;
 	}
 
 	public double TickFrequency
@@ -65,96 +59,65 @@ public partial class QuaternionEditor : UserControl
 		set => TickDp.Set(this, value);
 	}
 
-	public CmQuaternion Value
+	public CmQuaternion LocalValue
 	{
-		get => ValueDp.Get(this);
-		set => ValueDp.Set(this, value);
+		get => LocalValueDp.Get(this);
+		set => LocalValueDp.Set(this, value);
 	}
 
-	public Quaternion ValueQuat
+	public CmQuaternion WorldValue
 	{
-		get => ValueQuatDp.Get(this);
-		set => ValueQuatDp.Set(this, value);
+		get => WorldValueDp.Get(this);
+		set => WorldValueDp.Set(this, value);
 	}
 
-	public Vector Euler
+	public Vector LocalValueEuler
 	{
-		get => EulerDp.Get(this);
-		set => EulerDp.Set(this, value);
+		get => LocalValueEulerDp.Get(this);
+		set => LocalValueEulerDp.Set(this, value);
 	}
 
 	public Settings Settings => SettingsService.Current;
 
-	public bool WorldSpace
+	public void SetWorldRotation(Quaternion worldValue)
 	{
-		get
-		{
-			return this.worldSpace;
-		}
-		set
-		{
-			bool old = this.worldSpace;
-			this.worldSpace = value;
+		Quaternion newrot = worldValue;
 
-			if (old && !value)
-			{
-				OnValueChanged(this, this.Value);
-			}
-			else
-			{
-				this.ValueQuat = Quaternion.Identity;
-				this.rotationGizmo.Transform = new RotateTransform3D(new QuaternionRotation3D(Quaternion.Identity));
-			}
-		}
+		if (this.lockdp)
+			return;
+
+		this.lockdp = true;
+		this.WorldValue = new CmQuaternion((float)newrot.X, (float)newrot.Y, (float)newrot.Z, (float)newrot.W);
+		OnLocalValueChanged(this, this.LocalValue);
+		this.lockdp = false;
 	}
 
-	private static void OnValueChanged(QuaternionEditor sender, CmQuaternion value)
+	private static void OnLocalValueChanged(QuaternionEditor sender, CmQuaternion value)
 	{
-		Quaternion valueQuat = new Quaternion(value.X, value.Y, value.Z, value.W);
-
-		sender.worldSpaceDelta = valueQuat;
-
-		if (sender.WorldSpace)
-			valueQuat = Quaternion.Identity;
-
-		sender.rotationGizmo.Transform = new RotateTransform3D(new QuaternionRotation3D(valueQuat));
-		sender.ValueQuat = valueQuat;
+		sender.rotationGizmo.SetRotation(sender.WorldValue);
 
 		if (sender.lockdp)
 			return;
 
 		sender.lockdp = true;
-		sender.Euler = sender.Value.ToEuler();
+		sender.LocalValueEuler = sender.LocalValue.ToEuler();
 		sender.lockdp = false;
 	}
 
-	private static void OnValueQuatChanged(QuaternionEditor sender, Quaternion value)
+	private static void OnWorldValueChanged(QuaternionEditor sender, CmQuaternion value)
 	{
-		Quaternion newrot = value;
-		sender.rotationGizmo.Transform = new RotateTransform3D(new QuaternionRotation3D(newrot));
-
-		if (sender.WorldSpace)
-		{
-			newrot *= sender.worldSpaceDelta;
-			sender.rotationGizmo.Transform = new RotateTransform3D(new QuaternionRotation3D(Quaternion.Identity));
-		}
-
-		if (sender.lockdp)
-			return;
-
-		sender.lockdp = true;
-		sender.Value = new CmQuaternion((float)newrot.X, (float)newrot.Y, (float)newrot.Z, (float)newrot.W);
-		sender.Euler = sender.Value.ToEuler();
-		sender.lockdp = false;
+		sender.rotationGizmo.SetRotation(sender.WorldValue);
 	}
 
-	private static void OnEulerChanged(QuaternionEditor sender, Vector val)
+	private static void OnLocalValueEulerChanged(QuaternionEditor sender, Vector val)
 	{
+		sender.rotationGizmo.SetRotation(sender.WorldValue);
+
 		if (sender.lockdp)
 			return;
 
 		sender.lockdp = true;
-		sender.Value = CmQuaternion.FromEuler(sender.Euler);
+		sender.LocalValue = CmQuaternion.FromEuler(sender.LocalValueEuler);
 		sender.lockdp = false;
 	}
 
@@ -246,11 +209,11 @@ public partial class QuaternionEditor : UserControl
 		if (!this.IsVisible)
 			return false;
 
-		Vector euler = this.Euler;
+		Vector euler = this.LocalValueEuler;
 		euler.X = Float.Wrap(euler.X + (float)x, 0, 360);
 		euler.Y = Float.Wrap(euler.Y + (float)y, 0, 360);
 		euler.Z = Float.Wrap(euler.Z + (float)z, 0, 360);
-		this.Euler = euler;
+		this.LocalValueEuler = euler;
 
 		return true;
 	}
@@ -310,6 +273,7 @@ public partial class QuaternionEditor : UserControl
 	private class RotationGizmo : ModelVisual3D
 	{
 		private readonly QuaternionEditor target;
+		private readonly QuaternionRotation3D rotationTransform = new();
 
 		public RotationGizmo(QuaternionEditor target)
 		{
@@ -325,6 +289,8 @@ public partial class QuaternionEditor : UserControl
 			this.Children.Add(new AxisGizmo(Colors.Blue, new Vector3D(1, 0, 0)));
 			this.Children.Add(new AxisGizmo(Colors.Green, new Vector3D(0, 1, 0)));
 			this.Children.Add(new AxisGizmo(Colors.Red, new Vector3D(0, 0, 1)));
+
+			this.Transform = new RotateTransform3D(this.rotationTransform);
 		}
 
 		public AxisGizmo? Locked
@@ -348,6 +314,16 @@ public partial class QuaternionEditor : UserControl
 
 				return this.Hovered;
 			}
+		}
+
+		public void SetRotation(CmQuaternion rotation)
+		{
+			Quaternion q = this.rotationTransform.Quaternion;
+			q.X = rotation.X;
+			q.Y = rotation.Y;
+			q.Z = rotation.Z;
+			q.W = rotation.W;
+			this.rotationTransform.Quaternion = q;
 		}
 
 		public bool LockHoveredGizmo()
@@ -424,7 +400,10 @@ public partial class QuaternionEditor : UserControl
 		private void ApplyDelta(Vector3D angleEuler)
 		{
 			Quaternion angle = angleEuler.ToQuaternion();
-			this.target.ValueQuat *= angle;
+
+			Quaternion valueQuat = new Quaternion(this.target.WorldValue.X, this.target.WorldValue.Y, this.target.WorldValue.Z, this.target.WorldValue.W);
+			valueQuat *= angle;
+			this.target.SetWorldRotation(valueQuat);
 		}
 	}
 

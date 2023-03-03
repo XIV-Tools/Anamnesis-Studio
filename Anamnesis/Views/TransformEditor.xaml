@@ -29,7 +29,8 @@
 				Grid.Row="0"
 				Margin="0,3,0,0"
 				IsEnabled="{Binding Value.CanRotate}"
-				Value="{Binding Value.Rotation}" />
+				LocalValue="{Binding Value.Rotation}"
+				WorldValue="{Binding Value.WorldRotation}" />
 		</GroupBox>
 
 		<GroupBox Grid.Row="1">
