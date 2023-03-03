@@ -4,7 +4,7 @@
 namespace Anamnesis.Libraries.Items;
 
 using Anamnesis.Libraries.Sources;
-using FontAwesome.Sharp;
+using FontAwesome.Sharp.Pro;
 using PropertyChanged;
 
 [AddINotifyPropertyChangedInterface]
@@ -25,8 +25,8 @@ public class Pack : DirectoryEntry
 		this.Source = source;
 	}
 
-	public override IconChar Icon => this.Source?.Icon ?? IconChar.None;
-	public override IconChar IconBack => IconChar.Folder;
+	public override ProIcons Icon => this.Source?.Icon ?? ProIcons.None;
+	public override ProIcons IconBack => ProIcons.Folder;
 	public string? Author { get; set; }
 	public string? Version { get; set; }
 	public string Id { get; set; }

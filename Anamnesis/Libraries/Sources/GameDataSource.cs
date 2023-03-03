@@ -7,7 +7,7 @@ using Anamnesis.Files;
 using Anamnesis.GameData;
 using Anamnesis.Libraries.Items;
 using Anamnesis.Services;
-using FontAwesome.Sharp;
+using FontAwesome.Sharp.Pro;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -25,7 +25,7 @@ public class GameDataSource : LibrarySourceBase
 		Ornaments,
 	}
 
-	public override IconChar Icon => IconChar.Database;
+	public override ProIcons Icon => ProIcons.Database;
 	public override string Name => LocalizationService.GetString("Library_GameDataSource");
 
 	protected override async Task Load(bool refresh)
@@ -114,8 +114,8 @@ public class GameDataSource : LibrarySourceBase
 		}
 
 		public override ImageSource? Thumbnail => this.npc.Icon?.GetImageSource();
-		public override IconChar Icon => IconChar.User;
-		public override IconChar IconBack => IconChar.File;
+		public override ProIcons Icon => ProIcons.User;
+		public override ProIcons IconBack => ProIcons.File;
 		public override bool CanOpen => true;
 		public override bool IsType(LibraryFilter.Types type) => type == LibraryFilter.Types.Characters;
 

@@ -4,7 +4,7 @@
 namespace Anamnesis.Libraries.Items;
 
 using Anamnesis.Files;
-using FontAwesome.Sharp;
+using FontAwesome.Sharp.Pro;
 using PropertyChanged;
 using System;
 using System.Collections.Generic;
@@ -15,8 +15,8 @@ public class DirectoryEntry : EntryBase
 {
 	public List<EntryBase> Entries { get; init; } = new();
 	public override bool IsDirectory => true;
-	public override IconChar Icon => IconChar.None;
-	public override IconChar IconBack => IconChar.Folder;
+	public override ProIcons Icon => ProIcons.None;
+	public override ProIcons IconBack => ProIcons.Folder;
 
 	public override bool CanOpen => true;
 

@@ -5,7 +5,7 @@ namespace Anamnesis.Libraries.Items;
 
 using Anamnesis.Files;
 using Anamnesis.Tags;
-using FontAwesome.Sharp;
+using FontAwesome.Sharp.Pro;
 using PropertyChanged;
 using Serilog;
 using System;
@@ -31,8 +31,8 @@ public abstract class EntryBase : ITagged, INotifyPropertyChanged
 	public DirectoryEntry? Parent { get; set; }
 
 	public abstract bool IsDirectory { get; }
-	public abstract IconChar Icon { get; }
-	public abstract IconChar IconBack { get; }
+	public abstract ProIcons Icon { get; }
+	public abstract ProIcons IconBack { get; }
 	public virtual bool CanOpen => true;
 	public virtual Type? ImporterType => null;
 
@@ -67,7 +67,7 @@ public abstract class EntryBase : ITagged, INotifyPropertyChanged
 	[AddINotifyPropertyChangedInterface]
 	public class EntryAction
 	{
-		public EntryAction(string label, IconChar icon, Func<Task> callback, bool canExecute = true)
+		public EntryAction(string label, ProIcons icon, Func<Task> callback, bool canExecute = true)
 		{
 			this.Label = label;
 			this.Icon = icon;
@@ -79,7 +79,7 @@ public abstract class EntryBase : ITagged, INotifyPropertyChanged
 		public ICommand Command { get; init; }
 		public Func<Task> Execute { get; init; }
 		public string Label { get; init; }
-		public IconChar Icon { get; init; }
+		public ProIcons Icon { get; init; }
 		public bool CanExecute { get; set; }
 	}
 }

@@ -7,6 +7,8 @@ using Anamnesis.Utils;
 using PropertyChanged;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,11 +31,14 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 		this.InitializeComponent();
 		this.ContentArea.DataContext = this;
 		this.tagSearchQueue = new(this.SearchAsync, 250);
+		this.PropertyChanged += this.OnSelfPropertyChanged;
 	}
 
 	public FastObservableCollection<Tag> AvailableTags { get; init; } = new();
 	public FastObservableCollection<Tag> FilterByTags { get; init; } = new();
 
+	public SearchTag SearchTag { get; init; } = new(string.Empty);
+	public Tag? SuggestTag { get; set; }
 	public string? TagSearchText { get; set; }
 
 	public TagFilterBase? Filter
@@ -87,6 +92,10 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 		this.Filter?.OnTagsChanged();
 	}
 
+	private void OnTagClicked(object sender, RoutedEventArgs e)
+	{
+	}
+
 	private void OnRemoveTagButtonClicked(object sender, RoutedEventArgs e)
 	{
 		if (sender is Button btn && btn.DataContext is Tag tag)
@@ -119,6 +128,14 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 	{
 		if (e.Key == Key.Return)
 		{
+			if (this.SearchTag.Name == null)
+				return;
+
+			this.AddTag(new SearchTag(this.SearchTag.Name));
+			this.TagSearchText = null;
+		}
+		else if (e.Key == Key.Tab)
+		{
 			this.tagSearchQueue.InvokeImmediate();
 			await this.tagSearchQueue.WaitForPendingExecute();
 
@@ -126,16 +143,12 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 			{
 				this.AddTag(this.AvailableTags[0]);
 			}
-			else if (this.AvailableTags.Count <= 0 && this.TagSearchText != null)
-			{
-				this.AddTag(new SearchTag(this.TagSearchText));
-			}
 
 			// clear the serach and run it again so the next time we open we have blank results.
 			this.TagSearchText = null;
 			this.tagSearchQueue.InvokeImmediate();
 
-			// IF we are not holidn shift, close the popup
+			// IF we are not holing shift, close the popup
 			if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
 			{
 				this.IsPopupOpen = false;
@@ -153,6 +166,7 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 		if (this.Filter?.AvailableTags != null)
 		{
 			this.AvailableTags.SortAndReplace(this.Filter.AvailableTags, this);
+			this.SuggestTag = this.AvailableTags.FirstOrDefault();
 		}
 	}
 
@@ -194,6 +208,18 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 		await this.Dispatcher.MainThread();
 
 		this.AvailableTags.SortAndReplace(tags, this);
+		this.SuggestTag = this.AvailableTags.FirstOrDefault();
+	}
+
+	private void OnSelfPropertyChanged(object? sender, PropertyChangedEventArgs e)
+	{
+		if (e.PropertyName == nameof(this.TagSearchText))
+		{
+			if (this.TagSearchText != null)
+			{
+				this.SearchTag.SetName(this.TagSearchText);
+			}
+		}
 	}
 }
 

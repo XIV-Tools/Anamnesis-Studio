@@ -6,7 +6,7 @@ using Anamnesis.Files;
 using Anamnesis.Libraries.Items;
 using Anamnesis.Services;
 using Anamnesis.Tags;
-using FontAwesome.Sharp;
+using FontAwesome.Sharp.Pro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -54,7 +54,7 @@ internal class FileSource : LibrarySourceBase
 		this.Directories = new DirectoryInfo[0];
 	}
 
-	public override IconChar Icon => IconChar.FolderTree;
+	public override ProIcons Icon => ProIcons.FolderTree;
 	public override string Name => LocalizationService.GetString("Library_FileSource");
 
 	public DirectoryInfo[] Directories { get; init; }
@@ -133,7 +133,7 @@ internal class FileSource : LibrarySourceBase
 	public class FileItem : ItemEntry
 	{
 		private readonly bool hasThumbnail;
-		private readonly IconChar icon;
+		private readonly ProIcons icon;
 		private readonly Type? importerType;
 
 		public FileItem(FileInfo info, TagCollection tags)
@@ -159,33 +159,33 @@ internal class FileSource : LibrarySourceBase
 
 			if (this.Type == typeof(CharacterFile))
 			{
-				this.icon = IconChar.User;
+				this.icon = ProIcons.User;
 			}
 			else if (this.Type == typeof(PoseFile))
 			{
-				this.icon = IconChar.Running;
+				this.icon = ProIcons.Running;
 			}
 			else if (this.Type == typeof(CameraShotFile))
 			{
-				this.icon = IconChar.Camera;
+				this.icon = ProIcons.Camera;
 			}
 			else if (this.Type == typeof(SceneFile))
 			{
-				this.icon = IconChar.Users;
+				this.icon = ProIcons.Users;
 			}
 			else
 			{
-				this.icon = IconChar.Question;
+				this.icon = ProIcons.Question;
 			}
 
-			this.Actions.Add(new EntryAction("[Library_File_OpenDirectory]", IconChar.Folder, this.OpenContainingDirectory));
+			this.Actions.Add(new EntryAction("[Library_File_OpenDirectory]", ProIcons.Folder, this.OpenContainingDirectory));
 		}
 
 		public FileInfo Info { get; init; }
 		public Type Type { get; init; }
 		public override Type? ImporterType => this.importerType;
-		public override IconChar Icon => this.icon;
-		public override IconChar IconBack => IconChar.File;
+		public override ProIcons Icon => this.icon;
+		public override ProIcons IconBack => ProIcons.File;
 		public override bool CanOpen => true;
 
 		public override ImageSource? Thumbnail
@@ -265,8 +265,8 @@ internal class FileSource : LibrarySourceBase
 			}
 		}
 
-		public override IconChar Icon => IconChar.Warning;
-		public override IconChar IconBack => IconChar.File;
+		public override ProIcons Icon => ProIcons.ExclamationTriangle;
+		public override ProIcons IconBack => ProIcons.File;
 		public override bool CanOpen => false;
 
 		public override bool IsType(LibraryFilter.Types type)
@@ -288,7 +288,7 @@ internal class FileSource : LibrarySourceBase
 		public FileDirectoryEntry(DirectoryInfo info)
 		{
 			this.fileInfo = info;
-			this.Actions.Add(new EntryAction("[Library_File_OpenDirectory]", IconChar.Folder, this.OpenContainingDirectory));
+			this.Actions.Add(new EntryAction("[Library_File_OpenDirectory]", ProIcons.Folder, this.OpenContainingDirectory));
 		}
 
 		private Task OpenContainingDirectory()

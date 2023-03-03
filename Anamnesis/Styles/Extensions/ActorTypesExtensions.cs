@@ -4,7 +4,7 @@
 namespace Anamnesis.Styles;
 
 using Anamnesis.Memory;
-using FontAwesome.Sharp;
+using FontAwesome.Sharp.Pro;
 
 public static class ActorTypesExtensions
 {
@@ -25,22 +25,22 @@ public static class ActorTypesExtensions
 		return false;
 	}
 
-	public static IconChar GetIcon(this ActorTypes type)
+	public static ProIcons GetIcon(this ActorTypes type)
 	{
 		switch (type)
 		{
-			case ActorTypes.Player: return IconChar.UserAlt;
-			case ActorTypes.BattleNpc: return IconChar.UserShield;
-			case ActorTypes.EventNpc: return IconChar.UserNinja;
-			case ActorTypes.Treasure: return IconChar.Coins;
-			case ActorTypes.Aetheryte: return IconChar.Gem;
-			case ActorTypes.Companion: return IconChar.Cat;
-			case ActorTypes.Retainer: return IconChar.ConciergeBell;
-			case ActorTypes.Housing: return IconChar.Chair;
-			case ActorTypes.Mount: return IconChar.Horse;
-			case ActorTypes.Ornament: return IconChar.HatCowboy;
+			case ActorTypes.Player: return ProIcons.UserAlt;
+			case ActorTypes.BattleNpc: return ProIcons.UserShield;
+			case ActorTypes.EventNpc: return ProIcons.UserNinja;
+			case ActorTypes.Treasure: return ProIcons.Coins;
+			case ActorTypes.Aetheryte: return ProIcons.Gem;
+			case ActorTypes.Companion: return ProIcons.Cat;
+			case ActorTypes.Retainer: return ProIcons.ConciergeBell;
+			case ActorTypes.Housing: return ProIcons.Chair;
+			case ActorTypes.Mount: return ProIcons.Horse;
+			case ActorTypes.Ornament: return ProIcons.HatCowboy;
 		}
 
-		return IconChar.Question;
+		return ProIcons.Question;
 	}
 }

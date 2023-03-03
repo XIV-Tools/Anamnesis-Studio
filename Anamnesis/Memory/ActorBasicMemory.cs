@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using Anamnesis.Actor;
 using Anamnesis.Styles;
 using Anamnesis.Utils;
-using FontAwesome.Sharp;
+using FontAwesome.Sharp.Pro;
 using PropertyChanged;
 using static Anamnesis.Memory.ActorCustomizeMemory;
 using MediaColor = System.Windows.Media.Color;
@@ -43,7 +43,7 @@ public class ActorBasicMemory : MemoryBase
 	public string IdNoAddress => $"n{this.NameHash}_d{this.DataId}"; ////_k{this.ObjectKind}";
 	public int Index => ActorService.Instance.GetActorTableIndex(this.Address);
 
-	public IconChar Icon => this.ObjectKind.GetIcon();
+	public ProIcons Icon => this.ObjectKind.GetIcon();
 	public double DistanceFromPlayer => Math.Sqrt(((int)this.DistanceFromPlayerX ^ 2) + ((int)this.DistanceFromPlayerY ^ 2));
 	public string NameHash => HashUtility.GetHashString(this.NameBytes.ToString(), true);
 

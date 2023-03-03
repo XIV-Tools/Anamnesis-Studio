@@ -501,7 +501,7 @@
 						IsChecked="{Binding Filter.Flatten}"
 						Style="{StaticResource TransparentIconToggleButton}"
 						ToolTip="[Library_FlattenView]">
-						<XivToolsWpf:IconBlock Icon="FileLines" />
+						<XivToolsWpf:IconBlock Icon="FileAlt" />
 					</RadioButton>
 				</Grid>
 			</Border>

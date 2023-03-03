@@ -3,6 +3,7 @@
 
 namespace Anamnesis.Tags;
 
+using FontAwesome.Sharp.Pro;
 using PropertyChanged;
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,10 @@ public class Tag : IEquatable<Tag?>
 		this.Name = name;
 	}
 
-	public string? Name { get; init; }
+	public string? Name { get; private set; }
 
 	public virtual bool CanCompare => true;
+	public virtual ProIcons Icon => ProIcons.Tag;
 
 	public static implicit operator Tag(string name)
 	{
@@ -33,6 +35,11 @@ public class Tag : IEquatable<Tag?>
 	public static bool operator !=(Tag? left, Tag? right)
 	{
 		return !(left == right);
+	}
+
+	public virtual void SetName(string name)
+	{
+		this.Name = name;
 	}
 
 	public virtual bool Search(string[]? querry)

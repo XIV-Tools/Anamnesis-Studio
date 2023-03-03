@@ -6,7 +6,7 @@ namespace Anamnesis.Libraries.Controls;
 using System.Windows.Controls;
 using System.Windows;
 using Anamnesis.Libraries.Items;
-using FontAwesome.Sharp;
+using FontAwesome.Sharp.Pro;
 
 public partial class EntryIcon : UserControl
 {
@@ -36,12 +36,12 @@ public partial class EntryIcon : UserControl
 			this.IconShadow.Visibility = Visibility.Collapsed;
 		}
 
-		if (entry?.IconBack == IconChar.BoxOpen)
+		if (entry?.IconBack == ProIcons.BoxOpen)
 		{
 			this.IconFront.Margin = new Thickness(0, 45, 0, 12);
 			this.IconFront.FontSize = 30;
 		}
-		else if (entry?.IconBack == IconChar.Folder)
+		else if (entry?.IconBack == ProIcons.Folder)
 		{
 			this.IconFront.Margin = new Thickness(0, 25, 0, 12);
 			this.IconFront.FontSize = 45;

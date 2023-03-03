@@ -6,6 +6,7 @@ namespace Anamnesis.Panels;
 using Anamnesis.Keyboard;
 using Anamnesis.Services;
 using Anamnesis.Windows;
+using FontAwesome.Sharp.Pro;
 using FontAwesome.Sharp;
 using Serilog;
 using System;
@@ -55,7 +56,7 @@ public abstract class PanelBase : UserControl, INotifyPropertyChanged
 	public PanelService.PanelSettings Settings { get; private set; }
 	public bool IsOpen { get; private set; } = true;
 	public virtual string Id => this.GetType().ToString();
-	public IconChar Icon { get; set; }
+	public ProIcons Icon { get; set; }
 	public bool ShowBackground { get; set; } = true;
 	public bool CanResize { get; set; }
 	public bool CanScroll { get; set; } = false;

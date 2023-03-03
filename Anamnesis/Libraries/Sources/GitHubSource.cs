@@ -7,7 +7,7 @@ using Anamnesis.Files;
 using Anamnesis.Libraries.Items;
 using Anamnesis.Serialization;
 using Anamnesis.Tags;
-using FontAwesome.Sharp;
+using FontAwesome.Sharp.Pro;
 using Octokit;
 using Serilog;
 using System;
@@ -31,7 +31,7 @@ internal class GitHubSource : FileSource
 		this.RepositoryName = repositoryName;
 	}
 
-	public override IconChar Icon => IconChar.Github;
+	public override ProIcons Icon => ProIcons.Github;
 	public override string Name => this.RepositoryName; //// LocalizationService.GetStringFormatted("Library_GitHubSource", this.RepositoryName);
 
 	public string RepositoryName { get; set; }
@@ -177,8 +177,8 @@ internal class GitHubSource : FileSource
 		public GitHubPack(string url, GitHubSource source)
 			: base(url, source)
 		{
-			this.RefreshAction = new("Refresh", IconChar.Refresh, this.OnRefresh);
-			this.UpdateAction = new("Update", IconChar.Download, this.OnUpdate);
+			this.RefreshAction = new("Refresh", ProIcons.Sync, this.OnRefresh);
+			this.UpdateAction = new("Update", ProIcons.Download, this.OnUpdate);
 
 			this.Actions.Add(this.RefreshAction);
 			this.Actions.Add(this.UpdateAction);

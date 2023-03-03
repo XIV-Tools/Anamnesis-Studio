@@ -3,7 +3,7 @@
 
 namespace Anamnesis.Panels;
 
-using FontAwesome.Sharp;
+using FontAwesome.Sharp.Pro;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,7 +22,7 @@ public partial class ExceptionPanel : PanelBase
 		panel.ContentArea.Content = new XivToolsWpf.Dialogs.ErrorDialog(hostWindow, error, isCritical);
 		panel.Title = "Anamnesis v" + VersionInfo.Date.ToString("yyyy-MM-dd HH:mm");
 		////this.TitleColor = data.IsCritical ? Colors.Red : Colors.Yellow;
-		panel.Icon = isCritical ? IconChar.ExclamationCircle : IconChar.ExclamationTriangle;
+		panel.Icon = isCritical ? ProIcons.ExclamationCircle : ProIcons.ExclamationTriangle;
 
 		while (panel.IsOpen)
 		{
