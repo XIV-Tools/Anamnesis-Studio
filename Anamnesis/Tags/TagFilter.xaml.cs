@@ -69,7 +69,7 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 		}
 	}
 
-	private void RemoveTag(Tag tag)
+	private async void RemoveTag(Tag tag)
 	{
 		this.FilterByTags.Remove(tag);
 		this.AvailableTags.Add(tag);
@@ -78,7 +78,13 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 		this.Filter?.Tags.Replace(this.FilterByTags);
 		this.Filter?.OnTagsChanged();
 
-		this.addTagItem.ShowHint = this.FilterByTags.Count <= 1;
+		if (this.FilterByTags.Count <= 1)
+		{
+			this.addTagItem.ShowHint = true;
+			this.addTagItem.IsSelected = true;
+			await Task.Delay(50);
+			this.addTagItem.IsSelected = false;
+		}
 	}
 
 	private void AddTag(Tag tag)
@@ -223,11 +229,12 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 public class AddTag : Tag
 {
 	public AddTag()
-		: base("New Tag")
+			: base("New Tag")
 	{
 	}
 
 	public bool ShowHint { get; set; } = true;
+	public bool IsSelected { get; set; } = false;
 
 	public override bool CanCompare => false;
 	public override bool Search(string[]? querry) => throw new NotSupportedException();

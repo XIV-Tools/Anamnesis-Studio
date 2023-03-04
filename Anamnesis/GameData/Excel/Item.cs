@@ -91,6 +91,11 @@ public class Item : ExcelRow, IItem
 		{
 			this.Tags.Add("Unnamed");
 		}
+
+		if (this.EquipLevel <= 1)
+		{
+			this.Tags.Add("No Level");
+		}
 	}
 
 	public bool FitsInSlot(ItemSlots slot)

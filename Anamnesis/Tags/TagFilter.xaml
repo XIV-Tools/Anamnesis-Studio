@@ -167,6 +167,7 @@
 					<DataTemplate DataType="{x:Type local:AddTag}">
 
 						<ToggleButton
+							x:Name="AddTagInput"
 							Height="20"
 							MinWidth="75"
 							Margin="1"
@@ -334,6 +335,14 @@
 																</Storyboard>
 															</BeginStoryboard>
 														</DataTrigger.ExitActions>
+													</DataTrigger>
+
+													<DataTrigger
+														Binding="{Binding IsSelected}"
+														Value="True">
+														<Setter Property="Opacity" Value="0" />
+														<Setter Property="IsChecked" Value="True" />
+														<Setter TargetName="InputBox" Property="FocusManager.FocusedElement" Value="{Binding ElementName=InputBox}" />
 													</DataTrigger>
 
 												</ControlTemplate.Triggers>
