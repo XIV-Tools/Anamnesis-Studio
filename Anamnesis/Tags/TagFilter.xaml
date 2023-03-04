@@ -27,13 +27,16 @@
 			</Style.Setters>
 		</Style>
 
+		<local:CanTagAddConverter x:Key="CanTagAdd" />
+
 
 		<DataTemplate DataType="{x:Type local:Tag}">
 			<Button
 				Height="20"
 				Margin="1"
 				Click="OnTagClicked"
-				Cursor="Hand">
+				Cursor="Hand"
+				IsEnabled="{Binding Name, Converter={StaticResource StringHasContentToBool}}">
 				<Button.Style>
 					<Style TargetType="{x:Type Button}">
 						<Setter Property="Template">
@@ -59,13 +62,23 @@
 											Icon="{Binding Icon}"
 											Opacity="0.5" />
 
-										<XivToolsWpf:IconBlock
+										<Grid
 											x:Name="CloseIcon"
 											Margin="4,0,0,0"
-											FontSize="13"
-											Foreground="{DynamicResource ForegroundLightBrush}"
-											Icon="PlusCircle"
-											Opacity="0" />
+											Opacity="0">
+
+											<XivToolsWpf:IconBlock
+												FontSize="13"
+												Foreground="{DynamicResource ForegroundLightBrush}"
+												Icon="PlusCircle"
+												Visibility="{Binding Path=., RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Converter={StaticResource CanTagAdd}, ConverterParameter=Add}" />
+
+											<XivToolsWpf:IconBlock
+												FontSize="13"
+												Foreground="{DynamicResource ForegroundLightBrush}"
+												Icon="MinusCircle"
+												Visibility="{Binding Path=., RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Converter={StaticResource CanTagAdd}, ConverterParameter=Remove}" />
+										</Grid>
 
 										<TextBlock
 											Grid.Column="1"
@@ -144,6 +157,7 @@
 			<Border Style="{StaticResource XivToolsControlBorder}" />
 
 			<ItemsControl
+				x:Name="FilterTagsControl"
 				MinHeight="24"
 				Margin="2,3,2,1"
 				ItemsSource="{Binding FilterByTags}"

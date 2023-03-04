@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using XivToolsWpf;
+using XivToolsWpf.Converters;
 using XivToolsWpf.DependencyProperties;
 using XivToolsWpf.Extensions;
 
@@ -94,21 +95,16 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 
 	private void OnTagClicked(object sender, RoutedEventArgs e)
 	{
-	}
-
-	private void OnRemoveTagButtonClicked(object sender, RoutedEventArgs e)
-	{
 		if (sender is Button btn && btn.DataContext is Tag tag)
 		{
-			this.RemoveTag(tag);
-		}
-	}
-
-	private void OnAddTagButtonClicked(object sender, RoutedEventArgs e)
-	{
-		if (sender is Button btn && btn.DataContext is Tag tag)
-		{
-			this.AddTag(tag);
+			if (this.FilterByTags.Contains(tag))
+			{
+				this.RemoveTag(tag);
+			}
+			else
+			{
+				this.AddTag(tag);
+			}
 		}
 	}
 
@@ -128,11 +124,12 @@ public partial class TagFilter : UserControl, IComparer<Tag>
 	{
 		if (e.Key == Key.Return)
 		{
-			if (this.SearchTag.Name == null)
+			if (string.IsNullOrEmpty(this.SearchTag.Name) || string.IsNullOrEmpty(this.TagSearchText))
 				return;
 
 			this.AddTag(new SearchTag(this.SearchTag.Name));
 			this.TagSearchText = null;
+			this.SearchTag.SetName(string.Empty);
 		}
 		else if (e.Key == Key.Tab)
 		{
@@ -234,4 +231,33 @@ public class AddTag : Tag
 
 	public override bool CanCompare => false;
 	public override bool Search(string[]? querry) => throw new NotSupportedException();
+}
+
+// This is aweful, but if the button is a child of the FilterTagsControl then its for removing tags,
+// otherwise its for adding.
+public class CanTagAddConverter : ConverterBase<Button, Visibility>
+{
+	protected override Visibility Convert(Button? value)
+	{
+		if (value == null)
+			return Visibility.Collapsed;
+
+		bool isAdding = this.IsButtonForAddingTags(value);
+
+		if (this.Parameter is string str && str == "Remove")
+			isAdding = !isAdding;
+
+		return isAdding ? Visibility.Visible : Visibility.Collapsed;
+	}
+
+	protected bool IsButtonForAddingTags(Button value)
+	{
+		ItemsControl? host = value.FindParent<ItemsControl>();
+		if (host?.Name == "FilterTagsControl")
+		{
+			return false;
+		}
+
+		return true;
+	}
 }
