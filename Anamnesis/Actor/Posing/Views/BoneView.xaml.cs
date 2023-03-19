@@ -50,6 +50,7 @@ public partial class BoneView : UserControl
 				this.boneViewModel = this.FindParent<BonesPanel>()?.Actor?.ModelObject?.Skeleton?.GetBone(boneName);
 			}
 
+			this.boneViewModel?.EnsureAttached();
 			return this.boneViewModel;
 		}
 	}

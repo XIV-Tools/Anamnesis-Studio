@@ -20,10 +20,7 @@ public class BoneViewModel : ITransform, INotifyPropertyChanged
 		this.Name = name;
 		this.boneReferences = bones;
 
-		if (this.Model != null && this.Model.Transform != null)
-		{
-			this.Model.Transform.PropertyChanged += this.OnModelTransformChanged;
-		}
+		this.EnsureAttached();
 	}
 
 	public event PropertyChangedEventHandler? PropertyChanged;
@@ -67,6 +64,9 @@ public class BoneViewModel : ITransform, INotifyPropertyChanged
 
 	public Quaternion WorldRotation
 	{
+		// Rot * Model = correct for model, but wrong for rot?
+		// Model * Rot = wrong for model, but right for rot?
+		// wtf
 		get => this.Rotation * this.ModelRotation;
 		set
 		{
@@ -168,6 +168,15 @@ public class BoneViewModel : ITransform, INotifyPropertyChanged
 			return null;
 
 		return new BoneViewModel(this.Skeleton, name, parents);
+	}
+
+	public void EnsureAttached()
+	{
+		if (this.Model != null && this.Model.Transform != null)
+		{
+			this.Model.Transform.PropertyChanged -= this.OnModelTransformChanged;
+			this.Model.Transform.PropertyChanged += this.OnModelTransformChanged;
+		}
 	}
 
 	private void OnModelTransformChanged(object? sender, PropertyChangedEventArgs e)
