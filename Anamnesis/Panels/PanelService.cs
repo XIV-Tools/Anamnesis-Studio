@@ -19,6 +19,8 @@ using Anamnesis.Memory;
 
 public class PanelService : ServiceBase<PanelService>
 {
+	private static readonly object ComponentLock = new();
+
 	private static readonly List<Type> PreLoadPanels = new()
 	{
 		typeof(CharacterPanel),
@@ -269,7 +271,7 @@ public class PanelService : ServiceBase<PanelService>
 			{
 				// Even though we're doing this on another thread, we can still only do one panel
 				// at a time since WPF's LoadComponent system isn't thread safe.
-				lock (this)
+				lock (PanelService.ComponentLock)
 				{
 					this.panel = Activator.CreateInstance(this.panelType) as PanelBase;
 				}
