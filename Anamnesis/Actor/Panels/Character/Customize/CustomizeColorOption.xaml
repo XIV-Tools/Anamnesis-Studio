@@ -18,7 +18,7 @@
 		<Border
 			Grid.Column="0"
 			Margin="1,1,0,1"
-			BorderBrush="{StaticResource XivToolsControlBorderBackground}"
+			BorderBrush="{DynamicResource ControlBackgroundBrush}"
 			BorderThickness="2"
 			CornerRadius="{Binding LeftElementCornerRadius}"
 			Style="{StaticResource XivToolsControlBorder}">

@@ -48,11 +48,11 @@
 
 									<Ellipse
 										Margin="-1"
-										Fill="{DynamicResource XivToolsControlBorderBackground}" />
+										Fill="{DynamicResource ControlBackgroundBrush}" />
 
 									<Ellipse
 										x:Name="BackgroundElipse"
-										Fill="{DynamicResource XivToolsControlBorderBackground}"
+										Fill="{DynamicResource ControlBackgroundBrush}"
 										Stroke="{DynamicResource ForegroundBrush}"
 										StrokeThickness="1" />
 

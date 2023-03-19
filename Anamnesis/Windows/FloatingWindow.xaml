@@ -128,7 +128,7 @@
 
 					<Border
 						Margin="1,1,1,-1"
-						Background="{DynamicResource XivToolsControlBorderBackground}"
+						Background="{DynamicResource ControlBackgroundBrush}"
 						CornerRadius="6,6,0,0"
 						MouseDown="OnTitleMouseDown" />
 

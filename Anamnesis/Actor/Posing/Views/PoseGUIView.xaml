@@ -77,7 +77,7 @@
 				HorizontalAlignment="Left"
 				FontSize="48"
 				FontWeight="Bold"
-				Foreground="{DynamicResource XivToolsControlBorderBackground}"
+				Foreground="{DynamicResource ControlBackgroundBrush}"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Left]"
 				Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" />
@@ -87,7 +87,7 @@
 				HorizontalAlignment="Right"
 				FontSize="48"
 				FontWeight="Bold"
-				Foreground="{DynamicResource XivToolsControlBorderBackground}"
+				Foreground="{DynamicResource ControlBackgroundBrush}"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Right]"
 				Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" />
@@ -97,7 +97,7 @@
 				HorizontalAlignment="Left"
 				FontSize="48"
 				FontWeight="Bold"
-				Foreground="{DynamicResource XivToolsControlBorderBackground}"
+				Foreground="{DynamicResource ControlBackgroundBrush}"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Right]"
 				Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" />
@@ -107,7 +107,7 @@
 				HorizontalAlignment="Right"
 				FontSize="48"
 				FontWeight="Bold"
-				Foreground="{DynamicResource XivToolsControlBorderBackground}"
+				Foreground="{DynamicResource ControlBackgroundBrush}"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Left]"
 				Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" />
@@ -118,7 +118,7 @@
 				HorizontalAlignment="Left"
 				FontSize="48"
 				FontWeight="Bold"
-				Foreground="{DynamicResource XivToolsControlBorderBackground}"
+				Foreground="{DynamicResource ControlBackgroundBrush}"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Left]"
 				Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" />
@@ -128,7 +128,7 @@
 				HorizontalAlignment="Right"
 				FontSize="48"
 				FontWeight="Bold"
-				Foreground="{DynamicResource XivToolsControlBorderBackground}"
+				Foreground="{DynamicResource ControlBackgroundBrush}"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Right]"
 				Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" />
@@ -138,7 +138,7 @@
 				HorizontalAlignment="Left"
 				FontSize="48"
 				FontWeight="Bold"
-				Foreground="{DynamicResource XivToolsControlBorderBackground}"
+				Foreground="{DynamicResource ControlBackgroundBrush}"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Right]"
 				Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" />
@@ -148,7 +148,7 @@
 				HorizontalAlignment="Right"
 				FontSize="48"
 				FontWeight="Bold"
-				Foreground="{DynamicResource XivToolsControlBorderBackground}"
+				Foreground="{DynamicResource ControlBackgroundBrush}"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Left]"
 				Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" />
@@ -159,7 +159,7 @@
 				HorizontalAlignment="Left"
 				FontSize="48"
 				FontWeight="Bold"
-				Foreground="{DynamicResource XivToolsControlBorderBackground}"
+				Foreground="{DynamicResource ControlBackgroundBrush}"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Left]"
 				Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" />
@@ -169,7 +169,7 @@
 				HorizontalAlignment="Right"
 				FontSize="48"
 				FontWeight="Bold"
-				Foreground="{DynamicResource XivToolsControlBorderBackground}"
+				Foreground="{DynamicResource ControlBackgroundBrush}"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Right]"
 				Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" />
@@ -179,7 +179,7 @@
 				HorizontalAlignment="Left"
 				FontSize="48"
 				FontWeight="Bold"
-				Foreground="{DynamicResource XivToolsControlBorderBackground}"
+				Foreground="{DynamicResource ControlBackgroundBrush}"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Right]"
 				Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" />
@@ -189,7 +189,7 @@
 				HorizontalAlignment="Right"
 				FontSize="48"
 				FontWeight="Bold"
-				Foreground="{DynamicResource XivToolsControlBorderBackground}"
+				Foreground="{DynamicResource ControlBackgroundBrush}"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Left]"
 				Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" />

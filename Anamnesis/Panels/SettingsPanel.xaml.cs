@@ -10,6 +10,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
 using Anamnesis.Files;
 using Anamnesis.Keyboard;
 using Anamnesis.Services;

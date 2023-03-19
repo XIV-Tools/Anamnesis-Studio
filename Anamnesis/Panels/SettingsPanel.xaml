@@ -4,6 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:XivToolsWPF="clr-namespace:XivToolsWpf.Controls;assembly=XivToolsWpf"
 	xmlns:ana="clr-namespace:Anamnesis"
+	xmlns:controls="clr-namespace:Anamnesis.Styles.Controls"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:local="clr-namespace:Anamnesis.Panels"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -292,6 +293,8 @@
 
 				</Grid>
 			</GroupBox>
+
+			<controls:ColorControl Value="{Binding ForegroundColor}" />
 
 		</StackPanel>
 

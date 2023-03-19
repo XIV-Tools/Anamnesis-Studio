@@ -53,7 +53,7 @@
 
 
 							<Border
-								BorderBrush="{StaticResource XivToolsControlBorderBackground}"
+								BorderBrush="{DynamicResource ControlBackgroundBrush}"
 								BorderThickness="1"
 								CornerRadius="6"
 								SnapsToDevicePixels="True">

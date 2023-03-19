@@ -22,7 +22,7 @@
 			<Border
 				Grid.Column="0"
 				Margin="1,0,1,0"
-				BorderBrush="{StaticResource XivToolsControlBorderBackground}"
+				BorderBrush="{DynamicResource ControlBackgroundBrush}"
 				BorderThickness="2"
 				ClipToBounds="True"
 				CornerRadius="0"
