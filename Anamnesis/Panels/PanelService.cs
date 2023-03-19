@@ -123,13 +123,16 @@ public class PanelService : ServiceBase<PanelService>
 
 	public void OnPanelClosed(PanelBase panel)
 	{
-		this.OpenPanels.Remove(panel);
-
-		Type panelType = panel.GetType();
-
-		if (!this.ClosedPanelCache.ContainsKey(panelType))
+		lock (this)
 		{
-			this.ClosedPanelCache.Add(panelType, panel);
+			this.OpenPanels.Remove(panel);
+
+			Type panelType = panel.GetType();
+
+			if (!this.ClosedPanelCache.ContainsKey(panelType))
+			{
+				this.ClosedPanelCache.Add(panelType, panel);
+			}
 		}
 	}
 
@@ -264,7 +267,12 @@ public class PanelService : ServiceBase<PanelService>
 
 			try
 			{
-				this.panel = Activator.CreateInstance(this.panelType) as PanelBase;
+				// Even though we're doing this on another thread, we can still only do one panel
+				// at a time since WPF's LoadComponent system isn't thread safe.
+				lock (this)
+				{
+					this.panel = Activator.CreateInstance(this.panelType) as PanelBase;
+				}
 			}
 			catch(Exception ex)
 			{
