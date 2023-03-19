@@ -10,7 +10,7 @@
 	xmlns:panels="clr-namespace:Anamnesis.Panels"
 	Title="[Navigation_Actor_Pose]"
 	d:DesignWidth="800"
-	Icon="PersonRunning"
+	Icon="Running"
 	mc:Ignorable="d">
 
 	<Grid>
