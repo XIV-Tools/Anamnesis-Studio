@@ -177,12 +177,15 @@ public class PanelService : ServiceBase<PanelService>
 
 	private FloatingWindow CreateWindow()
 	{
-		if (MemoryService.Process == null)
-			return new FloatingWindow();
+		lock(ComponentLock)
+		{
+			if (MemoryService.Process == null)
+				return new FloatingWindow();
 
-		// TODO: if OverlayMode!
-		return new OverlayWindow();
-		////return new FloatingWindow();
+			// TODO: if OverlayMode!
+			return new OverlayWindow();
+			////return new FloatingWindow();
+		}
 	}
 
 	private async Task CompleteStart()
