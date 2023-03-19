@@ -96,8 +96,8 @@ public partial class QuaternionEditor : UserControl
 	{
 		sender.rotationGizmo.SetRotation(sender.WorldValue);
 
-		if (sender.lockdp)
-			return;
+		////if (sender.lockdp)
+		////	return;
 
 		sender.lockdp = true;
 		sender.LocalValueEuler = sender.LocalValue.ToEuler();
@@ -121,25 +121,6 @@ public partial class QuaternionEditor : UserControl
 		sender.lockdp = false;
 	}
 
-	private static string? GetAxisName(Vector3D? axis)
-	{
-		if (axis == null)
-			return null;
-
-		Vector3D v = (Vector3D)axis;
-
-		if (v.X > v.Y && v.X > v.Z)
-			return "X";
-
-		if (v.Y > v.X && v.Y > v.Z)
-			return "Y";
-
-		if (v.Z > v.X && v.Z > v.Y)
-			return "Z";
-
-		return null;
-	}
-
 	private void OnViewportMouseDown(object sender, MouseButtonEventArgs e)
 	{
 		Mouse.Capture(this.Viewport);
@@ -153,7 +134,6 @@ public partial class QuaternionEditor : UserControl
 		{
 			this.LockedIndicator.IsChecked = this.rotationGizmo.LockHoveredGizmo();
 			this.LockedIndicator.IsEnabled = (bool)this.LockedIndicator.IsChecked;
-			this.LockedAxisDisplay.Text = GetAxisName(this.rotationGizmo.Locked?.Axis);
 		}
 
 		this.rotationGizmo.Hover(null);
@@ -197,7 +177,6 @@ public partial class QuaternionEditor : UserControl
 	{
 		this.rotationGizmo.UnlockGizmo();
 		this.LockedIndicator.IsEnabled = false;
-		this.LockedAxisDisplay.Text = GetAxisName(this.rotationGizmo.Locked?.Axis);
 	}
 
 	private bool Rotate(KeyboardKeyStates state, double x, double y, double z)
@@ -253,20 +232,6 @@ public partial class QuaternionEditor : UserControl
 		{
 			// Watch camera thread
 			new Thread(new ThreadStart(this.WatchCamera)).Start();
-		}
-	}
-
-	private void OnSizeChanged(object sender, SizeChangedEventArgs e)
-	{
-		if (e.NewSize.Width > 300)
-		{
-			Grid.SetRow(this.VectorEditor, 0);
-			Grid.SetColumn(this.VectorEditor, 1);
-		}
-		else
-		{
-			Grid.SetRow(this.VectorEditor, 1);
-			Grid.SetColumn(this.VectorEditor, 0);
 		}
 	}
 
