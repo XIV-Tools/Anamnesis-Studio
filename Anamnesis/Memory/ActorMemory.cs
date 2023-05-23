@@ -68,13 +68,13 @@ public class ActorMemory : ActorBasicMemory
 	[Bind(0x0877, BindFlags.ActorRefresh)] public CharacterFlagDefs CharacterFlags { get => this.GetValue<CharacterFlagDefs>(); set => this.SetValue(value); }
 	[Bind(0x0888, BindFlags.Pointer)] public ActorMemory? Ornament { get => this.GetValue<ActorMemory?>(); set => this.SetValue(value); }
 	[Bind(0x0890)] public ushort OrnamentId { get => this.GetValue<ushort>(); set => this.SetValue(value); }
-	[Bind(0x0918)] public AnimationMemory? Animation { get => this.GetValue<AnimationMemory?>(); set => this.SetValue(value); }
-	[Bind(0x122C)] public bool IsMotionEnabled { get => this.GetValue<bool>(); set => this.SetValue(value); }
-	[Bind(0x1A30)] public float Transparency { get => this.GetValue<float>(); set => this.SetValue(value); }
-	[Bind(0x1B16)] public byte Voice { get => this.GetValue<byte>(); set => this.SetValue(value); }
-	[Bind(0x1B00)] public byte CharacterModeRaw { get => this.GetValue<byte>(); set => this.SetValue(value); }
-	[Bind(0x1B18)] public byte CharacterModeInput { get => this.GetValue<byte>(); set => this.SetValue(value); }
-	[Bind(0x1B3C)] public byte AttachmentPoint { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x0930)] public AnimationMemory? Animation { get => this.GetValue<AnimationMemory?>(); set => this.SetValue(value); }
+	[Bind(0x1244)] public bool IsMotionEnabled { get => this.GetValue<bool>(); set => this.SetValue(value); }
+	[Bind(0x1A48)] public float Transparency { get => this.GetValue<float>(); set => this.SetValue(value); }
+	[Bind(0x1B2E)] public byte Voice { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x1B30)] public byte CharacterModeRaw { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x1B31)] public byte CharacterModeInput { get => this.GetValue<byte>(); set => this.SetValue(value); }
+	[Bind(0x1B54)] public byte AttachmentPoint { get => this.GetValue<byte>(); set => this.SetValue(value); }
 
 	public History History { get; private set; } = new();
 
