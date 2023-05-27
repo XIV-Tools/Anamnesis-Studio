@@ -4,8 +4,14 @@
 namespace Anamnesis.Actor.Panels;
 
 using Anamnesis.Actor;
+using Anamnesis.Actor.Posing;
 using Anamnesis.Actor.Views;
+using Anamnesis.Services;
+using System;
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using XivToolsWpf;
 
 public partial class BonesPanel : ActorPanelBase
@@ -14,9 +20,9 @@ public partial class BonesPanel : ActorPanelBase
 
 	public HashSet<BoneView> BoneViews = new HashSet<BoneView>();
 
-	////private bool isLeftMouseButtonDownOnWindow;
-	////private bool isDragging;
-	////private Point origMouseDownPoint;
+	private bool isLeftMouseButtonDownOnWindow;
+	private bool isDragging;
+	private Point origMouseDownPoint;
 
 	public BonesPanel()
 		: base()
@@ -59,13 +65,20 @@ public partial class BonesPanel : ActorPanelBase
 		lastSaveDir = await PoseFile.Save(lastSaveDir, this.Actor, this.Skeleton, bones);
 	}*/
 
-	/*private void OnCanvasMouseDown(object sender, MouseButtonEventArgs e)
+	private void OnCanvasMouseDown(object sender, MouseButtonEventArgs e)
 	{
 		if (e.ChangedButton == MouseButton.Left)
 		{
 			this.isLeftMouseButtonDownOnWindow = true;
 			this.origMouseDownPoint = e.GetPosition(this.SelectionCanvas);
 		}
+	}
+
+	private Point GetBonePosition(BoneView bone)
+	{
+		Point relativePoint = bone.TransformToAncestor(this).Transform(new Point(0, 0));
+		relativePoint = this.TransformToDescendant(this.MouseCanvas).Transform(relativePoint);
+		return relativePoint;
 	}
 
 	private void OnCanvasMouseMove(object sender, MouseEventArgs e)
@@ -76,47 +89,54 @@ public partial class BonesPanel : ActorPanelBase
 		{
 			e.Handled = true;
 
-			this.DragSelectionBorder.Visibility = Visibility.Visible;
-
-			double minx = Math.Min(curMouseDownPoint.X, this.origMouseDownPoint.X);
-			double miny = Math.Min(curMouseDownPoint.Y, this.origMouseDownPoint.Y);
-			double maxx = Math.Max(curMouseDownPoint.X, this.origMouseDownPoint.X);
-			double maxy = Math.Max(curMouseDownPoint.Y, this.origMouseDownPoint.Y);
-
-			minx = Math.Max(minx, 0);
-			miny = Math.Max(miny, 0);
-			maxx = Math.Min(maxx, this.SelectionCanvas.ActualWidth);
-			maxy = Math.Min(maxy, this.SelectionCanvas.ActualHeight);
-
-			Canvas.SetLeft(this.DragSelectionBorder, minx);
-			Canvas.SetTop(this.DragSelectionBorder, miny);
-			this.DragSelectionBorder.Width = maxx - minx;
-			this.DragSelectionBorder.Height = maxy - miny;
-
-			List<BoneView> bones = new List<BoneView>();
-
-			foreach (BoneView boneView in this.BoneViews)
+			try
 			{
-				if (!boneView.IsDescendantOf(this.MouseCanvas))
-					continue;
+				this.DragSelectionBorder.Visibility = Visibility.Visible;
 
-				if (!boneView.IsVisible)
-					continue;
+				double minx = Math.Min(curMouseDownPoint.X, this.origMouseDownPoint.X);
+				double miny = Math.Min(curMouseDownPoint.Y, this.origMouseDownPoint.Y);
+				double maxx = Math.Max(curMouseDownPoint.X, this.origMouseDownPoint.X);
+				double maxy = Math.Max(curMouseDownPoint.Y, this.origMouseDownPoint.Y);
 
-				Point relativePoint = boneView.TransformToAncestor(this.MouseCanvas).Transform(new Point(0, 0));
-				if (relativePoint.X > minx && relativePoint.X < maxx && relativePoint.Y > miny && relativePoint.Y < maxy)
+				minx = Math.Max(minx, 0);
+				miny = Math.Max(miny, 0);
+				maxx = Math.Min(maxx, this.SelectionCanvas.ActualWidth);
+				maxy = Math.Min(maxy, this.SelectionCanvas.ActualHeight);
+
+				Canvas.SetLeft(this.DragSelectionBorder, minx);
+				Canvas.SetTop(this.DragSelectionBorder, miny);
+				this.DragSelectionBorder.Width = maxx - minx;
+				this.DragSelectionBorder.Height = maxy - miny;
+
+				List<BoneView> bones = new List<BoneView>();
+
+				foreach (BoneView boneView in this.BoneViews)
 				{
-					boneView.Hover(true);
+					if (!boneView.IsDescendantOf(this.MouseCanvas))
+						continue;
+
+					if (!boneView.IsVisible)
+						continue;
+
+					Point relativePoint = this.GetBonePosition(boneView);
+					if (relativePoint.X > minx && relativePoint.X < maxx && relativePoint.Y > miny && relativePoint.Y < maxy)
+					{
+						boneView.Hover(true);
+					}
+					else
+					{
+						boneView.Hover(false);
+					}
 				}
-				else
-				{
-					boneView.Hover(false);
-				}
+			}
+			catch (Exception ex)
+			{
+				this.Log.Error(ex, "Error performing drag select");
 			}
 		}
 		else if (this.isLeftMouseButtonDownOnWindow)
 		{
-			System.Windows.Vector dragDelta = curMouseDownPoint - this.origMouseDownPoint;
+			Vector dragDelta = curMouseDownPoint - this.origMouseDownPoint;
 			double dragDistance = Math.Abs(dragDelta.Length);
 			if (dragDistance > DragThreshold)
 			{
@@ -127,7 +147,7 @@ public partial class BonesPanel : ActorPanelBase
 		}
 	}
 
-	private void OnCanvasMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+	private void OnCanvasMouseUp(object sender, MouseButtonEventArgs e)
 	{
 		if (!this.isLeftMouseButtonDownOnWindow)
 			return;
@@ -137,23 +157,36 @@ public partial class BonesPanel : ActorPanelBase
 		{
 			this.isDragging = false;
 
-			double minx = Canvas.GetLeft(this.DragSelectionBorder);
-			double miny = Canvas.GetTop(this.DragSelectionBorder);
-			double maxx = minx + this.DragSelectionBorder.Width;
-			double maxy = miny + this.DragSelectionBorder.Height;
-
-			foreach (BoneView boneView in this.BoneViews)
+			try
 			{
-				if (!boneView.IsVisible)
-					continue;
+				double minx = Canvas.GetLeft(this.DragSelectionBorder);
+				double miny = Canvas.GetTop(this.DragSelectionBorder);
+				double maxx = minx + this.DragSelectionBorder.Width;
+				double maxy = miny + this.DragSelectionBorder.Height;
 
-				boneView.Hover(false);
-
-				Point relativePoint = boneView.TransformToAncestor(this.MouseCanvas).Transform(new Point(0, 0));
-				if (relativePoint.X > minx && relativePoint.X < maxx && relativePoint.Y > miny && relativePoint.Y < maxy)
+				List<BoneViewModel> toSelect = new();
+				foreach (BoneView boneView in this.BoneViews)
 				{
-					boneView.Select(true);
+					if (!boneView.IsVisible)
+						continue;
+
+					if (boneView.BoneViewModel == null)
+						continue;
+
+					boneView.Hover(false);
+
+					Point relativePoint = this.GetBonePosition(boneView);
+					if (relativePoint.X > minx && relativePoint.X < maxx && relativePoint.Y > miny && relativePoint.Y < maxy)
+					{
+						toSelect.Add(boneView.BoneViewModel);
+					}
 				}
+
+				this.Services.Pose.SelectedBones.Replace(toSelect);
+			}
+			catch (Exception ex)
+			{
+				this.Log.Error(ex, "Error performing drag select");
 			}
 
 			this.DragSelectionBorder.Visibility = Visibility.Collapsed;
@@ -161,9 +194,9 @@ public partial class BonesPanel : ActorPanelBase
 		}
 		else
 		{
-			// TODO: clear selection
+			this.Services.Pose.SelectedBones.Clear();
 		}
 
 		this.MouseCanvas.ReleaseMouseCapture();
-	}*/
+	}
 }

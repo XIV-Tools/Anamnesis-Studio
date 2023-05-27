@@ -23,6 +23,16 @@
 			VerticalAlignment="Top"
 			Selection="{Binding Actor}" />
 
+		<Grid
+			x:Name="MouseCanvas"
+			Grid.Row="1"
+			Margin="3"
+			Background="Transparent"
+			IsEnabled="{Binding Services.Pose.IsEnabled}"
+			MouseDown="OnCanvasMouseDown"
+			MouseMove="OnCanvasMouseMove"
+			MouseUp="OnCanvasMouseUp" />
+
 		<TabControl Padding="256,3,3,3">
 
 			<TabItem Header="GUI">
@@ -34,35 +44,24 @@
 			<TabItem Header="All" />
 		</TabControl>
 
-		<!--<Grid
+		<Canvas
+			x:Name="SelectionCanvas"
 			Grid.Row="1"
 			Margin="3"
-			IsEnabled="{Binding Services.Pose.IsEnabled}">
-
-			<Grid
-				x:Name="MouseCanvas"
-				Grid.Row="1"
-				Background="Transparent"
-				MouseDown="OnCanvasMouseDown"
-				MouseMove="OnCanvasMouseMove"
-				MouseUp="OnCanvasMouseUp" />
-
-			<Canvas
-				x:Name="SelectionCanvas"
-				Grid.Row="1"
-				IsHitTestVisible="False">
+			IsEnabled="{Binding Services.Pose.IsEnabled}"
+			IsHitTestVisible="False">
+			<Border
+				x:Name="DragSelectionBorder"
+				BorderBrush="{DynamicResource TrimBrush}"
+				BorderThickness="1"
+				CornerRadius="3"
+				Visibility="Collapsed">
 				<Border
-					x:Name="DragSelectionBorder"
-					BorderBrush="{DynamicResource TrimBrush}"
-					BorderThickness="1"
-					CornerRadius="3"
-					Visibility="Collapsed">
-					<Border
-						Background="{DynamicResource BackgroundBrush}"
-						Opacity="0.1" />
-				</Border>
-			</Canvas>
-		</Grid>-->
+					Background="{DynamicResource BackgroundBrush}"
+					Opacity="0.1" />
+			</Border>
+		</Canvas>
+
 
 		<XivToolsWpf:InfoControl
 			Grid.Row="0"
