@@ -65,8 +65,6 @@
 			</ToggleButton>
 		</Grid>
 
-
-
 		<cm3:VectorEditor
 			x:Name="VectorEditor"
 			Grid.Row="1"

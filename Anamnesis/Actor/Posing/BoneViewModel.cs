@@ -8,6 +8,7 @@ using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 [AddINotifyPropertyChangedInterface]
 public class BoneViewModel : ITransform, INotifyPropertyChanged
@@ -20,7 +21,7 @@ public class BoneViewModel : ITransform, INotifyPropertyChanged
 		this.Name = name;
 		this.boneReferences = bones;
 
-		this.EnsureAttached();
+		Task.Run(this.Test);
 	}
 
 	public event PropertyChangedEventHandler? PropertyChanged;
@@ -65,18 +66,12 @@ public class BoneViewModel : ITransform, INotifyPropertyChanged
 
 	public Quaternion WorldRotation
 	{
-		// Rot * Model = correct for model, but wrong for rot?
-		// Model * Rot = wrong for model, but right for rot?
-		// wtf
-		get => this.Rotation * this.ModelRotation;
+		// ModelRotation Euler Z seems to be inverted for our needs.
+		// I don't know why.
+		get => this.Rotation * (Quaternion.Identity * this.ModelRotation.Invert());
 		set
 		{
-			Quaternion modelRotation = this.ModelRotation;
-			Quaternion outputValue = value;
-
-			modelRotation = modelRotation.Invert();
-			outputValue = value * modelRotation;
-			this.Rotation = outputValue;
+			this.Rotation = value * (this.ModelRotation * Quaternion.Identity.Invert());
 		}
 	}
 
@@ -171,17 +166,12 @@ public class BoneViewModel : ITransform, INotifyPropertyChanged
 		return new BoneViewModel(this.Skeleton, name, parents);
 	}
 
-	public void EnsureAttached()
+	private async Task Test()
 	{
-		if (this.Model != null && this.Model.Transform != null)
+		while (true)
 		{
-			this.Model.Transform.PropertyChanged -= this.OnModelTransformChanged;
-			this.Model.Transform.PropertyChanged += this.OnModelTransformChanged;
+			await Task.Delay(33);
+			this.PropertyChanged?.Invoke(this, new(nameof(this.WorldRotation)));
 		}
-	}
-
-	private void OnModelTransformChanged(object? sender, PropertyChangedEventArgs e)
-	{
-		this.PropertyChanged?.Invoke(this, new(nameof(this.WorldRotation)));
 	}
 }

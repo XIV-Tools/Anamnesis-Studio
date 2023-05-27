@@ -208,12 +208,14 @@ public partial class QuaternionEditor : UserControl
 				{
 					vis = this.IsVisible; ////&& this.IsEnabled;
 
-					if (App.Services.Camera.Camera != null)
+					CameraMemory? camera = App.Services.Camera.Camera;
+
+					if (camera != null)
 					{
 						Vector3D camEuler = default;
-						camEuler.Y = (float)MathUtils.RadiansToDegrees((double)App.Services.Camera.Camera.Angle.X) - 180;
-						camEuler.Z = (float)-MathUtils.RadiansToDegrees((double)App.Services.Camera.Camera.Angle.Y);
-						camEuler.X = (float)MathUtils.RadiansToDegrees((double)App.Services.Camera.Camera.Rotation);
+						camEuler.Y = (float)MathUtils.RadiansToDegrees((double)camera.Angle.X) - 180;
+						camEuler.Z = (float)-MathUtils.RadiansToDegrees((double)camera.Angle.Y);
+						camEuler.X = (float)MathUtils.RadiansToDegrees((double)camera.Rotation);
 						this.rotationTransform.Quaternion = camEuler.ToQuaternion();
 					}
 				});
