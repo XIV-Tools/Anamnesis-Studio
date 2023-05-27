@@ -39,6 +39,7 @@ public class PoseService : ServiceBase<PoseService>
 	public static event PoseEvent? FreezeWorldPositionsEnabledChanged;
 
 	public FastObservableCollection<BoneViewModel> SelectedBones { get; init; } = new();
+	public ActorMemory? SelectedActor { get; set; }
 
 	public bool IsEnabled
 	{

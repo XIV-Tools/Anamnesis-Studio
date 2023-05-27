@@ -25,6 +25,7 @@ public class BoneViewModel : ITransform, INotifyPropertyChanged
 
 	public event PropertyChangedEventHandler? PropertyChanged;
 
+	public ActorMemory? Actor => this.Model?.Parent as ActorMemory;
 	public ActorModelMemory? Model => this.Skeleton.Parent as ActorModelMemory;
 	public SkeletonMemory Skeleton { get; init; }
 	public string Name { get; init; }

@@ -146,8 +146,8 @@
 			<controls:TransformEditor
 				Grid.Row="2"
 				Grid.ColumnSpan="2"
-				IsEnabled="{Binding CurrentBone.CanEdit}"
-				Value="{Binding CurrentBone}" 
+				IsEnabled="{Binding CurrentTransform.CanEdit}"
+				Value="{Binding CurrentTransform}" 
 			/>
 
 		</Grid>

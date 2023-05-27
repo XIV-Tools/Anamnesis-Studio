@@ -91,6 +91,7 @@ public partial class BoneView : UserControl
 				PoseService.Instance.SelectedBones.Clear();
 
 			PoseService.Instance.SelectedBones.Add(this.BoneViewModel);
+			PoseService.Instance.SelectedActor = this.BoneViewModel.Actor;
 		}
 		else
 		{

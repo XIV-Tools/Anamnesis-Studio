@@ -4,11 +4,15 @@
 namespace Anamnesis.Actor.Panels;
 
 using Anamnesis.Actor.Posing;
+using Anamnesis.Memory;
 using Anamnesis.Services;
+using Lumina.Excel.GeneratedSheets;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Windows;
 using XivToolsWpf;
+using static Anamnesis.Files.PoseFile;
 
 public partial class BoneTransformPanel : ActorPanelBase
 {
@@ -17,9 +21,11 @@ public partial class BoneTransformPanel : ActorPanelBase
 	{
 		PoseService.EnabledChanged += this.OnPoseServiceEnabledChanged;
 		this.Services.Pose.SelectedBones.CollectionChanged += this.OnSelectedBonesChanged;
+		this.Services.Pose.PropertyChanged += this.OnPoseServicePropertyChanged;
 	}
 
-	public BoneViewModel? CurrentBone { get; set; }
+	public BoneViewModel? CurrentBone => this.CurrentTransform as BoneViewModel;
+	public ITransform? CurrentTransform { get; set; }
 
 	private async void OnPoseServiceEnabledChanged(bool value)
 	{
@@ -35,7 +41,7 @@ public partial class BoneTransformPanel : ActorPanelBase
 		if (this.Services.Pose.SelectedBones.Count <= 0)
 			return;
 
-		this.CurrentBone = this.Services.Pose.SelectedBones[0];
+		this.CurrentTransform = this.Services.Pose.SelectedBones[0];
 
 		this.Dispatcher.BeginInvoke(() =>
 		{
@@ -51,6 +57,18 @@ public partial class BoneTransformPanel : ActorPanelBase
 				this.Title = $"{title} - {bone}";
 			}
 		});
+	}
+
+	private void OnPoseServicePropertyChanged(object? sender, PropertyChangedEventArgs e)
+	{
+		if (e.PropertyName == nameof(PoseService.SelectedActor))
+		{
+			this.Dispatcher.BeginInvoke(() =>
+			{
+				this.CurrentTransform = this.Services.Pose.SelectedActor?.ModelObject?.Transform;
+				this.Title = this.Services.Pose.SelectedActor?.Names?.DisplayName;
+			});
+		}
 	}
 
 	private void OnParentClicked(object sender, RoutedEventArgs e)

@@ -195,6 +195,8 @@ public partial class BonesPanel : ActorPanelBase
 		else
 		{
 			this.Services.Pose.SelectedBones.Clear();
+			this.Services.Pose.SelectedActor = null;
+			this.Services.Pose.SelectedActor = this.Actor;
 		}
 
 		this.MouseCanvas.ReleaseMouseCapture();
