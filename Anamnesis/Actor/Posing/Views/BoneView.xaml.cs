@@ -9,6 +9,7 @@ using Anamnesis.Posing;
 using PropertyChanged;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -95,12 +96,18 @@ public partial class BoneView : UserControl
 
 	private void OnLoaded(object sender, RoutedEventArgs e)
 	{
+		if (DesignerProperties.GetIsInDesignMode(this))
+			return;
+
 		this.FindParent<BonesPanel>()?.BoneViews.Add(this);
 		PoseService.Instance.SelectedBones.CollectionChanged += this.OnSelectedBonesChanged;
 	}
 
 	private void OnUnloaded(object sender, RoutedEventArgs e)
 	{
+		if (DesignerProperties.GetIsInDesignMode(this))
+			return;
+
 		this.FindParent<BonesPanel>()?.BoneViews.Remove(this);
 		PoseService.Instance.SelectedBones.CollectionChanged -= this.OnSelectedBonesChanged;
 	}
