@@ -9,6 +9,7 @@ using Anamnesis.Actor.Views;
 using Anamnesis.Services;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -28,6 +29,13 @@ public partial class BonesPanel : ActorPanelBase
 		: base()
 	{
 		PoseService.EnabledChanged += this.OnPoseServiceEnabledChanged;
+	}
+
+	protected override async Task OnActorChanged()
+	{
+		await this.PoseGUI.OnActorChanged();
+		await this.PoseMatrix.OnActorChanged();
+		await base.OnActorChanged();
 	}
 
 	private async void OnPoseServiceEnabledChanged(bool value)

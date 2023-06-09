@@ -3,6 +3,7 @@
 
 namespace Anamnesis.Actor.Views;
 
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -14,6 +15,11 @@ public partial class PoseMatrixView : UserControl
 	public PoseMatrixView()
 	{
 		this.InitializeComponent();
+	}
+
+	public Task OnActorChanged()
+	{
+		return Task.CompletedTask;
 	}
 
 	private void OnGroupClicked(object sender, System.Windows.RoutedEventArgs e)

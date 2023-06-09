@@ -78,10 +78,10 @@
 				FontSize="48"
 				FontWeight="Bold"
 				Foreground="{DynamicResource ControlBackgroundBrush}"
+				IsHitTestVisible="False"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Left]"
-				Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" 
-				IsHitTestVisible="False"/>
+				Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" />
 			<TextBlock
 				Grid.Column="0"
 				Margin="32,0,32,0"
@@ -89,10 +89,10 @@
 				FontSize="48"
 				FontWeight="Bold"
 				Foreground="{DynamicResource ControlBackgroundBrush}"
+				IsHitTestVisible="False"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Right]"
-				Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" 
-				IsHitTestVisible="False"/>
+				Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" />
 			<TextBlock
 				Grid.Column="0"
 				Margin="32,0,32,0"
@@ -100,10 +100,10 @@
 				FontSize="48"
 				FontWeight="Bold"
 				Foreground="{DynamicResource ControlBackgroundBrush}"
+				IsHitTestVisible="False"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Right]"
-				Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" 
-				IsHitTestVisible="False"/>
+				Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" />
 			<TextBlock
 				Grid.Column="0"
 				Margin="32,0,32,0"
@@ -111,10 +111,10 @@
 				FontSize="48"
 				FontWeight="Bold"
 				Foreground="{DynamicResource ControlBackgroundBrush}"
+				IsHitTestVisible="False"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Left]"
-				Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" 
-				IsHitTestVisible="False"/>
+				Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" />
 
 			<TextBlock
 				Grid.Column="1"
@@ -123,10 +123,10 @@
 				FontSize="48"
 				FontWeight="Bold"
 				Foreground="{DynamicResource ControlBackgroundBrush}"
+				IsHitTestVisible="False"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Left]"
-				Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" 
-				IsHitTestVisible="False"/>
+				Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" />
 			<TextBlock
 				Grid.Column="1"
 				Margin="16,0,16,0"
@@ -134,10 +134,10 @@
 				FontSize="48"
 				FontWeight="Bold"
 				Foreground="{DynamicResource ControlBackgroundBrush}"
+				IsHitTestVisible="False"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Right]"
-				Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" 
-				IsHitTestVisible="False"/>
+				Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" />
 			<TextBlock
 				Grid.Column="1"
 				Margin="16,0,16,0"
@@ -145,10 +145,10 @@
 				FontSize="48"
 				FontWeight="Bold"
 				Foreground="{DynamicResource ControlBackgroundBrush}"
+				IsHitTestVisible="False"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Right]"
-				Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" 
-				IsHitTestVisible="False"/>
+				Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" />
 			<TextBlock
 				Grid.Column="1"
 				Margin="16,0,16,0"
@@ -156,10 +156,10 @@
 				FontSize="48"
 				FontWeight="Bold"
 				Foreground="{DynamicResource ControlBackgroundBrush}"
+				IsHitTestVisible="False"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Left]"
-				Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" 
-				IsHitTestVisible="False"/>
+				Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" />
 
 			<TextBlock
 				Grid.Column="2"
@@ -168,10 +168,10 @@
 				FontSize="48"
 				FontWeight="Bold"
 				Foreground="{DynamicResource ControlBackgroundBrush}"
+				IsHitTestVisible="False"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Left]"
-				Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" 
-				IsHitTestVisible="False"/>
+				Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" />
 			<TextBlock
 				Grid.Column="2"
 				Margin="32,0,32,0"
@@ -179,10 +179,10 @@
 				FontSize="48"
 				FontWeight="Bold"
 				Foreground="{DynamicResource ControlBackgroundBrush}"
+				IsHitTestVisible="False"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Right]"
-				Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" 
-				IsHitTestVisible="False"/>
+				Visibility="{Binding FlipSides, Converter={StaticResource !B2V}, FallbackValue=Visible}" />
 			<TextBlock
 				Grid.Column="2"
 				Margin="32,0,32,0"
@@ -190,10 +190,10 @@
 				FontSize="48"
 				FontWeight="Bold"
 				Foreground="{DynamicResource ControlBackgroundBrush}"
+				IsHitTestVisible="False"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Right]"
-				Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" 
-				IsHitTestVisible="False"/>
+				Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" />
 			<TextBlock
 				Grid.Column="2"
 				Margin="32,0,32,0"
@@ -201,10 +201,10 @@
 				FontSize="48"
 				FontWeight="Bold"
 				Foreground="{DynamicResource ControlBackgroundBrush}"
+				IsHitTestVisible="False"
 				Opacity="{DynamicResource LeftOrRightLabelOpacity}"
 				Text="[Pose_Left]"
-				Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" 
-				IsHitTestVisible="False"/>
+				Visibility="{Binding FlipSides, Converter={StaticResource B2V}, FallbackValue=Hidden}" />
 
 			<!--  Body  -->
 			<Viewbox
@@ -250,6 +250,35 @@
 						Canvas.Top="210"
 						BoneName="Waist" />
 					<local:BoneView
+						Canvas.Left="118"
+						Canvas.Top="233"
+						BoneName="iv_koumon"
+						Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}" />
+					<local:BoneView
+						Canvas.Left="95"
+						Canvas.Top="220"
+						BoneName="iv_koumon_l"
+						FlippedBoneName="iv_koumon_r"
+						Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}" />
+					<local:BoneView
+						Canvas.Left="140"
+						Canvas.Top="220"
+						BoneName="iv_koumon_r"
+						FlippedBoneName="iv_koumon_l"
+						Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}" />
+					<local:BoneView
+						Canvas.Left="81"
+						Canvas.Top="237"
+						BoneName="iv_shiri_l"
+						FlippedBoneName="iv_shiri_r"
+						Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}" />
+					<local:BoneView
+						Canvas.Left="152"
+						Canvas.Top="237"
+						BoneName="iv_shiri_r"
+						FlippedBoneName="iv_shiri_l"
+						Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}" />
+					<local:BoneView
 						Canvas.Left="98"
 						Canvas.Top="93"
 						BoneName="ClavicleLeft"
@@ -275,20 +304,44 @@
 						BoneName="BreastLeft"
 						FlippedBoneName="BreastRight" />
 					<local:BoneView
+						Canvas.Left="95"
+						Canvas.Top="142"
+						BoneName="iv_c_mune_l"
+						FlippedBoneName="iv_c_mune_r"
+						Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}" />
+					<local:BoneView
 						Canvas.Left="135"
 						Canvas.Top="120"
 						BoneName="BreastRight"
 						FlippedBoneName="BreastLeft" />
+					<local:BoneView
+						Canvas.Left="140"
+						Canvas.Top="142"
+						BoneName="iv_c_mune_r"
+						FlippedBoneName="iv_c_mune_l"
+						Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}" />
 					<local:BoneView
 						Canvas.Left="78"
 						Canvas.Top="107"
 						BoneName="ArmLeft"
 						FlippedBoneName="ArmRight" />
 					<local:BoneView
+						Canvas.Left="55"
+						Canvas.Top="127"
+						BoneName="iv_nitoukin_l"
+						FlippedBoneName="iv_nitoukin_r"
+						Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}" />
+					<local:BoneView
 						Canvas.Left="158"
 						Canvas.Top="107"
 						BoneName="ArmRight"
 						FlippedBoneName="ArmLeft" />
+					<local:BoneView
+						Canvas.Left="179"
+						Canvas.Top="127"
+						BoneName="iv_nitoukin_r"
+						FlippedBoneName="iv_nitoukin_l"
+						Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}" />
 					<local:BoneView
 						Canvas.Left="75"
 						Canvas.Top="160"
@@ -369,6 +422,86 @@
 						Canvas.Top="480"
 						BoneName="ToesRight"
 						FlippedBoneName="ToesLeft" />
+
+				</Canvas>
+			</Viewbox>
+
+			<!--  IVCS Penis  -->
+			<Viewbox
+				Grid.Column="0"
+				Width="256"
+				Margin="-30,0,-30,0"
+				Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}">
+				<Canvas
+					Width="256"
+					Height="512">
+
+					<local:BoneView
+						Canvas.Left="39"
+						Canvas.Top="320"
+						BoneName="iv_ochinko_f" />
+					<local:BoneView
+						Canvas.Left="39"
+						Canvas.Top="342"
+						BoneName="iv_ochinko_e" />
+					<local:BoneView
+						Canvas.Left="39"
+						Canvas.Top="364"
+						BoneName="iv_ochinko_d" />
+					<local:BoneView
+						Canvas.Left="39"
+						Canvas.Top="385"
+						BoneName="iv_ochinko_c" />
+					<local:BoneView
+						Canvas.Left="39"
+						Canvas.Top="407"
+						BoneName="iv_ochinko_b" />
+					<local:BoneView
+						Canvas.Left="39"
+						Canvas.Top="428"
+						BoneName="iv_ochinko_a" />
+					<local:BoneView
+						Canvas.Left="30"
+						Canvas.Top="449"
+						BoneName="iv_kougan_l"
+						FlippedBoneName="iv_kougan_r" />
+					<local:BoneView
+						Canvas.Left="50"
+						Canvas.Top="449"
+						BoneName="iv_kougan_r"
+						FlippedBoneName="iv_kougan_l" />
+
+				</Canvas>
+			</Viewbox>
+
+			<!--  IVCS Vagina  -->
+			<Viewbox
+				Grid.Column="0"
+				Width="256"
+				Margin="-30,0,-30,0"
+				Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}">
+				<Canvas
+					Width="256"
+					Height="512">
+
+					<local:BoneView
+						Canvas.Left="200"
+						Canvas.Top="320"
+						BoneName="iv_kuritto" />
+					<local:BoneView
+						Canvas.Left="200"
+						Canvas.Top="342"
+						BoneName="iv_omanko" />
+					<local:BoneView
+						Canvas.Left="180"
+						Canvas.Top="342"
+						BoneName="iv_inshin_l"
+						FlippedBoneName="iv_inshin_r" />
+					<local:BoneView
+						Canvas.Left="220"
+						Canvas.Top="342"
+						BoneName="iv_inshin_r"
+						FlippedBoneName="iv_inshin_l" />
 
 				</Canvas>
 			</Viewbox>
@@ -1401,6 +1534,31 @@
 								Canvas.Top="115"
 								BoneName="WeaponLeft"
 								FlippedBoneName="WeaponRight" />
+							<local:BoneView
+								Canvas.Left="34"
+								Canvas.Top="20"
+								BoneName="iv_hito_c_l"
+								FlippedBoneName="iv_hito_c_r"
+								Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}" />
+							<local:BoneView
+								Canvas.Left="53"
+								Canvas.Top="13"
+								BoneName="iv_naka_c_l"
+								FlippedBoneName="iv_naka_c_r"
+								Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}" />
+							<local:BoneView
+								Canvas.Left="74"
+								Canvas.Top="20"
+								BoneName="iv_kusu_c_l"
+								FlippedBoneName="iv_kusu_c_r"
+								Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}" />
+							<local:BoneView
+								Canvas.Left="95"
+								Canvas.Top="30"
+								BoneName="iv_ko_c_l"
+								FlippedBoneName="iv_ko_c_r"
+								Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}" />
+
 						</Canvas>
 					</Viewbox>
 
@@ -1492,6 +1650,30 @@
 								Canvas.Top="115"
 								BoneName="WeaponRight"
 								FlippedBoneName="WeaponLeft" />
+							<local:BoneView
+								Canvas.Left="74"
+								Canvas.Top="19"
+								BoneName="iv_hito_c_r"
+								FlippedBoneName="iv_hito_c_l"
+								Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}" />
+							<local:BoneView
+								Canvas.Left="55"
+								Canvas.Top="14"
+								BoneName="iv_naka_c_r"
+								FlippedBoneName="iv_naka_c_l"
+								Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}" />
+							<local:BoneView
+								Canvas.Left="33"
+								Canvas.Top="20"
+								BoneName="iv_kusu_c_r"
+								FlippedBoneName="iv_kusu_c_l"
+								Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}" />
+							<local:BoneView
+								Canvas.Left="10"
+								Canvas.Top="32"
+								BoneName="iv_ko_c_r"
+								FlippedBoneName="iv_ko_c_l"
+								Visibility="{Binding IsIVCS, Converter={StaticResource B2V}}" />
 
 						</Canvas>
 					</Viewbox>

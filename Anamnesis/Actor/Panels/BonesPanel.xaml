@@ -36,10 +36,10 @@
 		<TabControl Padding="256,3,3,3">
 
 			<TabItem Header="GUI">
-				<views:PoseGuiView />
+				<views:PoseGuiView x:Name="PoseGUI" />
 			</TabItem>
 			<TabItem Header="Matrix">
-				<views:PoseMatrixView />
+				<views:PoseMatrixView x:Name="PoseMatrix" />
 			</TabItem>
 			<TabItem Header="All" />
 		</TabControl>
