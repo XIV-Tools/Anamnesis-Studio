@@ -54,7 +54,7 @@ public partial class BoneTransformPanel : ActorPanelBase
 			else
 			{
 				string? bone = LocalizationService.GetLocalizedText(this.CurrentBone.LocalizedBoneName);
-				this.Title = $"{title} - {bone}";
+				this.Title = $"{this.CurrentBone.Actor?.Names?.DisplayName} - {bone}";
 			}
 		});
 	}
