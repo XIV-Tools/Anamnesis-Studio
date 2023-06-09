@@ -7,7 +7,6 @@ using Anamnesis.Memory;
 using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 public class BoneReference
 {
@@ -44,13 +43,8 @@ public class BoneReference
 
 	public void SetRotation(Quaternion newRotation, ref HashSet<TransformMemory> writtenMemories)
 	{
-		Stopwatch sw = new();
-		sw.Start();
-
 		Quaternion delta = this.Rotation.Invert() * newRotation;
 		Change(this, null, this, Vector.Zero, Vector.Zero, delta, ref writtenMemories);
-
-		Log.Information($"took {sw.ElapsedMilliseconds} ms to write change to {writtenMemories.Count} transforms");
 	}
 
 	public void SetScale(Vector newScale, ref HashSet<TransformMemory> writtenMemories)
