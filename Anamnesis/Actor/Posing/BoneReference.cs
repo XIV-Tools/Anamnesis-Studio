@@ -8,12 +8,13 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 
-public struct BoneReference : IEquatable<BoneReference>
+public class BoneReference
 {
 	private readonly SkeletonMemory skeleton;
 	private readonly int partialSkeletonIndex;
 	private readonly int poseIndex;
 	private readonly int boneIndex;
+	private List<BoneReference>? children = null;
 
 	public BoneReference(SkeletonMemory skeleton, int partialSkeletonIndex, int poseIndex, int boneIndex)
 	{
@@ -33,16 +34,6 @@ public struct BoneReference : IEquatable<BoneReference>
 	public Vector Scale => this.Transform?.Scale ?? Vector.One;
 
 	public string? Name => this.HkaPose?.Skeleton?.Bones?[this.boneIndex]?.Name.ToString();
-
-	public static bool operator ==(BoneReference left, BoneReference right)
-	{
-		return left.Equals(right);
-	}
-
-	public static bool operator !=(BoneReference left, BoneReference right)
-	{
-		return !(left == right);
-	}
 
 	public void SetPosition(Vector newPosition, ref HashSet<TransformMemory> writtenMemories)
 	{
@@ -73,13 +64,14 @@ public struct BoneReference : IEquatable<BoneReference>
 
 	public List<BoneReference>? GetChildren()
 	{
-		// We really might want to cache this for some duration, this is _expensive_
-		// However, due to the nature of our memory lookups, theres no guarantee the
-		// Skeleton will stay in one shape, especailly not with new actor redraw methods...
+		// TODO: we'll want to be able to reset this children cache if the actor changes gear or options...
+		if (this.children != null)
+			return this.children;
+
 		if (this.HkaPose?.Skeleton?.ParentIndices == null || this.HkaPose?.Skeleton?.Bones == null)
 			return null;
 
-		List<BoneReference> results = new();
+		this.children = new();
 
 		for (int childIndex = 0; childIndex < this.HkaPose.Skeleton.ParentIndices.Count; childIndex++)
 		{
@@ -92,7 +84,7 @@ public struct BoneReference : IEquatable<BoneReference>
 				// the only way we currently understand th elinkages between partial skeletons is that
 				// the bones inside a partial skeleton will have the same name where they overlap.
 				// i.e. j_kao is the face root bone that is in the body and face partial skeletons.
-				results.AddRange(this.skeleton.FindBones(childBoneName));
+				this.children.AddRange(this.skeleton.FindBones(childBoneName));
 
 				// Adding only the children within this partial skeleton will result in changes not propogating
 				// into other partial skeletons, for example, head rotations really need to move the face bones.
@@ -100,25 +92,7 @@ public struct BoneReference : IEquatable<BoneReference>
 			}
 		}
 
-		return results;
-	}
-
-	public override bool Equals(object? obj)
-	{
-		return obj is BoneReference reference && this.Equals(reference);
-	}
-
-	public bool Equals(BoneReference other)
-	{
-		return EqualityComparer<SkeletonMemory>.Default.Equals(this.skeleton, other.skeleton) &&
-			   this.partialSkeletonIndex == other.partialSkeletonIndex &&
-			   this.poseIndex == other.poseIndex &&
-			   this.boneIndex == other.boneIndex;
-	}
-
-	public override int GetHashCode()
-	{
-		return HashCode.Combine(this.skeleton, this.partialSkeletonIndex, this.poseIndex, this.boneIndex);
+		return this.children;
 	}
 
 	private static void Change(BoneReference bone, BoneReference? parent, BoneReference source, Vector deltaPosition, Vector deltaScale, Quaternion deltaRotation, ref HashSet<TransformMemory> writtenMemories, int depth = 0)

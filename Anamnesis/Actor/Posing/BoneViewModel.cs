@@ -152,11 +152,11 @@ public class BoneViewModel : ITransform, INotifyPropertyChanged
 			if (parent == null)
 				continue;
 
-			parents.Add(parent.Value);
+			parents.Add(parent);
 
-			if (parent.Value.Name != null)
+			if (parent.Name != null)
 			{
-				name = parent.Value.Name;
+				name = parent.Name;
 			}
 		}
 
