@@ -12,6 +12,7 @@ using System.Runtime.CompilerServices;
 using Anamnesis.Services;
 using PropertyChanged;
 using Serilog;
+using static Anamnesis.Memory.PropertyChange;
 
 [AddINotifyPropertyChangedInterface]
 public abstract partial class MemoryBase : INotifyPropertyChanged, IDisposable
@@ -127,6 +128,15 @@ public abstract partial class MemoryBase : INotifyPropertyChanged, IDisposable
 		return bind.GetAddress();
 	}
 
+	protected PropertyBindInfo? GetBind(string propertyName = "")
+	{
+		PropertyBindInfo? bind;
+		if (!this.binds.TryGetValue(propertyName, out bind))
+			throw new Exception($"No property bind found with name {propertyName}");
+
+		return bind;
+	}
+
 	protected T GetValue<T>([CallerMemberName] string propertyName = "")
 	{
 		PropertyBindInfo? bind;
@@ -151,6 +161,14 @@ public abstract partial class MemoryBase : INotifyPropertyChanged, IDisposable
 		return newVal!;
 	}
 
+	protected T FastGetValue<T>(PropertyBindInfo? bind)
+	{
+		if (bind?.Value is T tVal)
+			return tVal;
+
+		throw new Exception($"No value in bind: {bind?.Path}");
+	}
+
 	protected void SetValue(object? value, [CallerMemberName] string propertyName = "")
 	{
 		PropertyBindInfo? bind;
@@ -159,6 +177,19 @@ public abstract partial class MemoryBase : INotifyPropertyChanged, IDisposable
 
 		bind.Value = value;
 		this.OnPropertyChanged(propertyName);
+	}
+
+	protected void FastSetValue(PropertyBindInfo? bind, object? value)
+	{
+		if (bind == null)
+			return;
+
+		lock (this)
+		{
+			bind.LastValue = bind.Value;
+			bind.Value = value;
+			this.WriteToMemory(bind, true);
+		}
 	}
 
 	protected bool IsFrozen(string propertyName)
@@ -492,9 +523,9 @@ public abstract partial class MemoryBase : INotifyPropertyChanged, IDisposable
 		}
 	}
 
-	private void WriteToMemory(PropertyBindInfo bind)
+	private void WriteToMemory(PropertyBindInfo bind, bool fast = false)
 	{
-		if (!this.CanWrite(bind))
+		if (!fast && !this.CanWrite(bind))
 			return;
 
 		if (bind.IsReading)

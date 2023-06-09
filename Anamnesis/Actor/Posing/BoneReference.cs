@@ -7,6 +7,7 @@ using Anamnesis.Memory;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class BoneReference
 {
@@ -29,9 +30,9 @@ public class BoneReference
 	public HkaPoseMemory? HkaPose => this.PartialSkeleton?[this.poseIndex];
 	public TransformMemory? Transform => this.HkaPose?.Transforms?[this.boneIndex];
 
-	public Vector Position => this.Transform?.Position ?? Vector.Zero;
-	public Quaternion Rotation => this.Transform?.Rotation ?? Quaternion.Identity;
-	public Vector Scale => this.Transform?.Scale ?? Vector.One;
+	public Vector Position => this.Transform?.FastPosition ?? Vector.Zero;
+	public Quaternion Rotation => this.Transform?.FastRotation ?? Quaternion.Identity;
+	public Vector Scale => this.Transform?.FastScale ?? Vector.One;
 
 	public string? Name => this.HkaPose?.Skeleton?.Bones?[this.boneIndex]?.Name.ToString();
 
@@ -43,8 +44,13 @@ public class BoneReference
 
 	public void SetRotation(Quaternion newRotation, ref HashSet<TransformMemory> writtenMemories)
 	{
+		Stopwatch sw = new();
+		sw.Start();
+
 		Quaternion delta = this.Rotation.Invert() * newRotation;
 		Change(this, null, this, Vector.Zero, Vector.Zero, delta, ref writtenMemories);
+
+		Log.Information($"took {sw.ElapsedMilliseconds} ms to write change to {writtenMemories.Count} transforms");
 	}
 
 	public void SetScale(Vector newScale, ref HashSet<TransformMemory> writtenMemories)
@@ -100,26 +106,28 @@ public class BoneReference
 		if (bone.Transform == null)
 			return;
 
-		if (!bone.Transform.IsValid())
+		TransformMemory transform = bone.Transform;
+
+		if (!transform.IsValid())
 		{
 			Log.Verbose($"Bone: {bone.Name} transform is not valid for bone change");
 			return;
 		}
 
 		// Have we already written to this bone? then abort.
-		if (writtenMemories.Contains(bone.Transform))
+		if (writtenMemories.Contains(transform))
 			return;
 
-		writtenMemories.Add(bone.Transform);
+		writtenMemories.Add(transform);
 
 		if (App.Services.Pose.FreezePositions)
-			bone.Transform.Position += deltaPosition;
+			transform.FastPosition += deltaPosition;
 
 		if (App.Services.Pose.FreezeScale)
-			bone.Transform.Scale += deltaScale;
+			transform.FastScale += deltaScale;
 
 		if (App.Services.Pose.FreezeRotation)
-			bone.Transform.Rotation *= deltaRotation;
+			transform.FastRotation *= deltaRotation;
 
 		if (depth > 1000)
 		{
@@ -129,7 +137,7 @@ public class BoneReference
 
 		if (App.Services.Pose.FreezePositions && bone != source)
 		{
-			Vector offset = bone.Transform.Position - source.Position;
+			Vector offset = transform.FastPosition - source.Position;
 			float originalLength = offset.Length;
 
 			// Hack, but sometimes bones have weird values.
@@ -143,7 +151,7 @@ public class BoneReference
 				}
 				else
 				{
-					bone.Transform.Position = source.Position + offset;
+					transform.FastPosition = source.Position + offset;
 				}
 			}
 		}
