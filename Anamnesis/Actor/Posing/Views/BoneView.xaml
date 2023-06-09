@@ -54,18 +54,27 @@
 										x:Name="BackgroundElipse"
 										Fill="{DynamicResource ControlBackgroundBrush}"
 										Stroke="{DynamicResource ForegroundBrush}"
+										Opacity="1"
 										StrokeThickness="1" />
 
 									<Ellipse
 										x:Name="HoverElipse"
 										Opacity="0"
-										Stroke="{DynamicResource TrimBrush}" />
+										Fill="{DynamicResource ControlHighlightBrush}"
+										Stroke="{DynamicResource ControlHighlightBrush}"
+										StrokeThickness="1"/>
 
 									<Ellipse
 										x:Name="SelectionElipse"
 										Margin="4"
 										Fill="{DynamicResource TrimBrush}"
 										Opacity="0" />
+
+									<Ellipse
+										x:Name="ParentSelectedElipse"
+										Stroke="{DynamicResource TrimBrush}"
+										StrokeThickness="1"
+										Opacity="0"/>
 
 									<TextBlock Text="{Binding Label}" />
 
@@ -81,6 +90,12 @@
 									<Trigger Property="IsChecked" Value="True">
 										<Setter TargetName="SelectionElipse" Property="Opacity" Value="1" />
 									</Trigger>
+									<DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+										<Setter TargetName="HoverElipse" Property="Opacity" Value="1" />
+									</DataTrigger>
+									<DataTrigger Binding="{Binding IsParentSelected}" Value="True">
+										<Setter TargetName="ParentSelectedElipse" Property="Opacity" Value="1" />
+									</DataTrigger>
 								</ControlTemplate.Triggers>
 							</ControlTemplate>
 						</Setter.Value>

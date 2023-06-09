@@ -4,6 +4,8 @@
 namespace Anamnesis.Actor;
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
 using Anamnesis.Actor.Posing;
@@ -16,6 +18,8 @@ using XivToolsWpf.Extensions;
 [AddINotifyPropertyChangedInterface]
 public class PoseService : ServiceBase<PoseService>
 {
+	public readonly HashSet<string> SelectedBoneNames = new();
+
 	private NopHookViewModel? freezeRot1;
 	private NopHookViewModel? freezeRot2;
 	private NopHookViewModel? freezeRot3;
@@ -199,6 +203,41 @@ public class PoseService : ServiceBase<PoseService>
 			Services.Navigation.Navigate(new("Bones")).Run();
 			Services.Navigation.Navigate(new("BoneTransform")).Run();
 		}
+	}
+
+	public void ClearSelection()
+	{
+		this.SelectedBoneNames.Clear();
+		this.SelectedBones.Clear();
+	}
+
+	public void Select(IEnumerable<BoneViewModel> bones)
+	{
+		this.SelectedBoneNames.Clear();
+		foreach (BoneViewModel bone in bones)
+		{
+			this.SelectedBoneNames.Add(bone.Name);
+		}
+
+		this.SelectedBones.Replace(bones);
+	}
+
+	public void Select(BoneViewModel bone, bool add = false)
+	{
+		if (!add)
+		{
+			this.SelectedBoneNames.Clear();
+			this.SelectedBones.Clear();
+		}
+
+		this.SelectedBoneNames.Add(bone.Name);
+		this.SelectedBones.Add(bone);
+	}
+
+	public void UnSelect(BoneViewModel bone, bool add = false)
+	{
+		this.SelectedBoneNames.Remove(bone.Name);
+		this.SelectedBones.Remove(bone);
 	}
 
 	private void OnGposeStateChanged(bool isGPose)

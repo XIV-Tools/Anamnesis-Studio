@@ -112,20 +112,17 @@ public partial class BonesPanel : ActorPanelBase
 
 				foreach (BoneView boneView in this.BoneViews)
 				{
-					if (!boneView.IsDescendantOf(this.MouseCanvas))
-						continue;
-
 					if (!boneView.IsVisible)
 						continue;
 
 					Point relativePoint = this.GetBonePosition(boneView);
 					if (relativePoint.X > minx && relativePoint.X < maxx && relativePoint.Y > miny && relativePoint.Y < maxy)
 					{
-						boneView.Hover(true);
+						boneView.IsHighlighted = true;
 					}
 					else
 					{
-						boneView.Hover(false);
+						boneView.IsHighlighted = false;
 					}
 				}
 			}
@@ -173,7 +170,7 @@ public partial class BonesPanel : ActorPanelBase
 					if (boneView.BoneViewModel == null)
 						continue;
 
-					boneView.Hover(false);
+					boneView.IsHighlighted = false;
 
 					Point relativePoint = this.GetBonePosition(boneView);
 					if (relativePoint.X > minx && relativePoint.X < maxx && relativePoint.Y > miny && relativePoint.Y < maxy)
@@ -182,7 +179,7 @@ public partial class BonesPanel : ActorPanelBase
 					}
 				}
 
-				this.Services.Pose.SelectedBones.Replace(toSelect);
+				this.Services.Pose.Select(toSelect);
 			}
 			catch (Exception ex)
 			{
@@ -194,7 +191,7 @@ public partial class BonesPanel : ActorPanelBase
 		}
 		else
 		{
-			this.Services.Pose.SelectedBones.Clear();
+			this.Services.Pose.ClearSelection();
 			this.Services.Pose.SelectedActor = null;
 			this.Services.Pose.SelectedActor = this.Actor;
 		}

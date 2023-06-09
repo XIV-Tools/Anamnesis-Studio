@@ -77,8 +77,7 @@ public partial class BoneTransformPanel : ActorPanelBase
 		if (parent == null)
 			return;
 
-		this.Services.Pose.SelectedBones.Clear();
-		this.Services.Pose.SelectedBones.Add(parent);
+		this.Services.Pose.Select(parent);
 	}
 
 	private void OnSelectChildrenClicked(object sender, RoutedEventArgs e)
@@ -87,13 +86,12 @@ public partial class BoneTransformPanel : ActorPanelBase
 		if (children == null)
 			return;
 
-		this.Services.Pose.SelectedBones.Clear();
-		this.Services.Pose.SelectedBones.AddRange(children);
+		this.Services.Pose.Select(children);
 	}
 
 	private void OnClearClicked(object? sender, RoutedEventArgs? e)
 	{
-		this.Services.Pose.SelectedBones.Clear();
+		this.Services.Pose.ClearSelection();
 	}
 
 	private void OnFlipClicked(object sender, RoutedEventArgs e)

@@ -55,6 +55,8 @@ public partial class BoneView : UserControl
 	}
 
 	public bool IsSelected { get; set; }
+	public bool IsHighlighted { get; set; }
+	public bool IsParentSelected { get; set; }
 
 	public string Label
 	{
@@ -74,11 +76,6 @@ public partial class BoneView : UserControl
 		set => FlippedNameDp.Set(this, value);
 	}
 
-	public void Hover(bool hover)
-	{
-		// TODO: it woudl be nice if we could get our control to act as though its hovered.
-	}
-
 	public void Select(bool select, bool add)
 	{
 		if (this.BoneViewModel == null)
@@ -86,15 +83,12 @@ public partial class BoneView : UserControl
 
 		if (select)
 		{
-			if (!add)
-				PoseService.Instance.SelectedBones.Clear();
-
-			PoseService.Instance.SelectedBones.Add(this.BoneViewModel);
 			PoseService.Instance.SelectedActor = this.BoneViewModel.Actor;
+			PoseService.Instance.Select(this.BoneViewModel, add);
 		}
 		else
 		{
-			PoseService.Instance.SelectedBones.Remove(this.BoneViewModel);
+			PoseService.Instance.UnSelect(this.BoneViewModel);
 			this.boneViewModel = null;
 		}
 	}
@@ -130,8 +124,6 @@ public partial class BoneView : UserControl
 
 	private async void OnSelectedBonesChanged(object? sender, NotifyCollectionChangedEventArgs e)
 	{
-		List<BoneViewModel> newSelection = new(App.Services.Pose.SelectedBones);
-
 		await this.Dispatcher.MainThread();
 
 		if (this.BoneViewModel == null)
@@ -139,13 +131,21 @@ public partial class BoneView : UserControl
 
 		this.lockChanges = true;
 
-		this.IsSelected = false;
-		foreach (BoneViewModel selectedBone in newSelection)
+		this.IsSelected = PoseService.Instance.SelectedBoneNames.Contains(this.BoneViewModel.Name);
+		this.IsParentSelected = this.IsSelected;
+
+		if (!this.IsParentSelected)
 		{
-			if (selectedBone.Name == this.BoneViewModel.Name)
+			BoneViewModel? parent = this.BoneViewModel.GetParent();
+			while (parent != null)
 			{
-				this.IsSelected = true;
-				break;
+				if (PoseService.Instance.SelectedBoneNames.Contains(parent.Name))
+				{
+					this.IsParentSelected = true;
+					break;
+				}
+
+				parent = parent?.GetParent();
 			}
 		}
 
