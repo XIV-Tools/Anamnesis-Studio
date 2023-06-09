@@ -207,8 +207,13 @@ public class PoseService : ServiceBase<PoseService>
 
 	public void ClearSelection()
 	{
+		ActorMemory? actor = this.SelectedActor;
+		this.SelectedActor = null;
+
 		this.SelectedBoneNames.Clear();
 		this.SelectedBones.Clear();
+
+		this.SelectedActor = actor;
 	}
 
 	public void Select(IEnumerable<BoneViewModel> bones)
