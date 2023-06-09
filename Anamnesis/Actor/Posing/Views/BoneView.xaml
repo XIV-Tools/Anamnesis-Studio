@@ -76,7 +76,11 @@
 										StrokeThickness="1"
 										Opacity="0"/>
 
-									<TextBlock Text="{Binding Label}" />
+									<TextBlock
+										Text="{Binding Label}"
+										HorizontalAlignment="Center"
+										VerticalAlignment="Center"
+										FontSize="8"/>
 
 								</Grid>
 
