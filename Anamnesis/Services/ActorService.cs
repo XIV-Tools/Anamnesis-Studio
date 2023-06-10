@@ -221,7 +221,8 @@ public class ActorService : ServiceBase<ActorService>
 
 			this.ForceRefresh();
 
-			foreach (ActorBasicMemory actor in this.ActorsToTick)
+			HashSet<ActorBasicMemory> actors = new(this.ActorsToTick);
+			foreach (ActorBasicMemory actor in actors)
 			{
 				actor.Tick();
 			}
