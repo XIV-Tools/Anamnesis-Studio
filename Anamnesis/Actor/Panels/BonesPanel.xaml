@@ -16,12 +16,6 @@
 	mc:Ignorable="d">
 
 	<Grid x:Name="ContentArea">
-		<controls:ActorSelector
-			Width="250"
-			Height="54"
-			HorizontalAlignment="Left"
-			VerticalAlignment="Top"
-			Selection="{Binding Actor}" />
 
 		<Grid
 			x:Name="MouseCanvas"
@@ -32,6 +26,13 @@
 			MouseDown="OnCanvasMouseDown"
 			MouseMove="OnCanvasMouseMove"
 			MouseUp="OnCanvasMouseUp" />
+
+		<controls:ActorSelector
+			Width="250"
+			Height="54"
+			HorizontalAlignment="Left"
+			VerticalAlignment="Top"
+			Selection="{Binding Actor}" />
 
 		<TabControl Padding="256,3,3,3">
 
